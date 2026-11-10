@@ -322,6 +322,43 @@
       <span class="font-mono text-[11px]">Chapter 04 & Mathematical Supplements</span>
     </div>
 
+    <!-- ==================== COMMENTS & DISCUSSION ==================== -->
+    <section class="pt-10 border-t border-stone-200 dark:border-stone-800 space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="space-y-1">
+          <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+            <i class="far fa-comments text-stone-400 text-lg"></i>
+            <span>학술 토론 및 질문 (Discussion)</span>
+          </h2>
+          <p class="text-xs text-stone-500 dark:text-stone-400">
+            노트 내용에 대한 질문, 수식 정정, 학술적 의견을 자유롭게 남겨주세요.
+          </p>
+        </div>
+        <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 border border-stone-200 dark:border-stone-700">
+          GitHub Discussions
+        </span>
+      </div>
+
+      <!-- Giscus Container -->
+      <div class="pt-2">
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="noborder_light"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </div>
+    </section>
+
   </main>
 
 
@@ -340,12 +377,30 @@
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
     const themeToggleBtn = document.getElementById('theme-toggle');
 
+    function updateGiscusTheme() {
+      const theme = document.documentElement.classList.contains('dark') ? 'noborder_dark' : 'noborder_light';
+      const iframe = document.querySelector('iframe.giscus-frame');
+      if (iframe) {
+        iframe.contentWindow.postMessage(
+          { giscus: { setConfig: { theme: theme } } },
+          'https://giscus.app'
+        );
+      }
+    }
+
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
       themeToggleLightIcon.classList.remove('hidden');
     } else {
       document.documentElement.classList.remove('dark');
       themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    if (document.documentElement.classList.contains('dark')) {
+      const giscusScript = document.querySelector('script[src*="giscus.app/client.js"]');
+      if (giscusScript) {
+        giscusScript.setAttribute('data-theme', 'noborder_dark');
+      }
     }
 
     themeToggleBtn.addEventListener('click', function() {
@@ -359,6 +414,8 @@
         document.documentElement.classList.add('dark');
         localStorage.setItem('color-theme', 'dark');
       }
+
+      updateGiscusTheme();
     });
   </script>
 
