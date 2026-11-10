@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Notes & Archive | Hyeongjin Oh (오형진)</title>
+  <meta name="description" content="서울시립대학교 경제학과 오형진의 대학원 경제학 지식 베이스 아카이브입니다. 계량경제학, 수리경제학, 미시·거시 모형 및 MATLAB/Julia 시뮬레이션 노트를 정리합니다.">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/profile.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .subtle-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .subtle-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER & TOP NAV ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <a href="index.html" class="group flex items-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors text-sm font-medium">
+        <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+        <span>Home (오형진)</span>
+      </a>
+
+      <nav class="flex items-center gap-6 text-sm text-stone-600 dark:text-stone-400">
+        <a href="#econometrics" class="hover:text-stone-900 dark:hover:text-white transition-colors">Econometrics</a>
+        <a href="#math-econ" class="hover:text-stone-900 dark:hover:text-white transition-colors">Math Econ</a>
+        <a href="#micro-macro" class="hover:text-stone-900 dark:hover:text-white transition-colors">Micro/Macro</a>
+        <a href="#computing" class="hover:text-stone-900 dark:hover:text-white transition-colors">Computing</a>
+
+        <div class="w-px h-3.5 bg-stone-300 dark:bg-stone-700"></div>
+
+        <!-- Dark Mode Switch -->
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-16">
+    
+    <!-- PAGE TITLE & HERO -->
+    <section class="space-y-4">
+      
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-stone-700/60">
+        <i class="fas fa-layer-group text-stone-400"></i>
+        Graduate Economics Knowledge Base
+      </div>
+
+      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+        Study Notes & Archive
+      </h1>
+
+      <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base leading-relaxed max-w-3xl">
+        대학원 과정에서 공부해 온 계량경제학 이론, 수리경제학 모형의 수학적 유도, 그리고 MATLAB/Julia 수치 시뮬레이션 자료를 체계적으로 정리해 둔 지식 아카이브입니다.
+      </p>
+
+      <div class="pt-2 flex flex-wrap items-center gap-3 text-xs">
+        <a href="https://exclusiveor0-byte.github.io/graduate-economics/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 font-medium hover:opacity-90 transition-opacity">
+          <i class="fas fa-book-reader text-xs"></i> 원본 Quarto Book 아카이브 열람하기 ↗
+        </a>
+        <a href="https://github.com/exclusiveor0-byte/graduate-economics" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 text-stone-700 dark:text-stone-300 hover:border-stone-400 transition-colors">
+          <i class="fab fa-github"></i> Repository
+        </a>
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== 1. ECONOMETRICS (15 CHAPTERS) ==================== -->
+    <section id="econometrics" class="space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+            <span>Econometrics</span>
+            <span class="text-xs font-sans text-stone-400 font-normal">/ 계량경제학 이론 (15 Chapters)</span>
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">확률 기초부터 OLS 대수·점근이론, GMM, 도구변수(IV), 약한 식별까지 체계화된 전개</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        
+        <!-- Part 1 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part I · Chapters 01–05</span>
+            <span class="text-xs font-mono text-stone-400">Foundation</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">확률 기초, 식별 및 조건부 기댓값</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
+            <li>• ch01–02: 확률 정보 구조와 모형의 기초</li>
+            <li>• ch03: 모수 식별 문제 (Target Model Identification)</li>
+            <li>• ch04: 모집단 최적화 (Population Optimization)</li>
+            <li>• ch05: 조건부 기댓값 함수(CEF)의 성질과 오차항</li>
+          </ul>
+        </div>
+
+        <!-- Part 2 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part II · Chapters 06–10</span>
+            <span class="text-xs font-mono text-stone-400">Least Squares</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">최소자승법(OLS)과 점근 이론</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
+            <li>• ch06–07: 모집단 선형 회귀 & 표본 최소자승법</li>
+            <li>• ch08: OLS 표본이론과 기하학적 투영 (Projection Geometry)</li>
+            <li>• ch09: 정확 추론 (Exact Finite-Sample Inference)</li>
+            <li>• ch10: 대표본 점근 분포 (Large Sample Least Squares)</li>
+          </ul>
+        </div>
+
+        <!-- Part 3 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part III · Chapters 11–14</span>
+            <span class="text-xs font-mono text-stone-400">IV & GMM</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">M-추정, 도구변수(IV) 및 약한 식별</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
+            <li>• ch11: M/Z-추정 이론의 통일적 체계</li>
+            <li>• ch12: 도구변수(IV) 2SLS 및 일반화 적률법(GMM)</li>
+            <li>• ch13: 우도 및 준우도(Quasi-Likelihood) 추정</li>
+            <li>• ch14: 약한 식별(Weak Identification)과 비정규 점근론</li>
+          </ul>
+        </div>
+
+        <!-- Part 4 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part IV · Chapter 15</span>
+            <span class="text-xs font-mono text-stone-400">Time Series</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">종속 자료와 시계열 계량분석</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
+            <li>• ch15: Dependent Data & Time-Series Foundations</li>
+            <li>• 정상성(Stationarity)과 에르고딕성(Ergodicity)</li>
+            <li>• HAC 표준오차 (Newey-West 분산 공분산 행렬)</li>
+            <li>• 마팅게일 차분 계열(MDS) 중심극한정리</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== 2. MATHEMATICAL ECONOMICS & TOPOLOGY ==================== -->
+    <section id="math-econ" class="space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+            <span>Mathematical Economics & Topology</span>
+            <span class="text-xs font-sans text-stone-400 font-normal">/ 수리경제학 및 위상수학</span>
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">수학 복수전공 기반의 엄밀한 위상수학 기초, 부등식 최적화 및 서신 이론 정리</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <span class="text-xs font-mono text-stone-400">Optimization</span>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">KKT 부등식 제약 최적화</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            Karush-Kuhn-Tucker 조건의 기하학적 유도, 상보성 조건(Complementary Slackness), 볼록 계획법(Convex Programming)의 해의 유일성.
+          </p>
+        </div>
+
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <span class="text-xs font-mono text-stone-400">Topology</span>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">위상수학 기초: 폐집합과 폐포</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            거리공간과 일반 위상공간에서의 개집합·폐집합, 폐포(Closure), 조밀성(Density), 하이네-보렐 정리와 콤팩트성(Compactness).
+          </p>
+        </div>
+
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <span class="text-xs font-mono text-stone-400">Correspondences</span>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">서신과 반연속성</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            집합치 함수(Correspondence), 상반연속(UHC) 및 하반연속(LHC), 베르게의 최대화 정리(Berge's Maximum Theorem)와 카쿠타니 부동점 정리.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== 3. MICRO & MACROECONOMICS ==================== -->
+    <section id="micro-macro" class="space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+            <span>Micro & Macroeconomic Theory</span>
+            <span class="text-xs font-sans text-stone-400 font-normal">/ 미시 및 거시경제학 모형</span>
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">소비자·생산자 쌍대성 이론, 일반균형, 동태적 거시 성장 및 경기변동 모형</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+        
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>Microeconomic Foundations</span>
+            <span>Chapters 00–04</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">미시경제학: 쌍대성과 일반균형</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1 pt-1">
+            <li>• <strong>슬러츠키 분해 (Slutsky Decomposition):</strong> 대체효과와 소득효과의 행렬 분해</li>
+            <li>• <strong>비용 함수 포락선 (Envelope Theorem):</strong> 셰퍼드의 보조정리와 비용 극소화</li>
+            <li>• <strong>에지워스 상자 & 후생경제학:</strong> 계약곡선과 후생경제학 제1·제2 기본정리</li>
+            <li>• <strong>과점시장과 게임이론:</strong> 쿨롱/베르트랑 균형, 반복게임과 포크 정리(Folk Theorem)</li>
+          </ul>
+        </div>
+
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>Macroeconomic Dynamics</span>
+            <span>Growth & Cycles</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">거시경제학: 동태적 균형과 성장</h3>
+          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1 pt-1">
+            <li>• <strong>솔로우 성장 모형 (Solow Growth):</strong> 자본 축적과 전이 경로(Transition Path) 계산</li>
+            <li>• <strong>램지-카스-쿠프만스 (Ramsey-Cass-Koopmans):</strong> 위상평면 안장경로(Saddle Path) 유도</li>
+            <li>• <strong>RBC 모형 (Real Business Cycles):</strong> 외생적 기술 충격과 동태적 확률 일반균형(DSGE)</li>
+            <li>• <strong>IS-LM 재정 충격 분석:</strong> 이자율과 소득의 정태적·동태적 파급 경로</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== 4. COMPUTING & SIMULATIONS (MATLAB / JULIA / R) ==================== -->
+    <section id="computing" class="space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+            <span>Computing & Numerical Simulations</span>
+            <span class="text-xs font-sans text-stone-400 font-normal">/ MATLAB · Julia · R 보충자료</span>
+          </h2>
+          <p class="text-xs text-stone-500 mt-1">수학적 유도 과정을 수치 시뮬레이션 코드 및 동태적 시각화로 재현</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+        
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-stone-700 dark:text-stone-300">MATLAB</span>
+            <span class="text-[10px] font-mono text-stone-400">.m scripts</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-sm">몬테카를로 & 동태적 애니메이션</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            • OLS 사영 기하학 몬테카를로 시뮬레이션<br>
+            • 약한 도구변수(IV) 2SLS 유한표본 편의 검증<br>
+            • IS-LM 재정 정책 충격 및 램지 안장경로 동태 애니메이션
+          </p>
+        </div>
+
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-stone-700 dark:text-stone-300">Julia</span>
+            <span class="text-[10px] font-mono text-stone-400">High-Performance</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-sm">수치 최적화 & 동태 프로그래밍</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            • 가치함수 반복법(VFI)과 벨만 방정식 수치해<br>
+            • 고차원 비선형 방정식 근사 계산<br>
+            • 빠른 행렬 연산 기반 계량 추정 알고리즘
+          </p>
+        </div>
+
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-mono font-bold text-stone-700 dark:text-stone-300">R</span>
+            <span class="text-[10px] font-mono text-stone-400">Visualization</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-sm">통계 계산 & 시각화 도구</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            • 솔로우 성장 모형의 수치적 전이 경로 계산 (Base R)<br>
+            • 카이제곱, F, t-분포의 기하학적 비교 시각화<br>
+            • 정적 Pages 도구 연동 파이프라인
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-4xl mx-auto px-6 space-y-2">
+      <div class="flex justify-center gap-4 text-stone-500 dark:text-stone-400 font-medium">
+        <a href="index.html" class="hover:underline">← Home (오형진 프로필)</a>
+        <span>·</span>
+        <a href="https://exclusiveor0-byte.github.io/graduate-economics/" target="_blank" class="hover:underline">원문 Quarto Book 아카이브 ↗</a>
+      </div>
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+
+</body>
+</html>
