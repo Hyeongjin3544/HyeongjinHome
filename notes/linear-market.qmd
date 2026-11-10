@@ -1,40 +1,70 @@
 ---
-title: 선형 수요와 공급에서 균형 구하기
-description: 시장청산 조건으로 균형 가격과 거래량을 구하고, 수요가 늘면 두 값이 어떻게 변하는지 살펴봅니다.
-date: 2026-11-10
-categories: [미시경제학, 부분균형]
+title: "선형 수요·공급 모형과 시장 균형: 비교정학과 조세 귀착의 유도"
+description: "시장청산 조건(Market Clearing)에서 균형 가격과 수량을 대수적으로 유도하고, 수요 충격 및 단위당 종량세 부과 시 조세 귀착(Tax Incidence)을 비교정학으로 분석합니다."
+author: "Hyeongjin Kim"
+date: "2026-11-01"
+categories: [미시경제학, 시장균형, 비교정학]
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: show
 ---
 
-이 글은 개인 노트의 첫 예시입니다. 한 시장에서 수요가 늘어날 때, 균형 가격과 거래량이 각각 얼마나 변할까요?
+## 1. 모형의 기본 설정과 시장 청산
 
-## 시장청산
-
-가격을 $P$, 수요량과 공급량을 각각 $Q_d$, $Q_s$라고 두겠습니다. $a,c>0$, $b,d>0$인 선형 모형을 사용합니다.
+가격을 $P$, 시장의 수요량과 공급량을 각각 $Q_d$, $Q_s$라고 정의합니다. 파라미터 $a, c > 0$ 및 $b, d > 0$을 갖는 선형 구조를 가정합니다:
 
 $$
-Q_d = a - bP, \qquad Q_s = c + dP.
+\begin{aligned}
+Q_d &= a - bP \quad &(b = -\partial Q_d/\partial P > 0) \\
+Q_s &= c + dP \quad &(d = \partial Q_s/\partial P > 0)
+\end{aligned}
 $$
 
-$a>c$이면 양의 균형 가격이 존재합니다. 시장청산 조건 $Q_d=Q_s$에서
+양(+)의 균형 가격이 성립하기 위해 $a > c$라 가정합니다. 시장 청산 조건(Market Clearing Condition) $Q_d = Q_s$로부터 균형 가격 $P^*$와 균형 거래량 $Q^*$를 구합니다:
 
 $$
-P^* = \frac{a-c}{b+d},
-\qquad
-Q^* = c+dP^* = \frac{ad+bc}{b+d}.
+a - bP^* = c + dP^* \implies (b + d)P^* = a - c
 $$
 
-![균형점 E에서 교차하는 수요곡선과 공급곡선](../assets/market-equilibrium.svg){width=540}
-
-## 수요가 늘어나면
-
-모든 가격에서 수요량이 $\Delta a>0$만큼 늘고 다른 모수는 그대로라고 합시다. 새 균형과 기존 균형의 차이는 다음과 같습니다.
+따라서 균형해는 다음과 같이 명시적으로 도출됩니다:
 
 $$
-\Delta P^* = \frac{\Delta a}{b+d},
-\qquad
-\Delta Q^* = \frac{d\,\Delta a}{b+d}.
+P^* = \frac{a - c}{b + d}, \qquad Q^* = \frac{ad + bc}{b + d}
 $$
 
-예를 들어 $b=d=2$인 시장에서 수요량이 모든 가격에서 12만큼 늘면, 균형 가격은 3, 균형 거래량은 6만큼 올라갑니다. 공급의 가격 반응 $d$가 더 클수록 같은 수요 증가에 대해 가격 상승폭은 작아지고 거래량 증가폭은 커집니다.
+::: {.text-center}
+![수요곡선과 공급곡선의 균형](../assets/market-equilibrium.svg){width=70% fig-align="center"}
+:::
 
-[경제학 노트 목록으로 돌아가기](../notes.qmd)
+---
+
+## 2. 외생적 수요 충격의 비교정학 (Comparative Statics)
+
+소비자의 선호 변화나 소득 증가로 인해 절편이 $\Delta a > 0$만큼 이동했을 때, 음함수 정리 또는 전미분을 통해 내생변수의 반응을 유도할 수 있습니다:
+
+$$
+\frac{\partial P^*}{\partial a} = \frac{1}{b + d} > 0, \qquad \frac{\partial Q^*}{\partial a} = \frac{d}{b + d} \in (0, 1)
+$$
+
+- 공급의 가격 탄력도(기울기 $d$)가 클수록, 수요 충격은 가격 상승보다는 **거래량 증가**로 더 많이 흡수됩니다.
+- 반대로 공급이 비탄력적($d \to 0$)일수록 충격은 대부분 **급격한 가격 상승**으로 귀결됩니다.
+
+---
+
+## 3. 단위당 종량세($\tau$)의 도입과 조세 귀착 (Tax Incidence)
+
+생산자에게 단위당 $\tau$의 종량세가 부과된다고 하면 공급곡선은 $Q_s = c + d(P - \tau)$로 상향 이동합니다. 새로운 소비자가격 $P_b$와 생산자 수취가격 $P_s = P_b - \tau$는:
+
+$$
+P_b^* = P^* + \left(\frac{d}{b + d}\right)\tau, \qquad P_s^* = P^* - \left(\frac{b}{b + d}\right)\tau
+$$
+
+소비자와 생산자가 부담하는 조세의 상대적 귀착 비율은 정확히 수요와 공급의 기울기 비율(또는 탄력성 비율)과 일치합니다:
+
+$$
+\frac{\text{소비자 부담분}}{\text{생산자 부담분}} = \frac{P_b^* - P^*}{P^* - P_s^*} = \frac{d}{b}
+$$
+
+이 기초적인 결과는 상대적으로 더 비탄력적인(대안이 적은) 경제 주체가 조세 부담의 대부분을 지게 됨을 대수적으로 보여줍니다.

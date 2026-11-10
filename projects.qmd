@@ -1,0 +1,94 @@
+---
+title: "Projects & Code"
+subtitle: "Empirical Data Analysis, Causal Inference Tools, and Simulations"
+page-layout: article
+toc: true
+---
+
+실제 마이크로데이터(Microdata)와 행정 데이터셋을 처리하고, 최신 인과추론 기법을 적용한 오픈소스 분석 프로젝트 및 실증 연구 코드 저장소입니다.
+
+::: {.project-grid}
+
+::: {.project-card}
+<div>
+<h3 class="project-title">Causal DiD Toolkit in R</h3>
+<div class="project-desc">
+최신 Staggered DiD 기법(Callaway & Sant'Anna, Sun & Abraham, de Chaisemartin & D'Haultfoeuille)을 한 곳에서 쉽게 벤치마킹하고 이벤트 스터디 그래프를 자동으로 생성해주는 R 분석 워크플로우 템플릿입니다.
+</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>R</span>
+<span>did</span>
+<span>fixest</span>
+<span>ggplot2</span>
+</div>
+<div class="project-links">
+[GitHub Repository](https://github.com/Hyeongjin3544){target="_blank"}
+[Documentation](#)
+</div>
+</div>
+:::
+
+::: {.project-card}
+<div>
+<h3 class="project-title">Labor Panel Data Pipeline</h3>
+<div class="project-desc">
+한국노동패널(KLIPS) 및 청년패널(YP) 원자료를 자동으로 결합, 클리닝하고 패널 이중차분 및 고정효과 추정을 위한 최적 전처리 자동화 파이프라인(Python/Pandas)입니다.
+</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>Python</span>
+<span>Pandas</span>
+<span>Polars</span>
+<span>Stata</span>
+</div>
+<div class="project-links">
+[GitHub Repository](https://github.com/Hyeongjin3544){target="_blank"}
+[Interactive Demo](#)
+</div>
+</div>
+:::
+
+::: {.project-card}
+<div>
+<h3 class="project-title">Synthetic Control Simulation & Placebo Tests</h3>
+<div class="project-desc">
+합성대조군(Synthetic Control Method)의 가중치 최적화 알고리즘 구현과 In-space / In-time 플라시보 순열 검정(Permutation Inference) 시각화 도구입니다.
+</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>R</span>
+<span>Synth</span>
+<span>Optimization</span>
+</div>
+<div class="project-links">
+[GitHub Repository](https://github.com/Hyeongjin3544){target="_blank"}
+</div>
+</div>
+:::
+
+::: {.project-card}
+<div>
+<h3 class="project-title">Economic Sentiment Index using News NLP</h3>
+<div class="project-desc">
+주요 경제 일간지 기사 50만 건을 크롤링하여 한국어 사전 기반 감성분석과 BERT 임베딩을 통해 경기 선행 지표를 예측하는 텍스트 마이닝 프로젝트입니다.
+</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>Python</span>
+<span>HuggingFace</span>
+<span>PyTorch</span>
+<span>FastAPI</span>
+</div>
+<div class="project-links">
+[GitHub Repository](https://github.com/Hyeongjin3544){target="_blank"}
+[Paper Summary](#)
+</div>
+</div>
+:::
+
+:::

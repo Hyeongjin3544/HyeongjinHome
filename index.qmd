@@ -1,44 +1,140 @@
 ---
-pagetitle: Hyeongjin의 개인 홈페이지
-description: 경제학 대학원생 Hyeongjin의 개인 홈페이지.
-page-layout: full
+title: ""
+page-layout: article
 toc: false
 ---
 
-::::: {.home-hero}
+::: {.hero-wrapper}
+::: {.profile-card}
+![](assets/avatar.svg){.profile-avatar alt="Profile photo"}
 
-:::: {.hero-intro}
+::: {.profile-content}
+# Hyeongjin Kim {.profile-name}
 
-[개인 홈페이지 · ECONOMICS]{.eyebrow}
-
-# Hyeongjin {.unnumbered}
-
-경제학을 공부하는 대학원생입니다. 수업에서 배운 모형을 다시 풀어 보고, 논문을 읽으며 생긴 질문을 이곳에 정리합니다.
-
-::: {.hero-links}
-[소개 보기 →](about.qmd){.primary-link} [GitHub](https://github.com/Hyeongjin3544){.text-link}
+::: {.profile-title}
+Graduate Student in Economics
 :::
 
-::::
-
-::: {.hero-figure}
-![수요곡선 D와 공급곡선 S가 균형점 E에서 만나는 그림](assets/market-equilibrium.svg){fig-alt="가로축은 거래량 Q, 세로축은 가격 P다. 우하향하는 수요곡선 D와 우상향하는 공급곡선 S가 균형점 E에서 교차한다."}
-
-[그림 01 · 수요와 공급의 균형](notes/linear-market.qmd){.figure-link}
+::: {.profile-bio}
+안녕하세요! 경제학을 공부하는 대학원생 **김형진(Hyeongjin Kim)**입니다.  
+데이터와 실증적 방법론(Empirical Methods)을 통해 현실의 경제적 질문들을 탐구하고 있으며, 엄밀한 계량 모형과 인과추론(Causal Inference)을 연구에 접목하는 데 깊은 관심을 가지고 있습니다.
 :::
 
-:::::
-
-:::: {.home-notes}
-
-::: {.notes-intro}
-
-[STUDY NOTES]{.eyebrow}
-
-## 경제학 노트
-
-수업에서 배운 모형과 논문을 읽으며 남긴 질문을 주제별로 모읍니다.
+::: {.interest-tags}
+<span class="tag-badge"># Applied Microeconomics</span>
+<span class="tag-badge"># Econometrics</span>
+<span class="tag-badge"># Causal Inference</span>
+<span class="tag-badge"># Machine Learning & Economics</span>
+<span class="tag-badge"># Public Policy</span>
 :::
 
-[노트 목록 보기 →](notes.qmd){.text-link}
-::::
+::: {.profile-links}
+[CV (이력서)](cv.qmd){.btn-primary-link}
+[Research](research.qmd){.btn-secondary-link}
+[Study Notes](notes.qmd){.btn-secondary-link}
+[GitHub](https://github.com/Hyeongjin3544){.btn-secondary-link target="_blank"}
+[Email](mailto:your-email@example.com){.btn-secondary-link}
+:::
+:::
+:::
+:::
+
+## 🔬 Featured Research
+
+::: {.academic-card}
+::: {.card-header-flex}
+<h3 class="paper-title">Evaluating Policy Interventions under Staggered Adoption: A Modern Difference-in-Differences Approach</h3>
+<span class="status-badge status-wp">Working Paper</span>
+:::
+::: {.paper-authors}
+**Hyeongjin Kim**, Co-author Name (2026)
+:::
+::: {.paper-abstract}
+**Abstract:** 본 연구는 정책이 시차를 두고 단계적으로 도입될 때(staggered timing) 발생하는 이질적 처치효과(heterogeneous treatment effects)의 편의를 다룹니다. Callaway & Sant'Anna (2021) 및 Sun & Abraham (2021) 방법론을 한국의 청년 고용 보조금 패널 데이터에 적용하여 실증적 효과성을 재평가합니다.
+:::
+::: {.paper-actions}
+[Working Paper (PDF)](#){.btn-action}
+[Replication Code (GitHub)](#){.btn-action}
+[Presentation Slides](#){.btn-action}
+:::
+:::
+
+[모든 연구 및 Working Paper 보러가기 →](research.qmd){style="font-weight: 500; font-size: 0.95rem;"}
+
+---
+
+## 📝 Recent Notes & Reviews
+
+::: {.project-grid}
+
+::: {.project-card}
+<div>
+<div class="project-title">[인과추론] 현대적 이중차분법(DiD)의 진화와 편의 교정</div>
+<div class="project-desc">Two-Way Fixed Effects(TWFE) 회귀분석의 가중치 음수 문제와 최근 제안된 대안 추정량들을 비교 정리합니다.</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>#Econometrics</span>
+<span>#CausalInference</span>
+<span>#R</span>
+</div>
+<div class="project-links">
+[노트 읽기 →](notes/causal-inference-did.qmd)
+</div>
+</div>
+:::
+
+::: {.project-card}
+<div>
+<div class="project-title">[미시경제학] 선형 수요·공급 모형과 시장 균형</div>
+<div class="project-desc">가장 기초적인 시장 균형식의 수학적 유도 과정과 비교정학(Comparative Statics) 분석 노트를 정리합니다.</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>#Microeconomics</span>
+<span>#MathEcon</span>
+</div>
+<div class="project-links">
+[노트 읽기 →](notes/linear-market.qmd)
+</div>
+</div>
+:::
+
+::: {.project-card}
+<div>
+<div class="project-title">[계량경제학] 도구변수(IV) 추정과 약한 도구 문제 (Weak Instruments)</div>
+<div class="project-desc">내생성 해결을 위한 2SLS 기법과 제1단계 F-통계량의 의미, Stock-Yogo 임계값 기준을 살펴봅니다.</div>
+</div>
+<div>
+<div class="tech-stack">
+<span>#Econometrics</span>
+<span>#InstrumentalVariables</span>
+</div>
+<div class="project-links">
+[노트 읽기 →](notes.qmd)
+</div>
+</div>
+:::
+
+:::
+
+[더 많은 공부 노트와 페이퍼 리뷰 보기 →](notes.qmd){style="font-weight: 500; font-size: 0.95rem;"}
+
+---
+
+## 📢 Recent News & Updates
+
+<ul class="news-timeline">
+  <li>
+    <div class="news-date">2026. 10</div>
+    <div class="news-text">한국경제학회 추계학술대회에서 패널 인과추론 관련 연구 포스터를 발표했습니다.</div>
+  </li>
+  <li>
+    <div class="news-date">2026. 09</div>
+    <div class="news-text">2026학년도 2학기 계량경제학(Econometrics I) 대학원 조교(Teaching Assistant)를 맡게 되었습니다.</div>
+  </li>
+  <li>
+    <div class="news-date">2026. 06</div>
+    <div class="news-text">새로운 개인 연구 및 스터디 노트를 기록하는 Quarto 학술 홈페이지를 개설했습니다.</div>
+  </li>
+</ul>

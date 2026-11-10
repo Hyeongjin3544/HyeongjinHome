@@ -1,14 +1,48 @@
 ---
-title: 노트 제목
-description: 목록에 표시할 한 문장
-date: YYYY-MM-DD
-categories: [미시경제학]
+title: "노트 제목을 입력하세요"
+description: "이 글의 핵심 아이디어와 결론을 요약한 한두 문장"
+author: "Hyeongjin Kim"
+date: "YYYY-MM-DD"
+categories: [계량경제학, 미시경제학] # 카테고리 태그
+format:
+  html:
+    toc: true
+    number-sections: true
+    code-fold: show
 ---
 
-다루는 질문을 한두 문장으로 적습니다.
+## 1. 연구 질문 및 배경 (Motivation)
 
-## 가정과 표기
+다루고자 하는 경제학적 질문 또는 실증 분석 문제의 배경을 설명합니다.
 
-## 유도와 해석
+## 2. 모형 설정 및 표기법 (Setup & Notation)
 
-## 참고 자료
+- $Y$: 결과 변수 (Outcome)
+- $D \in \{0, 1\}$: 처치 여부 (Treatment status)
+- $X$: 통제 변수 벡터 (Covariates)
+
+$$
+Y_i = \alpha + \beta D_i + X_i'\gamma + \varepsilon_i
+$$
+
+## 3. 주요 유도 과정 및 수식 (Derivations)
+
+핵심 조건과 가정을 명시하고 수식을 전개합니다.
+
+## 4. 실증 분석 / 시뮬레이션 코드 (Code Implementation)
+
+```r
+# 필요한 패키지 로드
+library(tidyverse)
+
+# 데이터 시뮬레이션 또는 회귀분석
+```
+
+## 5. 결론 및 남은 질문 (Takeaways & Open Questions)
+
+- 결론 1
+- 추가로 고민해볼 점
+
+## 6. 참고 문헌 (References)
+
+- Author, A. (Year). "Title of the Paper," *Journal Name*, Vol(Issue), pp-pp.
