@@ -29,10 +29,10 @@
     }
   </script>
 
-  <!-- Google Fonts: Newsreader for sophisticated academic serif, Inter for clean sans -->
+  <!-- Google Fonts: Newsreader for academic serif, Inter for clean sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -40,10 +40,16 @@
   <style>
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-      letter-spacing: -0.011em;
+      letter-spacing: -0.012em;
     }
     .academic-serif {
       font-family: 'Newsreader', Georgia, serif;
+    }
+    .subtle-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .subtle-card:hover {
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -51,19 +57,23 @@
 <body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
 
   <!-- ==================== HEADER & TOP NAV ==================== -->
-  <header class="border-b border-stone-200/70 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
-    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
       
-      <a href="#hero" class="text-base font-semibold tracking-tight text-stone-900 dark:text-white flex items-center gap-2 hover:opacity-80 transition-opacity">
-        <span class="academic-serif text-lg">Hyeongjin Oh</span>
-        <span class="text-xs text-stone-400 dark:text-stone-500 font-normal">/</span>
-        <span class="text-xs font-normal text-stone-500 dark:text-stone-400">Economics · UOS</span>
+      <a href="#hero" class="group flex items-center gap-2">
+        <span class="academic-serif text-lg font-medium tracking-tight text-stone-900 dark:text-white group-hover:text-stone-600 dark:group-hover:text-stone-300 transition-colors">
+          Hyeongjin Oh
+        </span>
+        <span class="text-xs px-2 py-0.5 rounded-full font-mono font-medium bg-stone-200/70 text-stone-700 dark:bg-stone-800 dark:text-stone-300">
+          UOS Econ
+        </span>
       </a>
 
       <nav class="flex items-center gap-6 text-sm text-stone-600 dark:text-stone-400">
         <a href="#about" class="hover:text-stone-900 dark:hover:text-white transition-colors">About</a>
         <a href="#education" class="hover:text-stone-900 dark:hover:text-white transition-colors">Education</a>
         <a href="#teaching" class="hover:text-stone-900 dark:hover:text-white transition-colors">Teaching</a>
+        <a href="#interests" class="hover:text-stone-900 dark:hover:text-white transition-colors">Interests</a>
         <a href="#contact" class="hover:text-stone-900 dark:hover:text-white transition-colors">Contact</a>
 
         <div class="w-px h-3.5 bg-stone-300 dark:bg-stone-700"></div>
@@ -80,28 +90,38 @@
 
 
   <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
-  <main class="max-w-3xl mx-auto px-6 py-14 sm:py-20 flex-1 space-y-16">
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-16">
     
-    <!-- HERO PROFILE SECTION -->
-    <section id="hero" class="space-y-6">
+    <!-- ==================== HERO SECTION (감각적인 프로필 카드) ==================== -->
+    <section id="hero" class="bg-white dark:bg-stone-900/60 rounded-2xl p-6 sm:p-8 border border-stone-200/80 dark:border-stone-800 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] space-y-6">
       
-      <div class="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-6 pb-2">
-        <div>
-          <h1 class="academic-serif text-3xl sm:text-4xl font-normal text-stone-900 dark:text-white tracking-tight">
-            오 형 진 <span class="text-2xl sm:text-3xl text-stone-500 dark:text-stone-400 font-sans font-light">(Hyeongjin Oh)</span>
+      <div class="flex flex-col-reverse sm:flex-row sm:items-start justify-between gap-6">
+        
+        <div class="space-y-2">
+          
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-stone-700/60">
+            <span class="w-1.5 h-1.5 rounded-full bg-stone-500"></span>
+            M.A. Student in Economics · University of Seoul
+          </div>
+
+          <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+            오 형 진 <span class="text-2xl sm:text-3xl text-stone-400 dark:text-stone-500 font-sans font-light">(Hyeongjin Oh)</span>
           </h1>
-          <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-1.5">
-            M.A. Student in Economics, University of Seoul (서울시립대학교)
+
+          <p class="text-stone-500 dark:text-stone-400 text-sm font-medium">
+            서울시립대학교 일반대학원 경제학과 석사과정
           </p>
+
         </div>
 
-        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 flex-shrink-0">
+        <div class="relative w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-white dark:border-stone-800 shadow-md ring-1 ring-stone-200/80 dark:ring-stone-700 flex-shrink-0">
           <img src="assets/avatar.svg" alt="Hyeongjin Oh" class="w-full h-full object-cover">
         </div>
+
       </div>
 
-      <!-- COMPACT BIO (컴팩트하고 정갈한 소개) -->
-      <div class="text-[15px] sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed space-y-3 font-normal border-l-2 border-stone-300 dark:border-stone-700 pl-4">
+      <!-- COMPACT BIO (컴팩트하면서도 품격 있는 인용 스타일) -->
+      <div class="p-4 rounded-xl bg-stone-50/80 dark:bg-stone-850/60 border border-stone-200/60 dark:border-stone-800 text-[15px] sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed space-y-2">
         <p>
           서울시립대학교 경제학과 석사과정에서 <strong>계량경제학(Econometrics)</strong>과 <strong>머신러닝(Machine Learning)</strong>을 공부하고 있습니다.
         </p>
@@ -110,176 +130,240 @@
         </p>
       </div>
 
-      <!-- QUICK CONTACT & TOOLS (과하지 않은 텍스트 링크 & 도구 태그) -->
-      <div class="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-stone-500 dark:text-stone-400">
-        <a href="mailto:ohj4017@uos.ac.kr" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
-          <i class="far fa-envelope"></i> ohj4017@uos.ac.kr
-        </a>
-        <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
-          <i class="fab fa-github"></i> GitHub
-        </a>
-        <span class="inline-flex items-center gap-1.5 text-stone-500">
-          <i class="fas fa-map-marker-alt text-xs"></i> 미래관 10F 경제학과 대학원 연구실
-        </span>
-      </div>
+      <!-- MICRO CONTACT & TOOL CHIPS -->
+      <div class="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-stone-100 dark:border-stone-800/80 text-xs sm:text-sm">
+        
+        <!-- Quick Links -->
+        <div class="flex flex-wrap items-center gap-4 text-stone-600 dark:text-stone-400 font-medium">
+          <a href="mailto:ohj4017@uos.ac.kr" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
+            <i class="far fa-envelope text-stone-400"></i> ohj4017@uos.ac.kr
+          </a>
+          <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
+            <i class="fab fa-github text-stone-400"></i> GitHub
+          </a>
+          <span class="inline-flex items-center gap-1.5 text-stone-500">
+            <i class="fas fa-map-marker-alt text-stone-400 text-xs"></i> 미래관 10F 대학원 연구실
+          </span>
+        </div>
 
-      <div class="pt-1 flex flex-wrap gap-1.5 text-xs font-mono text-stone-500 dark:text-stone-400">
-        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">MATLAB</span>
-        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">R</span>
-        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">Julia</span>
-        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">LaTeX</span>
+        <!-- Tool Badges -->
+        <div class="flex items-center gap-1.5 font-mono text-xs text-stone-600 dark:text-stone-400">
+          <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">MATLAB</span>
+          <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">R</span>
+          <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Julia</span>
+          <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">LaTeX</span>
+        </div>
+
       </div>
 
     </section>
 
-    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
-
-    <!-- ==================== EDUCATION SECTION ==================== -->
-    <section id="education" class="space-y-6">
+    <!-- ==================== TEACHING SECTION (세련된 마이크로 카드 그리드) ==================== -->
+    <section id="teaching" class="space-y-5">
       
-      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+      <div class="flex items-center justify-between">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+          <span>Teaching Experience</span>
+          <span class="text-xs font-sans text-stone-400 font-normal">/ 조교 활동</span>
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        
+        <!-- 2026-2 Semester -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between text-xs font-semibold text-stone-500 uppercase tracking-wider px-1">
+            <span>2026학년도 2학기 (26-2)</span>
+            <span class="text-xs font-normal text-stone-500 font-mono">● 현재 담당 중</span>
+          </div>
+
+          <!-- 3-Column Micro Cards -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            
+            <!-- 미시경제학1 -->
+            <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-4 border border-stone-200/80 dark:border-stone-800 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.02)]">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700">
+                  전공필수
+                </span>
+                <span class="text-xs font-mono text-stone-400">TA</span>
+              </div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-base">미시경제학1</h3>
+              <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Microeconomics I</p>
+            </div>
+
+            <!-- 계량경제학1 -->
+            <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-4 border border-stone-200/80 dark:border-stone-800 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.02)]">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700">
+                  전공필수
+                </span>
+                <span class="text-xs font-mono text-stone-400">TA</span>
+              </div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-base">계량경제학1</h3>
+              <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Econometrics I</p>
+            </div>
+
+            <!-- 재정학 -->
+            <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-4 border border-stone-200/80 dark:border-stone-800 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.02)]">
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700">
+                  전공선택
+                </span>
+                <span class="text-xs font-mono text-stone-400">TA</span>
+              </div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-base">재정학</h3>
+              <p class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Public Finance</p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 2026-1 Semester -->
+        <div class="space-y-2.5 pt-1">
+          <div class="text-xs font-semibold text-stone-500 uppercase tracking-wider px-1">
+            <span>2026학년도 1학기 (26-1)</span>
+          </div>
+
+          <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-4 border border-stone-200/80 dark:border-stone-800 flex items-center justify-between max-w-sm">
+            <div>
+              <div class="flex items-center gap-2 mb-1">
+                <span class="text-[11px] font-medium px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700">
+                  교양
+                </span>
+                <span class="text-xs font-mono text-stone-400">TA</span>
+              </div>
+              <h3 class="font-bold text-stone-900 dark:text-white text-sm">경제학의 이해</h3>
+              <p class="text-xs text-stone-500 dark:text-stone-400">Understanding Economics</p>
+            </div>
+            <span class="text-xs font-mono text-stone-400">완료</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==================== EDUCATION SECTION (정돈된 학력 패널) ==================== -->
+    <section id="education" class="space-y-5">
+      
+      <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
         <span>Education</span>
         <span class="text-xs font-sans text-stone-400 font-normal">/ 학력</span>
       </h2>
 
-      <div class="space-y-6 text-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
-        <!-- Graduate -->
-        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 pb-4 border-b border-stone-100 dark:border-stone-850">
-          <div>
-            <div class="font-medium text-stone-900 dark:text-white text-base">서울시립대학교 일반대학원 경제학과</div>
-            <div class="text-stone-600 dark:text-stone-400 text-sm mt-0.5">석사과정 (M.A. Student in Economics)</div>
-            <div class="text-stone-500 text-xs mt-1">관심 분야: 계량경제학(Econometrics), 머신러닝(Machine Learning)</div>
+        <!-- 석사 과정 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>석사과정</span>
+            <span>2026.03 – Present</span>
           </div>
-          <div class="text-xs font-mono text-stone-500 whitespace-nowrap">2026.03 – Present</div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">서울시립대학교 일반대학원</h3>
+          <p class="text-sm font-medium text-stone-700 dark:text-stone-300">경제학과 석사과정</p>
+          <p class="text-xs text-stone-500 dark:text-stone-400 pt-1 border-t border-stone-100 dark:border-stone-800">
+            주요 관심분야: 계량경제학(Econometrics), 머신러닝(Machine Learning)
+          </p>
         </div>
 
-        <!-- Undergraduate -->
-        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
-          <div>
-            <div class="font-medium text-stone-900 dark:text-white text-base">서울시립대학교 (University of Seoul)</div>
-            <div class="text-stone-700 dark:text-stone-300 text-sm mt-0.5">
-              경제학 학사 <span class="text-xs text-stone-500">(본전공)</span> · 수학 학사 <span class="text-xs text-stone-500">(복수전공)</span>
-            </div>
-            <div class="text-stone-500 text-xs mt-1">해석학, 선형대수학, 수리통계학 등 수학 전공을 이수하여 수리적 기반 함양</div>
+        <!-- 학사 과정 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>학사 졸업</span>
+            <span>2020.03 – 2026.02</span>
           </div>
-          <div class="text-xs font-mono text-stone-500 whitespace-nowrap">2020.03 – 2026.02 (졸업)</div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">서울시립대학교 (UOS)</h3>
+          <p class="text-sm font-medium text-stone-700 dark:text-stone-300">
+            경제학 학사 <span class="text-xs text-stone-400">(본전공)</span> · 수학 학사 <span class="text-xs text-stone-400">(복수전공)</span>
+          </p>
+          <p class="text-xs text-stone-500 dark:text-stone-400 pt-1 border-t border-stone-100 dark:border-stone-800">
+            해석학, 선형대수학, 수리통계학 등 엄밀한 수학적 기반 이수
+          </p>
         </div>
 
       </div>
 
     </section>
 
-    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
-
-    <!-- ==================== TEACHING SECTION ==================== -->
-    <section id="teaching" class="space-y-6">
+    <!-- ==================== RESEARCH INTERESTS & FOCUS ==================== -->
+    <section id="interests" class="space-y-5">
       
-      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
-        <span>Teaching Experience</span>
-        <span class="text-xs font-sans text-stone-400 font-normal">/ 조교 활동</span>
+      <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Research Interests</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 관심 연구 분야</span>
       </h2>
 
-      <div class="space-y-6 text-sm">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
-        <!-- 2026-2 -->
-        <div class="space-y-2.5">
-          <div class="flex items-center justify-between text-xs font-semibold text-stone-500 uppercase tracking-wider">
-            <span>2026학년도 2학기 (Current)</span>
-            <span class="text-[11px] font-normal text-emerald-600 dark:text-emerald-400 font-mono">● Active</span>
+        <!-- Pillar 1 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-700 dark:text-stone-300 text-sm mb-1">
+            <i class="fas fa-chart-line"></i>
           </div>
-
-          <div class="divide-y divide-stone-100 dark:divide-stone-850 bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 px-4">
-            
-            <div class="py-3 flex items-center justify-between">
-              <div>
-                <span class="font-medium text-stone-900 dark:text-white">미시경제학1</span>
-                <span class="text-xs text-stone-500 ml-2">Microeconomics I</span>
-              </div>
-              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공필수</span>
-            </div>
-
-            <div class="py-3 flex items-center justify-between">
-              <div>
-                <span class="font-medium text-stone-900 dark:text-white">계량경제학1</span>
-                <span class="text-xs text-stone-500 ml-2">Econometrics I</span>
-              </div>
-              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공필수</span>
-            </div>
-
-            <div class="py-3 flex items-center justify-between">
-              <div>
-                <span class="font-medium text-stone-900 dark:text-white">재정학</span>
-                <span class="text-xs text-stone-500 ml-2">Public Finance</span>
-              </div>
-              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공선택</span>
-            </div>
-
-          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">계량경제학 & 인과추론</h3>
+          <p class="text-xs font-mono text-stone-400">Econometrics & Causal Inference</p>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed pt-1">
+            미시 실증 분석 및 정책 평가에서 발생하는 내생성 문제를 해결하기 위한 이론적 계량 모형과 인과추론 방법론을 탐구합니다.
+          </p>
         </div>
 
-        <!-- 2026-1 -->
-        <div class="space-y-2.5 pt-2">
-          <div class="text-xs font-semibold text-stone-500 uppercase tracking-wider">
-            2026학년도 1학기
+        <!-- Pillar 2 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2">
+          <div class="w-8 h-8 rounded-lg bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-stone-700 dark:text-stone-300 text-sm mb-1">
+            <i class="fas fa-brain"></i>
           </div>
-
-          <div class="bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 px-4 py-3 flex items-center justify-between">
-            <div>
-              <span class="font-medium text-stone-900 dark:text-white">경제학의 이해</span>
-              <span class="text-xs text-stone-500 ml-2">Understanding Economics</span>
-            </div>
-            <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">교양</span>
-          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base">경제학 머신러닝 & 알고리즘</h3>
+          <p class="text-xs font-mono text-stone-400">Machine Learning in Economics</p>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed pt-1">
+            고차원 데이터 환경에서 유연한 예측력을 제공하는 기계학습 알고리즘을 계량 모형과 결합하여 이질적 처치 효과를 분석합니다.
+          </p>
         </div>
 
       </div>
 
-    </section>
-
-    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
-
-
-    <!-- ==================== RESEARCH & WRITING (SUBTLE STATUS) ==================== -->
-    <section id="research" class="space-y-4">
-      
-      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
-        <span>Research & Writings</span>
-        <span class="text-xs font-sans text-stone-400 font-normal">/ 연구 및 노트</span>
-      </h2>
-
-      <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
-        계량경제학 모형 및 머신러닝 인과추론 기법을 주제로 연구를 준비하고 있습니다. 완성된 작업 논문(Working Papers)과 스터디 노트는 추후 이곳에 공개될 예정입니다.
-      </p>
+      <div class="p-4 rounded-xl bg-stone-50/70 dark:bg-stone-850/50 border border-stone-200/60 dark:border-stone-800 text-xs text-stone-500 dark:text-stone-400 leading-relaxed text-center sm:text-left">
+        <i class="fas fa-info-circle mr-1 text-stone-400"></i>
+        연구 작업 논문(Working Papers)과 스터디 노트는 향후 정리가 완료되는 대로 본 사이트에 업데이트될 예정입니다.
+      </div>
 
     </section>
-
-    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
 
     <!-- ==================== CONTACT SECTION ==================== -->
-    <section id="contact" class="space-y-6">
+    <section id="contact" class="space-y-5">
       
-      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+      <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
         <span>Contact</span>
-        <span class="text-xs font-sans text-stone-400 font-normal">/ 연락처</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 연락처 및 연구실</span>
       </h2>
 
-      <div class="space-y-2 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-        <div>
-          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">Email</span>
-          <a href="mailto:ohj4017@uos.ac.kr" class="text-stone-900 dark:text-white font-mono hover:underline">ohj4017@uos.ac.kr</a>
+      <div class="bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 divide-y divide-stone-100 dark:divide-stone-800 text-sm">
+        
+        <div class="py-3 first:pt-0 flex flex-col sm:flex-row sm:items-center">
+          <span class="text-xs font-mono uppercase tracking-wider text-stone-400 w-28 mb-1 sm:mb-0">Email</span>
+          <a href="mailto:ohj4017@uos.ac.kr" class="text-stone-900 dark:text-white font-medium hover:underline">
+            ohj4017@uos.ac.kr
+          </a>
         </div>
-        <div>
-          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">Office</span>
-          <span>서울시 동대문구 서울시립대로 163, 서울시립대학교 미래관 10F 경제학과 대학원 연구실</span>
+
+        <div class="py-3 flex flex-col sm:flex-row sm:items-center">
+          <span class="text-xs font-mono uppercase tracking-wider text-stone-400 w-28 mb-1 sm:mb-0">Office</span>
+          <span class="text-stone-700 dark:text-stone-300">
+            서울시 동대문구 서울시립대로 163, 서울시립대학교 미래관 10F 경제학과 대학원 연구실
+          </span>
         </div>
-        <div>
-          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">GitHub</span>
-          <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="text-stone-900 dark:text-white font-mono hover:underline">github.com/Hyeongjin3544</a>
+
+        <div class="py-3 last:pb-0 flex flex-col sm:flex-row sm:items-center">
+          <span class="text-xs font-mono uppercase tracking-wider text-stone-400 w-28 mb-1 sm:mb-0">GitHub</span>
+          <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="text-stone-900 dark:text-white font-mono text-xs hover:underline">
+            github.com/Hyeongjin3544
+          </a>
         </div>
+
       </div>
 
     </section>
@@ -288,15 +372,15 @@
 
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="border-t border-stone-200/70 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
-    <div class="max-w-3xl mx-auto px-6 space-y-1">
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-4xl mx-auto px-6 space-y-1">
       <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
       <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
     </div>
   </footer>
 
 
-  <!-- ==================== JAVASCRIPT (THEME ONLY) ==================== -->
+  <!-- ==================== JAVASCRIPT ==================== -->
   <script>
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
