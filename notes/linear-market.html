@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>선형 수요·공급 모형과 시장 균형 | Hyeongjin Kim</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 antialiased">
+
+  <header class="border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur sticky top-0 z-10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="../index.html" class="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-300 hover:text-blue-600 transition-colors">
+        <i class="fas fa-arrow-left"></i> Home으로 돌아가기
+      </a>
+      <span class="text-xs font-mono text-slate-500">Study Notes · Economics</span>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    
+    <div class="mb-8">
+      <div class="flex items-center gap-2 text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
+        <span>2026. 11. 01</span>
+        <span>·</span>
+        <span>미시경제학 / 시장균형</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-bold font-serif text-slate-900 dark:text-white leading-tight mb-4">
+        선형 수요·공급 모형과 시장 균형: 비교정학과 조세 귀착의 유도
+      </h1>
+      <p class="text-base text-slate-600 dark:text-slate-400 border-l-4 border-blue-600 pl-4 py-1 italic bg-blue-50/50 dark:bg-blue-950/30 rounded-r">
+        시장청산 조건(Market Clearing)에서 균형 가격과 거래량을 대수적으로 도출하고, 단위당 종량세 부과 시 상대적 탄력성에 따른 조세 귀착 비율을 증명합니다.
+      </p>
+    </div>
+
+    <article class="prose dark:prose-invert max-w-none space-y-6 text-slate-700 dark:text-slate-300 leading-relaxed text-base">
+      
+      <h2 class="text-2xl font-bold font-serif text-slate-900 dark:text-white mt-8 mb-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        1. 모형의 기본 설정과 시장 청산
+      </h2>
+      <p>
+        가격을 $P$, 시장의 수요량과 공급량을 각각 $Q_d$, $Q_s$라고 정의합니다. 파라미터 $a, c > 0$ 및 $b, d > 0$을 갖는 선형 구조를 가정합니다:
+      </p>
+      
+      <div class="my-4 p-4 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 font-mono text-center overflow-x-auto">
+        $$ Q_d = a - bP, \qquad Q_s = c + dP $$
+      </div>
+
+      <p>
+        시장 청산 조건 $Q_d = Q_s$로부터 균형 가격 $P^*$와 균형 수량 $Q^*$를 명시적으로 계산할 수 있습니다:
+      </p>
+
+      <div class="my-4 p-4 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 font-mono text-center overflow-x-auto">
+        $$ P^* = \frac{a - c}{b + d}, \qquad Q^* = \frac{ad + bc}{b + d} $$
+      </div>
+
+      <div class="my-6 text-center">
+        <img src="../assets/market-equilibrium.svg" alt="Market Equilibrium Diagram" class="max-w-md mx-auto rounded-lg shadow-sm">
+      </div>
+
+      <h2 class="text-2xl font-bold font-serif text-slate-900 dark:text-white mt-8 mb-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        2. 단위당 종량세($\tau$)의 도입과 조세 귀착
+      </h2>
+      <p>
+        생산자에게 단위당 $\tau$의 종량세가 부과된다고 하면 공급곡선은 $Q_s = c + d(P - \tau)$로 상향 이동합니다. 새로운 소비자가격 $P_b$와 생산자 수취가격 $P_s = P_b - \tau$는:
+      </p>
+
+      <div class="my-4 p-4 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 font-mono text-center overflow-x-auto">
+        $$ P_b^* = P^* + \left(\frac{d}{b + d}\right)\tau, \qquad P_s^* = P^* - \left(\frac{b}{b + d}\right)\tau $$
+      </div>
+
+      <p>
+        소비자와 생산자가 부담하는 조세의 상대적 귀착 비율은 다음과 같이 직관적으로 도출됩니다:
+      </p>
+
+      <div class="my-4 p-4 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 font-mono text-center overflow-x-auto">
+        $$ \frac{\text{소비자 부담분}}{\text{생산자 부담분}} = \frac{P_b^* - P^*}{P^* - P_s^*} = \frac{d}{b} $$
+      </div>
+
+      <p>
+        이 결과는 상대적으로 더 비탄력적인(기울기가 가파르거나 대안이 적은) 경제 주체가 조세 부담의 대부분을 지게 됨을 대수적으로 보여줍니다.
+      </p>
+
+    </article>
+
+    <div class="mt-12 pt-6 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-sm">
+      <a href="../index.html#notes" class="text-blue-600 dark:text-blue-400 font-semibold hover:underline">
+        <i class="fas fa-arrow-left"></i> 목록으로 돌아가기
+      </a>
+      <span class="text-slate-500">© 2026 Hyeongjin Kim</span>
+    </div>
+
+  </main>
+
+</body>
+</html>
