@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hyeongjin Kim | Economics Graduate Student</title>
-  <meta name="description" content="경제학 대학원생 김형진(Hyeongjin Kim)의 연구, 강의, 프로젝트 및 스터디 노트를 담은 개인 학술 프로필 웹사이트입니다.">
+  <title>Hyeongjin Oh (오형진) | University of Seoul Economics</title>
+  <meta name="description" content="서울시립대학교 경제학과 석사과정 오형진(Hyeongjin Oh)의 계량경제학 및 머신러닝 연구, 프로젝트, 공부 노트를 담은 개인 학술 프로필 웹사이트입니다.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
@@ -17,12 +17,12 @@
       theme: {
         extend: {
           colors: {
-            academic: {
-              50: '#f0f4fd',
-              100: '#e0ebfb',
-              500: '#2563eb',
-              800: '#1e3a8a',
-              900: '#0f172a',
+            uos: {
+              50: '#f0f5fc',
+              100: '#e1ecf8',
+              500: '#004b87', // University of Seoul Navy
+              600: '#003a6b',
+              800: '#002547',
             }
           },
           fontFamily: {
@@ -56,12 +56,12 @@
       font-family: 'Playfair Display', Georgia, serif;
     }
     .glass-nav {
-      background: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.88);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
     }
     .dark .glass-nav {
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.88);
     }
   </style>
 </head>
@@ -76,10 +76,10 @@
         <!-- Logo / Name -->
         <a href="#hero" class="flex items-center gap-2 group">
           <span class="serif-title text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            Hyeongjin Kim
+            Hyeongjin Oh
           </span>
           <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50">
-            Economics
+            UOS Economics
           </span>
         </a>
 
@@ -137,7 +137,7 @@
         <!-- Profile Avatar -->
         <div class="relative group">
           <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl shadow-blue-900/10 dark:shadow-none ring-1 ring-slate-200 dark:ring-slate-700">
-            <img src="assets/avatar.svg" alt="Hyeongjin Kim Profile" class="w-full h-full object-cover">
+            <img src="assets/avatar.svg" alt="Hyeongjin Oh Profile" class="w-full h-full object-cover">
           </div>
           <div class="absolute bottom-2 right-2 bg-emerald-500 w-5 h-5 rounded-full border-2 border-white dark:border-slate-900 shadow" title="Actively Researching"></div>
         </div>
@@ -147,24 +147,28 @@
           
           <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100/70 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800 mb-3">
             <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
-            Economics Graduate Student · Researcher
+            M.A. Student in Economics · University of Seoul
           </div>
 
           <h1 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">
-            김 형 진 <span class="text-2xl sm:text-3xl font-medium text-slate-500 dark:text-slate-400 font-sans">(Hyeongjin Kim)</span>
+            오 형 진 <span class="text-2xl sm:text-3xl font-medium text-slate-500 dark:text-slate-400 font-sans">(Hyeongjin Oh)</span>
           </h1>
 
+          <div class="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-4">
+            서울시립대학교 일반대학원 경제학과 석사과정
+          </div>
+
           <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mb-5">
-            데이터와 엄밀한 계량경제학(Econometrics) 방법론을 통해 실증적 인과관계를 밝히는 연구를 하고 있습니다. 특히 정책 평가, 이질적 처치효과(Causal Inference), 노동시장 분석에 깊은 관심을 두고 있습니다.
+            <strong>계량경제학(Econometrics)</strong>과 <strong>머신러닝(Machine Learning)</strong>을 공부하고 있습니다. 이론적 계량 모형과 데이터 기반 기계학습 알고리즘을 융합하여 인과추론(Causal Inference)과 정책 평가 문제를 연구하는 데 깊은 관심을 두고 있습니다.
           </p>
 
           <!-- Research Interests Tag Chips -->
           <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Applied Microeconomics</span>
             <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Econometrics</span>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Machine Learning</span>
             <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Causal Inference</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Machine Learning & Econ</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Labor Economics</span>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># Causal ML & Double ML</span>
+            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300 hover:bg-blue-100 hover:text-blue-800 dark:hover:bg-blue-950 dark:hover:text-blue-300 transition-colors"># University of Seoul</span>
           </div>
 
           <!-- Action Buttons -->
@@ -173,12 +177,12 @@
               <i class="fas fa-file-alt text-xs"></i> View CV
             </a>
             <a href="#research" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 text-slate-800 dark:text-slate-200 font-medium text-sm transition-all hover:-translate-y-0.5">
-              <i class="fas fa-microscope text-xs text-blue-600 dark:text-blue-400"></i> Research
+              <i class="fas fa-microscope text-xs text-blue-600 dark:text-blue-400"></i> Research & Notes
             </a>
             <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-colors" title="GitHub">
               <i class="fab fa-github text-base"></i>
             </a>
-            <a href="mailto:your-email@example.com" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-colors" title="Email">
+            <a href="mailto:your-email@uos.ac.kr" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-colors" title="Email">
               <i class="fas fa-envelope text-base"></i>
             </a>
           </div>
@@ -204,13 +208,13 @@
         
         <div class="md:col-span-2 space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed text-base">
           <p>
-            경제학 대학원생으로서, 정책과 제도가 개인과 시장에 미치는 영향을 데이터로 입증하고 해석하는 계량적 연구에 매진하고 있습니다.
+            안녕하세요, <strong>서울시립대학교(University of Seoul) 경제학과 석사과정 오형진(Hyeongjin Oh)</strong>입니다.
           </p>
           <p>
-            특히 관측 데이터(Observational Data)에서 발생하는 내생성(Endogeneity) 문제와 선택 편의(Selection Bias)를 극복하기 위해, 최근 급격히 발전하고 있는 **현대적 이중차분법(Staggered DiD)** 및 **합성대조군(Synthetic Control Method)**, 그리고 **인과추론 기계학습(Causal Machine Learning)** 기법을 적극적으로 탐구하고 연구에 적용하고 있습니다.
+            현대의 복잡하고 방대한 고차원 데이터 속에서, 전통적인 선형 계량 모형의 한계를 보완하고 데이터 중심의 패턴 인식을 인과적 질문과 결합하는 **인과 머신러닝(Causal Machine Learning)**에 매료되어 공부를 이어오고 있습니다.
           </p>
           <p>
-            학문적 연구 외에도 복잡한 이론 모형을 스스로 풀이하고 직관적인 설명과 시뮬레이션 코드로 기록하는 습관을 지니고 있으며, 배운 지식을 동료들과 나누는 것을 큰 즐거움으로 여깁니다.
+            특히 **Double/Debiased Machine Learning (Chernozhukov et al.)**, **Causal Forests**, 그리고 **패널 이중차분법(DiD)**과 같은 최신 실증 기법들의 수리적 유도와 프로그래밍(Python / R) 구현을 즐겨 탐구합니다. 이론적 엄밀함과 실용적인 데이터 분석 역량을 두루 갖춘 경제학 연구자로 성장하는 것이 목표입니다.
           </p>
         </div>
 
@@ -221,11 +225,16 @@
           <div class="space-y-3 text-sm">
             <div>
               <div class="text-xs text-slate-500 dark:text-slate-400">Affiliation</div>
-              <div class="font-semibold text-slate-800 dark:text-slate-100">Graduate School of Economics</div>
+              <div class="font-semibold text-slate-800 dark:text-slate-100">서울시립대학교 경제학과 석사과정</div>
+              <div class="text-xs text-slate-500">University of Seoul, Department of Economics</div>
             </div>
             <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">Core Toolkit</div>
-              <div class="font-mono text-xs text-blue-700 dark:text-blue-300 mt-0.5">R, Python, Stata, Quarto, LaTeX</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">Research Focus</div>
+              <div class="text-blue-700 dark:text-blue-300 font-medium">Econometrics & Machine Learning</div>
+            </div>
+            <div>
+              <div class="text-xs text-slate-500 dark:text-slate-400">Toolkit</div>
+              <div class="font-mono text-xs text-slate-700 dark:text-slate-300 mt-0.5">Python, R, PyTorch, Stata, LaTeX</div>
             </div>
             <div>
               <div class="text-xs text-slate-500 dark:text-slate-400">Location</div>
@@ -247,30 +256,25 @@
       <div class="flex items-center justify-between mb-8">
         <div class="flex items-center gap-3">
           <div class="w-8 h-1 bg-blue-600 rounded"></div>
-          <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Research</h2>
+          <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Research & Working Papers</h2>
         </div>
       </div>
 
-      <!-- Section: Working Papers -->
       <div class="space-y-6">
         
-        <h3 class="text-sm font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-2">
-          <i class="fas fa-file-invoice"></i> Working Papers
-        </h3>
-
         <!-- Paper Card 1 -->
         <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
           <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
             <h4 class="text-lg font-bold text-slate-900 dark:text-white leading-snug">
-              Evaluating Policy Interventions under Staggered Adoption: A Modern Difference-in-Differences Approach
+              Machine Learning for Causal Heterogeneity in Policy Evaluations: A Double Machine Learning Approach
             </h4>
-            <span class="inline-flex items-center self-start px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+            <span class="inline-flex items-center self-start px-2.5 py-0.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
               Working Paper
             </span>
           </div>
 
           <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
-            <span class="font-medium text-slate-800 dark:text-slate-200">Hyeongjin Kim</span>, Co-author (2026)
+            <span class="font-medium text-slate-800 dark:text-slate-200">Hyeongjin Oh (오형진)</span> (2026)
           </p>
 
           <!-- Abstract Collapsible -->
@@ -279,47 +283,8 @@
               <span>Abstract (초록 보기)</span>
               <i id="abstract-icon-1" class="fas fa-chevron-down text-[10px] transition-transform"></i>
             </button>
-            <div id="abstract-1" class="hidden mt-2 p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-sm text-slate-700 dark:text-slate-300 border-l-4 border-blue-600 leading-relaxed">
-              <strong>Abstract:</strong> 본 연구는 정책이 시간차를 두고 단계적으로 도입될 때(staggered adoption) 전통적인 양방향 고정효과(TWFE) 회귀분석이 초래하는 음수 가중치(negative weighting) 왜곡을 다룹니다. Callaway & Sant'Anna (2021) 및 Sun & Abraham (2021)의 이질적 처치효과 추정량을 한국의 청년 고용 지원금 패널 자료에 적용하여, 정책 도입 후 시점별 동태적 효과(dynamic event-study effect)를 엄밀히 재평가합니다.
-            </div>
-          </div>
-
-          <!-- Paper Action Buttons -->
-          <div class="flex flex-wrap gap-2 text-xs font-medium">
-            <a href="#" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors">
-              <i class="fas fa-file-pdf text-rose-500"></i> Paper (PDF)
-            </a>
-            <a href="https://github.com/Hyeongjin3544" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors">
-              <i class="fab fa-github text-slate-600 dark:text-slate-300"></i> Replication Code
-            </a>
-            <a href="#" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors">
-              <i class="fas fa-desktop text-blue-500"></i> Slides
-            </a>
-          </div>
-        </div>
-
-        <!-- Paper Card 2 -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
-          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-            <h4 class="text-lg font-bold text-slate-900 dark:text-white leading-snug">
-              Machine Learning for Causal Heterogeneity in Labor Market Programs
-            </h4>
-            <span class="inline-flex items-center self-start px-2.5 py-0.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700 dark:bg-indigo-950/60 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">
-              Under Review
-            </span>
-          </div>
-
-          <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
-            <span class="font-medium text-slate-800 dark:text-slate-200">Hyeongjin Kim</span> (2025)
-          </p>
-
-          <div class="mb-4">
-            <button onclick="toggleAbstract('abstract-2')" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 focus:outline-none">
-              <span>Abstract (초록 보기)</span>
-              <i id="abstract-icon-2" class="fas fa-chevron-down text-[10px] transition-transform"></i>
-            </button>
-            <div id="abstract-2" class="hidden mt-2 p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-sm text-slate-700 dark:text-slate-300 border-l-4 border-indigo-600 leading-relaxed">
-              <strong>Abstract:</strong> 직업훈련 보조금 수혜자별 이질적 처치 효과(CATE: Conditional Average Treatment Effect)를 Generalized Random Forests(GRF)와 Causal Forest를 활용하여 추정합니다. 데이터 기반의 최적 정책 배분 규칙(Optimal Policy Assignment)을 구축하여 재정 지출의 효율성을 제고하는 방안을 제시합니다.
+            <div id="abstract-1" class="hidden mt-2 p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-sm text-slate-700 dark:text-slate-300 border-l-4 border-indigo-600 leading-relaxed">
+              <strong>Abstract:</strong> 고차원 설명변수 환경에서 전통적인 회귀분석의 정규화 편의(regularization bias)를 극복하기 위해 Neyman 직교화(Orthogonality)와 교차 적합(Cross-fitting) 기반의 Double/Debiased Machine Learning (DML) 프레임워크를 실증 정책 데이터에 적용합니다. 머신러닝 예측 알고리즘(Random Forests, XGBoost)을 결합하여 이질적 처치 효과를 점근적으로 정규분포를 따르도록 추정합니다.
             </div>
           </div>
 
@@ -328,44 +293,41 @@
               <i class="fas fa-file-pdf text-rose-500"></i> Manuscript (PDF)
             </a>
             <a href="https://github.com/Hyeongjin3544" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors">
-              <i class="fab fa-github"></i> Code
+              <i class="fab fa-github text-slate-600 dark:text-slate-300"></i> Code (GitHub)
             </a>
           </div>
         </div>
 
-      </div>
+        <!-- Paper Card 2 -->
+        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+            <h4 class="text-lg font-bold text-slate-900 dark:text-white leading-snug">
+              Evaluating Policy Interventions under Staggered Adoption: Robust Inference in Panel Data
+            </h4>
+            <span class="inline-flex items-center self-start px-2.5 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+              Work in Progress
+            </span>
+          </div>
 
-      <!-- Section: Works in Progress & Publications -->
-      <div class="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <!-- Works in Progress -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 flex items-center gap-2 mb-4">
-            <i class="fas fa-spinner"></i> Works in Progress
-          </h3>
-          <h4 class="font-bold text-slate-900 dark:text-white mb-2 leading-snug">
-            Spatial Disparities and Local Housing Supply Elasticity
-          </h4>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">with Advisors</p>
-          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            GIS 지리공간 정보와 규제 데이터를 결합하여 수도권 및 지방 대도시의 주택 공급 탄력성을 미시 수준에서 실증 추정 중입니다.
+          <p class="text-sm text-slate-600 dark:text-slate-400 mb-3">
+            <span class="font-medium text-slate-800 dark:text-slate-200">Hyeongjin Oh</span> (University of Seoul)
           </p>
-        </div>
 
-        <!-- Publications -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800">
-          <h3 class="text-sm font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 flex items-center gap-2 mb-4">
-            <i class="fas fa-book"></i> Publications
-          </h3>
-          <h4 class="font-bold text-slate-900 dark:text-white mb-2 leading-snug">
-            A Note on Asymptotic Properties of Instrumental Variables Estimators
-          </h4>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mb-2">
-            <span class="font-semibold text-slate-700 dark:text-slate-300">Journal of Economic Studies</span>, 2024
-          </p>
-          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            약한 도구변수(Weak Instruments) 상황에서 2SLS와 GMM 추정량의 유한표본 편의(finite-sample bias)를 몬테카를로 시뮬레이션으로 규명했습니다.
-          </p>
+          <div class="mb-4">
+            <button onclick="toggleAbstract('abstract-2')" class="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 focus:outline-none">
+              <span>Abstract (초록 보기)</span>
+              <i id="abstract-icon-2" class="fas fa-chevron-down text-[10px] transition-transform"></i>
+            </button>
+            <div id="abstract-2" class="hidden mt-2 p-3.5 bg-slate-50 dark:bg-slate-800/60 rounded-lg text-sm text-slate-700 dark:text-slate-300 border-l-4 border-amber-600 leading-relaxed">
+              <strong>Abstract:</strong> 정책 도입 시점의 차이가 존재하는 패널 자료에서 양방향 고정효과(TWFE)의 가중치 왜곡 문제를 점검하고, Callaway & Sant'Anna 방법론을 국내 노동 및 공공 정책 실증 패널 자료에 적용하여 정책의 동태적 효과를 실증 추정합니다.
+            </div>
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-xs font-medium">
+            <a href="#" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 transition-colors">
+              <i class="fas fa-desktop text-blue-500"></i> Seminar Slides
+            </a>
+          </div>
         </div>
 
       </div>
@@ -380,45 +342,27 @@
       
       <div class="flex items-center gap-3 mb-8">
         <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Teaching & Advising</h2>
+        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Teaching & Academic Experience</h2>
       </div>
 
       <div class="space-y-6">
         
-        <!-- TA 1 -->
         <div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
             <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Econometrics I (계량경제학 1)</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Graduate Level · Fall 2026</p>
+              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Econometrics & Statistical Computing (계량경제학 실습)</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">서울시립대학교 경제학과 · 2025 – 2026</p>
             </div>
             <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 self-start">
-              Teaching Assistant
+              Teaching Assistant / Lab
             </span>
           </div>
           <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            석·박사과정 학생 대상 OLS 점근이론(Asymptotic Theory), 행렬 연산 및 R/Stata 실습 랩(Lab) 세션을 주간 단위로 진행하고 Problem Set 해설을 지도했습니다.
+            계량경제학 수강생들을 대상으로 R 및 Python을 활용한 OLS 회귀분석, 도구변수(IV) 2SLS 추정 실습 랩 세션 진행 및 과제 질의응답을 지도했습니다.
           </p>
           <div class="flex gap-3 text-xs font-medium">
-            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline"><i class="fas fa-file-alt"></i> Syllabus</a>
-            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline"><i class="fas fa-code"></i> R/Stata Lab Notes</a>
+            <a href="#" class="text-blue-600 dark:text-blue-400 hover:underline"><i class="fas fa-code"></i> Python/R Lab Code</a>
           </div>
-        </div>
-
-        <!-- TA 2 -->
-        <div class="p-6 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
-            <div>
-              <h3 class="text-lg font-bold text-slate-900 dark:text-white">Applied Microeconomics (응용미시경제학)</h3>
-              <p class="text-xs text-slate-500 dark:text-slate-400">Undergraduate Level · Spring 2026</p>
-            </div>
-            <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800 self-start">
-              Teaching Assistant
-            </span>
-          </div>
-          <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-            학부 고학년 대상 소비자/생산자 이론의 이중성(Duality)과 일반균형, 오피스 아워 질의응답 및 개별 학생 연구 주제 피드백을 지원했습니다.
-          </p>
         </div>
 
       </div>
@@ -433,7 +377,7 @@
       
       <div class="flex items-center gap-3 mb-8">
         <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Projects & Code</h2>
+        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Projects & Machine Learning Code</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -442,18 +386,18 @@
         <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xl">📊</span>
+              <span class="text-2xl">🤖</span>
               <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-lg">
                 <i class="fab fa-github"></i>
               </a>
             </div>
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Causal DiD Toolkit in R</h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Double Machine Learning (DML) in Python</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              Callaway & Sant'Anna, Sun & Abraham 등 최신 Staggered DiD 추정량들을 벤치마킹하고 이벤트 스터디 시각화를 자동화하는 R 분석 워크플로우입니다.
+              Scikit-learn과 LightGBM을 연동하여 고차원 통제변수가 존재하는 환경에서 부분 선형 모형(PLR) 및 상호작용 모형(IRM)의 인과 효과를 추정하는 Python 파이프라인입니다.
             </p>
           </div>
           <div class="flex flex-wrap gap-1.5 text-xs font-mono text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-            <span>#R</span> <span>#did</span> <span>#fixest</span> <span>#ggplot2</span>
+            <span>#Python</span> <span>#DoubleML</span> <span>#LightGBM</span> <span>#CausalInference</span>
           </div>
         </div>
 
@@ -461,18 +405,18 @@
         <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xl">🗂️</span>
+              <span class="text-2xl">📊</span>
               <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-lg">
                 <i class="fab fa-github"></i>
               </a>
             </div>
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Labor Panel Pipeline</h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Causal DiD Toolkit in R</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              한국노동패널(KLIPS) 원자료를 패널 고정효과 추정에 최적화된 형태로 자동 전처리 및 결합하는 고성능 Python/Pandas 파이프라인입니다.
+              최신 Staggered DiD 추정량(Callaway & Sant'Anna)과 이벤트 스터디 그래프 생성을 표준화하고 사전 평행추세선 가설을 자동 검정하는 R 워크플로우 템플릿입니다.
             </p>
           </div>
           <div class="flex flex-wrap gap-1.5 text-xs font-mono text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-            <span>#Python</span> <span>#Pandas</span> <span>#Polars</span>
+            <span>#R</span> <span>#did</span> <span>#fixest</span> <span>#ggplot2</span>
           </div>
         </div>
 
@@ -480,18 +424,18 @@
         <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xl">🧪</span>
+              <span class="text-2xl">🔬</span>
               <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-lg">
                 <i class="fab fa-github"></i>
               </a>
             </div>
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Synthetic Control Simulation</h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Synthetic Control & Placebo Permutations</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              합성대조군(SCM)의 최적 가중치 알고리즘 구현과 In-space/In-time 플라시보 순열 검정(Permutation Test) 인터랙티브 시각화 모듈입니다.
+              합성대조군(Synthetic Control Method) 가중치 최적화와 순열 기반 플라시보 검정(In-space/In-time Placebos) 시뮬레이션 분석 코드입니다.
             </p>
           </div>
           <div class="flex flex-wrap gap-1.5 text-xs font-mono text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-            <span>#R</span> <span>#Synth</span> <span>#CausalInference</span>
+            <span>#R</span> <span>#Synth</span> <span>#MonteCarlo</span>
           </div>
         </div>
 
@@ -499,18 +443,18 @@
         <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between hover:border-slate-300 dark:hover:border-slate-700 transition-colors">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-xl">📈</span>
+              <span class="text-2xl">🧠</span>
               <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-slate-500 hover:text-slate-900 dark:hover:text-white text-lg">
                 <i class="fab fa-github"></i>
               </a>
             </div>
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">News NLP Sentiment Index</h3>
+            <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-2">Economic News NLP & Forecasting</h3>
             <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-4">
-              경제 뉴스 기사 50만 건을 분석하여 BERT 임베딩과 감성 분석을 통해 거시 경제 선행지표를 예측하는 텍스트 마이닝 프로젝트입니다.
+              국내 거시경제 기사 텍스트를 크롤링하여 BERT 기반 임베딩과 감성분석 지표를 도출하고 경기 선행 지수를 예측하는 딥러닝 프로젝트입니다.
             </p>
           </div>
           <div class="flex flex-wrap gap-1.5 text-xs font-mono text-slate-600 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800">
-            <span>#Python</span> <span>#NLP</span> <span>#PyTorch</span>
+            <span>#Python</span> <span>#PyTorch</span> <span>#Transformers</span> <span>#NLP</span>
           </div>
         </div>
 
@@ -609,39 +553,35 @@
           <div class="space-y-4 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1">
             <div>
               <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-                <h4 class="font-bold text-slate-900 dark:text-white">M.A. / Ph.D. Student in Economics</h4>
+                <h4 class="font-bold text-slate-900 dark:text-white">M.A. Student in Economics (경제학 석사과정)</h4>
                 <span class="text-xs text-slate-500 font-mono">2025 – Present</span>
               </div>
-              <p class="text-sm text-slate-600 dark:text-slate-400">Graduate School of Economics</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Concentration: Applied Microeconomics, Econometrics</p>
+              <p class="text-sm font-medium text-blue-700 dark:text-blue-300">서울시립대학교 일반대학원 경제학과 (University of Seoul)</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">주요 관심분야: 계량경제학(Econometrics), 머신러닝(Machine Learning), 인과추론(Causal Inference)</p>
             </div>
             <div>
               <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-                <h4 class="font-bold text-slate-900 dark:text-white">B.A. in Economics</h4>
+                <h4 class="font-bold text-slate-900 dark:text-white">B.A. in Economics (경제학 학사)</h4>
                 <span class="text-xs text-slate-500 font-mono">2019 – 2025</span>
               </div>
-              <p class="text-sm text-slate-600 dark:text-slate-400">Department of Economics (High Honors / Summa Cum Laude)</p>
+              <p class="text-sm text-slate-600 dark:text-slate-400">University of Seoul (서울시립대학교)</p>
             </div>
           </div>
         </div>
 
-        <!-- Fellowships & Honors -->
+        <!-- Research Focus -->
         <div>
           <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-            <i class="fas fa-award text-amber-500"></i> Honors & Awards
+            <i class="fas fa-bullseye text-blue-600 dark:text-blue-400"></i> Research Interests
           </h3>
-          <div class="space-y-3 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1 text-sm">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-              <span class="font-medium text-slate-800 dark:text-slate-200">Graduate Research Fellowship (대학원 연구장학금)</span>
-              <span class="text-xs text-slate-500 font-mono">2025 – 2026</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+            <div class="p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <span class="font-bold text-slate-800 dark:text-slate-200 block mb-1">Econometrics & Causal Inference</span>
+              <span class="text-xs text-slate-600 dark:text-slate-400">Panel Data, Staggered DiD, Synthetic Controls, Instrumental Variables</span>
             </div>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-              <span class="font-medium text-slate-800 dark:text-slate-200">Outstanding Thesis Award (우수학술논문상)</span>
-              <span class="text-xs text-slate-500 font-mono">2024</span>
-            </div>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-              <span class="font-medium text-slate-800 dark:text-slate-200">Academic Excellence Scholarship (성적우수장학금 다수)</span>
-              <span class="text-xs text-slate-500 font-mono">2020 – 2023</span>
+            <div class="p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+              <span class="font-bold text-slate-800 dark:text-slate-200 block mb-1">Machine Learning in Economics</span>
+              <span class="text-xs text-slate-600 dark:text-slate-400">Double/Debiased Machine Learning (DML), Causal Trees & Forests, NLP Text Mining</span>
             </div>
           </div>
         </div>
@@ -649,16 +589,16 @@
         <!-- Skills & Languages -->
         <div>
           <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-            <i class="fas fa-terminal text-emerald-500"></i> Skills & Computing
+            <i class="fas fa-terminal text-emerald-500"></i> Skills & Software
           </h3>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
             <div>
-              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Statistical Software & Code</span>
-              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1">R (tidyverse, fixest, did), Python (pandas, scikit-learn, pytorch), Stata, Julia</p>
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Programming & ML</span>
+              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1">Python (pandas, scikit-learn, PyTorch, LightGBM), R (tidyverse, fixest, did)</p>
             </div>
             <div>
-              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Publishing & Tools</span>
-              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1">LaTeX (Overleaf), Quarto, Git & GitHub, Markdown</p>
+              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Econometrics & Tools</span>
+              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1">Stata, LaTeX (Overleaf), Quarto, Git & GitHub</p>
             </div>
           </div>
         </div>
@@ -675,7 +615,7 @@
       
       <div class="flex items-center gap-3 mb-8">
         <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Contact & Office</h2>
+        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Contact & Affiliation</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -686,29 +626,32 @@
           </div>
           <div>
             <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email</h3>
-            <a href="mailto:your-email@example.com" class="text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
-              your-email@example.com
+            <a href="mailto:your-email@uos.ac.kr" class="text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
+              your-email@uos.ac.kr
             </a>
           </div>
         </div>
 
         <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
           <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
-            <i class="fas fa-map-marker-alt text-lg"></i>
+            <i class="fas fa-university text-lg"></i>
           </div>
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Office</h3>
-            <p class="text-sm font-semibold text-slate-900 dark:text-white">경제관 연구실 (Economics Hall)</p>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Affiliation</h3>
+            <p class="text-sm font-semibold text-slate-900 dark:text-white">서울시립대학교 경제학과</p>
+            <p class="text-xs text-slate-500">21세기관 / 정경관 대학원 연구실</p>
           </div>
         </div>
 
         <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
           <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0">
-            <i class="fas fa-calendar-check text-lg"></i>
+            <i class="fab fa-github text-lg"></i>
           </div>
           <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Office Hours</h3>
-            <p class="text-sm font-semibold text-slate-900 dark:text-white">Tue / Thu 14:00 – 16:00 (사전 메일 문의)</p>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">GitHub</h3>
+            <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
+              github.com/Hyeongjin3544
+            </a>
           </div>
         </div>
 
@@ -721,8 +664,8 @@
   <!-- ==================== FOOTER ==================== -->
   <footer class="py-12 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
     <div class="max-w-5xl mx-auto px-4 space-y-2">
-      <p>© 2026 Hyeongjin Kim. All rights reserved.</p>
-      <p>Hosted with GitHub Pages · Crafted with Tailwind CSS & KaTeX</p>
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p>Department of Economics, University of Seoul · Hosted on GitHub Pages</p>
     </div>
   </footer>
 
@@ -772,7 +715,6 @@
       mobileMenu.classList.toggle('hidden');
     });
 
-    // Close mobile menu on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         mobileMenu.classList.add('hidden');
