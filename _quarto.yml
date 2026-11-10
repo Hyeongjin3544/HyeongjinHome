@@ -1,0 +1,37 @@
+project:
+  type: website
+  output-dir: _site
+  render:
+    - "*.qmd"
+    - "notes/**/*.qmd"
+    - "!templates/"
+
+lang: ko
+
+website:
+  title: Hyeongjin
+  description: 경제학 대학원생의 개인 홈페이지와 공부 노트
+  site-url: https://hyeongjin3544.github.io/HyeongjinHome/
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    left:
+      - href: about.qmd
+        text: 소개
+      - href: notes.qmd
+        text: 경제학 노트
+    right:
+      - icon: github
+        href: https://github.com/Hyeongjin3544
+        aria-label: Hyeongjin의 GitHub 프로필
+  page-footer:
+    left: "Hyeongjin · Economics"
+    right: "[사이트 소스](https://github.com/Hyeongjin3544/HyeongjinHome)"
+
+format:
+  html:
+    theme: [cosmo, styles.scss]
+    toc: true
+    toc-title: 이 페이지에서
+    smooth-scroll: true

@@ -1,0 +1,151 @@
+/*-- scss:defaults --*/
+
+$body-bg: #faf9f5;
+$body-color: #1c302c;
+$primary: #245648;
+$link-color: #245648;
+$navbar-bg: #faf9f5;
+$font-family-sans-serif: "Pretendard", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+$headings-font-weight: 700;
+$border-color: #d5ddd4;
+
+/*-- scss:rules --*/
+
+.navbar {
+  border-bottom: 1px solid $border-color;
+  padding-block: 0.85rem;
+}
+
+.navbar-title {
+  font-family: Georgia, serif;
+  font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+  color: #354f4b;
+}
+
+.navbar-nav .nav-link.active {
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
+
+.home-hero,
+.home-notes {
+  width: min(100%, 68rem);
+  margin-inline: auto;
+}
+
+.home-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5rem);
+  padding-block: clamp(2rem, 7vw, 5.5rem);
+}
+
+.eyebrow {
+  color: #3d6256;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+}
+
+.hero-intro h1 {
+  margin: 0 0 1rem;
+  color: #163d34;
+  font-family: Georgia, serif;
+  font-size: clamp(3.3rem, 8vw, 6.4rem);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+.hero-intro p {
+  max-width: 31rem;
+  line-height: 1.8;
+}
+
+.hero-links {
+  margin-top: 1.6rem;
+}
+
+.hero-links p {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0;
+}
+
+.primary-link {
+  display: inline-block;
+  padding: 0.66rem 1.15rem;
+  border-radius: 0.3rem;
+  background: #245648;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.primary-link:hover,
+.primary-link:focus-visible {
+  background: #163d34;
+  color: #fff;
+  text-decoration: underline;
+}
+
+.text-link,
+.figure-link {
+  text-underline-offset: 0.28em;
+}
+
+.hero-figure figure,
+.hero-figure p {
+  margin: 0;
+}
+
+.hero-figure img {
+  display: block;
+  width: 100%;
+}
+
+.hero-figure figcaption {
+  display: none;
+}
+
+.figure-link {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+}
+
+.home-notes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding-block: 2rem;
+  border-top: 1px solid $border-color;
+}
+
+.home-notes h2 {
+  margin: 0 0 0.5rem;
+  padding: 0;
+  border: 0;
+}
+
+.home-notes p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 760px) {
+  .home-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-figure {
+    max-width: 33rem;
+  }
+}

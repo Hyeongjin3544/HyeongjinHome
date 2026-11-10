@@ -1,0 +1,12 @@
+---
+title: 경제학 노트
+subtitle: 모형의 유도 과정과 읽으면서 생긴 질문을 모아 둡니다.
+toc: false
+listing:
+  contents: "notes/**/*.qmd"
+  type: default
+  sort: "date desc"
+  fields: [title, description, categories, date]
+  categories: true
+  filter-ui: true
+---

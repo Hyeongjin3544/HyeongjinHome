@@ -1,0 +1,14 @@
+---
+title: 소개
+subtitle: Hyeongjin · 경제학 대학원생
+toc: false
+---
+
+경제학을 공부하고 있습니다. 수업에서 배운 내용을 복습할 때는 모형이 어떤 가정에서 출발하는지, 계산 결과를 어떻게 해석할 수 있는지부터 정리합니다.
+
+[경제학 노트](notes.qmd)에는 모형을 다시 풀어본 과정과 논문을 읽으며 남긴 질문을 모읍니다.
+
+## 링크
+
+- [GitHub 프로필](https://github.com/Hyeongjin3544)
+- [홈페이지 저장소](https://github.com/Hyeongjin3544/HyeongjinHome)
