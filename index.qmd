@@ -1,8 +1,7 @@
 ---
-title: Hyeongjin의 경제학 노트
+pagetitle: Hyeongjin의 개인 홈페이지
 description: 경제학 대학원생 Hyeongjin의 개인 홈페이지.
 page-layout: full
-title-block-style: none
 toc: false
 ---
 

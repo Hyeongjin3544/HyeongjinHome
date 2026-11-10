@@ -7,6 +7,7 @@ project:
     - "!templates/"
 
 lang: ko
+date-format: YYYY-MM-DD
 
 website:
   title: Hyeongjin
