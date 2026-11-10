@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.1 생산기술과 생산가능집합 | Study Notes | Hyeongjin Oh</title>
+  <meta name="description" content="미시경제이론 생산자이론: 생산함수, 순산출(Netput) 벡터와 생산가능집합 Y, 자유폐기, 투입요구대응 V(y), 소비자이론과의 구조적 쌍대성 비교">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .callout-prop {
+      border-left: 3px solid #78716c;
+      background: rgba(245, 245, 244, 0.7);
+    }
+    .dark .callout-prop {
+      border-left: 3px solid #a8a29e;
+      background: rgba(28, 25, 23, 0.6);
+    }
+    .callout-proof {
+      border-left: 2px dashed #a8a29e;
+      background: transparent;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../microeconomics.html" class="group flex items-center gap-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Microeconomics Hub</span>
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-4 text-xs text-stone-500">
+        <a href="../notes.html" class="hover:text-stone-900 dark:hover:text-white transition-colors">Study Notes</a>
+        <span>·</span>
+        <a href="../index.html" class="hover:text-stone-900 dark:hover:text-white transition-colors font-medium">오형진 프로필</a>
+
+        <div class="w-px h-3 bg-stone-300 dark:bg-stone-700"></div>
+
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="max-w-3xl mx-auto px-6 py-12 flex-1 space-y-10">
+    
+    <!-- Breadcrumb & Tag -->
+    <div class="space-y-2">
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
+        <span>Chapter 02. Producer Theory</span>
+        <span>/</span>
+        <span class="text-stone-900 dark:text-stone-300 font-semibold">Section 2.1</span>
+      </div>
+      <h1 class="academic-serif text-3xl sm:text-4xl font-normal text-stone-900 dark:text-white tracking-tight leading-tight">
+        2.1 생산기술과 생산가능집합
+      </h1>
+      <p class="text-xs font-mono text-stone-500 dark:text-stone-400 pt-1">
+        Production Technology, Net-output Vector, Free Disposal, and Input-Requirement Correspondences
+      </p>
+    </div>
+
+    <!-- Intro Quote Card -->
+    <div class="p-5 rounded-xl bg-stone-100/70 dark:bg-stone-900/40 border border-stone-200/80 dark:border-stone-800 text-stone-700 dark:text-stone-300 text-sm leading-relaxed space-y-2">
+      <p>
+        소비자이론의 출발점이 소비집합 $X$와 주관적 선호관계 $\succeq$였다면, <strong>생산자이론(Producer Theory)의 출발점은 객관적 생산기술(Technology)</strong>입니다. 기술은 어떤 투입물 묶음(Input Bundle)으로 어떤 산출물(Output)을 생산할 수 있는가의 물리적 변환 가능성을 규정하며, 비용함수와 이윤함수는 이 기술집합 위에서 풀리는 정적 최적화 문제의 가치함수(Value Function)로 유도됩니다.
+      </p>
+    </div>
+
+    <!-- Architecture Roadmap -->
+    <div class="callout-prop p-5 rounded-r-xl space-y-3">
+      <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+        <i class="fas fa-industry text-stone-500"></i> 생산자이론의 논리 전개 순서
+      </div>
+      <div class="p-3 bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-xs sm:text-sm">
+        $$
+        f(x) \;\text{or}\; Y \;\longrightarrow\; \mathcal{V}(y) \;\longrightarrow\; x^c(w,y) \;\longrightarrow\; c(w,y) \;\longrightarrow\; \Pi(p,w) \;\longrightarrow\; \bigl(y^s(p,w),\, x^u(p,w)\bigr)
+        $$
+      </div>
+      <p class="text-[12px] text-stone-500 leading-normal">
+        기술이 목표 산출량 $y$를 달성하는 투입요구집합 $\mathcal{V}(y)$를 규정하고, 그 위의 비용극소화(CMP)가 조건부 요소수요 $x^c$와 비용함수 $c(w,y)$를 낳으며, 최종적으로 이윤극대화(PMP)를 통해 최적 공급량 $y^s$와 비조건부 요소수요 $x^u$가 결정됩니다.
+      </p>
+    </div>
+
+    <article class="space-y-10 text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed">
+
+      <!-- SECTION 2.1.1 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          1. 생산함수와 순산출(Net-output) 생산집합
+        </h2>
+
+        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
+          단일 산출물 $y \in \mathbb{R}_+$과 $n$개의 생산요소 투입물 $x = (x_1, \ldots, x_n) \in \mathbb{R}_+^n$을 고려합니다. 요소가격 벡터는 $w = (w_1, \ldots, w_n) \gg 0$, 산출물 가격은 $p > 0$입니다.
+        </p>
+
+        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-4">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-check text-stone-500"></i> DEFINITION · 생산함수와 기술집합 $\mathcal{T}$
+          </div>
+          <p class="text-sm text-stone-800 dark:text-stone-200">
+            <strong>생산함수(Production Function)</strong> $f: \mathbb{R}_+^n \to \mathbb{R}_+$는 투입물 묶음 $x$로 생산 가능한 최대 산출량을 나타냅니다. 이에 대응하는 <strong>투입-산출 기술집합(Input-Output Technology Set)</strong>은 다음과 같이 정의됩니다:
+          </p>
+          <div class="p-3 bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-sm">
+            $$
+            \mathcal{T} = \left\{ (x, y) \in \mathbb{R}_+^n \times \mathbb{R}_+ : y \le f(x) \right\}.
+            $$
+          </div>
+        </div>
+
+        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
+          일반균형이론에서는 투입과 산출을 하나의 벡터로 통합하여 표현하는 <strong>순산출(Netput / Net-output) 벡터</strong> $z = (y, -x_1, \ldots, -x_n)$가 표준적으로 사용됩니다. 산출물은 양(+), 투입물은 음(-)의 부호를 가집니다.
+        </p>
+
+        <div class="p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 space-y-2 text-xs sm:text-sm">
+          <div class="font-mono font-bold text-stone-800 dark:text-stone-200 uppercase">순산출 생산가능집합 (Net-output Production Set $Y$)</div>
+          <div class="text-center font-mono text-sm py-1">
+            $$
+            Y = \left\{ z = (z_0, z_1, \ldots, z_n) \in \mathbb{R} \times (-\mathbb{R}_+^n) : z_0 \le f(-z_1, \ldots, -z_n) \right\}.
+            $$
+          </div>
+          <p class="text-stone-600 dark:text-stone-400">
+            가격벡터 $q = (p, w_1, \ldots, w_n) \gg 0$에 대하여 기업의 총이윤은 간결한 내적 형태로 환원됩니다:
+          </p>
+          <div class="text-center font-mono text-sm py-1">
+            $$
+            \pi = q \cdot z = p z_0 + \sum_{i=1}^n w_i z_i = p y - \sum_{i=1}^n w_i x_i = p y - w \cdot x.
+            $$
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SECTION 2.1.2 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          2. 생산집합의 기하학과 공리 (Geometry & Axioms)
+        </h2>
+
+        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-4">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-certificate text-stone-500"></i> THEOREM · 생산집합의 위상적·기하학적 성질
+          </div>
+          <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
+            <p><strong>1. 폐포성 (Closedness):</strong> $f$가 연속함수 $\iff \mathcal{T}$와 $Y$는 닫힌 집합(closed set).</p>
+            <p><strong>2. 볼록성 (Convexity):</strong> $f$가 오목함수(concave) $\iff \mathcal{T}$와 $Y$는 볼록집합(convex set). (규모에 대한 수익 체감의 기하학적 표현).</p>
+            <p><strong>3. 자유폐기 (Free Disposal):</strong> $f$가 단조증가 $\iff Y - \mathbb{R}_+^{n+1} \subseteq Y$. (투입물을 더 낭비하거나 생산된 산출물을 무비용으로 버릴 수 있음).</p>
+            <p><strong>4. 공짜 점심 부존재 (No Free Lunch):</strong> $f(\mathbf{0}) = 0 \iff Y \cap \mathbb{R}_+^{n+1} = \{\mathbf{0}\}$. (투입물 없이 양의 산출을 창출할 수 없음).</p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- SECTION 2.1.3 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          3. 투입요구대응 $\mathcal{V}(y)$와 소비자이론과의 완전한 쌍대성
+        </h2>
+
+        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
+          목표 산출량 $y \ge 0$를 생산하는 데 필요한 모든 실행가능한 투입물 묶음의 집합을 <strong>투입요구집합(Input Requirement Set) $\mathcal{V}(y)$</strong>라 합니다:
+        </p>
+
+        <div class="my-3 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-sm">
+          $$
+          \mathcal{V}(y) = \left\{ x \in \mathbb{R}_+^n : f(x) \ge y \right\}.
+          $$
+        </div>
+
+        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
+          놀랍게도 $\mathcal{V}(y)$는 소비자이론에서 목표효용 $\bar{u}$를 달성하기 위한 상위윤곽집합 $\{x : u(x) \ge \bar{u}\}$와 <strong>완벽하게 수학적으로 동형(isomorphic)</strong>입니다.
+        </p>
+
+        <!-- Comparison Table -->
+        <div class="overflow-x-auto my-4">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-stone-300 dark:border-stone-700 font-mono text-stone-500">
+                <th class="py-2.5 px-3">분석 차원</th>
+                <th class="py-2.5 px-3">소비자이론 (Consumer Theory)</th>
+                <th class="py-2.5 px-3">생산자이론 (Producer Theory)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-stone-200 dark:divide-stone-800 text-stone-700 dark:text-stone-300">
+              <tr>
+                <td class="py-2.5 px-3 font-mono font-semibold">외생적 목표 (Target)</td>
+                <td class="py-2.5 px-3">목표 효용수준 $\bar{u}$</td>
+                <td class="py-2.5 px-3">목표 산출량 $y$</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-mono font-semibold">실행가능 기회집합</td>
+                <td class="py-2.5 px-3">상위윤곽집합 $U(\bar{u}) = \{x : u(x) \ge \bar{u}\}$</td>
+                <td class="py-2.5 px-3">투입요구집합 $\mathcal{V}(y) = \{x : f(x) \ge y\}$</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-mono font-semibold">비용최소화 선택해</td>
+                <td class="py-2.5 px-3">힉스 보상수요 $h(p, \bar{u})$</td>
+                <td class="py-2.5 px-3">조건부 요소수요 $x^c(w, y)$</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-mono font-semibold">최적화 가치함수</td>
+                <td class="py-2.5 px-3">지출함수 $e(p, \bar{u}) = \min p \cdot x$</td>
+                <td class="py-2.5 px-3">비용함수 $c(w, y) = \min w \cdot x$</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-3 font-mono font-semibold">포락선 정리 (Envelope)</td>
+                <td class="py-2.5 px-3">Shephard's Lemma: $\nabla_p e(p, \bar{u}) = h(p, \bar{u})$</td>
+                <td class="py-2.5 px-3">Shephard's Lemma: $\nabla_w c(w, y) = x^c(w, y)$</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- SECTION 2.1.4 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          4. 등량곡선과 한계기술대체율 (MRTS)
+        </h2>
+
+        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
+          산출량 $y$를 정확히 달성하는 투입물들의 경계 궤적을 <strong>등량곡선(Isoquant) $Q(y) = \{x \in \mathbb{R}_+^n : f(x) = y\}$</strong>라 합니다. 두 생산요소 $i, j$ 사이의 <strong>한계기술대체율(Marginal Rate of Technical Substitution, MRTS)</strong>은 동일한 산출량을 유지하면서 한 요소를 대체할 수 있는 기술적 비율입니다:
+        </p>
+
+        <div class="my-3 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-sm">
+          $$
+          MRTS_{ij}(x) = \frac{\partial f(x)/\partial x_i}{\partial f(x)/\partial x_j} = \frac{MP_i(x)}{MP_j(x)}.
+          $$
+        </div>
+
+        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+          생산함수가 준오목(quasiconcave)하면 등량곡선은 원점에 대해 볼록하며, $x_i$가 증가함에 따라 $MRTS_{ij}$가 체감(Diminishing MRTS)합니다.
+        </p>
+
+      </section>
+
+    </article>
+
+    <!-- FOOTER NAV -->
+    <div class="pt-8 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
+      <a href="micro-demand-slutsky.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        <i class="fas fa-arrow-left"></i> Chapter 01 Section 1.5 슬러츠키로
+      </a>
+      <a href="../microeconomics.html" class="inline-flex items-center gap-1.5 font-medium text-stone-900 dark:text-white hover:underline transition-colors">
+        <span>미시경제이론 로드맵으로</span>
+        <i class="fas fa-arrow-right"></i>
+      </a>
+    </div>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-3xl mx-auto px-6 space-y-1">
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+
+</body>
+</html>
