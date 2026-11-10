@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.5 소비자수요의 성질과 Slutsky 분해 | Hyeongjin Oh</title>
+  <meta name="description" content="미시경제이론: 대체효과와 소득효과, 슬러츠키 방정식(Slutsky Equation)의 유도, 슬러츠키 행렬의 대칭성과 음의 준정부호성, 보상수요의 법칙">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .callout-prop {
+      border-left: 3px solid #78716c;
+      background: rgba(245, 245, 244, 0.7);
+    }
+    .dark .callout-prop {
+      border-left: 3px solid #a8a29e;
+      background: rgba(28, 25, 23, 0.6);
+    }
+    .callout-proof {
+      border-left: 2px dashed #a8a29e;
+      background: transparent;
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../microeconomics.html" class="group flex items-center gap-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Microeconomics Hub</span>
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-4 text-xs text-stone-500">
+        <a href="../notes.html" class="hover:text-stone-900 dark:hover:text-white transition-colors">Study Notes</a>
+        <span>·</span>
+        <a href="../index.html" class="hover:text-stone-900 dark:hover:text-white transition-colors font-medium">오형진 프로필</a>
+
+        <div class="w-px h-3 bg-stone-300 dark:bg-stone-700"></div>
+
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== NOTE ARTICLE ==================== -->
+  <main class="max-w-3xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-10">
+    
+    <!-- HEADER -->
+    <div class="space-y-3 pb-6 border-b border-stone-200 dark:border-stone-800">
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
+        <span>Chapter 01 · Consumer Theory</span>
+        <span>/</span>
+        <span>Section 1.5</span>
+      </div>
+
+      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+        1.5 소비자수요의 성질과 Slutsky 분해
+      </h1>
+
+      <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed italic pt-1">
+        가격 변화에 따른 마샬 수요의 총효과를 상대가격 변화에 의한 대체효과(Substitution Effect)와 실질소득 변화에 의한 소득효과(Income Effect)로 분해하고, 슬러츠키 행렬의 대칭성과 음의 준정부호성을 증명합니다.
+      </p>
+    </div>
+
+    <!-- CONTENT -->
+    <article class="space-y-8 text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+      
+      <!-- Section 1.5.1 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.5.1 동차성과 Money Illusion의 부재
+        </h2>
+        
+        <p>
+          수요함수와 간접효용함수의 0차 동차성($x(\lambda p, \lambda m) = x(p,m)$)은 소비자가 명목 화폐단위가 아니라 <strong>상대가격과 실질소득</strong>에 기초하여 합리적으로 반응함을 의미합니다. 오일러 정리(Euler's Theorem)에 의해 다음 항등식이 성립합니다:
+        </p>
+
+        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+          $$ \sum_{j=1}^n \frac{\partial x_i(p,m)}{\partial p_j} p_j + \frac{\partial x_i(p,m)}{\partial m} m = 0 \quad (\forall i = 1,\dots,n) $$
+        </div>
+      </section>
+
+
+      <!-- Section 1.5.2 -->
+      <section class="space-y-4 pt-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.5.2 슬러츠키 방정식의 유도 (Slutsky Equation)
+        </h2>
+
+        <p>
+          쌍대성 항등식 $h_i(p,u) \equiv x_i(p, e(p,u))$의 양변을 가격 $p_j$에 대해 편미분합니다 (체인 룰 적용):
+        </p>
+
+        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+          $$ \frac{\partial h_i(p,u)}{\partial p_j} = \frac{\partial x_i(p,e(p,u))}{\partial p_j} + \frac{\partial x_i(p,e(p,u))}{\partial m} \frac{\partial e(p,u)}{\partial p_j} $$
+        </div>
+
+        <p>
+          Shephard's Lemma에 의해 $\frac{\partial e(p,u)}{\partial p_j} = h_j(p,u) = x_j(p,m)$이므로, 이를 대입하고 Marshallian 가격 미분항을 좌변으로 정리하면 유명한 <strong>슬러츠키 방정식(Slutsky Equation)</strong>이 완성됩니다:
+        </p>
+
+        <!-- Slutsky Box -->
+        <div class="p-5 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-3 my-5">
+          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
+            THEOREM · 슬러츠키 분해 (Slutsky Decomposition)
+          </div>
+          
+          <div class="py-2 text-center font-mono text-base sm:text-lg overflow-x-auto">
+            $$ \underbrace{\frac{\partial x_i(p,m)}{\partial p_j}}_{\text{총 가격효과 (Total Effect)}} = \underbrace{\frac{\partial h_i(p,u)}{\partial p_j}}_{\text{대체효과 (Substitution Effect)}} - \underbrace{x_j(p,m) \frac{\partial x_i(p,m)}{\partial m}}_{\text{소득효과 (Income Effect)}} $$
+          </div>
+
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed pt-1 border-t border-stone-100 dark:border-stone-800">
+            • <strong>대체효과:</strong> 효용 수준 $u$를 일정하게 유지한 채 상대가격 변화에만 반응하는 순수한 대체 반응.<br>
+            • <strong>소득효과:</strong> 가격 상승으로 인해 소비자의 실질 구매력이 $x_j$만큼 감소함에 따라 발생하는 소득 유발 반응.
+          </p>
+        </div>
+
+      </section>
+
+
+      <!-- Section 1.5.3 -->
+      <section class="space-y-4 pt-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.5.3 슬러츠키 행렬(Substitution Matrix)의 성질
+        </h2>
+
+        <p>
+          모든 $i, j$에 대한 대체효과 항들을 모은 $n \times n$ 행렬을 <strong>슬러츠키 행렬(Slutsky Substitution Matrix)</strong> $S(p,m)$이라 정의합니다:
+        </p>
+
+        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+          $$ S(p,m) = \nabla_p h(p,u) = \nabla_p^2 e(p,u) $$
+        </div>
+
+        <div class="callout-prop p-5 rounded-r-xl space-y-3 my-5">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+            PROPOSITION 1.5 · 슬러츠키 행렬의 대수적 성질
+          </div>
+
+          <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
+            <div>
+              <strong>1. 대칭성 (Symmetry):</strong> Young의 정리에 의해 지출함수의 2계 교차편미분이 같으므로,
+              <div class="py-1 font-mono text-center">
+                $$ s_{ij}(p,m) = s_{ji}(p,m) \quad \iff \quad S(p,m) = S(p,m)^T $$
+              </div>
+            </div>
+            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
+              <strong>2. 음의 준정부호성 (Negative Semi-definiteness):</strong> 지출함수 $e(p,u)$가 가격 $p$에 대해 오목(concave)하므로, 그 헤시안 행렬인 $S(p,m)$은 음의 준정부호이다:
+              <div class="py-1 font-mono text-center">
+                $$ \xi^T S(p,m) \xi \le 0 \quad (\forall \xi \in \mathbb{R}^n) $$
+              </div>
+            </div>
+            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
+              <strong>3. 보상수요의 법칙 (Law of Compensated Demand):</strong> 음의 준정부호성에 의해 주대각성분은 항상 비양수이다:
+              <div class="py-1 font-mono text-center">
+                $$ s_{ii}(p,m) = \frac{\partial h_i(p,u)}{\partial p_i} \le 0 $$
+              </div>
+              따라서 보상수요는 자신의 가격 변화에 대해 절대로 우상향할 수 없습니다 (기펜재 현상은 오직 소득효과에 의해서만 발생).
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </article>
+
+    <!-- FOOTER NAV -->
+    <div class="pt-8 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
+      <a href="../microeconomics.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        <i class="fas fa-arrow-left"></i> 미시경제이론 로드맵으로
+      </a>
+      <span class="font-mono text-[11px]">Chapter 01 · Section 1.5</span>
+    </div>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-3xl mx-auto px-6 space-y-1">
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+
+</body>
+</html>

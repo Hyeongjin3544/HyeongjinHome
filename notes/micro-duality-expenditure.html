@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>1.4 간접효용과 지출: Duality와 포락선 정리 | Hyeongjin Oh</title>
+  <meta name="description" content="미시경제이론: 간접효용함수 v(p,m), 지출함수 e(p,u), 효용극대화와 지출극소화의 쌍대성(Duality), Roy's Identity와 Shephard's Lemma">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .callout-prop {
+      border-left: 3px solid #78716c;
+      background: rgba(245, 245, 244, 0.7);
+    }
+    .dark .callout-prop {
+      border-left: 3px solid #a8a29e;
+      background: rgba(28, 25, 23, 0.6);
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <div class="flex items-center gap-2 text-sm">
+        <a href="../microeconomics.html" class="group flex items-center gap-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Microeconomics Hub</span>
+        </a>
+      </div>
+
+      <nav class="flex items-center gap-4 text-xs text-stone-500">
+        <a href="../notes.html" class="hover:text-stone-900 dark:hover:text-white transition-colors">Study Notes</a>
+        <span>·</span>
+        <a href="../index.html" class="hover:text-stone-900 dark:hover:text-white transition-colors font-medium">오형진 프로필</a>
+
+        <div class="w-px h-3 bg-stone-300 dark:bg-stone-700"></div>
+
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== NOTE ARTICLE ==================== -->
+  <main class="max-w-3xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-10">
+    
+    <!-- HEADER -->
+    <div class="space-y-3 pb-6 border-b border-stone-200 dark:border-stone-800">
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
+        <span>Chapter 01 · Consumer Theory</span>
+        <span>/</span>
+        <span>Section 1.4</span>
+      </div>
+
+      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+        1.4 간접효용과 지출함수: Duality와 포락선 정리
+      </h1>
+
+      <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed italic pt-1">
+        주어진 소득에서 효용을 극대화하는 Marshallian 문제와 주어진 효용을 달성하기 위해 지출을 최소화하는 Hicksian 문제 사이의 쌍대성(Duality)을 정식화하고, Roy's Identity와 Shephard's Lemma를 수학적으로 유도합니다.
+      </p>
+    </div>
+
+    <!-- CONTENT -->
+    <article class="space-y-8 text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+      
+      <!-- Section 1.4.1 -->
+      <section class="space-y-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.4.1 두 가지 최적화 문제: UMP와 EMP
+        </h2>
+        
+        <p>
+          동일한 선호와 가격체계 아래에서 소비자의 의사결정은 상호 보완적인 두 가지 방향에서 접근할 수 있습니다:
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+          
+          <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Marshallian Problem (UMP)</span>
+            <div class="text-xs font-mono py-1">
+              $$ \max_{x \in X} u(x) \quad \text{s.t.} \quad p \cdot x \le m $$
+            </div>
+            <p class="text-xs text-stone-600 dark:text-stone-400">
+              • 최적 선택: Marshallian 수요 $x(p,m)$<br>
+              • 최대 가치함수: 간접효용함수 $v(p,m)$
+            </p>
+          </div>
+
+          <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2">
+            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Hicksian Problem (EMP)</span>
+            <div class="text-xs font-mono py-1">
+              $$ \min_{x \in X} p \cdot x \quad \text{s.t.} \quad u(x) \ge u $$
+            </div>
+            <p class="text-xs text-stone-600 dark:text-stone-400">
+              • 최적 선택: Hicksian (보상)수요 $h(p,u)$<br>
+              • 최소 가치함수: 지출함수 $e(p,u)$
+            </p>
+          </div>
+
+        </div>
+
+        <!-- 간접효용함수와 지출함수의 성질 -->
+        <div class="callout-prop p-5 rounded-r-xl space-y-3 my-5">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
+            PROPOSITION 1.4 · 가치함수의 주요 성질 (Properties of Value Functions)
+          </div>
+          
+          <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
+            <div>
+              <strong>1. 간접효용함수 $v(p,m)$:</strong>
+              <ul class="list-disc pl-5 mt-1 space-y-0.5 text-stone-700 dark:text-stone-300">
+                <li>$(p,m)$에 대해 0차 동차 (Homogeneous of degree 0): $v(\lambda p, \lambda m) = v(p,m)$</li>
+                <li>가격 $p$에 대해 비증가(non-increasing), 소득 $m$에 대해 엄격한 증가(strictly increasing)</li>
+                <li>$(p,m)$에 대해 <strong>준볼록(Quasi-convex)</strong></li>
+              </ul>
+            </div>
+            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
+              <strong>2. 지출함수 $e(p,u)$:</strong>
+              <ul class="list-disc pl-5 mt-1 space-y-0.5 text-stone-700 dark:text-stone-300">
+                <li>가격 $p$에 대해 1차 동차 (Homogeneous of degree 1): $e(\lambda p, u) = \lambda e(p,u)$</li>
+                <li>가격 $p$에 대해 비감소(non-decreasing), 목표효용 $u$에 대해 엄격한 증가</li>
+                <li>가격 $p$에 대해 <strong>오목(Concave)</strong>: $\nabla_p^2 e(p,u)$는 음의 준정부호(Negative Semi-definite)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+
+      <!-- Section 1.4.2 -->
+      <section class="space-y-4 pt-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.4.2 Duality 항등식 (Fundamental Dual Identities)
+        </h2>
+
+        <p>
+          소비자의 선호가 국소 불포화(Local Non-satiation)를 만족하면, UMP와 EMP의 제약식은 경계에서 등호로 만족되며 다음 4대 항등식이 성립합니다:
+        </p>
+
+        <div class="my-4 p-5 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-sm space-y-2 overflow-x-auto">
+          <div>1) $e(p, v(p,m)) \equiv m$</div>
+          <div>2) $v(p, e(p,u)) \equiv u$</div>
+          <div>3) $x(p,m) \equiv h(p, v(p,m))$</div>
+          <div>4) $h(p,u) \equiv x(p, e(p,u))$</div>
+        </div>
+
+      </section>
+
+
+      <!-- Section 1.4.3 -->
+      <section class="space-y-4 pt-4">
+        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+          1.4.3 포락선 정리: Shephard's Lemma와 Roy's Identity
+        </h2>
+
+        <p>
+          가치함수의 매개변수에 대한 미분(Envelope Theorem)을 적용하면, 복잡한 1계조건을 풀지 않고도 수요함수를 즉각적으로 유도할 수 있습니다.
+        </p>
+
+        <!-- Shephard's Lemma -->
+        <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2 my-4">
+          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
+            Shephard's Lemma (셰퍼드의 보조정리)
+          </div>
+          <p class="text-sm text-stone-700 dark:text-stone-300">
+            지출함수 $e(p,u)$를 가격 $p_i$로 편미분하면 $i$번째 재화의 <strong>Hicksian (보상)수요</strong>가 도출된다:
+          </p>
+          <div class="py-2 text-center font-mono text-base">
+            $$ \frac{\partial e(p,u)}{\partial p_i} = h_i(p,u) \quad \iff \quad \nabla_p e(p,u) = h(p,u) $$
+          </div>
+        </div>
+
+        <!-- Roy's Identity -->
+        <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2 my-4">
+          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
+            Roy's Identity (로이의 항등식)
+          </div>
+          <p class="text-sm text-stone-700 dark:text-stone-300">
+            항등식 $v(p, e(p,u)) = u$를 $p_i$로 전미분하고 Shephard's Lemma를 결합하면, 간접효용함수의 편미분 비율로부터 <strong>Marshallian 수요</strong>가 즉각 도출된다:
+          </p>
+          <div class="py-2 text-center font-mono text-base">
+            $$ x_i(p,m) = -\frac{\partial v(p,m)/\partial p_i}{\partial v(p,m)/\partial m} $$
+          </div>
+        </div>
+
+      </section>
+
+    </article>
+
+    <!-- FOOTER NAV -->
+    <div class="pt-8 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
+      <a href="../microeconomics.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        <i class="fas fa-arrow-left"></i> 미시경제이론 로드맵으로
+      </a>
+      <span class="font-mono text-[11px]">Chapter 01 · Section 1.4</span>
+    </div>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-3xl mx-auto px-6 space-y-1">
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+
+</body>
+</html>
