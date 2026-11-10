@@ -57,23 +57,25 @@
 
   <style>
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-      letter-spacing: -0.012em;
+      font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
     }
     .academic-serif {
       font-family: 'Newsreader', Georgia, serif;
     }
-    .callout-prop {
+    .math-block {
       border-left: 3px solid #78716c;
-      background: rgba(245, 245, 244, 0.7);
+      background: rgba(245, 245, 244, 0.55);
     }
-    .dark .callout-prop {
+    .dark .math-block {
       border-left: 3px solid #a8a29e;
-      background: rgba(28, 25, 23, 0.6);
+      background: rgba(28, 25, 23, 0.45);
     }
-    .callout-proof {
-      border-left: 2px dashed #a8a29e;
-      background: transparent;
+    .katex-display {
+      margin: 1.25rem 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.25rem 0;
     }
   </style>
 </head>
@@ -129,11 +131,11 @@
     </div>
 
     <!-- CONTENT -->
-    <article class="space-y-8 text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+    <article class="space-y-12 text-[16.5px] leading-[1.85] text-stone-800 dark:text-stone-200 break-keep font-normal">
       
       <!-- Section 1.3.1 -->
-      <section class="space-y-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+      <section class="space-y-5">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-200 dark:border-stone-800 pb-2">
           1.3.1 예산집합과 Marshallian Demand
         </h2>
         
@@ -141,33 +143,33 @@
           가격벡터를 $p \in \mathbb{R}_{++}^n$, 소득을 $m > 0$으로 둡니다. 가격의 엄격한 양의성($p \gg 0$)은 일반균형에서는 별도의 경제적 논증이 필요한 조건이나, 부분균형 소비자 문제에서는 예산집합의 유계성(Boundedness)을 확보하는 표준적인 가정입니다. 예산집합 $B(p,m)$은 다음과 같이 정의됩니다:
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$ B(p,m) = \{x \in X : p \cdot x \le m\} $$
         </div>
 
         <!-- Proposition 1.3 -->
-        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-5">
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
             <i class="fas fa-check text-stone-500"></i> PROPOSITION 1.3 · 예산집합의 기하학 (Geometry of Budget Set)
           </div>
-          <p class="text-sm text-stone-800 dark:text-stone-200 font-medium">
+          <p class="text-[15.5px] font-medium leading-relaxed">
             소비집합 $X \subseteq \mathbb{R}_+^n$가 닫힌집합(closed)이고 $\mathbf{0} \in X$, $p \gg 0$, $m > 0$이면, 예산집합 $B(p,m)$는 공집합이 아닌 <strong>콤팩트 집합(Compact Set)</strong>이다. 추가로 $X$가 볼록집합(convex)이면 $B(p,m)$도 볼록하다.
           </p>
         </div>
 
         <!-- Proof -->
-        <div class="callout-proof pl-4 py-2 space-y-2 text-sm text-stone-600 dark:text-stone-400">
+        <div class="pl-4 border-l-2 border-stone-300 dark:border-stone-700 py-2 space-y-3 text-[15px] text-stone-600 dark:text-stone-400">
           <div class="font-mono text-xs font-semibold text-stone-500 uppercase">[증명 · Proof]</div>
           <p>
             1) $\mathbf{0} \in X$이고 $p \cdot \mathbf{0} = 0 \le m$이므로 $B(p,m) \ne \varnothing$입니다.<br>
             2) 반공간 $\{x : p \cdot x \le m\}$이 닫힌집합이고 $X$도 닫힌집합이므로, 두 닫힌집합의 교집합인 $B(p,m)$ 역시 닫힌집합(closed)입니다.<br>
-            3) 또한 $x \in B(p,m)$이면 모든 재화 $\ell \in \{1,\dots,n\}$에 대해
+            3) 또한 $x \in B(p,m)$이면 모든 재화 $\ell \in \{1,\dots,n\}$에 대해 다음이 성립합니다:
           </p>
-          <div class="py-1 text-center font-mono">
+          <div class="py-2 text-center font-mono text-base">
             $$ 0 \le x_\ell \le \frac{m}{p_\ell} < \infty $$
           </div>
           <p>
-            이 성립하므로 $B(p,m)$는 유계(bounded)입니다. 따라서 <strong>하이네-보렐 정리(Heine–Borel Theorem)</strong>에 의해 $\mathbb{R}^n$에서 $B(p,m)$는 <strong>콤팩트(compact)</strong>합니다.<br>
+            따라서 $B(p,m)$는 유계(bounded)입니다. 유한차원 공간 $\mathbb{R}^n$에서 유계 닫힌집합은 <strong>하이네-보렐 정리(Heine–Borel Theorem)</strong>에 의해 <strong>콤팩트(compact)</strong>합니다.<br>
             4) 볼록성은 선형 부등식의 성질로부터 $x, y \in B(p,m)$일 때 임의의 $t \in [0,1]$에 대해 $p \cdot [tx + (1-t)y] \le m$이 성립하므로 자명합니다. $\blacksquare$
           </p>
         </div>
@@ -176,8 +178,8 @@
 
 
       <!-- Section 1.3.2 -->
-      <section class="space-y-4 pt-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+      <section class="space-y-5 pt-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-200 dark:border-stone-800 pb-2">
           1.3.2 효용극대화 문제 (UMP)와 해의 존재성
         </h2>
 
@@ -185,7 +187,7 @@
           소비자의 효용극대화 문제(Utility Maximization Problem, UMP)는 주어진 가격 $p$와 소득 $m$ 하에서 예산 제약을 만족하는 효용을 극대화하는 최적화 문제입니다:
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$ \max_{x \in X} u(x) \quad \text{subject to} \quad p \cdot x \le m $$
         </div>
 
@@ -193,16 +195,16 @@
           이 문제의 최적해들의 집합을 <strong>마샬 수요 대응(Marshallian Demand Correspondence)</strong>이라 하며 $x(p,m)$으로 표기합니다:
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$ x(p,m) = \arg\max \{u(x) : x \in B(p,m)\} $$
         </div>
 
         <!-- Weierstrass Theorem Application -->
-        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-5">
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
             <i class="fas fa-check text-stone-500"></i> THEOREM 1.1 · UMP 최적해의 존재성과 유일성
           </div>
-          <p class="text-sm text-stone-800 dark:text-stone-200 font-medium">
+          <p class="text-[15.5px] leading-relaxed">
             1. <strong>[존재성]</strong> 효용함수 $u: X \to \mathbb{R}$가 연속(continuous)이고 $p \gg 0, m > 0$이면, $x(p,m)$은 공집합이 아니며 콤팩트 집합이다 (Weierstrass 극값 정리).<br>
             2. <strong>[유일성]</strong> 추가로 선호관계가 <strong>강볼록(strictly convex)</strong> (즉 효용함수가 강준오목, strictly quasi-concave)하면, 최적해는 유일하여 $x(p,m)$은 단일치 함수(single-valued function)가 된다.
           </p>

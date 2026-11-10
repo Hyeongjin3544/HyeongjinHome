@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>에지워스 상자와 후생경제학 기본정리 | Study Notes | Hyeongjin Oh</title>
-  <meta name="description" content="2인·2재화 에지워스 상자(Edgeworth Box), 계약곡선 도출, 왈라스 법칙, 후생경제학 제1정리의 귀류법 증명 및 제2정리와 민코프스키 분리초평면 정리">
+  <meta name="description" content="미시경제이론: 에지워스 상자(Edgeworth Box), 계약곡선(Contract Curve), 왈라스 법칙, 후생경제학 제1정리 및 제2정리의 수리적 엄밀 증명">
   
   <!-- Favicon -->
   <link rel="icon" type="image/jpeg" href="../assets/profile.jpg">
@@ -57,23 +57,31 @@
 
   <style>
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-      letter-spacing: -0.012em;
+      font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
     }
     .academic-serif {
       font-family: 'Newsreader', Georgia, serif;
     }
-    .callout-prop {
+    /* Clean LaTeX-style Theorem/Definition Block */
+    .math-block {
       border-left: 3px solid #78716c;
-      background: rgba(245, 245, 244, 0.7);
+      background: rgba(245, 245, 244, 0.55);
     }
-    .dark .callout-prop {
+    .dark .math-block {
       border-left: 3px solid #a8a29e;
-      background: rgba(28, 25, 23, 0.6);
+      background: rgba(28, 25, 23, 0.45);
     }
     .callout-proof {
       border-left: 2px dashed #a8a29e;
       background: transparent;
+    }
+    /* Formula display naturally breathing */
+    .katex-display {
+      margin: 1.25rem 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.25rem 0;
     }
   </style>
 </head>
@@ -109,115 +117,131 @@
 
 
   <!-- ==================== MAIN CONTENT ==================== -->
-  <main class="max-w-3xl mx-auto px-6 py-12 flex-1 space-y-10">
+  <main class="max-w-3xl mx-auto px-6 py-14 flex-1 space-y-12">
     
-    <!-- Breadcrumb & Tag -->
-    <div class="space-y-2">
-      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
+    <!-- Title & Metadata -->
+    <header class="space-y-3 border-b border-stone-200/80 dark:border-stone-800/80 pb-6">
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500 dark:text-stone-400">
         <span>Chapter 04 & Supplements</span>
         <span>/</span>
-        <span class="text-stone-900 dark:text-stone-300 font-semibold">General Equilibrium</span>
+        <span class="text-stone-900 dark:text-stone-200 font-semibold">General Equilibrium</span>
       </div>
       <h1 class="academic-serif text-3xl sm:text-4xl font-normal text-stone-900 dark:text-white tracking-tight leading-tight">
         에지워스 상자와 후생경제학 기본정리
       </h1>
-      <p class="text-xs font-mono text-stone-500 dark:text-stone-400 pt-1">
-        Edgeworth Box, Contract Curve, Walras' Law, and Analytical Proofs of Welfare Theorems
+      <p class="text-xs font-mono text-stone-500 dark:text-stone-400">
+        Edgeworth Box, Contract Curve, Walrasian Equilibrium, and Analytical Proofs of Welfare Theorems
       </p>
-    </div>
+    </header>
 
-    <!-- Intro Card -->
-    <div class="p-5 rounded-xl bg-stone-100/70 dark:bg-stone-900/40 border border-stone-200/80 dark:border-stone-800 text-stone-700 dark:text-stone-300 text-sm leading-relaxed space-y-2">
+    <!-- Introductory Prose -->
+    <div class="break-keep text-[16.5px] leading-[1.85] text-stone-700 dark:text-stone-300 space-y-4">
       <p>
         미시경제학의 일반균형이론(General Equilibrium Theory)은 수많은 경제주체들이 각자의 효용을 극대화하고자 분권적으로 내린 의사결정이 <strong>가격기구(Price Mechanism)</strong>를 매개로 어떻게 조화를 이루는지를 분석합니다. 프랜시스 에지워스(Francis Y. Edgeworth, 1881)와 아서 보울리(Arthur L. Bowley, 1924)에 의해 정형화된 <strong>에지워스 상자(Edgeworth Box)</strong>는 자원의 총량이 고정된 2인·2재화 순수교환경제(pure exchange economy)에서 발생하는 거래와 파레토 효율성을 평면상에 완결적으로 투영하는 가장 강력한 기하학적 분석 도구입니다.
       </p>
     </div>
 
     <!-- 3 Core Theorems Overview -->
-    <div class="callout-prop p-5 rounded-r-xl space-y-3">
+    <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
       <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
-        <i class="fas fa-balance-scale text-stone-500"></i> 일반균형의 3대 핵심 명제
+        <i class="fas fa-balance-scale text-stone-500"></i> 일반균형과 후생이론의 3대 핵심 명제
       </div>
-      <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
-        <p><strong>1. 계약곡선과 파레토 최적:</strong> 두 소비자의 한계대체율이 일치($MRS_A = MRS_B$)하여 무차별곡선이 접하는 배분들의 궤적.</p>
-        <p><strong>2. 후생경제학 제1정리:</strong> 소비자의 선호가 국소비포화(LNS)를 만족하면, 모든 왈라스 경쟁균형 배분은 반드시 파레토 효율적이다 (보이지 않는 손).</p>
-        <p><strong>3. 후생경제학 제2정리:</strong> 소비자의 선호가 연속·단조·볼록(convex)하면, 임의의 파레토 효율적 배분은 정액 일괄이전(Lump-sum transfers)을 통해 경쟁균형으로 분권화될 수 있다 (민코프스키 분리초평면 정리).</p>
+      <div class="space-y-2.5 text-[15.5px] text-stone-800 dark:text-stone-200 break-keep">
+        <p>
+          <strong>1. 계약곡선과 파레토 최적:</strong> 두 소비자의 한계대체율이 일치($MRS_A = MRS_B$)하여 무차별곡선이 접하는 배분들의 궤적입니다.
+        </p>
+        <p>
+          <strong>2. 후생경제학 제1정리:</strong> 소비자의 선호가 국소비포화(LNS)를 만족하면, 모든 왈라스 경쟁균형 배분은 반드시 파레토 효율적입니다 (아담 스미스의 보이지 않는 손).
+        </p>
+        <p>
+          <strong>3. 후생경제학 제2정리:</strong> 소비자의 선호가 연속·단조·볼록(convex)하면, 임의의 파레토 효율적 배분은 정액 일괄이전(Lump-sum transfers)을 통해 경쟁균형으로 분권화될 수 있습니다 (민코프스키 분리초평면 정리).
+        </p>
       </div>
     </div>
 
-    <article class="space-y-10 text-stone-800 dark:text-stone-200 text-sm sm:text-base leading-relaxed">
+    <!-- ARTICLE BODY -->
+    <article class="space-y-12 text-[16.5px] leading-[1.85] text-stone-800 dark:text-stone-200 break-keep font-normal">
 
       <!-- SECTION 1 -->
-      <section class="space-y-4">
+      <section class="space-y-5">
         <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
           1. 에지워스 상자의 기하학적 구조와 배분 공간
         </h2>
 
-        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
-          두 명의 소비자 $A, B$와 두 가지 소비재 $x, y$가 존재하며, 경제 전체에 부존된 총자원을 $(\bar{x}, \bar{y}) \gg 0$라 합니다. 실현 가능한 배분 집합(Feasible Allocation Space)은 다음과 같습니다:
+        <p>
+          두 명의 소비자 $A, B$와 두 가지 소비재 $x, y$가 존재하며, 경제 전체에 부존된 총자원을 $(\bar{x}, \bar{y}) \gg 0$라 합니다. 실현 가능한 배분 집합(Feasible Allocation Space) $\mathcal{F}$는 다음과 같이 정의됩니다:
         </p>
 
-        <div class="my-3 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-xs sm:text-sm">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$
-          \mathcal{F} = \left\{ \bigl((x_A, y_A), (x_B, y_B)\bigr) \in \mathbb{R}_+^2 \times \mathbb{R}_+^2 \;\middle|\; x_A + x_B = \bar{x}, \; y_A + y_B = \bar{y} \right\}.
+          \mathcal{F} = \left\{ \bigl((x_A, y_A),\, (x_B, y_B)\bigr) \in \mathbb{R}_+^2 \times \mathbb{R}_+^2 \;\middle|\; x_A + x_B = \bar{x}, \;\; y_A + y_B = \bar{y} \right\}.
           $$
         </div>
 
-        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+        <p>
           에지워스 상자는 가로 길이가 $\bar{x}$, 세로 길이가 $\bar{y}$인 직사각형입니다. 좌측 하단 $O_A(0,0)$은 소비자 $A$의 원점이며, 우측 상단 $O_B(\bar{x}, \bar{y})$는 180도 회전된 소비자 $B$의 원점입니다.
         </p>
 
-        <div class="p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 space-y-2">
-          <div class="font-mono text-xs font-bold uppercase text-stone-700 dark:text-stone-300">초기부존과 상호 이익의 렌즈 (Lens of Mutual Gains)</div>
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-            초기부존 점 $\omega = (\omega_A, \omega_B)$를 통과하는 두 소비자의 무차별곡선이 둘러싸는 교집합 영역을 <strong>상호 이익의 렌즈(Lens of Mutual Gains)</strong>라 합니다. 자발적이고 합리적인 교환에 참여하는 두 경제주체는 반드시 이 렌즈 내부의 파레토 개선 배분으로 거래를 성사시킵니다.
+        <!-- Lens of Mutual Gains -->
+        <div class="math-block p-5 rounded-r-lg space-y-2.5 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-eye text-stone-500"></i> 초기부존과 상호 이익의 렌즈 (Lens of Mutual Gains)
+          </div>
+          <p class="text-[15.5px] leading-relaxed text-stone-700 dark:text-stone-300">
+            초기부존 점 $\omega = (\omega_A, \omega_B)$를 통과하는 두 소비자의 무차별곡선이 둘러싸는 교집합 영역을 <strong>상호 이익의 렌즈(Lens of Mutual Gains)</strong>라 합니다. 자발적이고 합리적인 교환에 참여하는 두 경제주체는 반드시 이 렌즈 내부의 파레토 개선 배분으로 거래를 성사시키며, 그 밖으로 이탈하지 않습니다.
           </p>
         </div>
 
       </section>
 
       <!-- SECTION 2 -->
-      <section class="space-y-4">
+      <section class="space-y-5">
         <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
           2. 계약곡선의 도출과 폐쇄형 해
         </h2>
 
-        <p class="text-sm sm:text-base text-stone-700 dark:text-stone-300">
-          파레토 최적 배분(Pareto Efficient Allocation)은 소비자 $B$의 효용을 기준 수준 $\bar{u}_B$로 고정하고 소비자 $A$의 효용을 극대화하는 최적화 문제로 정식화됩니다:
+        <p>
+          파레토 최적 배분(Pareto Efficient Allocation)은 소비자 $B$의 효용을 임의의 기준 수준 $\bar{u}_B$로 고정하고 소비자 $A$의 효용을 극대화하는 최적화 문제로 정식화됩니다:
         </p>
 
-        <div class="my-3 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-xs sm:text-sm">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$
-          \max_{(x_A, y_A)} u_A(x_A, y_A) \quad \text{s.t.} \quad u_B(\bar{x} - x_A, \bar{y} - y_A) \ge \bar{u}_B.
+          \max_{(x_A, y_A)} u_A(x_A, y_A) \quad \text{s.t.} \quad u_B(\bar{x} - x_A, \, \bar{y} - y_A) \ge \bar{u}_B.
           $$
         </div>
 
-        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
-          라그랑지안 $\mathcal{L} = u_A(x_A, y_A) + \lambda [u_B(\bar{x}-x_A, \bar{y}-y_A) - \bar{u}_B]$에 대한 1계조건을 취하고 승수 $\lambda$를 소거하면, 파레토 최적의 핵심 조건인 <strong>한계대체율 일치 조건</strong>을 얻습니다:
+        <p>
+          라그랑지안 $\mathcal{L} = u_A(x_A, y_A) + \lambda [u_B(\bar{x}-x_A, \bar{y}-y_A) - \bar{u}_B]$에 대한 1계조건을 취하고 승수 $\lambda$를 소거하면, 파레토 최적의 핵심 조건인 <strong>두 소비자의 한계대체율 일치 조건</strong>을 얻습니다:
         </p>
 
-        <div class="p-3 bg-stone-100 dark:bg-stone-900/40 rounded-lg text-center font-mono text-xs sm:text-sm font-semibold">
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
           $$
-          MRS_A(x_A, y_A) = MRS_B(\bar{x} - x_A, \bar{y} - y_A).
+          MRS_A(x_A, y_A) = MRS_B(\bar{x} - x_A, \, \bar{y} - y_A).
           $$
         </div>
 
-        <!-- Cobb-Douglas Example -->
-        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-4">
+        <!-- Cobb-Douglas Closed Form Example -->
+        <div class="math-block p-5 rounded-r-lg space-y-3.5 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
-            <i class="fas fa-calculator text-stone-500"></i> 구체적 예제: Cobb–Douglas 경제에서의 폐쇄형 계약곡선 방정식
+            <i class="fas fa-calculator text-stone-500"></i> 구체적 예제 · Cobb–Douglas 경제에서의 폐쇄형 계약곡선 방정식
           </div>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            - 총부존: $\bar{x} = 10, \;\bar{y} = 10$<br>
-            - 효용함수: $u_A = x_A^{0.6} y_A^{0.4}$, $\quad u_B = x_B^{0.4} y_B^{0.6}$<br>
-            한계대체율을 계산하면 $MRS_A = \frac{3}{2}\frac{y_A}{x_A}$, $MRS_B = \frac{2}{3}\frac{10-y_A}{10-x_A}$입니다. $MRS_A = MRS_B$를 연립하면:
+          <p class="text-[15.5px]">
+            총부존이 $\bar{x} = 10, \;\bar{y} = 10$이고, 효용함수가 각각 다음과 같다고 가정합니다:
           </p>
-          <div class="p-3 bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 text-center font-mono text-sm font-bold">
+          <div class="py-1 text-center font-mono text-base">
+            $$
+            u_A(x_A, y_A) = x_A^{0.6} y_A^{0.4}, \qquad u_B(x_B, y_B) = x_B^{0.4} y_B^{0.6}.
+            $$
+          </div>
+          <p class="text-[15.5px]">
+            각 소비자의 한계대체율은 $MRS_A = \frac{3}{2}\frac{y_A}{x_A}$, $MRS_B = \frac{2}{3}\frac{10-y_A}{10-x_A}$입니다. $MRS_A = MRS_B$를 연립하여 $y_A$에 대해 정리하면 명시적인 폐쇄형(Closed-form) 계약곡선 함수를 얻습니다:
+          </p>
+          <div class="py-2 text-center font-mono text-base sm:text-lg font-bold">
             $$
             y_A(x_A) = \frac{8 x_A}{18 - x_A}, \qquad x_A \in [0, 10].
             $$
           </div>
-          <p class="text-[12px] text-stone-500">
+          <p class="text-xs text-stone-500 dark:text-stone-400">
             도함수 $y_A'(x_A) > 0, y_A''(x_A) > 0$이므로 계약곡선은 원점 $O_A(0,0)$에서 $O_B(10,10)$까지 아래로 볼록(convex)하게 뻗어나갑니다.
           </p>
         </div>
@@ -225,90 +249,105 @@
       </section>
 
       <!-- SECTION 3: FIRST WELFARE THEOREM -->
-      <section class="space-y-4">
+      <section class="space-y-5">
         <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
           3. 후생경제학 제1정리와 엄밀 증명 (First Welfare Theorem)
         </h2>
 
-        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-4">
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
             <i class="fas fa-certificate text-stone-500"></i> THEOREM · 후생경제학 제1정리 (First Fundamental Theorem of Welfare Economics)
           </div>
-          <p class="text-sm text-stone-800 dark:text-stone-200 font-medium">
-            각 소비자의 선호가 <strong>국소비포화(Local Nonsatiation, LNS)</strong>를 만족할 때, 순수교환경제의 임의의 왈라스 경쟁균형 배분 $(x^*, p^*)$은 반드시 <strong>파레토 효율적(Pareto Efficient)</strong>이다.
+          <p class="text-[15.5px] text-stone-800 dark:text-stone-200">
+            각 소비자의 선호가 <strong>국소비포화(Local Nonsatiation, LNS)</strong>를 만족할 때, 임의의 왈라스 경쟁균형 배분 $(x^*, p^*)$은 반드시 <strong>파레토 효율적(Pareto Efficient)</strong>이다.
           </p>
         </div>
 
         <!-- PROOF -->
-        <div class="callout-proof p-5 rounded-r-xl space-y-3 my-4 bg-stone-50 dark:bg-stone-900/30">
+        <div class="callout-proof p-5 rounded-r-lg space-y-4 my-6">
           <div class="text-xs font-mono font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider">
-            [귀류법에 의한 엄밀 증명]
+            [귀류법에 의한 엄밀 수리 증명 (Proof by Contradiction)]
           </div>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            <strong>1. 귀류 가정:</strong> 경쟁균형 배분 $x^* = (x_1^*, \dots, x_I^*)$가 파레토 최적이 아니라고 가정합니다. 그렇다면 총자원 실행가능성 $\sum_{i=1}^I x_i' \le \sum_{i=1}^I \omega_i$를 만족하면서, 모든 $i$에 대해 $x_i' \succeq_i x_i^*$이고 적어도 한 소비자 $k$에 대해 $x_k' \succ_k x_k^*$인 또 다른 실행가능 배분 $x'$가 존재해야 합니다.
+          
+          <p>
+            <strong>Step 1. 귀류 가정:</strong> 경쟁균형 배분 $x^* = (x_1^*, \dots, x_I^*)$가 파레토 효율적이지 않다고 가정합니다. 그렇다면 총자원 실행가능성 $\sum_{i=1}^I x_i' \le \sum_{i=1}^I \omega_i$를 만족하면서, 모든 소비자 $i$에 대해 $x_i' \succeq_i x_i^*$이고 적어도 한 소비자 $k$에 대해 $x_k' \succ_k x_k^*$인 또 다른 실행가능 배분 $x'$가 존재해야 합니다.
           </p>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            <strong>2. 개별 예산제약 검토:</strong><br>
-            - 소비자 $k$는 $x_k^*$를 최적 선택했습니다. 만약 $p^* \cdot x_k' \le p^* \cdot \omega_k$라면 $x_k'$는 예산집합 내에 있었으므로 $x_k^*$를 선택한 최적성에 모순됩니다. 따라서 반드시:
+
+          <p>
+            <strong>Step 2. 개별 최적성의 비교:</strong><br>
+            • 소비자 $k$는 $x_k^*$를 최적 선택했습니다. 만약 $p^* \cdot x_k' \le p^* \cdot \omega_k$라면 $x_k'$는 예산집합 내에서 구매 가능했으므로 $x_k^*$의 최적성에 모순됩니다. 따라서 반드시 엄격 부등호가 성립합니다:
           </p>
-          <div class="p-2 bg-white dark:bg-stone-900/60 rounded text-center font-mono text-xs">
-            $$ p^* \cdot x_k' > p^* \cdot \omega_k \qquad \text{--- (식 1)} $$
+
+          <div class="my-4 py-1 text-center font-mono text-base overflow-x-auto">
+            $$ p^* \cdot x_k' > p^* \cdot \omega_k \qquad \text{--- (1)} $$
           </div>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            - 다른 모든 소비자 $i$에 대해 $x_i' \succeq_i x_i^*$입니다. 만약 $p^* \cdot x_i' < p^* \cdot \omega_i$라면, <strong>국소비포화(LNS)</strong>에 의해 $x_i'$의 무한소 근방에 $x_i'' \succ_i x_i' \succeq_i x_i^*$이면서 여전히 $p^* \cdot x_i'' \le p^* \cdot \omega_i$인 $x_i''$가 존재하여 $x_i^*$의 최적성에 모순됩니다. 따라서 반드시:
+
+          <p>
+            • 다른 모든 소비자 $i$에 대해 $x_i' \succeq_i x_i^*$입니다. 만약 $p^* \cdot x_i' < p^* \cdot \omega_i$라면, <strong>국소비포화(LNS)</strong>에 의해 $x_i'$의 무한소 근방에 $x_i'' \succ_i x_i' \succeq_i x_i^*$이면서 여전히 $p^* \cdot x_i'' \le p^* \cdot \omega_i$인 $x_i''$가 존재하여 $x_i^*$의 최적성에 모순됩니다. 따라서 반드시:
           </p>
-          <div class="p-2 bg-white dark:bg-stone-900/60 rounded text-center font-mono text-xs">
-            $$ p^* \cdot x_i' \ge p^* \cdot \omega_i \quad (\forall i) \qquad \text{--- (식 2)} $$
+
+          <div class="my-4 py-1 text-center font-mono text-base overflow-x-auto">
+            $$ p^* \cdot x_i' \ge p^* \cdot \omega_i \quad (\forall i) \qquad \text{--- (2)} $$
           </div>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            <strong>3. 총합 모순의 도출:</strong> 모든 $i=1, \dots, I$에 대해 (1)과 (2)를 합산합니다. 소비자 $k$에 대해 엄격부등호가 성립하므로:
+
+          <p>
+            <strong>Step 3. 시장 총합 모순의 도출:</strong> 모든 $i=1, \dots, I$에 대해 (1)과 (2)를 합산합니다. 소비자 $k$에 대해 엄격 부등호가 성립하므로:
           </p>
-          <div class="p-2.5 bg-white dark:bg-stone-900/60 rounded text-center font-mono text-xs">
+
+          <div class="my-4 py-2 text-center font-mono text-lg sm:text-xl overflow-x-auto">
             $$
             p^* \cdot \sum_{i=1}^I x_i' > p^* \cdot \sum_{i=1}^I \omega_i.
             $$
           </div>
-          <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
-            그러나 $x'$는 실행가능한 배분이므로 $\sum_i x_i' \le \sum_i \omega_i$이고, 양의 가격벡터 $p^* \gg 0$에 대해 $p^* \cdot \sum x_i' \le p^* \cdot \sum \omega_i$이어야 하므로 <strong>명백한 수학적 모순</strong>이 발생합니다. 따라서 임의의 경쟁균형 배분 $x^*$는 반드시 파레토 최적입니다. $\blacksquare$
+
+          <p>
+            그러나 $x'$는 실행가능한 배분이므로 $\sum_{i=1}^I x_i' \le \sum_{i=1}^I \omega_i$이고, 양의 가격벡터 $p^* \gg 0$에 대하여 $p^* \cdot \sum x_i' \le p^* \cdot \sum \omega_i$이어야 하므로 <strong>명백한 수학적 모순</strong>이 발생합니다. 따라서 임의의 경쟁균형 배분 $x^*$는 반드시 파레토 효율적입니다. $\blacksquare$
           </p>
         </div>
 
-        <div class="p-4 bg-stone-100 dark:bg-stone-900/40 rounded-xl text-xs sm:text-sm text-stone-700 dark:text-stone-300">
-          <strong>가설의 최소성 (Minimality of Hypotheses):</strong> 위 증명에서 효용함수의 미분가능성이나 연속성은 물론, 선호의 <strong>볼록성(Convexity)조차 전혀 요구되지 않았습니다</strong>. 오직 개별 소비자의 합리적 선택과 국소비포화(LNS) 가설만으로 시장의 보이지 않는 손이 자원을 파레토 최적으로 안착시킵니다.
+        <div class="math-block p-5 rounded-r-lg space-y-2 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-info-circle text-stone-500"></i> REMARK · 가설의 최소성 (Minimality of Hypotheses)
+          </div>
+          <p class="text-[15px] leading-relaxed text-stone-700 dark:text-stone-300">
+            위 증명에서 효용함수의 미분가능성이나 연속성은 물론, 선호의 <strong>볼록성(Convexity)조차 전혀 요구되지 않았습니다</strong>. 오직 개별 소비자의 합리적 선택과 국소비포화(LNS) 가설만으로 시장의 보이지 않는 손이 자원을 파레토 최적으로 안착시킵니다.
+          </p>
         </div>
 
       </section>
 
       <!-- SECTION 4: SECOND WELFARE THEOREM -->
-      <section class="space-y-4">
+      <section class="space-y-5">
         <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
           4. 후생경제학 제2정리와 민코프스키 분리초평면
         </h2>
 
-        <div class="callout-prop p-5 rounded-r-xl space-y-2.5 my-4">
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
             <i class="fas fa-certificate text-stone-500"></i> THEOREM · 후생경제학 제2정리 (Second Fundamental Theorem of Welfare Economics)
           </div>
-          <p class="text-sm text-stone-800 dark:text-stone-200 font-medium">
+          <p class="text-[15.5px] text-stone-800 dark:text-stone-200">
             각 소비자의 선호가 연속적이고 단조적이며 <strong>볼록(convex)</strong>하다고 하자. 임의의 파레토 효율적 배분 $x^{**} \gg 0$가 주어지면, 적절한 소득의 <strong>정액 일괄 재분배(Lump-sum transfers)</strong> $(T_1, \dots, T_I)$ ($\sum T_i = 0$)를 거쳐 $x^{**}$를 경쟁균형으로 분권화(decentralize)할 수 있는 가격벡터 $p \neq 0$가 반드시 존재한다.
           </p>
         </div>
 
-        <p class="text-xs sm:text-sm text-stone-600 dark:text-stone-400">
+        <p>
           제2후생정리의 수리적 토대는 <strong>민코프스키 분리초평면 정리(Separating Hyperplane Theorem)</strong>입니다. 각 소비자의 엄밀 상위선호집합들의 민코프스키 합 $V = \sum V_i(x_i^{**})$와 실행가능 총자원 집합 $\mathcal{W}$는 서로소(disjoint)인 볼록집합이므로, 두 집합을 분리하는 초평면(법선벡터 $p$)이 존재하여 시장의 균형 상대가격을 형성합니다.
         </p>
 
-        <div class="p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 space-y-2">
-          <div class="font-mono text-xs font-bold uppercase text-stone-700 dark:text-stone-300">정액 일괄이전 공식 (Lump-sum Transfer Formula)</div>
-          <div class="text-center font-mono text-sm py-1">
-            $$
-            T_i = p \cdot (x_i^{**} - \omega_i), \qquad \sum_{i=1}^I T_i = p \cdot \sum_{i=1}^I (x_i^{**} - \omega_i) = 0.
-            $$
-          </div>
-          <p class="text-[12px] text-stone-500">
-            사회가 지향하는 공평한 배분 $x^{**}$에 도달하기 위해 시장의 가격 기구를 왜곡(가격 통제나 왜곡적 소비세)할 필요 없이, 초기 부존 소득의 정액 이전 $T_i$만 단행한 뒤 시장 경쟁에 맡기면 자원은 완벽히 효율적이면서 공평하게 재배분됩니다.
-          </p>
+        <p>
+          이때 각 개인에게 요구되는 정액 일괄이전 금액은 목표 배분액과 초기 부존가치의 차이로 주어집니다:
+        </p>
+
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          T_i = p \cdot (x_i^{**} - \omega_i), \qquad \sum_{i=1}^I T_i = p \cdot \sum_{i=1}^I (x_i^{**} - \omega_i) = 0.
+          $$
         </div>
+
+        <p class="text-[15.5px] text-stone-600 dark:text-stone-400">
+          사회가 지향하는 공평한 배분 $x^{**}$에 도달하기 위해 시장의 가격 기구를 왜곡(가격 통제나 왜곡적 소비세)할 필요 없이, 초기 부존 소득의 정액 이전 $T_i$만 단행한 뒤 시장 경쟁에 맡기면 자원은 효율성을 전혀 훼손하지 않은 채 목표하는 공평한 상태로 재배분됩니다.
+        </p>
 
       </section>
 

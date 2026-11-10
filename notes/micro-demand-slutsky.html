@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1.5 소비자수요의 성질과 Slutsky 분해 | Hyeongjin Oh</title>
+  <title>1.5 소비자수요의 성질과 Slutsky 분해 | Study Notes | Hyeongjin Oh</title>
   <meta name="description" content="미시경제이론: 대체효과와 소득효과, 슬러츠키 방정식(Slutsky Equation)의 유도, 슬러츠키 행렬의 대칭성과 음의 준정부호성, 보상수요의 법칙">
   
   <!-- Favicon -->
@@ -57,23 +57,31 @@
 
   <style>
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-      letter-spacing: -0.012em;
+      font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
     }
     .academic-serif {
       font-family: 'Newsreader', Georgia, serif;
     }
-    .callout-prop {
+    /* Clean LaTeX-style Theorem/Definition Block */
+    .math-block {
       border-left: 3px solid #78716c;
-      background: rgba(245, 245, 244, 0.7);
+      background: rgba(245, 245, 244, 0.55);
     }
-    .dark .callout-prop {
+    .dark .math-block {
       border-left: 3px solid #a8a29e;
-      background: rgba(28, 25, 23, 0.6);
+      background: rgba(28, 25, 23, 0.45);
     }
     .callout-proof {
       border-left: 2px dashed #a8a29e;
       background: transparent;
+    }
+    /* Formula display naturally breathing */
+    .katex-display {
+      margin: 1.25rem 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.25rem 0;
     }
   </style>
 </head>
@@ -108,120 +116,169 @@
   </header>
 
 
-  <!-- ==================== NOTE ARTICLE ==================== -->
-  <main class="max-w-3xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-10">
+  <!-- ==================== MAIN CONTENT ==================== -->
+  <main class="max-w-3xl mx-auto px-6 py-14 flex-1 space-y-12">
     
-    <!-- HEADER -->
-    <div class="space-y-3 pb-6 border-b border-stone-200 dark:border-stone-800">
-      <div class="flex items-center gap-2 text-xs font-mono text-stone-500">
+    <!-- Title & Metadata -->
+    <header class="space-y-3 border-b border-stone-200/80 dark:border-stone-800/80 pb-6">
+      <div class="flex items-center gap-2 text-xs font-mono text-stone-500 dark:text-stone-400">
         <span>Chapter 01 · Consumer Theory</span>
         <span>/</span>
-        <span>Section 1.5</span>
+        <span class="text-stone-900 dark:text-stone-200 font-semibold">Section 1.5</span>
       </div>
-
-      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+      <h1 class="academic-serif text-3xl sm:text-4xl font-normal text-stone-900 dark:text-white tracking-tight leading-tight">
         1.5 소비자수요의 성질과 Slutsky 분해
       </h1>
+      <p class="text-xs font-mono text-stone-500 dark:text-stone-400">
+        Homogeneity of Degree Zero, Slutsky Decomposition, Symmetry, and Negative Semi-definiteness
+      </p>
+    </header>
 
-      <p class="text-stone-600 dark:text-stone-400 text-sm leading-relaxed italic pt-1">
-        가격 변화에 따른 마샬 수요의 총효과를 상대가격 변화에 의한 대체효과(Substitution Effect)와 실질소득 변화에 의한 소득효과(Income Effect)로 분해하고, 슬러츠키 행렬의 대칭성과 음의 준정부호성을 증명합니다.
+    <!-- Introductory Prose -->
+    <div class="break-keep text-[16.5px] leading-[1.85] text-stone-700 dark:text-stone-300 space-y-4">
+      <p>
+        가격이 변할 때 소비자의 수요량이 변하는 총효과는 <strong>상대가격 변화에 따른 대체효과(Substitution Effect)</strong>와 <strong>실질 구매력 변화에 따른 소득효과(Income Effect)</strong>의 결합으로 나타납니다. 힉스 보상수요와 마샬 수요를 잇는 쌍대성 관계를 미분함으로써 도출되는 <strong>슬러츠키 방정식(Slutsky Equation)</strong>은 관측 가능한 시장 데이터로부터 소비자의 근원적인 선호 구조를 실증 검정할 수 있게 하는 미시경제학의 핵심 정리입니다.
       </p>
     </div>
 
-    <!-- CONTENT -->
-    <article class="space-y-8 text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+    <!-- ARTICLE BODY -->
+    <article class="space-y-12 text-[16.5px] leading-[1.85] text-stone-800 dark:text-stone-200 break-keep font-normal">
       
       <!-- Section 1.5.1 -->
-      <section class="space-y-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
-          1.5.1 동차성과 Money Illusion의 부재
+      <section class="space-y-5">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          1. 동차성과 화폐환상(Money Illusion)의 부재
         </h2>
         
         <p>
-          수요함수와 간접효용함수의 0차 동차성($x(\lambda p, \lambda m) = x(p,m)$)은 소비자가 명목 화폐단위가 아니라 <strong>상대가격과 실질소득</strong>에 기초하여 합리적으로 반응함을 의미합니다. 오일러 정리(Euler's Theorem)에 의해 다음 항등식이 성립합니다:
+          수요함수와 간접효용함수의 가격·소득에 대한 0차 동차성($x(\lambda p, \lambda m) = x(p,m)$, $\lambda > 0$)은 소비자가 명목 화폐단위가 아니라 <strong>상대가격과 실질소득</strong>에 기초하여 합리적으로 반응함을 의미합니다. 모든 가격과 소득이 같은 비율로 상승하면 예산집합 $B(\lambda p, \lambda m) = B(p,m)$ 자체가 불변이므로 최적 선택 역시 변하지 않습니다.
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
-          $$ \sum_{j=1}^n \frac{\partial x_i(p,m)}{\partial p_j} p_j + \frac{\partial x_i(p,m)}{\partial m} m = 0 \quad (\forall i = 1,\dots,n) $$
+        <p>
+          동차함수에 대한 오일러 정리(Euler's Theorem)를 적용하면 수요함수의 가격 편미분과 소득 편미분 사이에 다음의 항등적 선형 결합이 성립합니다:
+        </p>
+
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          \sum_{j=1}^n \frac{\partial x_i(p,m)}{\partial p_j} p_j + \frac{\partial x_i(p,m)}{\partial m} m = 0 \qquad (\forall i = 1,\dots,n).
+          $$
         </div>
+
+        <p>
+          이를 탄력성(Elasticity) 형태로 다시 쓰면 다음과 같습니다:
+        </p>
+
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          \sum_{j=1}^n \varepsilon_{ij}(p,m) + \eta_i(p,m) = 0,
+          $$
+        </div>
+
+        <p class="text-[15.5px] text-stone-600 dark:text-stone-400">
+          여기서 $\varepsilon_{ij} = \frac{\partial x_i}{\partial p_j}\frac{p_j}{x_i}$는 $i$재의 $j$재 가격탄력성(자기가격 및 교차가격), $\eta_i = \frac{\partial x_i}{\partial m}\frac{m}{x_i}$는 $i$재의 소득탄력성입니다. 즉, 한 재화의 모든 가격탄력성의 합과 소득탄력성의 합은 정확히 0이 되어야 합니다.
+        </p>
       </section>
 
-
       <!-- Section 1.5.2 -->
-      <section class="space-y-4 pt-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
-          1.5.2 슬러츠키 방정식의 유도 (Slutsky Equation)
+      <section class="space-y-5">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          2. 슬러츠키 방정식의 연역적 유도 (Slutsky Equation)
         </h2>
 
         <p>
-          쌍대성 항등식 $h_i(p,u) \equiv x_i(p, e(p,u))$의 양변을 가격 $p_j$에 대해 편미분합니다 (체인 룰 적용):
+          소비자이론의 핵심 쌍대성 항등식에 따르면, 주어진 목표효용 $u$를 달성하는 최소지출액 $e(p,u)$ 하에서 마샬 수요는 힉스 보상수요와 정확히 일치합니다:
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
-          $$ \frac{\partial h_i(p,u)}{\partial p_j} = \frac{\partial x_i(p,e(p,u))}{\partial p_j} + \frac{\partial x_i(p,e(p,u))}{\partial m} \frac{\partial e(p,u)}{\partial p_j} $$
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          h_i(p,u) \equiv x_i\bigl(p, \, e(p,u)\bigr).
+          $$
         </div>
 
         <p>
-          Shephard's Lemma에 의해 $\frac{\partial e(p,u)}{\partial p_j} = h_j(p,u) = x_j(p,m)$이므로, 이를 대입하고 Marshallian 가격 미분항을 좌변으로 정리하면 유명한 <strong>슬러츠키 방정식(Slutsky Equation)</strong>이 완성됩니다:
+          이 항등식의 양변을 임의의 재화 가격 $p_j$에 대하여 전미분(체인 룰 적용)합니다:
+        </p>
+
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          \frac{\partial h_i(p,u)}{\partial p_j} = \frac{\partial x_i(p, e(p,u))}{\partial p_j} + \frac{\partial x_i(p, e(p,u))}{\partial m} \cdot \frac{\partial e(p,u)}{\partial p_j}.
+          $$
+        </div>
+
+        <p>
+          여기에 셰퍼드의 보조정리(Shephard's Lemma)인 $\frac{\partial e(p,u)}{\partial p_j} = h_j(p,u) = x_j(p,m)$을 대입하고, 관측 가능한 마샬 수요의 가격 반응항을 좌변으로 정리하면 미시경제학의 기본 정리인 <strong>슬러츠키 방정식(Slutsky Equation)</strong>이 완성됩니다:
         </p>
 
         <!-- Slutsky Box -->
-        <div class="p-5 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-3 my-5">
-          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
-            THEOREM · 슬러츠키 분해 (Slutsky Decomposition)
+        <div class="math-block p-5 rounded-r-lg space-y-4 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-check text-stone-500"></i> THEOREM · 슬러츠키 분해 (Slutsky Decomposition)
           </div>
           
-          <div class="py-2 text-center font-mono text-base sm:text-lg overflow-x-auto">
-            $$ \underbrace{\frac{\partial x_i(p,m)}{\partial p_j}}_{\text{총 가격효과 (Total Effect)}} = \underbrace{\frac{\partial h_i(p,u)}{\partial p_j}}_{\text{대체효과 (Substitution Effect)}} - \underbrace{x_j(p,m) \frac{\partial x_i(p,m)}{\partial m}}_{\text{소득효과 (Income Effect)}} $$
+          <div class="py-2 text-center font-mono text-base sm:text-xl overflow-x-auto">
+            $$
+            \underbrace{\frac{\partial x_i(p,m)}{\partial p_j}}_{\text{총 가격효과 (Total Effect)}} = \underbrace{\frac{\partial h_i(p,u)}{\partial p_j}}_{\text{대체효과 (Substitution Effect)}} - \underbrace{x_j(p,m) \frac{\partial x_i(p,m)}{\partial m}}_{\text{소득효과 (Income Effect)}}.
+            $$
           </div>
 
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed pt-1 border-t border-stone-100 dark:border-stone-800">
-            • <strong>대체효과:</strong> 효용 수준 $u$를 일정하게 유지한 채 상대가격 변화에만 반응하는 순수한 대체 반응.<br>
-            • <strong>소득효과:</strong> 가격 상승으로 인해 소비자의 실질 구매력이 $x_j$만큼 감소함에 따라 발생하는 소득 유발 반응.
-          </p>
+          <div class="space-y-2 text-[15px] text-stone-700 dark:text-stone-300 border-t border-stone-200/60 dark:border-stone-800 pt-3">
+            <p>
+              • <strong>대체효과 ($s_{ij} = \partial h_i / \partial p_j$):</strong> 효용 수준 $u$를 일정하게 보상한 상태에서 오직 상대가격 변동에만 반응하는 순수한 대체 반응입니다.
+            </p>
+            <p>
+              • <strong>소득효과 ($-x_j \cdot \partial x_i / \partial m$):</strong> $j$재 가격 상승으로 인해 소비자의 실질 구매력이 $x_j$ 단위만큼 잠식됨에 따라 파생되는 소득 변화 효과입니다.
+            </p>
+          </div>
         </div>
 
       </section>
 
-
       <!-- Section 1.5.3 -->
-      <section class="space-y-4 pt-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
-          1.5.3 슬러츠키 행렬(Substitution Matrix)의 성질
+      <section class="space-y-5">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white border-b border-stone-200 dark:border-stone-800 pb-2">
+          3. 슬러츠키 행렬(Substitution Matrix)의 성질과 보상수요의 법칙
         </h2>
 
         <p>
-          모든 $i, j$에 대한 대체효과 항들을 모은 $n \times n$ 행렬을 <strong>슬러츠키 행렬(Slutsky Substitution Matrix)</strong> $S(p,m)$이라 정의합니다:
+          모든 재화 쌍 $(i, j)$에 대한 대체효과 항 $s_{ij}(p,m) = \frac{\partial h_i(p,u)}{\partial p_j}$를 성분으로 갖는 $n \times n$ 행렬을 <strong>슬러츠키 행렬(Slutsky Substitution Matrix)</strong> $S(p,m)$이라 정의합니다:
         </p>
 
-        <div class="my-4 p-4 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 text-center font-mono overflow-x-auto text-base">
-          $$ S(p,m) = \nabla_p h(p,u) = \nabla_p^2 e(p,u) $$
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          S(p,m) = \nabla_p h(p,u) = \nabla_p^2 e(p,u).
+          $$
         </div>
 
-        <div class="callout-prop p-5 rounded-r-xl space-y-3 my-5">
-          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
-            PROPOSITION 1.5 · 슬러츠키 행렬의 대수적 성질
+        <div class="math-block p-5 rounded-r-lg space-y-4 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-certificate text-stone-500"></i> PROPOSITION 1.5 · 슬러츠키 행렬의 3대 대수적 성질
           </div>
 
-          <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
+          <div class="space-y-4 text-[15.5px] text-stone-800 dark:text-stone-200">
             <div>
-              <strong>1. 대칭성 (Symmetry):</strong> Young의 정리에 의해 지출함수의 2계 교차편미분이 같으므로,
-              <div class="py-1 font-mono text-center">
-                $$ s_{ij}(p,m) = s_{ji}(p,m) \quad \iff \quad S(p,m) = S(p,m)^T $$
+              <strong class="text-stone-900 dark:text-white">1. 대칭성 (Symmetry):</strong>
+              지출함수 $e(p,u)$가 $C^2$ 급이면 Young의 정리(Schwartz 정리)에 의해 교차편미분의 순서가 무관하므로:
+              <div class="py-2 font-mono text-center text-base sm:text-lg">
+                $$ s_{ij}(p,m) = s_{ji}(p,m) \quad \iff \quad S(p,m) = S(p,m)^T. $$
+              </div>
+              이는 관측 가능한 마샬 수요 함수에서도 $\frac{\partial x_i}{\partial p_j} + x_j \frac{\partial x_i}{\partial m} = \frac{\partial x_j}{\partial p_i} + x_i \frac{\partial x_j}{\partial m}$이라는 엄격한 실증 검정 제약(Integrability Condition)을 줍니다.
+            </div>
+
+            <div class="pt-3 border-t border-stone-200/60 dark:border-stone-700/60">
+              <strong class="text-stone-900 dark:text-white">2. 음의 준정부호성 (Negative Semi-definiteness):</strong>
+              지출함수 $e(p,u)$는 가격벡터 $p$에 대해 오목함수(concave)이므로, 그 헤시안 행렬인 $S(p,m) = \nabla_p^2 e(p,u)$는 모든 벡터 $\xi \in \mathbb{R}^n$에 대해 음의 준정부호입니다:
+              <div class="py-2 font-mono text-center text-base sm:text-lg">
+                $$ \xi^T S(p,m) \xi \le 0 \qquad (\forall \xi \in \mathbb{R}^n). $$
               </div>
             </div>
-            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
-              <strong>2. 음의 준정부호성 (Negative Semi-definiteness):</strong> 지출함수 $e(p,u)$가 가격 $p$에 대해 오목(concave)하므로, 그 헤시안 행렬인 $S(p,m)$은 음의 준정부호이다:
-              <div class="py-1 font-mono text-center">
-                $$ \xi^T S(p,m) \xi \le 0 \quad (\forall \xi \in \mathbb{R}^n) $$
+
+            <div class="pt-3 border-t border-stone-200/60 dark:border-stone-700/60">
+              <strong class="text-stone-900 dark:text-white">3. 보상수요의 법칙 (Law of Compensated Demand):</strong>
+              음의 준정부호성에 의해 슬러츠키 행렬의 모든 주대각선 성분(자기가격 대체효과)은 항상 비양수입니다:
+              <div class="py-2 font-mono text-center text-base sm:text-lg">
+                $$ s_{ii}(p,m) = \frac{\partial h_i(p,u)}{\partial p_i} \le 0. $$
               </div>
-            </div>
-            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
-              <strong>3. 보상수요의 법칙 (Law of Compensated Demand):</strong> 음의 준정부호성에 의해 주대각성분은 항상 비양수이다:
-              <div class="py-1 font-mono text-center">
-                $$ s_{ii}(p,m) = \frac{\partial h_i(p,u)}{\partial p_i} \le 0 $$
-              </div>
-              따라서 보상수요는 자신의 가격 변화에 대해 절대로 우상향할 수 없습니다 (기펜재 현상은 오직 소득효과에 의해서만 발생).
+              따라서 보상수요곡선은 가격 상승에 대해 <strong>절대로 우상향할 수 없습니다</strong>. 마샬 수요에서 가격 상승 시 수요량이 증가하는 이른바 기펜재(Giffen Good) 현상은 대체효과의 부호가 뒤집힌 것이 아니라, 강한 열등재 성격으로 인해 양(+)의 소득효과가 음(-)의 대체효과를 압도할 때만 발생합니다.
             </div>
           </div>
         </div>

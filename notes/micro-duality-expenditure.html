@@ -57,19 +57,25 @@
 
   <style>
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
-      letter-spacing: -0.012em;
+      font-family: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      letter-spacing: -0.015em;
     }
     .academic-serif {
       font-family: 'Newsreader', Georgia, serif;
     }
-    .callout-prop {
+    .math-block {
       border-left: 3px solid #78716c;
-      background: rgba(245, 245, 244, 0.7);
+      background: rgba(245, 245, 244, 0.55);
     }
-    .dark .callout-prop {
+    .dark .math-block {
       border-left: 3px solid #a8a29e;
-      background: rgba(28, 25, 23, 0.6);
+      background: rgba(28, 25, 23, 0.45);
+    }
+    .katex-display {
+      margin: 1.25rem 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.25rem 0;
     }
   </style>
 </head>
@@ -125,65 +131,65 @@
     </div>
 
     <!-- CONTENT -->
-    <article class="space-y-8 text-[15px] text-stone-700 dark:text-stone-300 leading-relaxed font-normal">
+    <article class="space-y-12 text-[16.5px] leading-[1.85] text-stone-800 dark:text-stone-200 break-keep font-normal">
       
       <!-- Section 1.4.1 -->
-      <section class="space-y-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+      <section class="space-y-5">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-200 dark:border-stone-800 pb-2">
           1.4.1 두 가지 최적화 문제: UMP와 EMP
         </h2>
         
         <p>
-          동일한 선호와 가격체계 아래에서 소비자의 의사결정은 상호 보완적인 두 가지 방향에서 접근할 수 있습니다:
+          동일한 선호체계와 시장가격 아래에서 소비자의 최적화 의사결정은 상호 보완적인 두 가지 방향(Primal vs Dual)에서 완벽히 대칭적으로 접근할 수 있습니다:
         </p>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
           
-          <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Marshallian Problem (UMP)</span>
-            <div class="text-xs font-mono py-1">
+          <div class="p-5 rounded-lg bg-stone-100/60 dark:bg-stone-900/40 border border-stone-200/70 dark:border-stone-800 space-y-2">
+            <span class="text-xs font-mono font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider">Marshallian Problem (UMP)</span>
+            <div class="py-2 text-center font-mono text-base">
               $$ \max_{x \in X} u(x) \quad \text{s.t.} \quad p \cdot x \le m $$
             </div>
-            <p class="text-xs text-stone-600 dark:text-stone-400">
-              • 최적 선택: Marshallian 수요 $x(p,m)$<br>
-              • 최대 가치함수: 간접효용함수 $v(p,m)$
-            </p>
+            <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1 pt-1">
+              <li>• 최적 선택: Marshallian 수요 $x(p,m)$</li>
+              <li>• 최대 가치함수: 간접효용함수 $v(p,m)$</li>
+            </ul>
           </div>
 
-          <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Hicksian Problem (EMP)</span>
-            <div class="text-xs font-mono py-1">
+          <div class="p-5 rounded-lg bg-stone-100/60 dark:bg-stone-900/40 border border-stone-200/70 dark:border-stone-800 space-y-2">
+            <span class="text-xs font-mono font-bold text-stone-600 dark:text-stone-400 uppercase tracking-wider">Hicksian Problem (EMP)</span>
+            <div class="py-2 text-center font-mono text-base">
               $$ \min_{x \in X} p \cdot x \quad \text{s.t.} \quad u(x) \ge u $$
             </div>
-            <p class="text-xs text-stone-600 dark:text-stone-400">
-              • 최적 선택: Hicksian (보상)수요 $h(p,u)$<br>
-              • 최소 가치함수: 지출함수 $e(p,u)$
-            </p>
+            <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1 pt-1">
+              <li>• 최적 선택: Hicksian (보상)수요 $h(p,u)$</li>
+              <li>• 최소 가치함수: 지출함수 $e(p,u)$</li>
+            </ul>
           </div>
 
         </div>
 
         <!-- 간접효용함수와 지출함수의 성질 -->
-        <div class="callout-prop p-5 rounded-r-xl space-y-3 my-5">
+        <div class="math-block p-5 rounded-r-lg space-y-4 my-6">
           <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300">
-            PROPOSITION 1.4 · 가치함수의 주요 성질 (Properties of Value Functions)
+            PROPOSITION 1.4 · 가치함수의 핵심 수리적 성질 (Properties of Value Functions)
           </div>
           
-          <div class="space-y-2 text-xs sm:text-sm text-stone-800 dark:text-stone-200">
+          <div class="space-y-3 text-[15px] text-stone-800 dark:text-stone-200 leading-relaxed">
             <div>
               <strong>1. 간접효용함수 $v(p,m)$:</strong>
-              <ul class="list-disc pl-5 mt-1 space-y-0.5 text-stone-700 dark:text-stone-300">
+              <ul class="list-disc pl-5 mt-1 space-y-1 text-stone-700 dark:text-stone-300">
                 <li>$(p,m)$에 대해 0차 동차 (Homogeneous of degree 0): $v(\lambda p, \lambda m) = v(p,m)$</li>
                 <li>가격 $p$에 대해 비증가(non-increasing), 소득 $m$에 대해 엄격한 증가(strictly increasing)</li>
-                <li>$(p,m)$에 대해 <strong>준볼록(Quasi-convex)</strong></li>
+                <li>$(p,m)$에 대해 <strong>준볼록(Quasi-convex)</strong>: 하위수준집합이 볼록집합</li>
               </ul>
             </div>
-            <div class="pt-2 border-t border-stone-200/60 dark:border-stone-700/60">
+            <div class="pt-3 border-t border-stone-200/70 dark:border-stone-800">
               <strong>2. 지출함수 $e(p,u)$:</strong>
-              <ul class="list-disc pl-5 mt-1 space-y-0.5 text-stone-700 dark:text-stone-300">
+              <ul class="list-disc pl-5 mt-1 space-y-1 text-stone-700 dark:text-stone-300">
                 <li>가격 $p$에 대해 1차 동차 (Homogeneous of degree 1): $e(\lambda p, u) = \lambda e(p,u)$</li>
                 <li>가격 $p$에 대해 비감소(non-decreasing), 목표효용 $u$에 대해 엄격한 증가</li>
-                <li>가격 $p$에 대해 <strong>오목(Concave)</strong>: $\nabla_p^2 e(p,u)$는 음의 준정부호(Negative Semi-definite)</li>
+                <li>가격 $p$에 대해 <strong>오목(Concave)</strong>: 헤시안 행렬 $\nabla_p^2 e(p,u)$는 음의 준정부호(Negative Semi-definite)</li>
               </ul>
             </div>
           </div>
@@ -193,58 +199,62 @@
 
 
       <!-- Section 1.4.2 -->
-      <section class="space-y-4 pt-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
-          1.4.2 Duality 항등식 (Fundamental Dual Identities)
+      <section class="space-y-5 pt-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-200 dark:border-stone-800 pb-2">
+          1.4.2 Duality 4대 기본 항등식 (Fundamental Dual Identities)
         </h2>
 
         <p>
-          소비자의 선호가 국소 불포화(Local Non-satiation)를 만족하면, UMP와 EMP의 제약식은 경계에서 등호로 만족되며 다음 4대 항등식이 성립합니다:
+          소비자의 선호가 국소비포화(Local Nonsatiation)를 만족하면, UMP와 EMP의 제약식은 경계에서 등호로 만족되며 다음 4대 항등식이 성립합니다:
         </p>
 
-        <div class="my-4 p-5 bg-white dark:bg-stone-900/60 rounded-xl border border-stone-200/80 dark:border-stone-800 font-mono text-sm space-y-2 overflow-x-auto">
-          <div>1) $e(p, v(p,m)) \equiv m$</div>
-          <div>2) $v(p, e(p,u)) \equiv u$</div>
-          <div>3) $x(p,m) \equiv h(p, v(p,m))$</div>
-          <div>4) $h(p,u) \equiv x(p, e(p,u))$</div>
+        <div class="my-6 py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+          $$
+          \begin{aligned}
+          1)\quad &e\bigl(p, v(p,m)\bigr) \equiv m \\
+          2)\quad &v\bigl(p, e(p,u)\bigr) \equiv u \\
+          3)\quad &x(p,m) \equiv h\bigl(p, v(p,m)\bigr) \\
+          4)\quad &h(p,u) \equiv x\bigl(p, e(p,u)\bigr)
+          \end{aligned}
+          $$
         </div>
 
       </section>
 
 
       <!-- Section 1.4.3 -->
-      <section class="space-y-4 pt-4">
-        <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-100 dark:border-stone-850 pb-2">
+      <section class="space-y-5 pt-4">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white pt-2 border-b border-stone-200 dark:border-stone-800 pb-2">
           1.4.3 포락선 정리: Shephard's Lemma와 Roy's Identity
         </h2>
 
         <p>
-          가치함수의 매개변수에 대한 미분(Envelope Theorem)을 적용하면, 복잡한 1계조건을 풀지 않고도 수요함수를 즉각적으로 유도할 수 있습니다.
+          가치함수의 매개변수에 대한 미분(Envelope Theorem)을 적용하면, 복잡한 1계조건을 일일이 풀지 않고도 수요함수를 즉각적으로 유도할 수 있습니다.
         </p>
 
         <!-- Shephard's Lemma -->
-        <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2 my-4">
-          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
-            Shephard's Lemma (셰퍼드의 보조정리)
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-certificate text-stone-500"></i> Shephard's Lemma (셰퍼드의 보조정리)
           </div>
-          <p class="text-sm text-stone-700 dark:text-stone-300">
+          <p class="text-[15.5px]">
             지출함수 $e(p,u)$를 가격 $p_i$로 편미분하면 $i$번째 재화의 <strong>Hicksian (보상)수요</strong>가 도출된다:
           </p>
-          <div class="py-2 text-center font-mono text-base">
+          <div class="py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
             $$ \frac{\partial e(p,u)}{\partial p_i} = h_i(p,u) \quad \iff \quad \nabla_p e(p,u) = h(p,u) $$
           </div>
         </div>
 
         <!-- Roy's Identity -->
-        <div class="p-4 rounded-xl bg-white dark:bg-stone-900/60 border border-stone-200/80 dark:border-stone-800 space-y-2 my-4">
-          <div class="text-xs font-mono font-bold uppercase text-stone-700 dark:text-stone-300">
-            Roy's Identity (로이의 항등식)
+        <div class="math-block p-5 rounded-r-lg space-y-3 my-6">
+          <div class="text-xs font-mono font-bold uppercase tracking-wider text-stone-700 dark:text-stone-300 flex items-center gap-1.5">
+            <i class="fas fa-certificate text-stone-500"></i> Roy's Identity (로이의 항등식)
           </div>
-          <p class="text-sm text-stone-700 dark:text-stone-300">
+          <p class="text-[15.5px]">
             항등식 $v(p, e(p,u)) = u$를 $p_i$로 전미분하고 Shephard's Lemma를 결합하면, 간접효용함수의 편미분 비율로부터 <strong>Marshallian 수요</strong>가 즉각 도출된다:
           </p>
-          <div class="py-2 text-center font-mono text-base">
-            $$ x_i(p,m) = -\frac{\partial v(p,m)/\partial p_i}{\partial v(p,m)/\partial m} $$
+          <div class="py-2 text-center text-lg sm:text-xl font-normal overflow-x-auto">
+            $$ x_i(p,m) = -\frac{\partial v(p,m)/\partial p_i}{\partial v(p,m)/\partial m} \quad \iff \quad x(p,m) = -\frac{\nabla_p v(p,m)}{\partial v(p,m)/\partial m} $$
           </div>
         </div>
 
