@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hyeongjin Oh (오형진) | University of Seoul Economics</title>
-  <meta name="description" content="서울시립대학교 경제학과 석사과정 오형진(Hyeongjin Oh)의 개인 학술 프로필 웹사이트입니다. 계량경제학과 머신러닝을 공부하고 있습니다.">
+  <title>Hyeongjin Oh | University of Seoul Economics</title>
+  <meta name="description" content="서울시립대학교 경제학과 석사과정 오형진(Hyeongjin Oh)의 개인 학술 프로필 웹사이트입니다.">
   
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📈</text></svg>">
@@ -17,16 +17,10 @@
       theme: {
         extend: {
           colors: {
-            uos: {
-              50: '#f0f5fc',
-              100: '#e1ecf8',
-              500: '#004b87',
-              600: '#003a6b',
-              800: '#002547',
-            }
+            uos: '#004b87',
           },
           fontFamily: {
-            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
             sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           }
@@ -35,10 +29,10 @@
     }
   </script>
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Newsreader for sophisticated academic serif, Inter for clean sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -46,563 +40,287 @@
   <style>
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.011em;
     }
-    .serif-title {
-      font-family: 'Playfair Display', Georgia, serif;
-    }
-    .glass-nav {
-      background: rgba(255, 255, 255, 0.88);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    .dark .glass-nav {
-      background: rgba(15, 23, 42, 0.88);
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
     }
   </style>
 </head>
 
-<body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-blue-100 selection:text-blue-900 dark:selection:bg-blue-900 dark:selection:text-blue-100">
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
 
-  <!-- ==================== NAVIGATION BAR ==================== -->
-  <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-slate-200/80 dark:border-slate-800/80 transition-all duration-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        
-        <!-- Logo / Name -->
-        <a href="#hero" class="flex items-center gap-2 group">
-          <span class="serif-title text-xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            Hyeongjin Oh
-          </span>
-          <span class="text-xs px-2 py-0.5 rounded-full font-medium bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200/60 dark:border-blue-800/50">
-            UOS Economics
-          </span>
-        </a>
+  <!-- ==================== HEADER & TOP NAV ==================== -->
+  <header class="border-b border-stone-200/70 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+      
+      <a href="#hero" class="text-base font-semibold tracking-tight text-stone-900 dark:text-white flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <span class="academic-serif text-lg">Hyeongjin Oh</span>
+        <span class="text-xs text-stone-400 dark:text-stone-500 font-normal">/</span>
+        <span class="text-xs font-normal text-stone-500 dark:text-stone-400">Economics · UOS</span>
+      </a>
 
-        <!-- Desktop Menu -->
-        <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
-          <a href="#about" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">About</a>
-          <a href="#teaching" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">Teaching</a>
-          <a href="#cv" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">CV</a>
-          <a href="#research" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">Research</a>
-          <a href="#projects" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">Projects</a>
-          <a href="#notes" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">Notes</a>
-          <a href="#contact" class="px-3 py-1.5 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-300 dark:hover:text-white dark:hover:bg-slate-800/70 transition-all">Contact</a>
+      <nav class="flex items-center gap-6 text-sm text-stone-600 dark:text-stone-400">
+        <a href="#about" class="hover:text-stone-900 dark:hover:text-white transition-colors">About</a>
+        <a href="#education" class="hover:text-stone-900 dark:hover:text-white transition-colors">Education</a>
+        <a href="#teaching" class="hover:text-stone-900 dark:hover:text-white transition-colors">Teaching</a>
+        <a href="#contact" class="hover:text-stone-900 dark:hover:text-white transition-colors">Contact</a>
 
-          <div class="h-4 w-px bg-slate-300 dark:bg-slate-700 mx-2"></div>
+        <div class="w-px h-3.5 bg-stone-300 dark:bg-stone-700"></div>
 
-          <!-- Dark Mode Toggle Button -->
-          <button id="theme-toggle" type="button" aria-label="Toggle theme" class="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800 transition-colors">
-            <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-base"></i>
-            <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-base"></i>
-          </button>
-        </nav>
+        <!-- Dark Mode Switch -->
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
 
-        <!-- Mobile Menu Button -->
-        <div class="flex items-center md:hidden gap-2">
-          <button id="mobile-theme-toggle" type="button" aria-label="Toggle theme" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <i id="mobile-toggle-icon" class="fas fa-moon"></i>
-          </button>
-          <button id="mobile-menu-btn" class="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
-            <i class="fas fa-bars text-lg"></i>
-          </button>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/95 px-4 pt-2 pb-4 space-y-1">
-      <a href="#about" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">About</a>
-      <a href="#teaching" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Teaching</a>
-      <a href="#cv" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">CV</a>
-      <a href="#research" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Research</a>
-      <a href="#projects" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Projects</a>
-      <a href="#notes" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Notes</a>
-      <a href="#contact" class="block px-3 py-2 rounded-md font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Contact</a>
     </div>
   </header>
 
 
-  <!-- ==================== HERO & PROFILE SECTION ==================== -->
-  <section id="hero" class="pt-28 pb-16 md:pt-36 md:pb-24 border-b border-slate-200 dark:border-slate-800/80">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="max-w-3xl mx-auto px-6 py-14 sm:py-20 flex-1 space-y-16">
+    
+    <!-- HERO PROFILE SECTION -->
+    <section id="hero" class="space-y-6">
       
-      <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
-        
-        <!-- Profile Avatar -->
-        <div class="relative group">
-          <div class="w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4 border-white dark:border-slate-800 shadow-xl shadow-blue-900/10 dark:shadow-none ring-1 ring-slate-200 dark:ring-slate-700">
-            <img src="assets/avatar.svg" alt="Hyeongjin Oh Profile" class="w-full h-full object-cover">
-          </div>
-          <div class="absolute bottom-2 right-2 bg-emerald-500 w-5 h-5 rounded-full border-2 border-white dark:border-slate-900 shadow" title="Actively Studying & Researching"></div>
-        </div>
-
-        <!-- Profile Intro Text -->
-        <div class="flex-1 text-center md:text-left">
-          
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-blue-100/70 text-blue-800 dark:bg-blue-950/80 dark:text-blue-300 border border-blue-200 dark:border-blue-800 mb-3">
-            <span class="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400"></span>
-            M.A. Student in Economics · University of Seoul
-          </div>
-
-          <h1 class="serif-title text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-slate-900 dark:text-white mb-2">
-            오 형 진 <span class="text-2xl sm:text-3xl font-medium text-slate-500 dark:text-slate-400 font-sans">(Hyeongjin Oh)</span>
+      <div class="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-6 pb-2">
+        <div>
+          <h1 class="academic-serif text-3xl sm:text-4xl font-normal text-stone-900 dark:text-white tracking-tight">
+            오 형 진 <span class="text-2xl sm:text-3xl text-stone-500 dark:text-stone-400 font-sans font-light">(Hyeongjin Oh)</span>
           </h1>
-
-          <div class="text-sm font-semibold text-blue-700 dark:text-blue-300 mb-4">
-            서울시립대학교 일반대학원 경제학과 석사과정
-          </div>
-
-          <p class="text-base sm:text-lg text-slate-600 dark:text-slate-300 leading-relaxed max-w-2xl mb-5">
-            <strong>경제학(본전공)</strong>과 <strong>수학(복수전공)</strong>을 전공하고, 탄탄한 수리적 배경을 바탕으로 <strong>계량경제학(Econometrics)</strong>과 <strong>머신러닝(Machine Learning)</strong>을 공부하고 있습니다. 주로 <strong>MATLAB</strong>, <strong>R</strong>, <strong>Julia</strong>를 활용하여 수치 연산과 통계 모형을 다루며, 문서는 <strong>$\LaTeX$</strong>으로 작성합니다.
+          <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base mt-1.5">
+            M.A. Student in Economics, University of Seoul (서울시립대학교)
           </p>
-
-          <!-- Research Interests Tag Chips -->
-          <div class="flex flex-wrap justify-center md:justify-start gap-2 mb-6">
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300"># Econometrics</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300"># Machine Learning</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300"># MATLAB · R · Julia</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300"># LaTeX</span>
-            <span class="px-2.5 py-1 text-xs font-medium rounded-md bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300"># University of Seoul</span>
-          </div>
-
-          <!-- Action Buttons -->
-          <div class="flex flex-wrap justify-center md:justify-start items-center gap-3">
-            <a href="#teaching" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-700 hover:bg-blue-800 text-white font-medium text-sm shadow-sm transition-all hover:-translate-y-0.5">
-              <i class="fas fa-chalkboard-teacher text-xs"></i> Teaching (조교 활동)
-            </a>
-            <a href="#cv" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 hover:border-slate-400 dark:hover:border-slate-600 text-slate-800 dark:text-slate-200 font-medium text-sm transition-all hover:-translate-y-0.5">
-              <i class="fas fa-file-alt text-xs text-blue-600 dark:text-blue-400"></i> Curriculum Vitae
-            </a>
-            <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-colors" title="GitHub">
-              <i class="fab fa-github text-base"></i>
-            </a>
-            <a href="mailto:ohj4017@uos.ac.kr" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm transition-colors" title="Email">
-              <i class="fas fa-envelope text-base"></i>
-            </a>
-          </div>
-
         </div>
 
+        <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border border-stone-200 dark:border-stone-700 bg-stone-100 dark:bg-stone-800 flex-shrink-0">
+          <img src="assets/avatar.svg" alt="Hyeongjin Oh" class="w-full h-full object-cover">
+        </div>
       </div>
 
-    </div>
-  </section>
+      <!-- COMPACT BIO (컴팩트하고 정갈한 소개) -->
+      <div class="text-[15px] sm:text-base text-stone-700 dark:text-stone-300 leading-relaxed space-y-3 font-normal border-l-2 border-stone-300 dark:border-stone-700 pl-4">
+        <p>
+          서울시립대학교 경제학과 석사과정에서 <strong>계량경제학(Econometrics)</strong>과 <strong>머신러닝(Machine Learning)</strong>을 공부하고 있습니다.
+        </p>
+        <p>
+          학부에서 경제학과 수학을 전공한 수리적 배경을 바탕으로, 이론적 계량 모형과 데이터 기반 기계학습 방법론을 융합한 <strong>인과추론(Causal Inference)</strong> 연구를 지향합니다.
+        </p>
+      </div>
+
+      <!-- QUICK CONTACT & TOOLS (과하지 않은 텍스트 링크 & 도구 태그) -->
+      <div class="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-sm text-stone-500 dark:text-stone-400">
+        <a href="mailto:ohj4017@uos.ac.kr" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="far fa-envelope"></i> ohj4017@uos.ac.kr
+        </a>
+        <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <span class="inline-flex items-center gap-1.5 text-stone-500">
+          <i class="fas fa-map-marker-alt text-xs"></i> 미래관 10F 경제학과 대학원 연구실
+        </span>
+      </div>
+
+      <div class="pt-1 flex flex-wrap gap-1.5 text-xs font-mono text-stone-500 dark:text-stone-400">
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">MATLAB</span>
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">R</span>
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">Julia</span>
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800/80 border border-stone-200/60 dark:border-stone-700/60">LaTeX</span>
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
 
-  <!-- ==================== ABOUT & STATEMENT ==================== -->
-  <section id="about" class="py-16 border-b border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/40">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ==================== EDUCATION SECTION ==================== -->
+    <section id="education" class="space-y-6">
       
-      <div class="flex items-center gap-3 mb-6">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">About Me</h2>
-      </div>
+      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Education</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 학력</span>
+      </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="space-y-6 text-sm">
         
-        <div class="md:col-span-2 space-y-4 text-slate-700 dark:text-slate-300 leading-relaxed text-base">
-          <p>
-            안녕하세요, <strong>서울시립대학교 경제학과 석사과정 오형진(Hyeongjin Oh)</strong>입니다.
-          </p>
-          <p>
-            2020년 서울시립대학교에 입학하여 **경제학(본전공)**과 **수학(복수전공)**을 이수하고 2026년 2월 졸업하였으며, 2026년 3월부터 동 대학원 경제학과 석사과정에 진학하여 학업을 이어가고 있습니다.
-          </p>
-          <p>
-            해석학, 선형대수학, 수리통계학 등 수학 전공을 통해 다진 수리적 논리력을 바탕으로, 현대 **계량경제학(Econometrics)**과 **머신러닝(Machine Learning)**의 접점을 탐구하고 있습니다. **MATLAB**, **R**, **Julia**를 주 계산 도구로 사용하며, 모든 연구와 수식 문서는 **$\LaTeX$**으로 정밀하게 조판하고 있습니다.
-          </p>
-          <p>
-            또한 학부 강의 조교(Teaching Assistant)로서 미시경제학1, 계량경제학1, 재정학 등의 교과목에서 학생들의 학습을 돕고 있습니다.
-          </p>
+        <!-- Graduate -->
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 pb-4 border-b border-stone-100 dark:border-stone-850">
+          <div>
+            <div class="font-medium text-stone-900 dark:text-white text-base">서울시립대학교 일반대학원 경제학과</div>
+            <div class="text-stone-600 dark:text-stone-400 text-sm mt-0.5">석사과정 (M.A. Student in Economics)</div>
+            <div class="text-stone-500 text-xs mt-1">관심 분야: 계량경제학(Econometrics), 머신러닝(Machine Learning)</div>
+          </div>
+          <div class="text-xs font-mono text-stone-500 whitespace-nowrap">2026.03 – Present</div>
         </div>
 
-        <!-- Quick Facts Card -->
-        <div class="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-xl border border-slate-200/80 dark:border-slate-700/80 space-y-4">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Quick Information</h3>
-          
-          <div class="space-y-3 text-sm">
-            <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">소속 (Affiliation)</div>
-              <div class="font-semibold text-slate-800 dark:text-slate-100">서울시립대학교 대학원 경제학과 석사과정</div>
-              <div class="text-xs text-slate-500">University of Seoul, Dept. of Economics (2026.03 ~ 현재)</div>
+        <!-- Undergraduate -->
+        <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+          <div>
+            <div class="font-medium text-stone-900 dark:text-white text-base">서울시립대학교 (University of Seoul)</div>
+            <div class="text-stone-700 dark:text-stone-300 text-sm mt-0.5">
+              경제학 학사 <span class="text-xs text-stone-500">(본전공)</span> · 수학 학사 <span class="text-xs text-stone-500">(복수전공)</span>
             </div>
-            <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">학사 학위 (Undergraduate)</div>
-              <div class="text-slate-800 dark:text-slate-200 font-medium">경제학 학사(본전공) · 수학 학사(복수전공)</div>
-              <div class="text-xs text-slate-500">서울시립대학교 (2020.03 ~ 2026.02)</div>
-            </div>
-            <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">핵심 도구 (Computing & Typesetting)</div>
-              <div class="text-blue-700 dark:text-blue-300 font-mono text-xs font-medium mt-0.5">MATLAB, R, Julia, LaTeX</div>
-            </div>
-            <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">연구실 위치 (Office)</div>
-              <div class="text-slate-700 dark:text-slate-300 text-xs">서울시립대학교 미래관 10F 경제학과 대학원 연구실</div>
-            </div>
-            <div>
-              <div class="text-xs text-slate-500 dark:text-slate-400">이메일 (Email)</div>
-              <a href="mailto:ohj4017@uos.ac.kr" class="text-blue-600 dark:text-blue-400 font-mono text-xs hover:underline">ohj4017@uos.ac.kr</a>
-            </div>
+            <div class="text-stone-500 text-xs mt-1">해석학, 선형대수학, 수리통계학 등 수학 전공을 이수하여 수리적 기반 함양</div>
           </div>
+          <div class="text-xs font-mono text-stone-500 whitespace-nowrap">2020.03 – 2026.02 (졸업)</div>
         </div>
 
       </div>
 
-    </div>
-  </section>
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
 
-  <!-- ==================== TEACHING SECTION (공식 교과구분 완벽 반영) ==================== -->
-  <section id="teaching" class="py-16 border-b border-slate-200 dark:border-slate-800/80">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- ==================== TEACHING SECTION ==================== -->
+    <section id="teaching" class="space-y-6">
       
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Teaching Experience (조교 활동)</h2>
-      </div>
+      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Teaching Experience</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 조교 활동</span>
+      </h2>
 
-      <div class="space-y-6">
+      <div class="space-y-6 text-sm">
         
-        <!-- 2026-2 Semester (Current) -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-blue-200 dark:border-blue-900/60 shadow-sm">
-          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse"></span>
-              <h3 class="font-bold text-lg text-slate-900 dark:text-white">2026학년도 2학기 (26-2)</h3>
-            </div>
-            <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
-              현재 담당 중 (Active TA)
-            </span>
+        <!-- 2026-2 -->
+        <div class="space-y-2.5">
+          <div class="flex items-center justify-between text-xs font-semibold text-stone-500 uppercase tracking-wider">
+            <span>2026학년도 2학기 (Current)</span>
+            <span class="text-[11px] font-normal text-emerald-600 dark:text-emerald-400 font-mono">● Active</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="divide-y divide-stone-100 dark:divide-stone-850 bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 px-4">
             
-            <!-- 미시경제학1 -->
-            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
-              <div class="inline-block px-2 py-0.5 text-[11px] font-bold rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 mb-1.5">
-                전공필수
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base">미시경제학1</h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Microeconomics I · 조교(TA)</p>
-            </div>
-
-            <!-- 계량경제학1 -->
-            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
-              <div class="inline-block px-2 py-0.5 text-[11px] font-bold rounded bg-blue-100 text-blue-800 dark:bg-blue-950 dark:text-blue-300 mb-1.5">
-                전공필수
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base">계량경제학1</h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Econometrics I · 조교(TA)</p>
-            </div>
-
-            <!-- 재정학 -->
-            <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60">
-              <div class="inline-block px-2 py-0.5 text-[11px] font-bold rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 mb-1.5">
-                전공선택
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base">재정학</h4>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Public Finance · 조교(TA)</p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- 2026-1 Semester -->
-        <div class="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <h3 class="font-bold text-lg text-slate-900 dark:text-white">2026학년도 1학기 (26-1)</h3>
-            <span class="px-2.5 py-0.5 rounded text-xs font-semibold bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
-              완료 (Completed)
-            </span>
-          </div>
-
-          <div class="p-4 rounded-lg bg-slate-50 dark:bg-slate-800/50 border border-slate-200/70 dark:border-slate-700/60 max-w-md">
-            <div class="inline-block px-2 py-0.5 text-[11px] font-bold rounded bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300 mb-1.5">
-              교양
-            </div>
-            <h4 class="font-bold text-slate-900 dark:text-white text-base">경제학의 이해</h4>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Understanding Economics · 조교(TA)</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ==================== CURRICULUM VITAE (CV) SECTION ==================== -->
-  <section id="cv" class="py-16 border-b border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/40">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-1 bg-blue-600 rounded"></div>
-          <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Curriculum Vitae</h2>
-        </div>
-      </div>
-
-      <div class="space-y-8">
-        
-        <!-- Education -->
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-            <i class="fas fa-graduation-cap text-blue-600 dark:text-blue-400"></i> Education (학력)
-          </h3>
-          <div class="space-y-5 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1">
-            
-            <div>
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-                <h4 class="font-bold text-slate-900 dark:text-white text-base">서울시립대학교 일반대학원 경제학과 석사과정</h4>
-                <span class="text-xs text-slate-500 font-mono">2026.03 – Present</span>
-              </div>
-              <p class="text-sm text-blue-700 dark:text-blue-300 font-medium">M.A. Student in Economics, University of Seoul</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">주요 관심분야: 계량경제학(Econometrics), 머신러닝(Machine Learning)</p>
-            </div>
-
-            <div>
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between">
-                <h4 class="font-bold text-slate-900 dark:text-white text-base">서울시립대학교 경제학 학사 (본전공) & 수학 학사 (복수전공)</h4>
-                <span class="text-xs text-slate-500 font-mono">2020.03 – 2026.02 (졸업)</span>
-              </div>
-              <p class="text-sm text-slate-600 dark:text-slate-400">University of Seoul · B.A. in Economics & B.S. in Mathematics</p>
-              <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">해석학, 선형대수학, 수리통계학 등 탄탄한 수학적 기반과 경제학 이론 이수</p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Teaching Summary -->
-        <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-            <i class="fas fa-chalkboard text-blue-600 dark:text-blue-400"></i> Teaching Assistantships (조교 경력)
-          </h3>
-          <div class="space-y-3 border-l-2 border-slate-200 dark:border-slate-800 pl-4 ml-1 text-sm">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+            <div class="py-3 flex items-center justify-between">
               <div>
-                <span class="font-medium text-slate-800 dark:text-slate-200">미시경제학1(전필), 계량경제학1(전필), 재정학(전선) 조교</span>
-                <span class="text-xs text-slate-500 block">서울시립대학교 경제학과</span>
+                <span class="font-medium text-stone-900 dark:text-white">미시경제학1</span>
+                <span class="text-xs text-stone-500 ml-2">Microeconomics I</span>
               </div>
-              <span class="text-xs text-slate-500 font-mono mt-1 sm:mt-0">2026-2학기</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공필수</span>
             </div>
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between">
+
+            <div class="py-3 flex items-center justify-between">
               <div>
-                <span class="font-medium text-slate-800 dark:text-slate-200">경제학의 이해(교양) 조교</span>
-                <span class="text-xs text-slate-500 block">서울시립대학교</span>
+                <span class="font-medium text-stone-900 dark:text-white">계량경제학1</span>
+                <span class="text-xs text-stone-500 ml-2">Econometrics I</span>
               </div>
-              <span class="text-xs text-slate-500 font-mono mt-1 sm:mt-0">2026-1학기</span>
+              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공필수</span>
             </div>
+
+            <div class="py-3 flex items-center justify-between">
+              <div>
+                <span class="font-medium text-stone-900 dark:text-white">재정학</span>
+                <span class="text-xs text-stone-500 ml-2">Public Finance</span>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">전공선택</span>
+            </div>
+
           </div>
         </div>
 
-        <!-- Skills -->
+        <!-- 2026-1 -->
+        <div class="space-y-2.5 pt-2">
+          <div class="text-xs font-semibold text-stone-500 uppercase tracking-wider">
+            2026학년도 1학기
+          </div>
+
+          <div class="bg-white dark:bg-stone-900/60 rounded-lg border border-stone-200/80 dark:border-stone-800 px-4 py-3 flex items-center justify-between">
+            <div>
+              <span class="font-medium text-stone-900 dark:text-white">경제학의 이해</span>
+              <span class="text-xs text-stone-500 ml-2">Understanding Economics</span>
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 font-medium">교양</span>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== RESEARCH & WRITING (SUBTLE STATUS) ==================== -->
+    <section id="research" class="space-y-4">
+      
+      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Research & Writings</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 연구 및 노트</span>
+      </h2>
+
+      <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">
+        계량경제학 모형 및 머신러닝 인과추론 기법을 주제로 연구를 준비하고 있습니다. 완성된 작업 논문(Working Papers)과 스터디 노트는 추후 이곳에 공개될 예정입니다.
+      </p>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== CONTACT SECTION ==================== -->
+    <section id="contact" class="space-y-6">
+      
+      <h2 class="academic-serif text-xl sm:text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Contact</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 연락처</span>
+      </h2>
+
+      <div class="space-y-2 text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
         <div>
-          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-            <i class="fas fa-code text-emerald-500"></i> Computing & Typesetting
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm bg-slate-50 dark:bg-slate-800/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
-            <div>
-              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Programming Languages</span>
-              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1 font-mono text-xs">MATLAB, R, Julia</p>
-            </div>
-            <div>
-              <span class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Typesetting & Tools</span>
-              <p class="font-medium text-slate-800 dark:text-slate-200 mt-1 font-mono text-xs">LaTeX (Overleaf), Git, Markdown</p>
-            </div>
-          </div>
+          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">Email</span>
+          <a href="mailto:ohj4017@uos.ac.kr" class="text-stone-900 dark:text-white font-mono hover:underline">ohj4017@uos.ac.kr</a>
         </div>
-
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ==================== RESEARCH SECTION (준비 중 안내) ==================== -->
-  <section id="research" class="py-16 border-b border-slate-200 dark:border-slate-800/80">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Research & Working Papers</h2>
-      </div>
-
-      <!-- In Preparation Notice -->
-      <div class="p-8 rounded-xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 text-center">
-        <div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center mx-auto mb-3 text-xl">
-          <i class="fas fa-hourglass-half"></i>
+        <div>
+          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">Office</span>
+          <span>서울시 동대문구 서울시립대로 163, 서울시립대학교 미래관 10F 경제학과 대학원 연구실</span>
         </div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">연구 및 작업 논문 준비 중 (In Preparation)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
-          현재 계량경제학 이론 및 머신러닝 방법론을 바탕으로 연구를 준비하고 있습니다. 완성된 작업 논문(Working Papers)은 추후 이곳에 업데이트될 예정입니다.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ==================== PROJECTS SECTION (준비 중 안내) ==================== -->
-  <section id="projects" class="py-16 border-b border-slate-200 dark:border-slate-800/80 bg-white/60 dark:bg-slate-900/40">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Projects & Code</h2>
-      </div>
-
-      <!-- In Preparation Notice -->
-      <div class="p-8 rounded-xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 text-center">
-        <div class="w-12 h-12 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-3 text-xl">
-          <i class="fas fa-laptop-code"></i>
+        <div>
+          <span class="text-stone-500 inline-block w-20 text-xs uppercase tracking-wider">GitHub</span>
+          <a href="https://github.com/Hyeongjin3544" target="_blank" rel="noopener noreferrer" class="text-stone-900 dark:text-white font-mono hover:underline">github.com/Hyeongjin3544</a>
         </div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">프로젝트 & 코드 정리 중 (Coming Soon)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
-          MATLAB, R, Julia 기반의 계량 모델링 및 머신러닝 분석 코드는 정리 후 순차적으로 GitHub 저장소와 함께 공개될 예정입니다.
-        </p>
       </div>
 
-    </div>
-  </section>
+    </section>
 
-
-  <!-- ==================== STUDY NOTES SECTION (준비 중 안내) ==================== -->
-  <section id="notes" class="py-16 border-b border-slate-200 dark:border-slate-800/80">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Study Notes & Reviews</h2>
-      </div>
-
-      <!-- In Preparation Notice -->
-      <div class="p-8 rounded-xl bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 text-center">
-        <div class="w-12 h-12 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mx-auto mb-3 text-xl">
-          <i class="fas fa-feather-alt"></i>
-        </div>
-        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">스터디 노트 업로드 예정 (To be updated)</h3>
-        <p class="text-sm text-slate-600 dark:text-slate-400 max-w-lg mx-auto leading-relaxed">
-          계량경제학 모형 유도, 머신러닝 알고리즘 수식, 세미나 논문 리뷰 노트를 정리하여 추후 차례대로 업로드할 예정입니다.
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-
-  <!-- ==================== CONTACT SECTION ==================== -->
-  <section id="contact" class="py-16 bg-white/60 dark:bg-slate-900/40">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="flex items-center gap-3 mb-8">
-        <div class="w-8 h-1 bg-blue-600 rounded"></div>
-        <h2 class="serif-title text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">Contact & Affiliation</h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Email -->
-        <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 dark:bg-blue-950 flex items-center justify-center text-blue-600 dark:text-blue-400 flex-shrink-0">
-            <i class="fas fa-envelope text-lg"></i>
-          </div>
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Email</h3>
-            <a href="mailto:ohj4017@uos.ac.kr" class="text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
-              ohj4017@uos.ac.kr
-            </a>
-          </div>
-        </div>
-
-        <!-- Office -->
-        <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg bg-emerald-50 dark:bg-emerald-950 flex items-center justify-center text-emerald-600 dark:text-emerald-400 flex-shrink-0">
-            <i class="fas fa-university text-lg"></i>
-          </div>
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">Office</h3>
-            <p class="text-sm font-semibold text-slate-900 dark:text-white">서울시립대학교 경제학과</p>
-            <p class="text-xs text-slate-500 mt-0.5">미래관 10F 대학원 연구실</p>
-          </div>
-        </div>
-
-        <!-- GitHub -->
-        <div class="p-5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-start gap-4">
-          <div class="w-10 h-10 rounded-lg bg-purple-50 dark:bg-purple-950 flex items-center justify-center text-purple-600 dark:text-purple-400 flex-shrink-0">
-            <i class="fab fa-github text-lg"></i>
-          </div>
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">GitHub</h3>
-            <a href="https://github.com/Hyeongjin3544" target="_blank" class="text-sm font-semibold text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
-              github.com/Hyeongjin3544
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
+  </main>
 
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="py-12 border-t border-slate-200 dark:border-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
-    <div class="max-w-5xl mx-auto px-4 space-y-2">
+  <footer class="border-t border-stone-200/70 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-3xl mx-auto px-6 space-y-1">
       <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
-      <p>Department of Economics, University of Seoul · Hosted on GitHub Pages</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
     </div>
   </footer>
 
 
-  <!-- ==================== JAVASCRIPT ==================== -->
+  <!-- ==================== JAVASCRIPT (THEME ONLY) ==================== -->
   <script>
-    // Dark Mode Logic
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
     const themeToggleBtn = document.getElementById('theme-toggle');
-    const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-    const mobileToggleIcon = document.getElementById('mobile-toggle-icon');
 
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
       themeToggleLightIcon.classList.remove('hidden');
-      mobileToggleIcon.classList.replace('fa-moon', 'fa-sun');
     } else {
       document.documentElement.classList.remove('dark');
       themeToggleDarkIcon.classList.remove('hidden');
-      mobileToggleIcon.classList.replace('fa-sun', 'fa-moon');
     }
 
-    function toggleTheme() {
+    themeToggleBtn.addEventListener('click', function() {
       themeToggleDarkIcon.classList.toggle('hidden');
       themeToggleLightIcon.classList.toggle('hidden');
 
       if (document.documentElement.classList.contains('dark')) {
         document.documentElement.classList.remove('dark');
         localStorage.setItem('color-theme', 'light');
-        mobileToggleIcon.classList.replace('fa-sun', 'fa-moon');
       } else {
         document.documentElement.classList.add('dark');
         localStorage.setItem('color-theme', 'dark');
-        mobileToggleIcon.classList.replace('fa-moon', 'fa-sun');
       }
-    }
-
-    themeToggleBtn.addEventListener('click', toggleTheme);
-    mobileThemeToggle.addEventListener('click', toggleTheme);
-
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-    });
-
-    mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
-      });
     });
   </script>
 
