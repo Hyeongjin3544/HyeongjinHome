@@ -37,7 +37,23 @@
   <!-- KaTeX for Math -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderKaTeX();"></script>
+  <script>
+    function renderKaTeX() {
+      if (typeof renderMathInElement === 'function' && document.body) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    document.addEventListener("DOMContentLoaded", renderKaTeX);
+  </script>
 
   <style>
     body {
@@ -236,13 +252,13 @@
             - 소비자 $k$는 $x_k^*$를 최적 선택했습니다. 만약 $p^* \cdot x_k' \le p^* \cdot \omega_k$라면 $x_k'$는 예산집합 내에 있었으므로 $x_k^*$를 선택한 최적성에 모순됩니다. 따라서 반드시:
           </p>
           <div class="p-2 bg-white dark:bg-stone-900/60 rounded text-center font-mono text-xs">
-            $$ p^* \cdot x_k' > p^* \cdot \omega_k. \tag{1} $$
+            $$ p^* \cdot x_k' > p^* \cdot \omega_k \qquad \text{--- (식 1)} $$
           </div>
           <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
             - 다른 모든 소비자 $i$에 대해 $x_i' \succeq_i x_i^*$입니다. 만약 $p^* \cdot x_i' < p^* \cdot \omega_i$라면, <strong>국소비포화(LNS)</strong>에 의해 $x_i'$의 무한소 근방에 $x_i'' \succ_i x_i' \succeq_i x_i^*$이면서 여전히 $p^* \cdot x_i'' \le p^* \cdot \omega_i$인 $x_i''$가 존재하여 $x_i^*$의 최적성에 모순됩니다. 따라서 반드시:
           </p>
           <div class="p-2 bg-white dark:bg-stone-900/60 rounded text-center font-mono text-xs">
-            $$ p^* \cdot x_i' \ge p^* \cdot \omega_i \quad (\forall i). \tag{2} $$
+            $$ p^* \cdot x_i' \ge p^* \cdot \omega_i \quad (\forall i) \qquad \text{--- (식 2)} $$
           </div>
           <p class="text-xs sm:text-sm text-stone-700 dark:text-stone-300 leading-relaxed">
             <strong>3. 총합 모순의 도출:</strong> 모든 $i=1, \dots, I$에 대해 (1)과 (2)를 합산합니다. 소비자 $k$에 대해 엄격부등호가 성립하므로:
