@@ -1,0 +1,2298 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<meta content="대학원 미시경제이론 정리노트 Chapter 0: 미시경제이론의 수학적 언어와 존재 논리" name="description"/>
+<title>Chapter 0 — 미시경제이론의 수학적 언어와 존재 논리</title>
+<link rel="icon" type="image/jpeg" href="../assets/profile.jpg"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@400;600;700&display=swap"/>
+<script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true,
+        processEnvironments: true,
+        tags: 'ams',
+        packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']}
+      },
+      chtml: {
+        scale: 1,
+        matchFontHeight: false,
+        mtextInheritFont: true
+      },
+      options: {
+        enableMenu: false,
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      },
+      startup: {
+        ready: () => {
+          MathJax.startup.defaultReady();
+          MathJax.startup.promise.then(() => { document.documentElement.classList.add('math-ready'); });
+        }
+      }
+    };
+  </script>
+<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+<style>
+    :root {
+      --ink: #1e2933;
+      --muted: #667582;
+      --line: #d9e0e6;
+      --line-strong: #b9c5cf;
+      --paper: #ffffff;
+      --surface: #f6f8fa;
+      --surface-2: #eff3f6;
+      --accent: #23566f;
+      --accent-soft: #e9f1f4;
+      --accent-2: #8b4e30;
+      --definition: #315f82;
+      --theorem: #7a4e20;
+      --remark: #596b50;
+      --proof: #4f5f6d;
+      --danger: #94443a;
+      --shadow: 0 6px 22px rgba(27, 46, 61, .08);
+      --content: 840px;
+      --wide: 1040px;
+      --sidebar: 238px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Noto Serif KR", "Source Han Serif KR", "AppleMyungjo", "Batang", Georgia, serif;
+      font-size: 17px;
+      line-height: 1.88;
+      letter-spacing: -0.012em;
+      text-rendering: optimizeLegibility;
+    }
+
+    .sitebar {
+      height: 44px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.96);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+    .sitebar__inner {
+      max-width: 1320px;
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: .025em;
+      color: var(--muted);
+    }
+    .sitebar__series { color: var(--accent); font-weight: 700; }
+    .sitebar__chapter { font-variant-numeric: tabular-nums; }
+    .sitebar__left, .sitebar__right {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .sitebar__link {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .15s ease;
+      white-space: nowrap;
+    }
+    .sitebar__link:hover { color: var(--accent); text-decoration: underline; }
+    .sitebar__sep { color: var(--line-strong); }
+    .chapter-pager {
+      margin-top: 40px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 13.5px;
+    }
+    .chapter-pager a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .chapter-pager a:hover { text-decoration: underline; }
+    .discussion-lead {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .chapter-hero {
+      padding: 78px 28px 44px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fbfcfd 0%, #ffffff 80%);
+    }
+    .hero-inner { max-width: var(--wide); margin: 0 auto; }
+    .chapter-kicker {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 12px;
+      letter-spacing: .16em;
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 17px;
+    }
+    h1, h2, h3, h4 { color: #17232d; line-height: 1.32; }
+    h1 {
+      font-size: clamp(35px, 5vw, 54px);
+      letter-spacing: -0.055em;
+      margin: 0;
+      font-weight: 760;
+    }
+    .subtitle {
+      margin: 15px 0 0;
+      color: #52616c;
+      font-size: 20px;
+      letter-spacing: -0.02em;
+    }
+    .lead {
+      max-width: 790px;
+      font-size: 18px;
+      line-height: 1.95;
+      margin: 33px 0 0;
+    }
+    .hero-rule {
+      margin: 34px 0 28px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), rgba(35,86,111,0));
+      max-width: 430px;
+    }
+    .roadmap {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-top: 30px;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+    }
+    .roadmap > div { padding: 13px 17px 15px 0; min-width: 0; }
+    .roadmap > div + div { border-left: 1px solid var(--line); padding-left: 17px; }
+    .roadmap .label { display: block; font-size: 10px; letter-spacing: .12em; color: var(--accent); font-weight: 800; margin-bottom: 5px; }
+    .roadmap .text { display: block; font-size: 13px; color: #43525e; line-height: 1.45; }
+
+    .layout {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: var(--sidebar) minmax(0, 1fr);
+      gap: 48px;
+      padding: 0 28px 100px;
+    }
+    .toc {
+      position: sticky;
+      top: 66px;
+      align-self: start;
+      max-height: calc(100vh - 82px);
+      overflow: auto;
+      padding: 32px 0 18px;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      scrollbar-width: thin;
+    }
+    .toc-title { font-size: 11px; letter-spacing: .12em; color: var(--muted); font-weight: 800; margin: 0 0 10px; }
+    .toc a {
+      display: block;
+      color: #596772;
+      text-decoration: none;
+      font-size: 12.5px;
+      line-height: 1.42;
+      padding: 5px 10px 5px 0;
+      border-left: 2px solid transparent;
+      transition: .16s ease;
+    }
+    .toc a:hover, .toc a.active { color: var(--accent); border-left-color: var(--accent); padding-left: 9px; }
+    .toc a.sub { padding-left: 12px; font-size: 11.8px; }
+    .toc .toc-divider { margin: 12px 0; border-top: 1px solid var(--line); }
+
+    main { min-width: 0; }
+    .note-content { width: min(100%, var(--content)); padding-top: 41px; }
+    section { scroll-margin-top: 70px; }
+    h2 {
+      font-size: 31px;
+      letter-spacing: -0.05em;
+      margin: 0 0 20px;
+      font-weight: 760;
+    }
+    h3 {
+      font-size: 23px;
+      margin: 44px 0 14px;
+      letter-spacing: -0.04em;
+      font-weight: 740;
+    }
+    h4 {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 14px;
+      letter-spacing: .02em;
+      margin: 32px 0 10px;
+      font-weight: 800;
+    }
+    p { margin: 0 0 18px; }
+    .small { font-size: 14.4px; color: #5f6e79; line-height: 1.75; }
+    .tight { margin-bottom: 8px; }
+    .indent { padding-left: 1.15em; }
+    .math-display { margin: 22px 0; overflow-x: auto; overflow-y: hidden; padding: 2px 2px 3px; }
+    mjx-container[display="true"] { margin: 1.05em 0 !important; }
+    .math-ready .math-display { overflow-x: auto; }
+
+    .topic-opening {
+      color: #334552;
+      font-size: 18px;
+      line-height: 1.9;
+      margin-bottom: 23px;
+    }
+    .section-number {
+      display: inline-block;
+      color: var(--accent);
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: .58em;
+      letter-spacing: .04em;
+      vertical-align: .28em;
+      margin-right: .35em;
+      font-weight: 900;
+    }
+
+    .rule-list { margin: 17px 0 22px; padding: 0; list-style: none; }
+    .rule-list li { position: relative; padding-left: 1.1em; margin: 8px 0; }
+    .rule-list li::before { content: "—"; position: absolute; left: 0; color: var(--accent); }
+    ol, ul { margin: 12px 0 21px 1.15em; padding-left: 1em; }
+    li { margin: 7px 0; }
+
+    .display-table-wrap { overflow-x: auto; margin: 24px 0 28px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.62; }
+    th, td { border-bottom: 1px solid var(--line); padding: 10px 10px; text-align: left; vertical-align: top; }
+    th { color: var(--accent); font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif; font-size: 12px; letter-spacing: .03em; font-weight: 800; background: #fbfcfd; }
+    td:first-child { white-space: nowrap; }
+
+    .statement {
+      margin: 31px 0 28px;
+      padding: 0 0 0 22px;
+      border-left: 3px solid var(--definition);
+    }
+    .statement.theorem { border-left-color: var(--theorem); }
+    .statement.remark { border-left-color: var(--remark); }
+    .statement.warning { border-left-color: var(--danger); }
+    .statement .statement-head {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      color: var(--definition);
+      font-weight: 850;
+      font-size: 13px;
+      letter-spacing: .03em;
+      margin-bottom: 7px;
+    }
+    .statement.theorem .statement-head { color: var(--theorem); }
+    .statement.remark .statement-head { color: var(--remark); }
+    .statement.warning .statement-head { color: var(--danger); }
+    .statement p:last-child { margin-bottom: 0; }
+
+    .proof {
+      margin: 22px 0 30px;
+      padding: 0 0 0 22px;
+      border-left: 2px solid #bac5cd;
+      color: #263844;
+    }
+    .proof-label {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      color: var(--proof);
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .04em;
+      margin-bottom: 6px;
+    }
+    .qed { font-family: Georgia, serif; float: right; color: var(--proof); }
+
+    details.technical-proof, details.extension {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin: 24px 0 30px;
+      padding: 0;
+      color: #394b57;
+    }
+    details summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 0;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 800;
+      user-select: none;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before { content: "+"; display: inline-block; width: 18px; }
+    details[open] summary::before { content: "−"; }
+    .details-body { padding: 3px 2px 18px; }
+
+
+    .callout-strip {
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 0;
+      margin: 30px 0;
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 18px;
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.62;
+    }
+    .callout-strip .left { color: var(--accent); font-weight: 850; letter-spacing: .04em; }
+    .callout-strip .right { color: #4c5d68; }
+
+    .exercise-list { counter-reset: ex; list-style: none; margin: 25px 0 10px; padding: 0; }
+    .exercise-list li { counter-increment: ex; position: relative; padding-left: 2.55em; margin: 15px 0; }
+    .exercise-list li::before {
+      content: "0." counter(ex);
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--accent);
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 850;
+    }
+    .references { margin-top: 42px; padding-top: 25px; border-top: 1px solid var(--line); font-size: 14.5px; }
+    .references p { margin-bottom: 8px; }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,.94);
+      color: var(--accent);
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", Arial, sans-serif;
+      width: 39px;
+      height: 39px;
+      border-radius: 50%;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transition: .18s ease;
+      box-shadow: 0 4px 13px rgba(26,43,55,.10);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; }
+
+    @media (max-width: 980px) {
+      .roadmap { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .roadmap > div:nth-child(3) { border-left: 0; }
+      .roadmap > div:nth-child(n+3) { border-top: 1px solid var(--line); }
+      .layout { grid-template-columns: 1fr; padding: 0 22px 80px; }
+      .toc { position: relative; top: auto; max-height: none; padding: 20px 0; border-bottom: 1px solid var(--line); }
+      .toc nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 12px; }
+      .toc a { padding: 6px 5px; }
+      .note-content { width: 100%; padding-top: 34px; }
+    }
+    @media (max-width: 620px) {
+      body { font-size: 16px; line-height: 1.82; }
+      .sitebar__inner { padding: 0 17px; }
+      .sitebar__chapter { display: none; }
+      .chapter-hero { padding: 52px 20px 31px; }
+      .subtitle { font-size: 17px; }
+      .lead { font-size: 16px; }
+      .roadmap { display: block; }
+      .roadmap > div, .roadmap > div + div { border-left: 0; border-top: 1px solid var(--line); padding: 10px 0; }
+      .roadmap > div:first-child { border-top: 0; }
+      .layout { padding: 0 16px 65px; }
+      .toc nav { display: block; }
+      h2 { font-size: 27px; }
+      h3 { font-size: 21px; }
+      .callout-strip { grid-template-columns: 1fr; gap: 5px; }
+    }
+
+    @media print {
+      @page { size: A4; margin: 18mm 16mm 20mm; }
+      body { font-size: 10.5pt; line-height: 1.68; background: #fff; }
+      .sitebar, .toc, .back-to-top, .chapter-pager, .discussion-section { display: none !important; }
+      .chapter-hero { padding: 0 0 10mm; border-bottom: 1px solid #999; background: #fff; }
+      .hero-inner { max-width: none; }
+      h1 { font-size: 28pt; }
+      .layout { display: block; max-width: none; padding: 0; }
+      .note-content { width: 100%; padding-top: 8mm; }
+      h2, h3 { break-after: avoid; page-break-after: avoid; }
+      .statement, .proof, table { break-inside: avoid; page-break-inside: avoid; }
+      details { display: block; }
+      details > summary { display: none; }
+      details:not([open]) > :not(summary) { display: block !important; }
+    }
+  
+    .diagram-wrap {
+      margin: 28px 0;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      text-align: center;
+    }
+    .diagram-wrap svg {
+      max-width: 100%;
+      height: auto;
+      display: inline-block;
+    }
+    .diagram-caption {
+      font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+      font-weight: 600;
+    }
+  
+</style>
+</head>
+<body>
+<div class="sitebar">
+<div class="sitebar__inner">
+<span class="sitebar__left">
+<a class="sitebar__link" href="../microeconomics.html">← Micro Hub</a>
+<span aria-hidden="true" class="sitebar__sep">/</span>
+<span class="sitebar__series">Graduate Microeconomic Theory</span>
+</span>
+<span class="sitebar__right">
+<span class="sitebar__chapter">Chapter 0 · Mathematical Language and Existence</span>
+<span aria-hidden="true" class="sitebar__sep sitebar__chapter">·</span>
+<a class="sitebar__link" href="../index.html">Home</a>
+</span>
+</div>
+</div>
+<header class="chapter-hero" id="top">
+<div class="hero-inner">
+<div class="chapter-kicker">CHAPTER 0</div>
+<h1>미시경제이론의 수학적 언어와 존재 논리</h1>
+<p class="subtitle">집합·대응·위상·볼록성·최적화·분리·고정점</p>
+<div class="hero-rule"></div>
+<p class="lead">
+        미시경제이론은 서로 다른 경제적 문제를 다루지만, 그 논증에는 반복되는 공통 구조가 있다.
+        소비자 수요와 기업 공급은 제약하의 최적화 문제로, 일반균형의 존재와 파레토 효율적 배분의 가격지지는 각각 고정점정리와 분리정리로 분석할 수 있다.
+        이처럼 서로 다른 주제는 최적화, 연속성, 볼록성, 고정점 및 분리라는 공통의 수학적 언어로 연결된다.
+      </p>
+<div aria-label="Chapter roadmap" class="roadmap">
+<div><span class="label">0.1–0.3</span><span class="text">수학적 언어: 집합·논리·표기</span></div>
+<div><span class="label">0.4–0.6</span><span class="text">위상·대응·볼록성</span></div>
+<div><span class="label">0.7–0.8</span><span class="text">최적화(KKT)·Berge·포락선</span></div>
+<div><span class="label">0.9–0.11</span><span class="text">고정점·분리정리·핵심 연결표</span></div>
+</div>
+</div>
+</header>
+<div class="layout">
+<aside aria-label="Chapter contents" class="toc">
+<p class="toc-title">CONTENTS</p>
+<nav>
+<a href="#s01">0.1 경제모형의 공통 구조</a>
+<a href="#s02">0.2 표기법, 기본 연산, 논리</a>
+<a class="sub" href="#s021">벡터 연산과 코시-슈바르츠</a>
+<a class="sub" href="#s022">벡터 순서의 세 가지 위계</a>
+<a class="sub" href="#s025">이항관계와 선호관계의 기본 표기</a>
+<a href="#s03">0.3 유클리드 공간, 집합, 곱공간</a>
+<a class="sub" href="#s032">Minkowski 합 보존 정리</a>
+<a class="sub" href="#s033">가격 simplex와 정규화</a>
+<a href="#s04">0.4 위상, 수렴, 연속성, 콤팩트성</a>
+<a class="sub" href="#s041">폐집합 수열적 특징화</a>
+<a class="sub" href="#s042">상·하반연속성과 수준집합</a>
+<a class="sub" href="#s044">Weierstrass 극값정리</a>
+<a href="#s05">0.5 함수와 대응</a>
+<a class="sub" href="#s052">UHC와 LHC의 기하학</a>
+<a class="sub" href="#s053">콤팩트 공역 Closed Graph 정리</a>
+<a href="#s06">0.6 볼록성, 오목성, 준볼록성, 준오목성</a>
+<a class="sub" href="#s062">오목함수의 1계·2계 특징화</a>
+<a class="sub" href="#s063">준오목성과 서수적 선호</a>
+<a class="sub" href="#s064">동차함수와 오일러 정리</a>
+<a href="#s07">0.7 행렬미분, 최적화, KKT</a>
+<a class="sub" href="#s071">무제약 2계 충분조건</a>
+<a class="sub" href="#s072">KKT 필요조건과 상보여유성</a>
+<a class="sub" href="#s073">Slater 조건과 제약자격</a>
+<a class="sub" href="#s074">오목 극대화 KKT 충분성</a>
+<a class="sub" href="#s075">음함수 정리와 비교정태</a>
+<a href="#s08">0.8 모수화된 최적화, Berge, Envelope</a>
+<a class="sub" href="#s081">Berge 최대정리</a>
+<a class="sub" href="#s082">포락선 정리 (Envelope)</a>
+<a href="#s09">0.9 고정점과 균형의 존재</a>
+<a class="sub" href="#s091">Brouwer 고정점정리</a>
+<a class="sub" href="#s092">Kakutani 정리와 볼록값성</a>
+<a href="#s10">0.10 분리정리와 지지가격</a>
+<a class="sub" href="#s101">사영정리</a>
+<a class="sub" href="#s102">엄격분리정리와 지지초평면</a>
+<a href="#s11">0.11 핵심 수학 개념과 정리의 연결</a>
+<div class="toc-divider"></div>
+<a href="#exercises">연습문제 및 증명 해설</a>
+<a href="#references">참고문헌</a>
+<a href="#discussion">학술 토론 (댓글)</a>
+</nav>
+</aside>
+<main>
+<article class="note-content">
+<section id="s01">
+  <div class="topic-opening">
+    미시경제이론은 경제적 행위를 명시적인 원시적 대상(primitives), 공리(axioms), 최적화 및 상호작용의 조건으로 정식화한다. 이 장에서는 미시경제학 전반에 반복해서 등장하는 수학적 개념을 정의하고, 해의 존재·유일성·연속성과 비교정태를 분석하는 데 필요한 정리와 증명을 체계적으로 정리한다.
+  </div>
+
+  <h2><span class="section-number">0.1</span>경제모형의 공통 구조</h2>
+
+  <p>
+    소비자이론, 생산자이론, 부분균형 및 일반균형의 주요 논증은 흔히 다음 여섯 단계로 조직할 수 있다. 다만 모든 모형이 이 단계를 빠짐없이 거치거나 같은 순서로 전개되는 것은 아니다.
+  </p>
+
+  <ol class="rule-list">
+    <li><strong>원시적 대상(Primitives)과 공리계:</strong> 선택집합 \(X\), 선호관계 \(\succeq\), 생산집합 \(Y\), 초기부존량 \(\omega_i\) 등 분석의 출발점이 되는 수학적 구조를 정의하고, 선택과 기술의 구조를 규정하는 공리를 설정한다.</li>
+    <li><strong>목적함수와 제약(Objective and Constraints):</strong> 효용함수 \(u(x)\), 비용함수 \(c(w,q)\), 이윤함수 \(\pi(p)\) 등 목적함수와 최적화로부터 도출되는 값함수를 구분하여 정의하고, 가격·예산·기술 등 실행가능집합(Feasible set) \(B(\theta)\)을 정의한다.</li>
+    <li><strong>최적해의 존재(Existence of Solutions):</strong> 제약최적화 문제 \(\max_{x \in B(\theta)} f(x, \theta)\)에서 최적해의 존재를 콤팩트성과 상반연속성 등의 가정 아래 Weierstrass 극값정리 등으로 증명한다.</li>
+    <li><strong>최적해의 성질과 특징화(Characterization):</strong> 1계 필요조건(FOC), Karush–Kuhn–Tucker(KKT) 조건 및 2계조건(SOC)을 적용하고, 오목성 등 적절한 추가 조건 아래 이러한 조건이 충분한지도 확인한다.</li>
+    <li><strong>모수변화와 비교정태(Comparative Statics &amp; Duality):</strong> 외생변수 \(\theta\)(가격, 소득, 정책변수)의 변화에 따른 가치함수 \(v(\theta)\)와 최적선택 \(x^*(\theta)\)의 반응을 Berge 최대정리, Envelope 정리(포락선 정리), 음함수 정리(Implicit Function Theorem)로 추적한다.</li>
+    <li><strong>상호작용, 균형 및 후생(Equilibrium and Welfare):</strong> 개별 경제주체들의 선택이 시장청산 조건에서 상호 일치하는 상태(Walrasian 균형)를 정식화하고, Brouwer 및 Kakutani 고정점 정리로 균형의 존재를, 분리초평면·지지초평면 정리로 파레토 효율 배분의 가격지지를 증명한다.</li>
+  </ol>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 계산과 존재의 구분: 왜 순수 존재 논리가 필요한가?</div>
+    <p>
+      최적화의 1계조건은 해를 특징화하는 유용한 도구지만, 그 조건을 푸는 것만으로 최적해의 존재나 전역최적성을 보장할 수는 없다. 따라서 구체적인 계산에 앞서 다음 사항을 구분해야 한다.
+    </p>
+    <ul class="tight">
+      <li><strong>해의 부존재 위험:</strong> 실행가능집합이 유계가 아니거나(가격이 0인 재화가 존재할 때), 목적함수가 상반연속이지 않으면 최적해가 존재하지 않거나 1계조건으로 포착되지 않을 수 있다.</li>
+      <li><strong>모형의 일반성:</strong> 구체적인 함수 형태(Cobb-Douglas, CES 등)를 가정하지 않고 일반적인 선호나 기술 아래에서 경제 원리를 증명하기 위해서는 미분 공식이 아닌 위상적·볼록해석적 정리가 필수적이다.</li>
+      <li><strong>고정점을 통한 상호의존성의 해석:</strong> 일반균형이나 비협조 게임에서 개별 주체의 선택은 타인의 선택이나 가격에 의존하고, 시장가격이나 타인의 전략은 다시 개별 선택의 총합에 의해 결정된다. 이러한 상호의존성은 적절한 연속성·볼록성 조건 아래 함수 또는 대응의 고정점정리로 존재를 보일 수 있다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s02">
+  <h2><span class="section-number">0.2</span>표기법, 기본 연산, 논리</h2>
+
+  <p class="topic-opening">
+    미시경제학에서 모호함을 배제하기 위해 사용되는 벡터 연산, 벡터 순서, 실수 체계의 완비성, 그리고 논리 기호의 엄밀한 규약을 정립한다.
+  </p>
+
+  <h3 id="s021">0.2.1 기본 표기 및 유클리드 공간의 연산</h3>
+  <p>
+    실수 집합을 \(\mathbb{R}\), 양의 실수를 \(\mathbb{R}_{++} = \{x \in \mathbb{R} : x > 0\}\), 음이 아닌 실수를 \(\mathbb{R}_+ = \{x \in \mathbb{R} : x \ge 0\}\)로 표기한다. 
+    \(n\)차원 유클리드 공간 \(\mathbb{R}^n\)의 원소 \(x = (x_1, \dots, x_n)^\top\)는 기본적으로 열벡터(column vector)로 취급한다.
+  </p>
+
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 유클리드 내적, 노름, 코시-슈바르츠 부등식</div>
+    <p>
+      임의의 벡터 \(x, y \in \mathbb{R}^n\)에 대해 <strong>유클리드 내적(Euclidean inner product)</strong>과 <strong>유클리드 노름(Euclidean norm)</strong>은 다음과 같이 정의된다:
+      \[
+      x \cdot y = \langle x, y \rangle = x^\top y = \sum_{i=1}^n x_i y_i, \qquad \lVert x\rVert = \sqrt{x \cdot x} = \left( \sum_{i=1}^n x_i^2 \right)^{1/2}.
+      \]
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 코시-슈바르츠 부등식 (Cauchy–Schwarz Inequality)</div>
+    <p>
+      임의의 \(x, y \in \mathbb{R}^n\)에 대해 다음 부등식이 성립하며, 등호가 성립할 필요충분조건은 \(x\)와 \(y\)가 일차종속(linearly dependent)인 것이다:
+      \[
+      |x \cdot y| \le \lVert x\rVert \lVert y\rVert.
+      \]
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 코시-슈바르츠 부등식</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        \(y = 0\)이면 양변이 0이므로 자명하다. \(y \ne 0\)이라 가정하자. 임의의 실수 \(t \in \mathbb{R}\)에 대해 노름의 비음수성에 의해
+        \[
+        0 \le \lVert x - t y\rVert^2 = (x - ty) \cdot (x - ty) = \lVert x\rVert^2 - 2t (x \cdot y) + t^2 \lVert y\rVert^2
+        \]
+        이 성립한다. 우변은 \(t\)에 대한 2차 다항식이 항상 0 이상이므로, 판별식 \(D/4 = (x \cdot y)^2 - \lVert x\rVert^2 \lVert y\rVert^2 \le 0\)이어야 한다. 따라서 \((x \cdot y)^2 \le \lVert x\rVert^2 \lVert y\rVert^2\)이며, 제곱근을 취하면 결론을 얻는다. \(y\ne0\)일 때 등호는 \(t=(x\cdot y)/\lVert y\rVert^2\)에서 \(x-ty=0\), 즉 \(x\)와 \(y\)가 일차종속일 때 성립한다. \(y=0\)이면 모든 \(x\)에 대해 등호가 성립하며, 이 경우에도 두 벡터는 일차종속이다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s022">0.2.2 벡터 순서(Vector Orders)의 세 가지 위계</h3>
+  <p>
+    실수의 통상적인 순서와 달리, \(\mathbb R^n\)에서 성분별로 정의한 순서는 \(n\ge2\)일 때 일반적으로 전순서가 아니다. 서로 다른 두 벡터를 성분별 부등호로 비교할 수 없는 경우가 있기 때문이다. 따라서 소비묶음의 성분별 비교와 소비자의 선호관계는 구별해야 한다.
+  </p>
+
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 성분별 벡터 순서의 세 가지 표기</div>
+    <p>
+      두 벡터 \(x, y \in \mathbb{R}^n\)에 대해 다음의 세 부등식을 엄격하게 구별하여 사용한다:
+    </p>
+    <ol class="tight">
+      <li><strong>약한 성분별 순서(Weak vector order):</strong> \(x \ge y \iff x_i \ge y_i, \quad \forall i = 1, \dots, n\).</li>
+      <li><strong>준엄격 성분별 순서(Semi-strict vector order):</strong> \(x > y \iff x \ge y \text{ and } x \ne y\) (즉, 모든 성분이 작지 않고 적어도 한 성분은 엄격히 큼).</li>
+      <li><strong>엄격한 성분별 순서(Strict vector order):</strong> \(x \gg y \iff x_i > y_i, \quad \forall i = 1, \dots, n\).</li>
+    </ol>
+  </div>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 경제학적 단조성 공리와의 대응 관계 (강·약 순서 및 Ch.1 용어 일치)</div>
+    <p>
+      함의 \((\text{조건}) \implies x \succ y\)에서는 가정부의 벡터 부등식이 약할수록 공리 전체는 오히려 <strong>더 강해진다</strong>. 따라서 경제학적 단조성 공리는 논리적으로 다음과 같은 약·강 위계(\(\text{강단조성} \implies \text{단조성} \implies \text{약단조성}\))를 갖는다:
+    </p>
+    <ul class="tight">
+      <li><strong>약단조성(Weak Monotonicity):</strong> \(x \ge y \implies x \succeq y\). (모든 재화의 소비를 줄이지 않으면 최소한 무차별 이상이다 — 자유처분적 성질)</li>
+      <li><strong>단조성(Monotonicity in MWG / Ch.1의 엄격단조성):</strong> \(x \ge y \implies x \succeq y\) 이고 \(x \gg y \implies x \succ y\). (모든 재화를 동시에 더 많이 소비하면 반드시 엄격히 선호된다. Jehle–Reny 및 본 노트의 Chapter 1에서는 \(x > y \implies x \succeq y,\; x \gg y \implies x \succ y\)를 <strong>엄격단조성(Strict Monotonicity)</strong>이라 부른다)</li>
+      <li><strong>강단조성(Strong Monotonicity in MWG):</strong> \(x > y\) (즉 \(x \ge y\)이면서 \(x \ne y\)) \(\implies x \succ y\). (단 한 재화라도 더 많이 소비하고 나머지 재화가 줄지 않으면 반드시 엄격히 선호되며, 세 공리 중 가장 강한 조건이다)</li>
+    </ul>
+  </div>
+
+  <h3 id="s023">0.2.3 상한, 하한, 최대값, 최소값</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · \(\sup\), \(\inf\), \(\max\), \(\min\), \(\arg\max\)</div>
+    <p>
+      공집합이 아닌 부분집합 \(S \subseteq \mathbb{R}\)에 대해:
+    </p>
+    <ul class="tight">
+      <li>\(S\)의 상계(upper bound) 중 가장 작은 실수를 <strong>상한(supremum)</strong>이라 하고 \(\sup S\)로 표기한다. 실수 체계의 완비성 공리(Completeness Axiom)에 의해, 위로 유계인 공집합이 아닌 실수의 부분집합은 반드시 실수의 상한을 갖는다. 대칭적으로 하계(lower bound) 중 가장 큰 원소를 <strong>하한(infimum)</strong>이라 하고 \(\inf S\)로 표기한다.</li>
+      <li>\(\sup S \in S\)일 때 이를 <strong>최대값(maximum, \(\max S\))</strong>이라 하고, \(\inf S \in S\)일 때 이를 <strong>최소값(minimum, \(\min S\))</strong>이라 한다.</li>
+      <li>함수 \(f: X \to \mathbb{R}\)와 \(B \subseteq X\)에 대해, 최댓값을 달성하는 점들의 집합을 <strong>\(\arg\max\)</strong>라 한다:
+      \[
+      \operatorname{arg\,max}_{x \in B} f(x) = \{x^* \in B : f(x^*) \ge f(y)\ \text{for all } y\in B\}.
+      \]
+      </li>
+    </ul>
+    <p>
+      따라서 최대값이 존재하면 \(\max_{x \in B} f(x)\)는 실숫값(효용수준, 극대화된 이윤)이고, \(\operatorname{arg\,max}_{x \in B} f(x)\)는 그 값을 달성하는 점들의 집합이다. 최대값이 달성되지 않는 경우에도 위 정의에 따라 \(\operatorname{arg\,max}_{x \in B} f(x)=\varnothing\)으로 표기할 수 있다.
+    </p>
+  </div>
+
+  <h3 id="s024">0.2.4 양화사와 조건문의 수학적 문법</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 필요조건과 충분조건의 명제 논리</div>
+    <p>
+      명제 \(P \implies Q\)에 대하여:
+    </p>
+    <ul class="tight">
+      <li>\(P\)는 \(Q\)이기 위한 <strong>충분조건(sufficient condition)</strong>이다.</li>
+      <li>\(Q\)는 \(P\)이기 위한 <strong>필요조건(necessary condition)</strong>이다.</li>
+      <li>\(P \iff Q\)일 때, \(P\)는 \(Q\)의 <strong>필요충분조건(equivalent / necessary and sufficient condition)</strong>이다.</li>
+    </ul>
+    <p>
+      주의: 내부의 국소극값에서 도출한 1계조건(FOC) \(\nabla f(x^*) = 0\)은 극대점이기 위한 <em>필요조건</em>일 뿐, 안장점(saddle point)이나 극소점일 수 있으므로 <em>충분조건</em>이 아니다. 역으로 2계충분조건 \(D^2 f(x^*) \prec 0\)은 극대점의 <em>충분조건</em>이지 <em>필요조건</em>이 아니다(예: \(f(x) = -x^4\)는 \(x^*=0\)에서 극대이지만 \(f''(0) = 0\)).
+    </p>
+  </div>
+
+  <h3 id="s025">0.2.5 이항관계와 선호관계의 기본 표기</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 합리적 선호관계(Rational Preference Relation)</div>
+    <p>
+      선택집합 \(X\) 위의 이항관계(binary relation) \(\succeq \subseteq X \times X\)가 <strong>합리적(rational)</strong>이라는 것은 다음 두 공리를 만족함을 뜻한다:
+    </p>
+    <ol class="tight">
+      <li><strong>완비성(Completeness):</strong> 모든 \(x, y \in X\)에 대해 \(x \succeq y\) 또는 \(y \succeq x\)이다.</li>
+      <li><strong>이행성(Transitivity):</strong> 모든 \(x, y, z \in X\)에 대해 \(x \succeq y\)이고 \(y \succeq z\)이면 \(x \succeq z\)이다.</li>
+    </ol>
+  </div>
+
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 유도관계(강선호와 무차별)</div>
+    <p>
+      주어진 관계 \(\succeq\)로부터 강선호 \(\succ\)와 무차별 관계 \(\sim\)를 다음과 같이 유도한다:
+      \[
+      x \succ y \iff (x \succeq y \text{ and } \neg(y \succeq x)), \qquad x \sim y \iff (x \succeq y \text{ and } y \succeq x).
+      \]
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">PROPOSITION · 유도관계의 수학적 성질</div>
+    <p>
+      \(\succeq\)가 완비적이고 이행적이면:
+    </p>
+    <ol class="tight">
+      <li>\(\succ\)는 <strong>비반사적(irreflexive)</strong> (\(\forall x, x \not\succ x\))이고 <strong>이행적(transitive)</strong>이다.</li>
+      <li>\(\succ\)는 <strong>음이행적(negatively transitive)</strong>이다: \(x \not\succ y\)이고 \(y \not\succ z\)이면 \(x \not\succ z\).</li>
+      <li>\(\sim\)는 <strong>동치관계(equivalence relation)</strong>이다: 반사적(reflexive), 대칭적(symmetric), 이행적(transitive).</li>
+    </ol>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 유도관계의 성질 (비반사성·이행성·음이행성·동치관계)</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        <strong>(1) 비반사성 및 이행성:</strong> 임의의 \(x \in X\)에 대해 \(x \succ x\)라면 \(x \succeq x\)이면서 동시에 \(\neg(x \succeq x)\)이어야 하므로 모순이다. 따라서 \(x \not\succ x\)이다. 다음으로 \(x \succ y\)이고 \(y \succ z\)라 하자. 정의에 의해 \(x \succeq y\)이고 \(y \succeq z\)이므로 \(\succeq\)의 이행성에 의해 \(x \succeq z\)이다. 만약 \(z \succeq x\)라면 \(y \succeq z\)와 결합하여 \(y \succeq x\)가 되어 \(x \succ y\)에 모순이다. 따라서 \(\neg(z \succeq x)\)이며 \(x \succ z\)이다.<br/>
+        <strong>(2) 음이행성:</strong> 완비성 아래 \(a \not\succ b \iff b \succeq a\)이다(\(\neg[a \succeq b \land \neg(b \succeq a)] \iff \neg(a \succeq b) \lor b \succeq a\)이며, 완비성에 의해 \(\neg(a \succeq b) \implies b \succeq a\)). 따라서 \(x \not\succ y\)이고 \(y \not\succ z\)이면 \(y \succeq x\)이고 \(z \succeq y\)이므로, \(\succeq\)의 이행성에 의해 \(z \succeq x\), 곧 \(x \not\succ z\)이다.<br/>
+        <strong>(3) 동치관계:</strong> \(\sim\)의 반사성은 완비성(\(x \succeq x\))에서 자명하고, 대칭성은 정의에서 자명하다. 이행성은 \(x \sim y \iff x \succeq y \land y \succeq x\)이고 \(y \sim z \iff y \succeq z \land z \succeq y\)이므로, \(\succeq\)의 이행성을 양방향에 적용하면 \(x \succeq z \land z \succeq x \iff x \sim z\)가 되어 성립한다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section id="s03">
+  <h2><span class="section-number">0.3</span>유클리드 공간, 집합, 곱공간</h2>
+
+  <p class="topic-opening">
+    경제학의 소비집합, 생산집합, 예산집합, 가격 simplex는 모두 유클리드 공간의 부분집합으로 나타낼 수 있다. 곱공간은 여러 경제주체의 선택을 함께 기술하고, Minkowski 합은 개별 선택집합의 합계를 나타낸다.
+  </p>
+
+  <h3 id="s031">0.3.1 거리와 근방</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 유클리드 거리와 열린 공(Open Ball)</div>
+    <p>
+      \(x, y \in \mathbb{R}^n\) 사이의 거리는 \(d(x, y) = \lVert x - y\rVert\)로 정의된다. 점 \(x \in \mathbb{R}^n\)를 중심으로 하고 반지름이 \(\varepsilon > 0\)인 <strong>열린 공(open ball)</strong>은
+      \[
+      B_\varepsilon(x) = \{y \in \mathbb{R}^n : \lVert y - x\rVert < \varepsilon\}
+      \]
+      로 정의된다.
+    </p>
+  </div>
+
+  <h3 id="s032">0.3.2 곱공간과 Minkowski 합</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · Minkowski 합 (Minkowski Sum)</div>
+    <p>
+      두 부분집합 \(A, B \subseteq \mathbb{R}^n\)의 <strong>Minkowski 합</strong>은 각 집합 원소들의 벡터 합으로 정의된다:
+      \[
+      A + B = \{a + b : a \in A, b \in B\}.
+      \]
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">PROPOSITION · 볼록성과 콤팩트성의 Minkowski 보존 정리</div>
+    <ol class="tight">
+      <li>\(A, B \subseteq \mathbb{R}^n\)가 볼록집합(convex set)이면, \(A + B\)도 볼록집합이다.</li>
+      <li>\(A, B \subseteq \mathbb{R}^n\)가 콤팩트(compact)이면, \(A + B\)도 콤팩트이다.</li>
+    </ol>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · Minkowski 합 보존 정리</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        (1) 임의의 \(x, y \in A + B\)와 \(t \in [0, 1]\)을 취하자. \(x = a_1 + b_1\), \(y = a_2 + b_2\) (\(a_i \in A, b_i \in B\))이다.
+        \[
+        tx + (1-t)y = t(a_1 + b_1) + (1-t)(a_2 + b_2) = \underbrace{[ta_1 + (1-t)a_2]}_{\in A \text{ (by convexity)}} + \underbrace{[tb_1 + (1-t)b_2]}_{\in B \text{ (by convexity)}} \in A + B.
+        \]
+        따라서 \(A + B\)는 볼록이다.<br/>
+        (2) 덧셈 사상 \(+: \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}^n\), \((a, b) \mapsto a + b\)는 연속함수이다. 유한차원 유클리드 공간에서 콤팩트 집합 \(A, B \subseteq \mathbb{R}^n\)의 유한 곱 \(A \times B \subseteq \mathbb{R}^{2n}\)은 닫혀 있고 유계(또는 점렬콤팩트)이므로 콤팩트이며, 연속함수에 의한 콤팩트 집합의 상(image) \(+(A \times B) = A + B\) 역시 콤팩트이다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s033">0.3.3 가격 Simplex와 정규화</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 표준 단위 Simplex (Standard Price Simplex)</div>
+    <p>
+      \(n\)개 재화의 가격벡터가 음이 아니고 적어도 하나의 재화 가격이 양수일 때, 관련 최적화 문제가 모든 명목가격과 명목소득의 동시 비례변화에 불변인 경우, 가격수준을 하나로 정규화할 수 있다. <strong>가격 simplex</strong>는
+      \[
+      \Delta^{n-1} = \left\{ p \in \mathbb{R}_+^n : \sum_{i=1}^n p_i = 1 \right\}
+      \]
+      로 정의된다. \(\Delta^{n-1}\)은 닫혀 있고 유계이므로 Heine-Borel 정리에 의해 <strong>콤팩트한 볼록집합</strong>이다. 정규화된 가격집합은 일반균형 존재증명에서 고정점정리를 적용하기 위한 콤팩트한 정의역으로 자주 사용된다. 다만 경계의 영가격을 어떻게 다룰지는 별도 조건에 달려 있다.
+    </p>
+  </div>
+</section>
+
+<section id="s04">
+  <h2><span class="section-number">0.4</span>위상, 수렴, 연속성, 콤팩트성</h2>
+
+  <p class="topic-opening">
+    가격, 소득, 상대방의 선택 등 외생적 조건의 변화에 경제적 결과가 어떻게 반응하는지 분석하려면 수렴과 연속성을 정확히 정의해야 한다. 특히 콤팩트성은 수렴부분수열의 존재를, 상반연속성은 콤팩트 집합 위 극대값의 달성을, 하반연속성은 극소값의 달성을 보장한다.
+  </p>
+
+  <h3 id="s041">0.4.1 열린집합, 폐집합, 수열적 특징화</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 열린집합과 닫힌집합(Open and Closed Sets)</div>
+    <p>
+      집합 \(A \subseteq \mathbb{R}^n\)가 <strong>열린집합(open set)</strong>이라는 것은, 모든 점 \(x \in A\)에 대해 어떤 반경 \(\varepsilon > 0\)가 존재하여 열린 공 \(B_\varepsilon(x) \subseteq A\)가 되는 것이다.
+      집합 \(A\)가 <strong>닫힌집합(closed set)</strong>이라는 것은 그 여집합 \(\mathbb{R}^n \setminus A\)가 열린집합임을 뜻한다.
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 닫힌집합의 수열적 특징화 (Sequential Characterization of Closed Sets)</div>
+    <p>
+      부분집합 \(A \subseteq \mathbb{R}^n\)가 닫힌집합일 필요충분조건은, 임의의 수열 \((x^k)_{k \ge 1} \subseteq A\)가 유클리드 공간 안에서 어떤 점 \(x^*\)로 수렴할 때(\(x^k \to x^*\)), 그 극한점이 반드시 \(A\)에 속하는 것(\(x^* \in A\))이다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 닫힌집합의 수열적 특징화</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        <strong>(\(\implies\))</strong> \(A\)가 닫힌집합이라 하자. 결론에 반하여 \(x^* \notin A\)라 가정하자. 그러면 \(x^* \in \mathbb{R}^n \setminus A\)이고, \(A\)가 닫힌집합이므로 여집합은 열린집합이다. 따라서 어떤 \(\varepsilon > 0\)가 존재하여 \(B_\varepsilon(x^*) \subseteq \mathbb{R}^n \setminus A\)이다. 이는 \(B_\varepsilon(x^*) \cap A = \varnothing\)임을 뜻한다. 그러나 \(x^k \to x^*\)이므로, 충분히 큰 \(k\)에 대해 \(x^k \in B_\varepsilon(x^*)\)가 되어 \(x^k \in A\)라는 사실에 모순이다. 따라서 \(x^* \in A\)이어야 한다.<br/>
+        <strong>(\(\impliedby\))</strong> 수열의 극한을 보존하는 성질을 만족한다고 가정하자. \(A\)가 닫힌집합임을 보이기 위해 여집합 \(A^c = \mathbb{R}^n \setminus A\)가 열린집합임을 보이자. 만약 \(A^c\)가 열린집합이 아니라면, 어떤 \(x \in A^c\)가 존재하여 모든 \(k \in \mathbb{N}\)에 대해 \(B_{1/k}(x) \not\subseteq A^c\)이다. 즉, 각 \(k\)마다 어떤 \(x^k \in B_{1/k}(x) \cap A\)를 택할 수 있다. 이 수열 \((x^k)\)는 \(A\)의 원소이며 \(\lVert x^k - x\rVert < 1/k \to 0\)이므로 \(x^k \to x\)이다. 가정에 의해 극한점 \(x\)는 \(A\)에 속해야 한다. 그러나 \(x \in A^c\)이므로 모순이다. 따라서 \(A^c\)는 열린집합이며, \(A\)는 닫힌집합이다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s042">0.4.2 연속성과 상·하반연속성</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 상반연속성(USC)과 하반연속성(LSC)</div>
+    <p>
+      정의역 \(X\subseteq\mathbb R^n\)에는 유클리드 공간에서 유도된 상대위상을 사용한다. 함수 \(f: X \to \mathbb{R}\)가 점 \(x_0 \in X\)에서 <strong>상반연속(Upper Semi-Continuous, USC)</strong>이라는 것은:
+      \[
+      \limsup_{x \to x_0} f(x) \le f(x_0) \iff \forall \varepsilon > 0, \; \exists \delta > 0 \text{ s.t. } \lVert x - x_0\rVert < \delta \implies f(x) < f(x_0) + \varepsilon.
+      \]
+      함수 \(f\)가 점 \(x_0\)에서 <strong>하반연속(Lower Semi-Continuous, LSC)</strong>이라는 것은:
+      \[
+      \liminf_{x \to x_0} f(x) \ge f(x_0) \iff -f \text{ is USC}.
+      \]
+      함수 \(f\)가 \(x_0\)에서 연속(continuous)일 필요충분조건은 \(f\)가 \(x_0\)에서 상반연속이면서 동시에 하반연속인 것이다.
+    </p>
+  </div>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 수준집합(Level Sets)을 통한 위상적 특징화</div>
+    <p>
+      함수 \(f: X \to \mathbb{R}\)에 대해 다음의 닫힘성은 모두 <strong>정의역 \(X\)의 상대위상</strong>에서 해석한다:
+    </p>
+    <ul class="tight">
+      <li>\(f\)가 상반연속(USC) \(\iff\) 모든 \(\alpha \in \mathbb{R}\)에 대해 상위수준집합(Upper contour set) \(\{x \in X : f(x) \ge \alpha\}\)가 닫힌집합이다.</li>
+      <li>\(f\)가 하반연속(LSC) \(\iff\) 모든 \(\alpha \in \mathbb{R}\)에 대해 하위수준집합(Lower contour set) \(\{x \in X : f(x) \le \alpha\}\)가 닫힌집합이다.</li>
+    </ul>
+  </div>
+
+  <h3 id="s043">0.4.3 콤팩트성과 순차콤팩트성</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 콤팩트 집합(Compact Set)</div>
+    <p>
+      위상공간의 부분집합 \(K\)가 <strong>콤팩트(compact)</strong>하다는 것은, \(K\)의 임의의 열린 덮개(open cover) \(\{U_\alpha\}_{\alpha \in I}\) (\(K \subseteq \bigcup_\alpha U_\alpha\))에 대해 유한 부분덮개(finite subcover) \(\{U_{\alpha_1}, \dots, U_{\alpha_m}\}\)가 존재하는 것이다.
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · Heine–Borel 정리 및 Bolzano–Weierstrass 정리</div>
+    <p>
+      유클리드 공간 \(\mathbb{R}^n\)의 부분집합 \(K\)에 대해 다음 세 조건은 상호 동치이다:
+    </p>
+    <ol class="tight">
+      <li>\(K\)는 콤팩트하다 (임의의 열린 덮개가 유한 부분덮개를 가짐).</li>
+      <li>\(K\)는 <strong>닫힌집합(closed)</strong>이며 동시에 <strong>유계집합(bounded)</strong>이다 (\(\exists M > 0 \text{ s.t. } \lVert x\rVert \le M, \; \forall x \in K\)).</li>
+      <li>\(K\)는 <strong>순차콤팩트(sequentially compact)</strong>하다: \(K\) 안의 임의의 점렬 \((x^k)_{k \ge 1} \subseteq K\)는 \(K\) 안의 점으로 수렴하는 부분수열(subsequence) \((x^{k_j})_{j \ge 1}\)을 갖는다.</li>
+    </ol>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">PROPOSITION · 콤팩트 집합의 연속 사상 보존 정리</div>
+    <p>
+      \(K \subseteq \mathbb{R}^n\)가 콤팩트하고 \(f: K \to \mathbb{R}^m\)가 연속함수이면, 그 상(image) \(f(K) = \{f(x) : x \in K\}\)도 \(\mathbb{R}^m\)에서 콤팩트 집합이다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 콤팩트 집합의 연속 사상 보존</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (순차콤팩트성을 이용한 간결한 증명)</div>
+        \(f(K)\) 안의 임의의 점렬 \((y^k)_{k \ge 1}\)를 취하자. 정의에 의해 각 \(k\)마다 \(y^k = f(x^k)\)인 \(x^k \in K\)가 존재한다. \(K\)가 콤팩트하므로 점렬 \((x^k)\)는 어떤 \(x^* \in K\)로 수렴하는 부분수열 \((x^{k_j})\)를 갖는다: \(x^{k_j} \to x^*\). \(f\)가 연속함수이므로 \(y^{k_j} = f(x^{k_j}) \to f(x^*)\)이다. \(x^* \in K\)이므로 \(f(x^*) \in f(K)\)이다. 따라서 임의의 점렬 \((y^k)\)가 \(f(K)\) 안의 점으로 수렴하는 부분수열을 가지므로, \(f(K)\)는 콤팩트하다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s044">0.4.4 최대값과 최소값의 존재성 (Weierstrass 극값정리)</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.4.1 · 바이어슈트라스 극값정리 (Weierstrass Extreme Value Theorem)</div>
+    <p>
+      공집합이 아닌 콤팩트 집합 \(K \subseteq \mathbb{R}^n\) 위에서 정의된 실숫값 연속함수 \(f: K \to \mathbb{R}\)는 반드시 전역 최대값(global maximum)과 전역 최소값(global minimum)을 달성한다. 즉,
+      \[
+      \exists x^*, x_* \in K \quad \text{such that} \quad f(x_*) \le f(x) \le f(x^*), \quad \forall x \in K.
+      \]
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · Weierstrass 극값정리</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (완결된 증명)</div>
+        앞선 정리에 의해 \(f(K) \subseteq \mathbb{R}\)는 콤팩트 집합이다. Heine-Borel 정리에 의해 \(f(K)\)는 유계(bounded)이고 닫힌집합(closed)이다.<br/>
+        1) \(f(K)\)가 위로 유계이므로 실수 완비성 공리에 의해 실수의 상한 \(M = \sup f(K) \in \mathbb{R}\)가 존재한다.<br/>
+        2) 상한의 정의에 의해, 각 \(k \in \mathbb{N}\)마다 \(M - 1/k < f(x^k) \le M\)을 만족하는 \(x^k \in K\)를 선택할 수 있다. 조임정리(Squeeze theorem)에 의해 \(f(x^k) \to M\)이다.<br/>
+        3) \(K\)가 순차콤팩트하므로 점렬 \((x^k)\)는 어떤 점 \(x^* \in K\)로 수렴하는 부분수열 \((x^{k_j})\)를 가진다: \(x^{k_j} \to x^*\).<br/>
+        4) \(f\)가 연속이므로 \(f(x^{k_j}) \to f(x^*)\)이다. 극한의 유일성에 의해 \(f(x^*) = M\)이다. \(x^* \in K\)이므로 \(f\)는 \(x^*\)에서 최대값을 달성한다.<br/>
+        최소값의 존재는 \(-f\)에 동일한 논리를 적용하거나 하한 \(\inf f(K)\)를 사용하여 대칭적으로 성립한다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 반연속 바이어슈트라스 정리 (Semi-continuous Weierstrass Theorem)</div>
+    <p>
+      공집합이 아닌 콤팩트 집합 \(K \subseteq \mathbb{R}^n\) 위에서 정의된 함수 \(f: K \to \mathbb{R}\)가 <strong>상반연속(USC)</strong>이면, \(f\)는 \(K\) 위에서 최대값을 달성한다. 함수 \(f\)가 <strong>하반연속(LSC)</strong>이면, \(f\)는 \(K\) 위에서 최소값을 달성한다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 반연속 바이어슈트라스 정리</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        상한 \(M = \sup_{x \in K} f(x) \in (-\infty, \infty]\)라 하자. 먼저 \(M=+\infty\)이면 각 \(k\)에 대해 \(f(x^k)\gt k\)인 \(x^k\in K\)를 택한다. 반면 \(M\lt+\infty\)이면 \(f(x^k)\gt M-1/k\)인 \(x^k\in K\)를 택한다. 어느 경우에도 \(f(x^k)\to M\)이 성립한다(무한대의 경우 확장실수의 의미). \(K\)의 콤팩트성에 의해 어떤 부분수열이 \(x^* \in K\)로 수렴한다: \(x^{k_j} \to x^*\). \(f\)가 상반연속이므로 상반연속성에 의해
+        \[
+        M = \limsup_{j \to \infty} f(x^{k_j}) \le f(x^*) \le M.
+        \]
+        따라서 \(M=f(x^*)\in\mathbb R\)이다. 특히 \(M=+\infty\)인 경우는 \(f(x^*)\)가 실수값이라는 가정에 모순된다. 하반연속 함수의 최소값 존재는 \(-f\)에 같은 논증을 적용하면 된다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="statement warning">
+    <div class="statement-head">CAUTION · 가격이 0인 재화가 있을 때 예산집합의 콤팩트성 붕괴</div>
+    <p>
+      소비자 예산집합 \(B(p, w) = \{x \in \mathbb{R}_+^n : p \cdot x \le w\}\)를 생각하자.
+    </p>
+    <ul class="tight">
+      <li><strong>모든 가격이 엄격한 양수(\(p \gg 0\), \(w > 0\)):</strong> 임의의 \(x \in B(p, w)\)에 대해 \(0 \le x_i \le w / p_i\)이므로 예산집합은 유계이다. 선형 부등식에 의해 닫힌집합이므로 \(B(p, w)\)는 <strong>콤팩트 집합</strong>이다. 효용함수가 연속 또는 상반연속이면 Weierstrass 정리의 해당 형태에 의해 효용극대화 문제(UMP)의 해가 존재한다.</li>
+      <li><strong>어떤 가격이 0일 때(\(p_k = 0\)):</strong> 소비자는 \(x_k\)를 무한히 소비해도 지출이 증가하지 않는다. 따라서 \(X=\mathbb R_+^n\)이라면 예산집합은 비유계(unbounded)가 되어 콤팩트성을 상실한다. 무료 재화의 소비량을 늘리는 방향에서 효용이 엄격히 증가한다면 유한한 최적 소비묶음은 존재하지 않는다. 그러나 효용함수가 위로 유계일 수도 있으므로 효용값 자체가 반드시 무한대로 발산하는 것은 아니다. 일반균형에서 가격이 0에 도달하는 경계점을 엄밀히 통제해야 하는 근본 이유가 여기에 있다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s05">
+  <h2><span class="section-number">0.5</span>함수와 대응</h2>
+
+  <p class="topic-opening">
+    소비자의 수요, 기업의 공급, 게임의 최적반응은 최적해가 여러 개일 수 있으므로 처음부터 대응(correspondence)으로 정의하는 것이 일반적이다. 해당 대응이 모든 관련 모수에서 단일원소 집합의 값을 갖는다면 함수로 나타낼 수 있다. 대응의 상반연속성(UHC)과 하반연속성(LHC)은 최대정리와 고정점정리의 핵심 가정이다.
+  </p>
+
+  <h3 id="s051">0.5.1 대응의 기본 정의와 Graph</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 대응(Correspondence)과 Graph</div>
+    <p>
+      집합 \(X\)의 각 원소 \(x\)에 집합 \(Y\)의 부분집합 \(F(x) \subseteq Y\)를 할당하는 사상을 <strong>대응(correspondence)</strong>이라 하고 \(F: X \rightrightarrows Y\)로 표기한다.
+      대응 \(F\)의 <strong>그래프(graph)</strong>는 다음과 같은 곱공간의 부분집합이다:
+      \[
+      \operatorname{gph} F = \{(x, y) \in X \times Y : y \in F(x)\}.
+      \]
+      \(\operatorname{gph} F\)가 \(X \times Y\)의 닫힌 부분집합일 때 \(F\)가 <strong>closed graph</strong>를 갖는다고 한다.
+    </p>
+  </div>
+
+  <h3 id="s052">0.5.2 상반연속성(UHC)과 하반연속성(LHC)</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 위상적 상반연속성(UHC)과 하반연속성(LHC)</div>
+    <p>
+      대응 \(F: X \rightrightarrows Y\)에 대해:
+    </p>
+    <ol class="tight">
+      <li><strong>상반연속성(Upper Hemi-Continuity, UHC):</strong> 점 \(x_0 \in X\)에서, \(F(x_0)\)를 포함하는 임의의 열린집합 \(V \subseteq Y\) (\(F(x_0) \subseteq V\))에 대해, 어떤 \(x_0\)의 열린 근방 \(U(x_0) \subseteq X\)가 존재하여
+      \[
+      x \in U(x_0) \implies F(x) \subseteq V
+      \]
+      를 만족할 때, \(F\)는 \(x_0\)에서 UHC라고 한다. (즉, 대응의 상이 바깥으로 갑자기 폭발하여 벗어나지 않음)</li>
+      <li><strong>하반연속성(Lower Hemi-Continuity, LHC):</strong> 점 \(x_0 \in X\)에서, \(F(x_0)\)와 만나는 임의의 열린집합 \(V \subseteq Y\) (\(F(x_0) \cap V \ne \varnothing\))에 대해, 어떤 \(x_0\)의 열린 근방 \(U(x_0) \subseteq X\)가 존재하여
+      \[
+      x \in U(x_0) \implies F(x) \cap V \ne \varnothing
+      \]
+      를 만족할 때, \(F\)는 \(x_0\)에서 LHC라고 한다. (즉, 대응의 상이 안쪽으로 갑자기 붕괴하거나 축소되지 않음)</li>
+      <li>대응 \(F\)가 UHC이면서 동시에 LHC일 때, \(F\)를 <strong>연속 대응(continuous correspondence)</strong>이라 한다.</li>
+    </ol>
+  </div>
+
+  <div class="diagram-wrap">
+    <svg width="680" height="290" viewBox="0 0 680 290" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="c0f1_arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#667582"/>
+        </marker>
+        <marker id="c0f1_teal" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#23566f"/>
+        </marker>
+      </defs>
+
+      <!-- Panel 1: UHC -->
+      <rect x="16" y="10" width="316" height="268" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+      <text x="174" y="32" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="12.5" font-weight="bold" fill="#23566f">상반연속(UHC): 근방 밖으로의 확장 방지</text>
+
+      <!-- Axes Left -->
+      <line x1="62" y1="208" x2="62" y2="50" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f1_arr)"/>
+      <line x1="50" y1="192" x2="306" y2="192" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f1_arr)"/>
+      <text x="51" y="57" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">y</text>
+      <text x="313" y="196" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">x</text>
+
+      <!-- Open tube U x V -->
+      <rect x="118" y="68" width="114" height="114" rx="2" fill="rgba(35, 86, 111, 0.08)" stroke="#23566f" stroke-width="1.2" stroke-dasharray="4,3"/>
+      <text x="111" y="82" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#23566f">V</text>
+
+      <!-- Correspondence F(x) -->
+      <line x1="66" y1="164" x2="175" y2="164" stroke="#23566f" stroke-width="2.8"/>
+      <line x1="175" y1="86" x2="290" y2="86" stroke="#23566f" stroke-width="2.8"/>
+      <line x1="175" y1="86" x2="175" y2="164" stroke="#7a4e20" stroke-width="4.2"/>
+      <circle cx="175" cy="86" r="3.8" fill="#7a4e20"/>
+      <circle cx="175" cy="164" r="3.8" fill="#7a4e20"/>
+      <text x="168" y="126" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#7a4e20">F(x₀)</text>
+
+      <!-- Projections and neighborhood U -->
+      <line x1="175" y1="168" x2="175" y2="192" stroke="#7a4e20" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="118" y1="182" x2="118" y2="196" stroke="#23566f" stroke-width="1" stroke-dasharray="2,2"/>
+      <line x1="232" y1="182" x2="232" y2="196" stroke="#23566f" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="175" y="206" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#7a4e20">x₀</text>
+      <path d="M 118 214 L 118 218 L 232 218 L 232 214" fill="none" stroke="#23566f" stroke-width="1.2"/>
+      <text x="240" y="221" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#23566f">U</text>
+
+      <text x="174" y="244" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#23566f">x ∈ U ⇒ F(x) ⊂ V (열린 근방 V 안에 포함)</text>
+      <text x="174" y="263" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10" fill="#667582">x → x₀일 때 그래프가 튜브 밖으로 폭발하지 않음</text>
+
+      <!-- Panel 2: LHC -->
+      <rect x="348" y="10" width="316" height="268" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+      <text x="506" y="32" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="12.5" font-weight="bold" fill="#7a4e20">하반연속(LHC): 기존 값의 소실 방지</text>
+
+      <!-- Axes Right -->
+      <line x1="394" y1="208" x2="394" y2="50" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f1_arr)"/>
+      <line x1="382" y1="192" x2="638" y2="192" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f1_arr)"/>
+      <text x="383" y="57" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">y</text>
+      <text x="645" y="196" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">x</text>
+
+      <!-- Correspondence Wedge F(x) -->
+      <polygon points="402,138 618,60 618,178 402,178" fill="rgba(122, 78, 32, 0.12)" stroke="#7a4e20" stroke-width="1.5"/>
+      <line x1="546" y1="86" x2="546" y2="178" stroke="#7a4e20" stroke-width="3"/>
+      <line x1="546" y1="178" x2="546" y2="192" stroke="#7a4e20" stroke-width="1" stroke-dasharray="3,2"/>
+      <text x="546" y="206" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#7a4e20">x₀</text>
+      <text x="582" y="165" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#7a4e20">F(x)</text>
+
+      <!-- Target point & converging sequence -->
+      <line x1="442" y1="152" x2="539" y2="116.5" stroke="#23566f" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#c0f1_teal)"/>
+      <circle cx="442" cy="152" r="3" fill="#23566f"/>
+      <circle cx="476" cy="140" r="3" fill="#23566f"/>
+      <circle cx="510" cy="127" r="3" fill="#23566f"/>
+      <circle cx="546" cy="114" r="4.2" fill="#23566f" stroke="#ffffff" stroke-width="1"/>
+      <text x="554" y="118" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#23566f">y ∈ F(x₀)</text>
+      <text x="458" y="169" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#23566f">yᵏ ∈ F(xᵏ)</text>
+
+      <text x="506" y="244" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#7a4e20">∀y ∈ F(x₀), xᵏ → x₀ ⇒ ∃yᵏ ∈ F(xᵏ) s.t. yᵏ → y</text>
+      <text x="506" y="263" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10" fill="#667582">극한점 x₀에서 어떤 해 y도 수열 근사에서 누락되지 않음</text>
+    </svg>
+    <div class="diagram-caption">그림 0.1: 대응의 상반연속성(UHC: 근방 밖으로의 확장 방지)과 하반연속성(LHC: 기존 값의 소실 방지)의 기하학</div>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 수열적 LHC 판정법 (Sequential Characterization of LHC)</div>
+    <p>
+      대응 \(F: X \rightrightarrows Y\)가 점 \(x \in X\)에서 하반연속(LHC)일 필요충분조건은, 임의의 수열 \(x^k \to x\)와 임의의 \(y \in F(x)\)에 대해, 충분히 큰 모든 \(k\)에 대해 \(y^k\in F(x^k)\)이면서 \(y^k\to y\)를 만족하는 점렬을 선택할 수 있는 것이다. 특히 \(F\)가 모든 점에서 공집합이 아닌 값을 가지면 유한 개의 초기 항도 임의로 선택하여 전체 수열로 쓸 수 있다.
+    </p>
+  </div>
+
+  <h3 id="s053">0.5.3 Closed Graph와 UHC의 관계 (공역이 콤팩트할 때의 동치성)</h3>
+  <div class="statement warning">
+    <div class="statement-head">CAUTION · Closed Graph와 UHC는 일반적으로 같은 말이 아니다</div>
+    <p>
+      일반적인 공간에서 "그래프가 닫혀 있다(\(\operatorname{gph} F\) is closed)"와 "대응이 상반연속이다(\(F\) is UHC)"는 동치가 아니다:
+    </p>
+    <ul class="tight">
+      <li><strong>반례 (\(\operatorname{gph} F\)는 closed이지만 UHC가 아닌 경우):</strong> \(F: [0, \infty) \rightrightarrows \mathbb{R}\)를 \(x > 0\)에서 \(F(x) = \{1/x\}\), \(x = 0\)에서 \(F(0) = \{0\}\)이라 하자. \(\operatorname{gph} F = \{(x, 1/x) : x > 0\} \cup \{(0, 0)\}\)는 유클리드 평면에서 닫힌집합이다. 그러나 \(x_0 = 0\)에서 \(F(0) = \{0\}\)을 감싸는 유계 열린구간 \(V = (-1, 1)\)을 잡으면, \(x \to 0^+\)일 때 \(F(x) = 1/x \to \infty\)이므로 어떤 근방 \(U(0)\)을 잡아도 \(F(x) \subseteq V\)가 될 수 없다. 따라서 \(F\)는 \(x=0\)에서 UHC가 아니다. 원인은 공역 \(\mathbb{R}\)이 콤팩트하지 않아 함수값이 무한대로 탈출했기 때문이다.</li>
+    </ul>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.5.1 · 콤팩트 공역에서의 Closed Graph 정리 (Compact Codomain Theorem)</div>
+    <p>
+      공역 \(Y \subseteq \mathbb{R}^m\)가 <strong>콤팩트(compact)</strong>하다고 가정하자. 대응 \(F: X \rightrightarrows Y\)가 닫힌값(closed-valued)을 가질 때 다음 두 명제는 <strong>동치</strong>이다:
+      \[
+      F \text{ is Upper Hemi-Continuous (UHC)} \iff \operatorname{gph} F \text{ is closed in } X \times Y.
+      \]
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 콤팩트 공역에서의 Closed Graph 동치성</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (대학원 미시경제학 필수 핵심 정리)</div>
+        <strong>(\(\implies\))</strong> \(F\)가 UHC라 가정하자(이 방향은 공역 \(Y\)의 콤팩트성 없이도 닫힌값성만으로 성립한다). \(\operatorname{gph} F\)가 닫힌집합임을 보이기 위해 수열적 특징화를 사용하자. \((x^k, y^k) \in \operatorname{gph} F\)이고 \((x^k, y^k) \to (x^*, y^*)\)라 하자. 정의에 의해 \(y^k \in F(x^k)\)이다. 우리는 \(y^* \in F(x^*)\)임을 보여야 한다.<br/>
+        결론에 반하여 \(y^* \notin F(x^*)\)라 하자. \(F(x^*)=\varnothing\)이면 \(V_1 = Y, V_2 = \varnothing\)로 즉시 분리되고, \(F(x^*) \ne \varnothing\)이더라도 \(F(x^*)\)는 닫힌집합이므로 거리공간 \(Y \subseteq \mathbb{R}^m\)의 성질상 \(r = \operatorname{dist}(y^*, F(x^*)) > 0\)이다. 따라서 \(y^* \in V_1 = B_{r/2}(y^*) \cap Y\), \(F(x^*) \subseteq V_2 = \bigcup_{z \in F(x^*)} B_{r/2}(z) \cap Y\)로 두면 \(V_1 \cap V_2 = \varnothing\)인 서로소 열린집합(상대위상)을 얻는다.<br/>
+        \(F\)가 \(x^*\)에서 UHC이므로, \(x^*\)의 열린 근방 \(U(x^*)\)가 존재하여 모든 \(x \in U(x^*)\)에 대해 \(F(x) \subseteq V_2\)이다. \(x^k \to x^*\)이므로 충분히 큰 \(k\)에 대해 \(x^k \in U(x^*)\)이고, 따라서 \(y^k \in F(x^k) \subseteq V_2\)이다.<br/>
+        반면 \(y^k \to y^* \in V_1\)이므로 충분히 큰 \(k\)에 대해 \(y^k \in V_1\)이어야 한다. 이는 \(y^k \in V_1 \cap V_2 = \varnothing\)을 초래하여 모순이다. 따라서 \(y^* \in F(x^*)\)이며 \(\operatorname{gph} F\)는 닫힌집합이다.<br/><br/>
+        <strong>(\(\impliedby\))</strong> \(\operatorname{gph} F\)가 닫혀 있고 \(Y\)가 콤팩트라 가정하자. 결론에 반하여 어떤 \(x^* \in X\)에서 \(F\)가 UHC가 아니라고 가정하자.<br/>
+        그러면 \(F(x^*)\)를 포함하는 어떤 열린집합 \(V \subseteq Y\)가 존재하여, \(x^*\)의 임의의 구근방 \(B_{1/k}(x^*)\)마다 \(F(x^k) \not\subseteq V\)인 점 \(x^k \in B_{1/k}(x^*)\)가 존재한다.<br/>
+        즉, 각 \(k\)마다 \(y^k \in F(x^k)\)이면서 \(y^k \notin V\) (즉 \(y^k \in Y \setminus V\))인 점열이 존재한다. \(x^k \to x^*\)임은 자명하다.<br/>
+        이제 점렬 \((y^k) \subseteq Y \setminus V\)를 보자. \(Y\)가 콤팩트하고 \(V\)가 열린집합이므로 \(Y \setminus V\)는 콤팩트 집합이다. Bolzano-Weierstrass 정리에 의해 \((y^k)\)는 어떤 \(y^* \in Y \setminus V\)로 수렴하는 부분수열 \((y^{k_j})\)를 갖는다: \(y^{k_j} \to y^*\).<br/>
+        그러면 \((x^{k_j}, y^{k_j}) \in \operatorname{gph} F\)이고 \((x^{k_j}, y^{k_j}) \to (x^*, y^*)\)이다. \(\operatorname{gph} F\)가 닫힌집합이므로 가정에 의해 \((x^*, y^*) \in \operatorname{gph} F\), 즉 \(y^* \in F(x^*)\)이어야 한다.<br/>
+        그러나 \(F(x^*) \subseteq V\)인 반면 \(y^* \in Y \setminus V\)이므로 모순이다! 따라서 \(F\)는 \(x^*\)에서 UHC이어야 한다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 경제학적 적용: 수요대응과 공급대응의 UHC 검증</div>
+    <p>
+      수요대응이나 공급대응의 UHC를 확인할 때에는 두 사실을 함께 보이면 편리하다. 첫째, 수요·공급의 값이 모수점 부근에서 하나의 콤팩트 집합 안에 들어간다. 둘째, \((p^k,m^k,x^k)\to(p,m,x)\), \(x^k\in D(p^k,m^k)\)이면 \(x\in D(p,m)\)이다. 국소적인 공통 콤팩트 집합과 닫힌 그래프 성질을 결합하면 UHC가 따른다.
+    </p>
+  </div>
+</section>
+
+<section id="s06">
+  <h2><span class="section-number">0.6</span>볼록성, 오목성, 준볼록성, 준오목성</h2>
+
+  <p class="topic-opening">
+    볼록성은 소비자 선호, 생산기술, 최적화 문제의 구조 및 분리초평면을 이용한 가격지지 논증에 반복해서 등장한다. 이 절에서는 볼록집합과 오목함수의 정의를 정리하고, 준오목성과 오목성의 차이 및 미분가능한 경우의 특징화를 살펴본다.
+  </p>
+
+  <h3 id="s061">0.6.1 볼록집합과 볼록결합</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 볼록결합과 볼록집합 (Convex Sets)</div>
+    <p>
+      벡터 \(x, y \in \mathbb{R}^n\)와 스칼라 \(t \in [0, 1]\)에 대해 \(tx + (1-t)y\)를 \(x\)와 \(y\)의 <strong>볼록결합(convex combination)</strong>이라 한다.
+      부분집합 \(C \subseteq \mathbb{R}^n\)가 <strong>볼록집합(convex set)</strong>이라는 것은, 임의의 두 점 \(x, y \in C\)와 임의의 \(t \in [0, 1]\)에 대해 선분 전체가 \(C\)에 포함되는 것이다:
+      \[
+      tx + (1-t)y \in C, \qquad \forall x, y \in C, \; \forall t \in [0, 1].
+      \]
+    </p>
+  </div>
+
+  <h3 id="s062">0.6.2 오목함수와 볼록함수의 1계·2계 특징화</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 오목함수와 볼록함수 (Concave and Convex Functions)</div>
+    <p>
+      볼록집합 \(C \subseteq \mathbb{R}^n\) 위에서 정의된 함수 \(f: C \to \mathbb{R}\)에 대해:
+    </p>
+    <ul class="tight">
+      <li>\(f\)가 <strong>오목함수(concave)</strong>라는 것은 모든 \(x, y \in C\)와 \(t \in [0, 1]\)에 대해 다음이 성립하는 것이다:
+      \[
+      f(tx + (1-t)y) \ge t f(x) + (1-t) f(y).
+      \]
+      부등호가 \(t \in (0, 1)\), \(x \ne y\)에서 엄격히 성립하면 <strong>엄격한 오목함수(strictly concave)</strong>라 한다.</li>
+      <li>\(f\)가 <strong>볼록함수(convex)</strong>라는 것은 \(-f\)가 오목함수인 것이다.</li>
+    </ul>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 오목함수의 1계 특징화 (First-Order Characterization of Concavity)</div>
+    <p>
+      열린 볼록집합 \(C \subseteq \mathbb{R}^n\) 위에서 정의된 미분가능한 함수 \(f: C \to \mathbb{R}\)에 대해 다음은 동치이다:
+      \[
+      f \text{ is concave on } C \iff f(y) \le f(x) + \nabla f(x) \cdot (y - x), \qquad \forall x, y \in C.
+      \]
+      즉, 오목함수의 접초평면(tangent hyperplane)은 함수의 그래프를 위쪽에서 지지한다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 오목함수의 1계 특징화</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        <strong>(\(\implies\))</strong> \(f\)가 오목이라 하자. 임의의 \(x, y \in C\)와 \(t \in (0, 1]\)에 대해
+        \[
+        f(x + t(y - x)) = f(ty + (1-t)x) \ge t f(y) + (1-t) f(x) = f(x) + t [f(y) - f(x)].
+        \]
+        양변에서 \(f(x)\)를 빼고 양수 \(t\)로 나누면
+        \[
+        \frac{f(x + t(y - x)) - f(x)}{t} \ge f(y) - f(x).
+        \]
+        \(t \to 0^+\)로 극한을 취하면 좌변은 방향도함수 \(\nabla f(x) \cdot (y - x)\)로 수렴하므로,
+        \[
+        \nabla f(x) \cdot (y - x) \ge f(y) - f(x) \implies f(y) \le f(x) + \nabla f(x) \cdot (y - x).
+        \]
+        <strong>(\(\impliedby\))</strong> 1계 부등식이 모든 점쌍에서 성립한다고 가정하자. \(x, y \in C\)와 \(t \in [0, 1]\)를 취하고 \(z = tx + (1-t)y \in C\)라 하자. 가정에 의해 점 \(z\)에서 접평면 부등식을 쓰면:
+        \[
+        f(x) \le f(z) + \nabla f(z) \cdot (x - z), \qquad f(y) \le f(z) + \nabla f(z) \cdot (y - z).
+        \]
+        첫 식에 \(t\)를 곱하고 둘째 식에 \((1-t)\)를 곱해 더하면:
+        \[
+        t f(x) + (1-t) f(y) \le f(z) + \nabla f(z) \cdot [\underbrace{t(x - z) + (1-t)(y - z)}_{= tx + (1-t)y - z = 0}] = f(z) = f(tx + (1-t)y).
+        \]
+        따라서 \(f\)는 오목함수이다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 오목함수의 2계 특징화 (Hessian Negative Semi-definiteness)</div>
+    <p>
+      열린 볼록집합 \(C \subseteq \mathbb{R}^n\) 위에서 두 번 연속미분가능한(\(C^2\)) 함수 \(f: C \to \mathbb{R}\)에 대해:
+    </p>
+    <ol class="tight">
+      <li>\(f\)가 오목함수 \(\iff\) 모든 \(x \in C\)에서 Hessian 행렬 \(D^2 f(x)\)가 <strong>음의 준정부호(negative semi-definite)</strong>이다:
+      \[
+      z^\top D^2 f(x) z \le 0, \qquad \forall z \in \mathbb{R}^n.
+      \]
+      </li>
+      <li>모든 \(x \in C\)에서 \(D^2 f(x)\)가 <strong>음의 정부호(negative definite, \(z^\top D^2 f(x) z < 0, \forall z \ne 0\))</strong>이면 \(f\)는 <strong>엄격한 오목함수</strong>이다. (역은 성립하지 않음: \(f(x) = -x^4\)는 엄격오목이지만 \(f''(0) = 0\)).</li>
+    </ol>
+  </div>
+
+  <h3 id="s063">0.6.3 준오목성(Quasiconcavity)과 서수적 선호</h3>
+  <p>
+    소비자이론에서 효용의 수치적 크기는 서수적(ordinal)이므로 임의의 엄격증가변환 \(\phi(u)\)를 취해도 선호체계는 불변이어야 한다. 오목성은 비선형 증가변환에 의해 파괴되지만, <strong>준오목성(quasiconcavity)</strong>은 상위수준집합의 볼록성으로 정의되므로 서수적 증가변환 아래에서 온전히 보존된다.
+  </p>
+
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 준오목성과 상위수준집합 (Quasiconcavity)</div>
+    <p>
+      볼록집합 \(C \subseteq \mathbb{R}^n\) 위에서 정의된 함수 \(f: C \to \mathbb{R}\)에 대해 다음은 동치이다:
+    </p>
+    <ol class="tight">
+      <li>모든 \(x, y \in C\)와 \(t \in [0, 1]\)에 대해:
+      \[
+      f(tx + (1-t)y) \ge \min\{f(x), f(y)\}.
+      \]
+      </li>
+      <li>모든 실수 \(\alpha \in \mathbb{R}\)에 대해 상위수준집합(Upper contour set)
+      \[
+      U_\alpha = \{x \in C : f(x) \ge \alpha\}
+      \]
+      가 볼록집합(convex set)이다.
+      </li>
+    </ol>
+  </div>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 엄격 준오목성과 수요의 유일성</div>
+    <p>
+      서로 다른 두 점 \(x \ne y\)와 \(t \in (0, 1)\)에 대해 부등식이 엄격히 성립(\(f(tx + (1-t)y) > \min\{f(x), f(y)\}\))하면 \(f\)는 <strong>엄격한 준오목함수(strictly quasiconcave)</strong>이다. 볼록한 예산집합 \(B(p, w)\) 위에서 엄격준오목 효용함수의 최적해는 <strong>존재한다면 유일하다</strong>. 존재성이 별도로 확보되어야 \(\operatorname{arg\,max}\)가 단일원소 집합이 되고 수요를 함수로 나타낼 수 있다. (마찬가지로 생산함수의 준오목성—투입요구집합 \(\mathcal{V}(q)\)의 볼록성—은 비용최소화의 볼록 제약을 형성하며, 엄격준오목성과 적절한 단조성·가격 조건이 결합하면 조건부 요소수요의 유일성을 얻을 수 있다. 한편 지출함수·비용함수는 가격에 대해 오목, 이윤함수는 가격에 대해 볼록이 된다.)
+    </p>
+  </div>
+
+  <h3 id="s064">0.6.4 동차함수와 오일러 정리 (Euler's Theorem)</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · 차수 \(k\)의 동차함수 (Homogeneous Functions)</div>
+    <p>
+      함수 \(f: \mathbb{R}_+^n \to \mathbb{R}\)가 <strong>차수 \(k\)의 동차함수(homogeneous of degree \(k\))</strong>라는 것은 임의의 \(t > 0\)와 \(x \in \mathbb{R}_+^n\)에 대해
+      \[
+      f(tx) = t^k f(x)
+      \]
+      가 성립하는 것이다. 예를 들어 생산함수의 1차 동차성은 규모수익불변을 뜻한다. 수요함수의 0차 동차성은 가격과 소득을 동시에 같은 비율로 변화시켜도 수요가 변하지 않는다는 의미다.
+    </p>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 오일러 정리 (Euler's Theorem for Homogeneous Functions)</div>
+    <p>
+      미분가능한 함수 \(f: \mathbb{R}_{++}^n \to \mathbb{R}\)가 차수 \(k\)의 동차함수일 필요충분조건은 다음의 오일러 항등식이 모든 내부점에서 성립하는 것이다:
+      \[
+      x \cdot \nabla f(x) = \sum_{i=1}^n x_i \frac{\partial f(x)}{\partial x_i} = k f(x), \qquad \forall x \in \mathbb{R}_{++}^n.
+      \]
+      또한 \(f\)가 차수 \(k\)의 동차함수이면, 각 편도함수 \(\frac{\partial f}{\partial x_i}\)는 <strong>차수 \(k-1\)의 동차함수</strong>이다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 오일러 정리</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF</div>
+        <strong>(\(\implies\))</strong> 동차함수 정의식 \(f(tx_1, \dots, tx_n) = t^k f(x_1, \dots, x_n)\)의 양변을 스칼라 \(t\)에 대해 미분하자. 연쇄법칙(Chain Rule)에 의해:
+        \[
+        \sum_{i=1}^n \frac{\partial f(tx)}{\partial (tx_i)} \frac{\partial (tx_i)}{\partial t} = \sum_{i=1}^n x_i \frac{\partial f(tx)}{\partial (tx_i)} = k t^{k-1} f(x).
+        \]
+        이 항등식에 \(t = 1\)을 대입하면 즉각 \(x \cdot \nabla f(x) = k f(x)\)를 얻는다.<br/>
+        <strong>(\(\impliedby\))</strong> \(x \cdot \nabla f(x) = k f(x)\)가 성립한다고 가정하자. 고정된 \(x\)에 대해 함수 \(g(t) = f(tx) / t^k\) (\(t > 0\))를 정의하고 미분하면:
+        \[
+        g'(t) = t^{-k}\nabla f(tx)\cdot x - kt^{-k-1}f(tx) = t^{-k-1}\bigl[tx\cdot\nabla f(tx)-kf(tx)\bigr]=0.
+        \]
+        오일러 항등식을 \(tx\)에서 적용하면 대괄호가 0이 된다. 따라서 \(g(t)\)는 \(t\gt0\)에서 상수이고 \(g(t)=g(1)=f(x)\)다. 곧 \(f(tx)=t^k f(x)\)이다. 아울러 동차성을 \(x_i\)로 미분하면 \(t\partial_i f(tx)=t^k\partial_i f(x)\)이므로 각 편도함수는 차수 \(k-1\)의 동차함수다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section id="s07">
+  <h2><span class="section-number">0.7</span>행렬미분, 최적화, KKT</h2>
+
+  <p class="topic-opening">
+    미분은 목적함수와 제약의 국소적 변화를 분석하는 도구다. 그러나 경제학의 최적화 문제에서는 예산제약과 비음수제약이 동시에 작용하므로 내부해의 1계조건만으로 충분하지 않다. 이 절에서는 KKT 조건의 필요성·충분성 및 이를 적용하기 위한 제약자격(constraint qualification)을 구분한다.
+  </p>
+
+  <h3 id="s071">0.7.1 제약 없는 최적화의 1계·2계 조건</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 제약 없는 최적화의 2계 충분조건 (SOSC)</div>
+    <p>
+      열린집합 \(U \subseteq \mathbb{R}^n\) 위에서 정의된 \(C^2\) 함수 \(f: U \to \mathbb{R}\)와 점 \(x^* \in U\)에 대해:
+      \[
+      \nabla f(x^*) = 0 \quad \text{and} \quad D^2 f(x^*) \prec 0 \implies x^* \text{ is a strict local maximum.}
+      \]
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 2계 충분조건 (2차 테일러 전개)</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (2차 테일러 전개)</div>
+        \(x^*\)의 충분히 작은 근방에서 임의의 \(h \ne 0\)에 대해 2차 Taylor 정리를 적용하면:
+        \[
+        f(x^* + h) = f(x^*) + \underbrace{\nabla f(x^*) \cdot h}_{= 0} + \frac{1}{2} h^\top D^2 f(x^* + \tau h) h, \qquad \tau \in (0, 1).
+        \]
+        \(D^2 f(x^*) \prec 0\)이므로, 단위구면 \(\{u : \lVert u\rVert = 1\}\) 위에서 음의 이차형식의 최대값은 어떤 음수 \(-2\varepsilon < 0\)이다. \(D^2 f\)의 연속성에 의해 \(x^*\)의 충분히 작은 반경 \(\delta\) 구근방 내의 모든 점에서도 \(h^\top D^2 f(x^* + \tau h) h \le -\varepsilon \lVert h\rVert^2 < 0\)이다. 따라서 \(f(x^* + h) < f(x^*)\)가 성립하여 \(x^*\)는 엄격한 국소 최대점이다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s072">0.7.2 부등식 제약과 Karush–Kuhn–Tucker(KKT) 조건</h3>
+  <p>
+    열린집합 \(U \subseteq \mathbb{R}^n\) (예: \(\mathbb{R}^n\)) 위에서 정의된 연속미분가능(\(C^1\)) 함수 \(f, g_j, h_k: U \to \mathbb{R}\)에 대해 표준적인 비선형 제약최대화 문제를 정식화하자(비음수 제약 \(x_i \ge 0\)도 \(g_j(x) \ge 0\)에 명시적으로 포함시킨다):
+    \[
+    \max_{x \in U} f(x) \quad \text{subject to} \quad g_j(x) \ge 0, \; j = 1, \dots, J, \quad h_k(x) = 0, \; k = 1, \dots, K.
+    \]
+    이 문제의 라그랑지안(Lagrangian) 함수는 다음과 같이 정의된다:
+    \[
+    \mathcal{L}(x, \lambda, \mu) = f(x) + \sum_{j=1}^J \lambda_j g_j(x) + \sum_{k=1}^K \mu_k h_k(x).
+    \]
+  </p>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.7.2 · KKT 1계 필요조건 (Karush–Kuhn–Tucker Necessary Conditions)</div>
+    <p>
+      \(x^* \in U\)가 위 최적화 문제의 국소 최대해이고 활성제약의 일차독립성(LICQ) 또는 Mangasarian–Fromovitz 제약자격(MFCQ) 등 적절한 제약자격을 만족하면, 라그랑지 승수벡터 \((\lambda^*, \mu^*) \in \mathbb{R}_+^J \times \mathbb{R}^K\)가 존재하여 다음 조건을 모두 만족한다:
+    </p>
+    <ol class="tight">
+      <li><strong>정상조건(Stationarity):</strong>
+      \[
+      \nabla_x \mathcal{L}(x^*, \lambda^*, \mu^*) = \nabla f(x^*) + \sum_{j=1}^J \lambda_j^* \nabla g_j(x^*) + \sum_{k=1}^K \mu_k^* \nabla h_k(x^*) = 0.
+      \]
+      </li>
+      <li><strong>원문제 실행가능성(Primal Feasibility):</strong>
+      \[
+      g_j(x^*) \ge 0 \; (j = 1, \dots, J), \qquad h_k(x^*) = 0 \; (k = 1, \dots, K).
+      \]
+      </li>
+      <li><strong>쌍대 실행가능성(Dual Feasibility):</strong>
+      \[
+      \lambda_j^* \ge 0, \qquad \forall j = 1, \dots, J.
+      \]
+      </li>
+      <li><strong>상보여유성(Complementary Slackness):</strong>
+      \[
+      \lambda_j^* g_j(x^*) = 0, \qquad \forall j = 1, \dots, J.
+      \]
+      즉, 제약이 엄격한 부등호로 성립하면(\(g_j(x^*) > 0\)) 승수는 반드시 0이어야 하고(\(\lambda_j^* = 0\)), 승수가 양수이면(\(\lambda_j^* > 0\)) 제약이 반드시 활성화된다(\(g_j(x^*) = 0\)).
+      </li>
+    </ol>
+  </div>
+
+  <h3 id="s073">0.7.3 Slater 조건과 제약자격의 필요성</h3>
+  <div class="statement">
+    <div class="statement-head">DEFINITION · Slater 조건 (Slater's Condition for Convex Constraints)</div>
+    <p>
+      부등식 제약 \(g_j\)가 오목함수이고 등식제약 \(h_k\)가 아핀함수인 볼록 실행가능집합을 생각하자. 등식제약을 만족하면서 모든 부등식 제약을 엄격히 만족하는 점 \(x^0\in U\)가 존재하면, 여기서 사용하는 <strong>강한 형태의 Slater 조건</strong>이 충족된다. 이때 \(x^0\)는 등식제약이 정하는 아핀공간 안에서 고려한다.
+      \[
+      h_k(x^0) = 0 \; (\forall k = 1, \dots, K), \qquad g_j(x^0) > 0 \; (\forall j = 1, \dots, J).
+      \]
+      미시경제학의 소비자 문제에서 소득 \(m > 0\)과 가격 \(p \gg 0\)이 주어지면 \(x^0 = \frac{m}{2\sum_{i=1}^n p_i}(1,\dots,1) \gg 0\)가 예산제약(\(m - p \cdot x^0 > 0\))과 비음제약(\(x_i^0 > 0\))을 모두 엄격 부등호로 만족하므로 Slater 조건이 즉시 성립한다.
+    </p>
+  </div>
+
+  <div class="statement warning">
+    <div class="statement-head">CAUTION · 제약자격이 실패하면 승수가 존재하지 않을 수 있다</div>
+    <p>
+      제약집합의 경계가 최적해 \(x^*\)에서 뾰족한 첨점(cusp)을 이루거나 제약 그래디언트들이 퇴화(degenerate)하는 등 제약자격이 실패하면, 최적해임에도 불구하고 KKT 1계조건을 만족하는 승수 \((\lambda^*, \mu^*)\)가 전혀 존재하지 않을 수 있다(목적함수의 기울기가 제약 경계의 법선 원뿔로 생성되지 못하는 기하학적 특이성 때문). Slater 조건은 위와 같은 볼록 제약의 맥락에서 사용해야 한다. 일반 비선형 제약에서는 단지 엄격실행가능점이 있다는 사실만으로 KKT 필요조건이 보장되지 않으며, LICQ·MFCQ와 같은 국소 제약자격을 확인해야 한다.
+    </p>
+  </div>
+
+  <h3 id="s074">0.7.4 볼록계획법에서의 KKT 충분성 정리</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 오목 극대화에서의 KKT 충분조건 (KKT Sufficiency for Concave Programming)</div>
+    <p>
+      목적함수 \(f: \mathbb{R}^n \to \mathbb{R}\)가 오목함수(concave)이고, 모든 부등식 제약함수 \(g_j: \mathbb{R}^n \to \mathbb{R}\)가 오목함수이며, 등식제약 \(h_k\)는 아핀함수(\(h_k(x) = a_k \cdot x - b_k\))라고 하자.
+      어떤 점 \(x^*\)와 승수벡터 \((\lambda^*, \mu^*)\)가 KKT 조건 (1)–(4)를 만족하면, \(x^*\)는 이 문제의 <strong>전역 최대해(global maximizer)</strong>다.
+    </p>
+  </div>
+
+  <div class="proof">
+    <div class="proof-label">PROOF (대학원 미시경제학 표준 대수적 증명)</div>
+    임의의 실행가능한 점 \(x\) (\(g_j(x) \ge 0, h_k(x) = 0\))를 취하자. 우리는 \(f(x^*) \ge f(x)\)임을 보여야 한다.<br/>
+    \(f\)가 오목함수이므로 오목함수의 1계 특징화에 의해:
+    \[
+    f(x) - f(x^*) \le \nabla f(x^*) \cdot (x - x^*).
+    \]
+    KKT 정상성 조건에 의해 \(\nabla f(x^*) = - \sum_{j=1}^J \lambda_j^* \nabla g_j(x^*) - \sum_{k=1}^K \mu_k^* \nabla h_k(x^*)\)이므로 대입하면:
+    \[
+    f(x) - f(x^*) \le - \sum_{j=1}^J \lambda_j^* [\nabla g_j(x^*) \cdot (x - x^*)] - \sum_{k=1}^K \mu_k^* [\nabla h_k(x^*) \cdot (x - x^*)].
+    \]
+    1) 등식제약 \(h_k\)는 아핀함수이므로 \(\nabla h_k(x^*) \cdot (x - x^*) = h_k(x) - h_k(x^*) = 0 - 0 = 0\)이다.<br/>
+    2) 각 부등식 제약 \(g_j\)는 오목함수이므로 \(g_j(x) - g_j(x^*) \le \nabla g_j(x^*) \cdot (x - x^*)\)이다. \(\lambda_j^* \ge 0\)이므로:
+    \[
+    - \lambda_j^* [\nabla g_j(x^*) \cdot (x - x^*)] \le - \lambda_j^* [g_j(x) - g_j(x^*)].
+    \]
+    3) KKT 상보적 여유성에 의해 \(\lambda_j^* g_j(x^*) = 0\)이다. 또한 \(x\)가 실행가능하므로 \(g_j(x) \ge 0\)이고, \(\lambda_j^* \ge 0\)이므로 \(-\lambda_j^* g_j(x) \le 0\)이다.<br/>
+    따라서 모든 항을 합하면:
+    \[
+    f(x) - f(x^*) \le \sum_{j=1}^J - \lambda_j^* g_j(x) \le 0 \implies f(x^*) \ge f(x).
+    \]
+    \(x\)는 임의의 실행가능한 점이므로 \(x^*\)는 전역 최적해이다.
+    <span class="qed">□</span>
+  </div>
+
+  <h3 id="s075">0.7.5 음함수 정리 (Implicit Function Theorem)와 비교정태</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 음함수 정리 (Implicit Function Theorem)</div>
+    <p>
+      \(F: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n\)가 \((x^*, \theta^*)\)의 근방에서 \(C^1\)급이고 \(F(x^*, \theta^*) = 0\)을 만족한다고 하자.
+      만약 \(x\)에 대한 야코비 행렬(Jacobian matrix)
+      \[
+      D_x F(x^*, \theta^*) = \begin{pmatrix} \frac{\partial F_1}{\partial x_1} & \cdots & \frac{\partial F_1}{\partial x_n} \\ \vdots & \ddots & \vdots \\ \frac{\partial F_n}{\partial x_1} & \cdots & \frac{\partial F_n}{\partial x_n} \end{pmatrix}
+      \]
+      이 정칙행렬(invertible / \(\det D_x F(x^*, \theta^*) \ne 0\))이면, \(\theta^*\)의 열린 근방 \(U(\theta^*)\)와 유일한 \(C^1\) 함수 \(x(\theta)\)가 존재하여
+      \[
+      x(\theta^*) = x^* \quad \text{and} \quad F(x(\theta), \theta) = 0, \qquad \forall \theta \in U(\theta^*)
+      \]
+      를 만족한다. 또한 그 미분(비교정태 도함수)은 다음과 같이 주어진다:
+      \[
+      D_\theta x(\theta^*) = - [D_x F(x^*, \theta^*)]^{-1} D_\theta F(x^*, \theta^*).
+      \]
+    </p>
+  </div>
+</section>
+
+<section id="s08">
+  <h2><span class="section-number">0.8</span>모수화된 최적화, Berge 최대정리, Envelope 정리</h2>
+
+  <p class="topic-opening">
+    가격, 소득 및 정책모수가 변화하면 실행가능집합과 최적선택도 변할 수 있다. 이 절에서는 모수화된 최적화 문제의 값함수와 최적해 대응이 어떤 연속성을 가지는지 베르주 최대정리로 분석하고, 미분가능한 경우에는 포락선 정리로 값함수의 도함수를 구한다.
+  </p>
+
+  <h3 id="s081">0.8.1 Berge 최대정리 (Maximum Theorem)</h3>
+  <p>
+    모수 공간 \(\Theta \subseteq \mathbb{R}^q\)와 선택 공간 \(X \subseteq \mathbb{R}^m\)에 대해, 모수화된 최적화 문제를 다음과 같이 정의하자:
+    \[
+    v(\theta) = \max_{x \in B(\theta)} f(x, \theta), \qquad D(\theta) = \operatorname{arg\,max}_{x \in B(\theta)} f(x, \theta).
+    \]
+    여기서 \(B: \Theta \rightrightarrows X\)는 실행가능 대응(constraint correspondence), \(v: \Theta \to \mathbb{R}\)는 가치함수(value function), \(D: \Theta \rightrightarrows X\)는 최적해 대응(policy correspondence)이다.
+  </p>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.8.1 · 베르주 최대정리 (Berge's Maximum Theorem)</div>
+    <p>
+      실행가능 대응 \(B: \Theta \rightrightarrows X\)가 공집합이 아닌 콤팩트값을 가지며 <strong>연속(UHC이면서 동시에 LHC)</strong>이고, 목적함수 \(f: X \times \Theta \to \mathbb{R}\)가 연속함수라고 가정하자. 그러면:
+    </p>
+    <ol class="tight">
+      <li>최적해 대응 \(D(\theta) = \operatorname{arg\,max}_{x \in B(\theta)} f(x, \theta)\)는 공집합이 아닌 <strong>콤팩트값(nonempty compact-valued)</strong>을 가지며, 모수 \(\theta\)에 대해 <strong>상반연속(UHC)</strong>이다.</li>
+      <li>극대화 가치함수 \(v(\theta) = \max_{x \in B(\theta)} f(x, \theta)\)는 \(\Theta\) 위에서 <strong>연속함수(continuous)</strong>이다.</li>
+    </ol>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 베르주 최대정리 (4단계 완결 증명)</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (대학원 미시경제학 표준 4단계 완결 증명)</div>
+        임의의 모수점 \(\theta^* \in \Theta\)와 수열 \(\theta^k \to \theta^*\)를 고정하자.<br/><br/>
+        <strong>1단계: \(D(\theta)\)의 존재성과 콤팩트값성</strong><br/>
+        각 \(\theta\)에서 \(B(\theta)\)는 콤팩트하고 \(f(\cdot, \theta)\)는 연속이므로, Weierstrass 극값정리에 의해 최대해는 항상 존재한다 (\(D(\theta) \ne \varnothing\)). 또한 \(D(\theta) = \{x \in B(\theta) : f(x, \theta) - v(\theta) \ge 0\}\)는 콤팩트 집합 \(B(\theta)\)의 닫힌 부분집합이므로 콤팩트 집합이다.<br/><br/>
+        <strong>2단계: 가치함수의 상반연속성 (\(\limsup_{k \to \infty} v(\theta^k) \le v(\theta^*)\)) — \(B\)의 UHC 사용</strong><br/>
+        상극한의 정의에 따라 \(\lim_{j \to \infty} v(\theta^{k_j}) = \limsup_{k \to \infty} v(\theta^k)\)를 만족하는 부분수열 \((\theta^{k_j})\)를 먼저 택하고, 각 \(j\)마다 \(x^{k_j} \in D(\theta^{k_j}) \subseteq B(\theta^{k_j})\)를 고르면 \(v(\theta^{k_j}) = f(x^{k_j}, \theta^{k_j})\)이다. \(\theta^{k_j} \to \theta^*\)이고 \(B\)가 \(\theta^*\)에서 콤팩트값을 가지며 UHC이므로(\(B(\theta^*)\)의 유계 열린 근방 안에 모든 꼬리 항이 들어가며 그래프가 닫혀 있음), \((x^{k_j})\)에서 다시 어떤 \(x^* \in B(\theta^*)\)로 수렴하는 추가 부분수열 \((x^{k_{j_r}})\)를 뽑을 수 있다.<br/>
+        \(f\)의 연속성에 의해:
+        \[
+        \limsup_{k \to \infty} v(\theta^k) = \lim_{r \to \infty} f(x^{k_{j_r}}, \theta^{k_{j_r}}) = f(x^*, \theta^*) \le \max_{x \in B(\theta^*)} f(x, \theta^*) = v(\theta^*).
+        \]
+        따라서 \(v\)는 상반연속(USC)이다.<br/><br/>
+        <strong>3단계: 가치함수의 하반연속성 (\(\liminf_{k \to \infty} v(\theta^k) \ge v(\theta^*)\)) — \(B\)의 LHC 사용</strong><br/>
+        임의의 \(x^* \in D(\theta^*) \subseteq B(\theta^*)\)를 취하자. 그러면 \(v(\theta^*) = f(x^*, \theta^*)\)이다.<br/>
+        \(B\)가 \(\theta^*\)에서 LHC이므로, 수열적 특징화에 의해 각 \(k\)마다 \(y^k \in B(\theta^k)\)이면서 \(y^k \to x^*\)를 만족하는 점렬 \((y^k)\)가 존재한다.<br/>
+        최적해의 정의에 의해 모든 \(k\)에 대해 \(v(\theta^k) = \max_{x \in B(\theta^k)} f(x, \theta^k) \ge f(y^k, \theta^k)\)이다.<br/>
+        양변에 하극한을 취하고 \(f\)의 연속성을 적용하면:
+        \[
+        \liminf_{k \to \infty} v(\theta^k) \ge \lim_{k \to \infty} f(y^k, \theta^k) = f(x^*, \theta^*) = v(\theta^*).
+        \]
+        따라서 \(v\)는 하반연속(LSC)이다. 2단계와 3단계에 의해 \(\lim_{k \to \infty} v(\theta^k) = v(\theta^*)\)이며, 가치함수 \(v\)는 연속이다.<br/><br/>
+        <strong>4단계: 최적해 대응 \(D(\theta)\)의 UHC</strong><br/>
+        \(\operatorname{gph} D\)가 닫힌집합임을 보이자. \((\theta^k, x^k) \in \operatorname{gph} D\)이고 \((\theta^k, x^k) \to (\theta^*, x^*)\)라 하자.<br/>
+        정의에 의해 \(x^k \in B(\theta^k)\)이고 \(f(x^k, \theta^k) = v(\theta^k)\)이다.<br/>
+        \(B\)가 콤팩트값(닫힌값)을 가지며 UHC이므로 Theorem 0.5.1의 \((\implies)\) 방향에 의해 \(\operatorname{gph} B\)가 닫혀 있고, 따라서 \(x^* \in B(\theta^*)\)이다. \(f\)와 \(v\)의 연속성에 의해 \(k \to \infty\)를 취하면:
+        \[
+        f(x^*, \theta^*) = v(\theta^*).
+        \]
+        이는 \(x^* \in D(\theta^*)\)임을 뜻한다. 따라서 \(\operatorname{gph}D\)는 닫혀 있다. 또한 \(B(\theta^*)\)가 콤팩트하므로 그 유계 열린 근방 \(V\)를 택할 수 있고, \(B\)의 UHC에 의해 \(\theta^*\) 근방에서 \(D(\theta)\subseteq B(\theta)\subseteq V\)다. 즉 \(D\)는 \(\theta^*\)에서 국소적으로 유계하다. 이 국소유계성과 닫힌 그래프 성질을 결합하면 \(D\)가 \(\theta^*\)에서 UHC임을 얻는다.
+        <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <h3 id="s082">0.8.2 포락선 정리 (Envelope Theorem)</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 제약 최적화의 포락선 정리 (Smooth Envelope Theorem)</div>
+    <p>
+      \(x^*(\theta)\)와 승수 \(\lambda^*(\theta), \mu^*(\theta)\)가 \(\theta\)에 대해 미분가능한 최적경로를 따라 움직일 때, 라그랑지안을 \(\mathcal{L}(x, \lambda, \mu, \theta) = f(x, \theta) + \sum \lambda_j g_j(x, \theta) + \sum \mu_k h_k(x, \theta)\)라 하면, 가치함수의 도함수는 <strong>라그랑지안의 모수에 대한 직접 편도함수</strong>와 일치한다:
+      \[
+      \frac{d v(\theta)}{d \theta} = \frac{\partial \mathcal{L}(x^*(\theta), \lambda^*(\theta), \mu^*(\theta), \theta)}{\partial \theta}.
+      \]
+      내생변수 \(x^*(\theta)\)의 모수 반응에 의한 간접효과는 KKT 1계조건(\(\nabla_x \mathcal{L} = 0\)) 및 상보여유조건(\(\lambda_j^* = 0\) 또는 바인딩 제약의 전미분 상쇄)에 의해 정확히 0으로 상쇄된다.
+    </p>
+  </div>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 소비자·생산자 쌍대성에 대한 응용</div>
+    <p>
+      포락선 정리는 적절한 미분가능성과 최적해의 유일성 등 필요한 조건 아래에서, 가치함수(지출·간접효용·비용·이윤함수)의 도함수를 이용해 수요·공급을 특징화하는 기본 도구다.
+    </p>
+    <ul class="tight">
+      <li><strong>소비자이론 (Ch 1):</strong> 지출최소화 문제에 적용하면 <strong>Shephard's lemma</strong>(\(\nabla_p e(p,u) = h(p,u)\)), 효용극대화 문제에 적용하면 <strong>Roy's identity</strong>(\(x(p,w) = -\frac{\nabla_p v(p,w)}{\partial v/\partial w}\), \(\partial v/\partial w\ne0\))를 얻는다.</li>
+      <li><strong>생산자이론 (Ch 3):</strong> 비용최소화에 적용하면 조건부 요소수요(\(\nabla_w c(w,q) = z(w,q)\)), 이윤극대화에 적용하면 <strong>Hotelling's lemma</strong>(\(\frac{\partial \Pi(p,w)}{\partial p} = y^s(p,w),\; \nabla_w \Pi(p,w) = -x^u(p,w)\))가 성립한다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s09">
+  <h2><span class="section-number">0.9</span>고정점과 균형의 존재</h2>
+
+  <p class="topic-opening">
+    경제학에서 '균형(Equilibrium)'이란 모든 행위자가 주어진 조건에서 최적화를 수행했을 때, 그 결과 집계된 상태가 다시 각 행위자의 전제조건을 재생산하는 자기일치적(self-fulfilling) 상태다. 이러한 자기일치성을 수학적으로 표현할 때에는 연속함수 또는 상반연속 대응의 고정점정리를 자주 사용한다.
+  </p>
+
+  <h3 id="s091">0.9.1 Brouwer 고정점정리 (단일값 연속사상)</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM · 브라우어 고정점정리 (Brouwer Fixed Point Theorem)</div>
+    <p>
+      공집합이 아닌 콤팩트한 볼록집합 \(K \subseteq \mathbb{R}^n\) 위에서 정의된 연속함수 \(f: K \to K\)는 적어도 하나의 고정점 \(x^* \in K\) (\(x^* = f(x^*)\))를 갖는다.
+    </p>
+  </div>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 1차원 직관(사잇값 정리)과 경제적 조건</div>
+    <p>
+      \(n=1\)일 때 \(K=[0,1]\) 위의 연속함수 \(f:[0,1]\to[0,1]\)에 대해 \(g(x)=f(x)-x\)를 두면 \(g(0)\ge 0\), \(g(1)\le 0\)이므로 사잇값 정리에 의해 \(g(x^*)=0\), 즉 \(f(x^*)=x^*\)가 반드시 존재한다. Brouwer 정리는 이를 임의의 유한차원 콤팩트 볼록집합(예: 정규화된 가격 simplex \(\Delta^{n-1}\))으로 일반화하며, 적절한 가격조정 사상을 구성하고 Walras 법칙과 경계조건 등을 확인하면 일반균형 가격의 존재증명에 활용할 수 있다. 초과수요함수의 연속성만으로 시장청산 가격의 존재가 자동으로 보장되는 것은 아니다.
+    </p>
+  </div>
+
+  <h3 id="s092">0.9.2 Kakutani 고정점정리와 볼록값성(Convex-valuedness)의 역할</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.9.1 · 카쿠타니 고정점정리 (Kakutani's Fixed Point Theorem)</div>
+    <p>
+      공집합이 아닌 콤팩트한 볼록집합 \(K \subseteq \mathbb{R}^n\) 위에서 정의된 대응 \(F: K \rightrightarrows K\)가 다음 조건을 만족한다고 하자:
+    </p>
+    <ol class="tight">
+      <li>\(F\)는 <strong>상반연속(Upper Hemi-Continuous, UHC)</strong>이다.</li>
+      <li>모든 \(x \in K\)에 대해, 그 상 \(F(x)\)는 <strong>공집합이 아니고 닫혀 있으며 볼록집합(nonempty, closed, convex set)</strong>이다.</li>
+    </ol>
+    <p>
+      그러면 \(F\)는 적어도 하나의 고정점을 갖는다:
+      \[
+      \exists x^* \in K \quad \text{such that} \quad x^* \in F(x^*).
+      \]
+    </p>
+  </div>
+
+  <div class="statement warning">
+    <div class="statement-head">CAUTION · 볼록값(Convex-valued) 가정이 실패하면 고정점은 사라진다</div>
+    <p>
+      Kakutani 정리에서 대응의 상 \(F(x)\)가 볼록집합이라는 조건은 정리의 핵심 가정이다. 이를 제외하면 나머지 가정만으로는 고정점의 존재를 보장할 수 없다:
+    </p>
+    <ul class="tight">
+      <li><strong>단위구간에서의 반례:</strong> \(K = [0, 1]\) 위에서 대응 \(F: [0, 1] \rightrightarrows [0, 1]\)를 다음과 같이 정의하자:
+      \[
+      F(x) = \begin{cases} \{1\}, & 0 \le x < 1/2, \\ \{0, 1\}, & x = 1/2, \\ \{0\}, & 1/2 < x \le 1. \end{cases}
+      \]
+      이 대응은 Closed Graph를 가지며 콤팩트 공역이므로 UHC이다. 그러나 \(x = 1/2\)에서 \(F(1/2) = \{0, 1\}\)은 <strong>볼록집합이 아니다</strong> (\(1/2 \notin \{0, 1\}\)). 이 대응에는 \(x^* \in F(x^*)\)를 만족하는 고정점이 존재하지 않는다! 만약 \(F(1/2) = [0, 1]\)로 볼록화(convexification)하면 이 경우 \(x^* = 1/2\)가 고정점이 된다.</li>
+      <li><strong>경제학적 함의:</strong> 선호나 생산기술이 비볼록적이면 최적선택 대응이 비볼록값을 가질 수 있다. 이 경우 Kakutani 정리의 가정이 충족되지 않아 일반균형이나 Cournot 과점균형의 존재를 해당 정리만으로 보장할 수 없다. 비볼록성 자체가 곧 균형의 부존재를 뜻하는 것은 아니다.</li>
+    </ul>
+  </div>
+
+  <div class="diagram-wrap">
+    <svg width="680" height="286" viewBox="0 0 680 286" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="c0f2_arr" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#667582"/>
+        </marker>
+      </defs>
+
+      <!-- Panel 1: Non-convex value failure -->
+      <rect x="16" y="10" width="316" height="266" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+      <text x="174" y="32" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="12" font-weight="bold" fill="#94443a">볼록값(Convex-valued) 실패: 고정점 없음</text>
+
+      <!-- Unit Square [0,1]^2 -->
+      <rect x="104" y="60" width="140" height="140" fill="#f6f9fb" stroke="#d9e0e6" stroke-width="1"/>
+
+      <!-- Axes -->
+      <line x1="104" y1="210" x2="104" y2="46" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f2_arr)"/>
+      <line x1="94" y1="200" x2="262" y2="200" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f2_arr)"/>
+      <text x="92" y="51" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">y</text>
+      <text x="269" y="204" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">x</text>
+
+      <!-- Axis Ticks -->
+      <text x="95" y="64" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">1</text>
+      <text x="95" y="134" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0.5</text>
+      <text x="95" y="216" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0</text>
+      <text x="174" y="216" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0.5</text>
+      <text x="244" y="216" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">1</text>
+
+      <!-- Midpoint Guides -->
+      <line x1="104" y1="130" x2="168" y2="130" stroke="#9aa8b4" stroke-width="1" stroke-dasharray="3,2"/>
+      <line x1="174" y1="136" x2="174" y2="195" stroke="#9aa8b4" stroke-width="1" stroke-dasharray="3,2"/>
+
+      <!-- 45-deg Diagonal y = x -->
+      <line x1="104" y1="200" x2="244" y2="60" stroke="#7a4e20" stroke-width="1.6" stroke-dasharray="5,4"/>
+      <text x="250" y="65" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#7a4e20">y = x</text>
+
+      <!-- Correspondence F(x) -->
+      <line x1="104" y1="60" x2="174" y2="60" stroke="#23566f" stroke-width="3"/>
+      <line x1="174" y1="200" x2="244" y2="200" stroke="#23566f" stroke-width="3"/>
+      <circle cx="104" cy="60" r="4.2" fill="#23566f"/>
+      <circle cx="244" cy="200" r="4.2" fill="#23566f"/>
+      <circle cx="174" cy="60" r="4.8" fill="#94443a" stroke="#ffffff" stroke-width="1.2"/>
+      <circle cx="174" cy="200" r="4.8" fill="#94443a" stroke="#ffffff" stroke-width="1.2"/>
+      <circle cx="174" cy="130" r="5" fill="#ffffff" stroke="#94443a" stroke-width="2" stroke-dasharray="2,1.5"/>
+
+      <!-- Labels Panel 1 -->
+      <text x="174" y="51" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#94443a">F(0.5) = {0, 1}</text>
+      <text x="209" y="158" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#94443a">구멍 통과</text>
+      <text x="209" y="174" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#94443a">고정점 ∅</text>
+
+      <text x="174" y="240" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#94443a">UHC·Closed Graph 만족, 그러나 F(0.5) 비볼록</text>
+      <text x="174" y="258" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10" fill="#667582">45° 대각선 y = x를 뛰어넘어 고정점이 존재하지 않음</text>
+
+      <!-- Panel 2: Convexified restoration -->
+      <rect x="348" y="10" width="316" height="266" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+      <text x="506" y="32" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="12" font-weight="bold" fill="#23566f">볼록화(Convexification): 고정점 x* = 0.5</text>
+
+      <!-- Unit Square [0,1]^2 -->
+      <rect x="436" y="60" width="140" height="140" fill="#f6f9fb" stroke="#d9e0e6" stroke-width="1"/>
+
+      <!-- Axes -->
+      <line x1="436" y1="210" x2="436" y2="46" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f2_arr)"/>
+      <line x1="426" y1="200" x2="594" y2="200" stroke="#667582" stroke-width="1.4" marker-end="url(#c0f2_arr)"/>
+      <text x="424" y="51" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">y</text>
+      <text x="601" y="204" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#667582">x</text>
+
+      <!-- Axis Ticks -->
+      <text x="427" y="64" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">1</text>
+      <text x="427" y="134" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0.5</text>
+      <text x="427" y="216" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0</text>
+      <text x="506" y="216" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">0.5</text>
+      <text x="576" y="216" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#667582">1</text>
+
+      <!-- Midpoint Guide -->
+      <line x1="436" y1="130" x2="500" y2="130" stroke="#9aa8b4" stroke-width="1" stroke-dasharray="3,2"/>
+
+      <!-- 45-deg Diagonal y = x -->
+      <line x1="436" y1="200" x2="576" y2="60" stroke="#7a4e20" stroke-width="1.6" stroke-dasharray="5,4"/>
+      <text x="582" y="65" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#7a4e20">y = x</text>
+
+      <!-- Convexified Correspondence F(x) -->
+      <line x1="436" y1="60" x2="506" y2="60" stroke="#23566f" stroke-width="3"/>
+      <line x1="506" y1="60" x2="506" y2="200" stroke="#23566f" stroke-width="3.4"/>
+      <line x1="506" y1="200" x2="576" y2="200" stroke="#23566f" stroke-width="3"/>
+      <circle cx="436" cy="60" r="4.2" fill="#23566f"/>
+      <circle cx="506" cy="60" r="4.2" fill="#23566f"/>
+      <circle cx="506" cy="200" r="4.2" fill="#23566f"/>
+      <circle cx="576" cy="200" r="4.2" fill="#23566f"/>
+      <circle cx="506" cy="130" r="5.2" fill="#7a4e20" stroke="#ffffff" stroke-width="1.5"/>
+
+      <!-- Labels Panel 2 -->
+      <text x="506" y="51" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#23566f">F(0.5) = [0, 1]</text>
+      <text x="541" y="158" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#7a4e20">교점 존재</text>
+      <text x="541" y="174" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#7a4e20">x* = 0.5</text>
+
+      <text x="506" y="240" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.2" font-weight="bold" fill="#23566f">F(0.5) = [0, 1] 볼록화 ⇒ Kakutani 조건 충족</text>
+      <text x="506" y="258" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10" fill="#667582">수직 선분이 대각선 y = x와 만나 x* ∈ F(x*) 존재</text>
+    </svg>
+    <div class="diagram-caption">그림 0.2: Kakutani 고정점정리에서 볼록값성(Convex-valuedness)의 역할. 좌측처럼 UHC·닫힌 그래프를 만족해도 \(F(0.5)=\{0,1\}\)로 볼록값이 깨지면 대각선 \(y=x\)를 뚫고 지나가 고정점이 사라지지만, 우측처럼 \([0,1]\)로 볼록화하면 대각선과 반드시 교차하여 고정점 \(x^*=0.5\)가 존재한다.</div>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="section-number">0.10</span>분리정리와 지지가격</h2>
+
+  <p class="topic-opening">
+    파레토 효율적 배분을 가격과 소득의 적절한 재분배를 통해 분권화할 수 있는지는 후생경제학의 핵심 질문이다. 그 증명에서는 볼록집합의 분리정리와 지지초평면정리가 중요한 역할을 한다. 이 절에서는 먼저 사영정리를 증명하고, 이를 통해 분리정리를 도출한 다음 가격지지 논증과의 관계를 살펴본다.
+  </p>
+
+  <h3 id="s101">0.10.1 닫힌 볼록집합 위의 사영정리 (Projection Theorem)</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.10.1 · 닫힌 볼록집합 위의 사영정리 (Projection Theorem)</div>
+    <p>
+      \(C \subseteq \mathbb{R}^n\)가 공집합이 아닌 <strong>닫힌 볼록집합(closed convex set)</strong>이라 하자. 임의의 점 \(x\in\mathbb R^n\)에 대하여:
+    </p>
+    <ol class="tight">
+      <li>\(x\)와 \(C\) 사이의 최단거리를 달성하는 <strong>사영점(projection) \(x^* = \Pi_C(x) \in C\)가 유일하게 존재</strong>한다:
+      \[
+      x^* = \operatorname{arg\,min}_{y \in C} \lVert x - y\rVert.
+      \]
+      </li>
+      <li>\(x^*\)가 사영점일 필요충분조건은 다음의 <strong>변분 부등식(variational inequality)</strong>을 만족하는 것이다:
+      \[
+      \langle x - x^*, y - x^* \rangle = (x - x^*) \cdot (y - x^*) \le 0, \qquad \forall y \in C.
+      \]
+      </li>
+    </ol>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 사영정리 (존재성·유일성·변분부등식)</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF (사영의 유일성과 변분 부등식 유도)</div>
+        <strong>1) 존재성:</strong> 거리함수 \(d_x(y) = \lVert y - x\rVert\)는 연속함수이다. 어떤 \(y_0 \in C\)를 고정하고 \(R = \lVert y_0 - x\rVert\)라 하면, \(C \cap \{y : \lVert y - x\rVert \le R\}\)는 공집합이 아닌 닫힌 유계(콤팩트) 집합이다. Weierstrass 정리에 의해 최소점 \(x^* \in C\)가 존재한다.<br/>
+        <strong>2) 유일성:</strong> 평행사변형 법칙에 의해 임의의 \(y_1, y_2 \in C\)에 대해
+        \[
+        \lVert y_1 - y_2\rVert^2 = 2 \lVert y_1 - x\rVert^2 + 2 \lVert y_2 - x\rVert^2 - 4 \left\lVert \frac{y_1 + y_2}{2} - x \right\rVert^2.
+        \]
+        \(C\)가 볼록집합이므로 \((y_1 + y_2)/2 \in C\)이고 \(\lVert (y_1 + y_2)/2 - x\rVert \ge d(x, C)\)이다. 특히 \(y_1,y_2\)가 모두 거리 \(d(x,C)\)를 달성하는 점이면 우변은 \(4d(x,C)^2-4\lVert(y_1+y_2)/2-x\rVert^2\le0\)다. 좌변은 음수가 될 수 없으므로 \(\lVert y_1-y_2\rVert^2=0\), 곧 \(y_1=y_2\)다.<br/>
+        <strong>3) 변분부등식:</strong> \(x^*\)가 최소점이므로, 임의의 \(y \in C\)와 \(t \in (0, 1]\)에 대해 \(C\)의 볼록성에 의해 \(x^* + t(y - x^*) \in C\)이다. 따라서
+        \[
+        \lVert x - x^*\rVert^2 \le \lVert x - [x^* + t(y - x^*)]\rVert^2 = \lVert (x - x^*) - t(y - x^*)\rVert^2 = \lVert x - x^*\rVert^2 - 2t (x - x^*) \cdot (y - x^*) + t^2 \lVert y - x^*\rVert^2.
+        \]
+        정리하면 \(2t (x - x^*) \cdot (y - x^*) \le t^2 \lVert y - x^*\rVert^2\)이다. 양수 \(t\)로 나누고 \(t \to 0^+\)로 극한을 취하면
+        \[
+        (x - x^*) \cdot (y - x^*) \le 0, \qquad \forall y \in C.
+        \]
+        역으로 이 부등식이 성립한다면 임의의 \(y\in C\)에 대해
+        \[
+        \lVert x-y\rVert^2=\lVert x-x^*\rVert^2+\lVert y-x^*\rVert^2-2(x-x^*)\cdot(y-x^*)\ge\lVert x-x^*\rVert^2.
+        \]
+        따라서 \(x^*\)는 거리 최소점이다. <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="diagram-wrap">
+    <svg width="680" height="272" viewBox="0 0 680 272" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="c0f3_red" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+          <path d="M 0 1 L 9 5 L 0 9 z" fill="#94443a"/>
+        </marker>
+      </defs>
+
+      <!-- Left Plot Card -->
+      <rect x="16" y="10" width="408" height="252" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+
+      <!-- Shaded Half-Space p · y <= p · x* -->
+      <polygon points="117.1,18.0 395.4,254.0 24.0,254.0 24.0,18.0" fill="rgba(122, 78, 32, 0.06)"/>
+
+      <!-- Closed Convex Set C (exact tilted ellipse in flat coordinates) -->
+      <path d="M 252.7 141.2 A 96 56 -15 1 1 67.3 190.8 A 96 56 -15 1 1 252.7 141.2 Z" fill="rgba(35, 86, 111, 0.14)" stroke="#23566f" stroke-width="2.2"/>
+      <text x="152" y="174" text-anchor="middle" font-family="Georgia, serif" font-size="22" font-style="italic" font-weight="bold" fill="#23566f">C</text>
+      <text x="152" y="195" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#23566f">닫힌 볼록집합</text>
+
+      <!-- Supporting / Separating Hyperplane Tangent at x* -->
+      <line x1="124.1" y1="24.0" x2="388.3" y2="248.0" stroke="#7a4e20" stroke-width="2.2"/>
+
+      <!-- Right-angle marker at x* between p and H* -->
+      <path d="M 247.7 114.3 L 256.1 121.4 L 248.9 129.8" fill="none" stroke="#667582" stroke-width="1.3"/>
+
+      <!-- Normal vector p = x - x* -->
+      <line x1="240.5" y1="122.7" x2="291.0" y2="63.2" stroke="#94443a" stroke-width="2" stroke-dasharray="4,3" marker-end="url(#c0f3_red)"/>
+
+      <!-- Points x* and x -->
+      <circle cx="240.5" cy="122.7" r="4.5" fill="#7a4e20" stroke="#ffffff" stroke-width="1.2"/>
+      <circle cx="296.2" cy="57.1" r="4.8" fill="#94443a" stroke="#ffffff" stroke-width="1.2"/>
+
+      <!-- Plot Labels (collision-free) -->
+      <text x="224" y="145" text-anchor="end" font-family="Noto Sans KR, sans-serif" font-size="11.5" font-weight="bold" fill="#7a4e20">x* = Π(x)</text>
+      <text x="307" y="61" font-family="Noto Sans KR, sans-serif" font-size="12" font-weight="bold" fill="#94443a">x ∉ C</text>
+      <text x="278" y="102" font-family="Noto Sans KR, sans-serif" font-size="11.5" font-weight="bold" fill="#94443a">p = x − x*</text>
+      <text x="306" y="152" font-family="Noto Sans KR, sans-serif" font-size="11" font-weight="bold" fill="#7a4e20">H*: p · y = p · x*</text>
+      <text x="40" y="242" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#7a4e20">반공간 p · y ≤ p · x*</text>
+
+      <!-- Right Explanation Card -->
+      <rect x="436" y="10" width="228" height="252" rx="6" fill="#fcfdfe" stroke="#d9e0e6" stroke-width="1.2"/>
+      <rect x="436" y="10" width="228" height="32" rx="6" fill="#edf2f6" stroke="#d9e0e6" stroke-width="1"/>
+      <text x="550" y="30" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="11.5" font-weight="bold" fill="#1c2b36">사영정리 &amp; 분리초평면 유도</text>
+
+      <text x="450" y="60" font-family="Noto Sans KR, sans-serif" font-size="10.8" font-weight="bold" fill="#23566f">1. 최근접 사영 (Thm 0.10.1)</text>
+      <text x="450" y="77" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#1c2b36">x* = Π(x) = argmin ‖x − y‖</text>
+      <text x="450" y="93" font-family="Noto Sans KR, sans-serif" font-size="10" fill="#667582">(C 위에서 거리를 최소화하는 유일점)</text>
+
+      <text x="450" y="117" font-family="Noto Sans KR, sans-serif" font-size="10.8" font-weight="bold" fill="#94443a">2. 법선벡터 정의</text>
+      <text x="450" y="134" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#1c2b36">p = x − x* ≠ 0 (외부 방향)</text>
+
+      <text x="450" y="158" font-family="Noto Sans KR, sans-serif" font-size="10.8" font-weight="bold" fill="#7a4e20">3. 볼록성 변분부등식</text>
+      <text x="450" y="175" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#1c2b36">∀y ∈ C, p · (y − x*) ≤ 0</text>
+      <text x="450" y="191" font-family="Noto Sans KR, sans-serif" font-size="10.5" fill="#1c2b36">⇒ 모든 y ∈ C에 대해 p · y ≤ p · x*</text>
+
+      <rect x="448" y="206" width="204" height="42" rx="4" fill="#faf5ed" stroke="#d8c3a8" stroke-width="1"/>
+      <text x="550" y="223" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.5" font-weight="bold" fill="#7a4e20">엄격 분리 결론 (Thm 0.10.2)</text>
+      <text x="550" y="240" text-anchor="middle" font-family="Noto Sans KR, sans-serif" font-size="10.8" font-weight="bold" fill="#94443a">p · y ≤ p · x* &lt; p · x (∀y ∈ C)</text>
+    </svg>
+    <div class="diagram-caption">그림 0.3: 사영정리로 점과 닫힌 볼록집합을 엄격히 분리하는 초평면과 법선벡터 \(p\)의 구성. 이를 경제학적 가격으로 해석하려면 별도의 부호·최적성 조건이 필요하다.</div>
+  </div>
+
+  <h3 id="s102">0.10.2 엄격 분리정리와 지지초평면정리</h3>
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.10.2 · 엄격 분리정리 (Strict Separation Theorem)</div>
+    <p>
+      \(C \subseteq \mathbb{R}^n\)가 공집합이 아닌 닫힌 볼록집합이고 \(x \notin C\)라 하자. 법선벡터를 \(p = x - x^* \ne 0\) (\(x^* = \Pi_C(x)\))로 정의하면, \(p\)는 \(x\)와 \(C\)를 <strong>엄격하게 분리(strictly separate)</strong>한다:
+      \[
+      p \cdot y \le p \cdot x^* < p \cdot x, \qquad \forall y \in C.
+      \]
+    </p>
+  </div>
+
+  <div class="proof">
+    <div class="proof-label">PROOF</div>
+    사영정리의 변분부등식에 의해 모든 \(y \in C\)에 대해
+    \[
+    p \cdot (y - x^*) = (x - x^*) \cdot (y - x^*) \le 0 \implies p \cdot y \le p \cdot x^*.
+    \]
+    반면 점 \(x\)에 대해
+    \[
+    p \cdot x = p \cdot (x^* + p) = p \cdot x^* + \lVert p\rVert^2.
+    \]
+    \(x \notin C\)이므로 \(p = x - x^* \ne 0\)이고 \(\lVert p\rVert^2 > 0\)이다. 따라서 \(p \cdot x^* < p \cdot x\)가 성립하여 엄격한 분리가 완성된다.
+    <span class="qed">□</span>
+  </div>
+
+  <div class="statement theorem">
+    <div class="statement-head">THEOREM 0.10.3 · 지지초평면정리 (Supporting Hyperplane Theorem)</div>
+    <p>
+      공집합이 아닌 닫힌 볼록집합 \(C \subseteq \mathbb{R}^n\)와 그 경계점 \(x_0 \in \partial C\)에 대해, 0이 아닌 법선벡터 \(p \ne 0\)가 존재하여
+      \[
+      p \cdot y \le p \cdot x_0, \qquad \forall y \in C
+      \]
+      가 성립한다. 초평면 \(H = \{y \in \mathbb{R}^n : p \cdot y = p \cdot x_0\}\)를 점 \(x_0\)에서 \(C\)의 <strong>지지초평면(supporting hyperplane)</strong>이라 한다.
+    </p>
+  </div>
+
+  <details class="technical-proof">
+    <summary>증명 보기 · 지지초평면정리</summary>
+    <div class="details-body">
+      <div class="proof">
+        <div class="proof-label">PROOF · 사영과 법선벡터의 극한</div>
+        닫힌집합 \(C\)의 경계점 \(x_0\)를 고정하자. 경계점의 정의에 따라 \(x^k\notin C\)이면서 \(x^k\to x_0\)인 수열을 선택할 수 있다. 각 \(k\)에 대해 사영점 \(z^k=\Pi_C(x^k)\)를 잡으면
+        \[
+          \lVert x^k-z^k\rVert=\operatorname{dist}(x^k,C)\le\lVert x^k-x_0\rVert\to0.
+        \]
+        따라서 \(z^k\to x_0\)이다. 단위 법선벡터를
+        \[
+          p^k=\frac{x^k-z^k}{\lVert x^k-z^k\rVert}
+        \]
+        로 정의하자. \(\lVert p^k\rVert=1\)이므로 단위구면의 콤팩트성에 의해 어떤 부분수열에서 \(p^{k_j}\to p\)이고 \(\lVert p\rVert=1\)이다. 사영정리의 변분부등식으로 모든 \(y\in C\)에 대해
+        \[
+          p^{k_j}\cdot(y-z^{k_j})\le0.
+        \]
+        극한을 취하면 \(p\cdot(y-x_0)\le0\)이다. 따라서 \(p\ne0\)이고 \(p\cdot y\le p\cdot x_0\)가 모든 \(y\in C\)에 대해 성립한다. <span class="qed">□</span>
+      </div>
+    </div>
+  </details>
+
+  <div class="statement remark">
+    <div class="statement-head">REMARK · 후생경제학 제2정리와 지지가격의 탄생</div>
+    <p>
+      적절한 선호의 볼록성·연속성, 국소 비포만성, 실행가능성 및 가격의 비음수성 등을 확보하면 지지초평면정리는 후생경제학 제2정리의 증명에 활용된다. 다만 분리벡터의 존재만으로 경쟁균형이 곧바로 성립하는 것은 아니다.
+    </p>
+    <ul class="tight">
+      <li>적절한 볼록성 조건에서 소비자들의 선호개선집합을 집계하여 개선가능집합 \(A(x^*)\)를 구성한다. 효율성은 총가용자원이 개선가능집합의 내부에 속하지 않는다는 분리 논증의 출발점이 된다. 경계점의 위치와 집합의 닫힘 여부는 각 모형의 추가 가정 아래 확인해야 한다.</li>
+      <li>분리정리는 비영 법선벡터 \(p\)의 존재를 보장한다. 이를 경쟁가격으로 해석하려면 재화별 가격의 부호, 개별 소비자의 예산최적성 및 필요한 소득재분배 조건을 추가로 검증해야 한다.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="section-number">0.11</span>핵심 수학 개념과 미시경제학 정리의 연결</h2>
+
+  <p class="topic-opening">
+    이 절에서는 앞서 정리한 수학적 도구의 가정과 결론을 소비자이론, 생산자이론, 일반균형 및 후생경제학에 연결하여 요약한다. 아래 표는 개별 정리의 정확한 가정을 대체하지 않는다.
+  </p>
+
+  <div class="display-table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>수학적 정리 및 개념</th>
+          <th>요구되는 핵심 가정</th>
+          <th>미시경제학 적용 분야 및 정리</th>
+          <th>가정이 성립하지 않을 때의 한계</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Weierstrass 극값정리</strong></td>
+          <td>실행가능집합 콤팩트, 목적함수 연속</td>
+          <td>Ch 1 UMP의 해 존재; EMP·비용최소화에서는 적절한 콤팩트 하위수준집합을 통해 존재 증명</td>
+          <td>실행가능집합이 비콤팩트하거나 목적함수가 충분히 반연속적이지 않으면 극값이 달성되지 않을 수 있음</td>
+        </tr>
+        <tr>
+          <td><strong>Berge 최대정리</strong></td>
+          <td>제약대응 \(B(\theta)\) 연속(UHC+LHC), 목적함수 연속</td>
+          <td>Ch 1 양의 가격 영역의 간접효용 \(v(p,w)\) 연속성과 Marshallian 수요 \(x(p,w)\) UHC; Ch 3에서는 콤팩트값 제약대응 등을 확보한 최적화 문제에 적용</td>
+          <td>제약대응의 연속성이 깨지면 값함수의 연속성을 보장할 수 없음</td>
+        </tr>
+        <tr>
+          <td><strong>KKT 조건 및 Slater</strong></td>
+          <td>볼록계획법에서는 Slater 조건; 일반 문제의 필요조건에는 LICQ·MFCQ 등. KKT 충분성에는 오목 목적함수와 오목 부등식제약·아핀 등식제약</td>
+          <td>Ch 1 Marshallian/Hicksian 수요 FOC, Ch 3 비용최소화·이윤극대화 FOC</td>
+          <td>제약자격 실패 시 승수가 존재하지 않을 수 있고, 비오목 시 FOC가 극소점 도출</td>
+        </tr>
+        <tr>
+          <td><strong>포락선 정리 (Envelope Theorem)</strong></td>
+          <td>최적경로·승수의 미분가능성 및 KKT 1계조건</td>
+          <td>Ch 1 Roy's identity·Shephard's lemma, Ch 3 비용함수·Hotelling's lemma</td>
+          <td>최적해의 비유일성이나 비미분 지점에서는 단순한 미분형 공식의 적용 여부를 별도로 검토해야 함</td>
+        </tr>
+        <tr>
+          <td><strong>음함수 정리 (IFT)</strong></td>
+          <td>\(F\)의 \(C^1\)급, 야코비 행렬 가역(\(\det D_x F \ne 0\))</td>
+          <td>Ch 1 Slutsky·수요 비교정태, Ch 4 시장균형 비교정태</td>
+          <td>야코비 행렬이 특이이면 음함수 정리의 결론을 보장할 수 없으며 별도 분석이 필요</td>
+        </tr>
+        <tr>
+          <td><strong>Brouwer / Kakutani 고정점</strong></td>
+          <td>정의역 콤팩트 볼록, 대응 UHC 및 콤팩트 볼록값</td>
+          <td><strong>Ch 4 Cournot 균형 존재성</strong>, <strong>Ch 5 Walrasian 일반균형 존재성</strong></td>
+          <td>비볼록 선호·기술에서는 최적반응 대응의 볼록값성이 깨질 수 있어 Kakutani 정리를 바로 적용하기 어려움</td>
+        </tr>
+        <tr>
+          <td><strong>사영정리 및 지지초평면</strong></td>
+          <td>해당 분리정리에 맞는 닫힘·볼록성·경계조건</td>
+          <td><strong>Ch 5 후생경제학 제2정리</strong>, 파레토 최적 배분의 경쟁가격 지지</td>
+          <td>비볼록성 등으로 가격지지에 필요한 분리조건이 실패하면 제2후생정리를 적용할 수 없음</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="exercises">
+  <h2>연습문제와 증명 해설</h2>
+  <p class="topic-opening">
+    각 문제는 단순 수치 계산을 넘어 정의와 공리, 정리의 적용 조건을 검증하도록 설계되었다. 문제를 먼저 풀어본 다음, 각 문항의 해설과 비교하여 정의·가정·증명 단계가 모두 충족되는지 확인한다.
+  </p>
+
+  <h3>A. 기본 연산·곱공간·집합 연산</h3>
+  <ol class="exercise-list">
+    <li>
+      \(x=(1,2,-1)\), \(y=(2,-1,3)\)에 대해 \(x\cdot y\), \(\lVert x\rVert\), \(2x-y\)를 계산하고, \(x\ge y\), \(x\gg y\)의 성립 여부를 판정하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(x \cdot y = 1(2) + 2(-1) + (-1)(3) = 2 - 2 - 3 = -3\).<br/>
+          \(\lVert x\rVert = \sqrt{1^2 + 2^2 + (-1)^2} = \sqrt{1 + 4 + 1} = \sqrt{6}\).<br/>
+          \(2x - y = (2, 4, -2) - (2, -1, 3) = (0, 5, -5)\).<br/>
+          순서 비교: 첫 번째 성분에서 \(x_1 = 1 < y_1 = 2\)이므로 \(x \ge y\)는 거짓이다. 따라서 \(x \gg y\) 역시 거짓이다. 실제로 \(y\ge x\)도 성립하지 않으므로 두 벡터는 성분별 순서에서 비교할 수 없다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(f(x)=x^2\), \(K=(-1,1)\)일 때 \(\sup_{x\in K}f(x)\), \(\max_{x\in K}f(x)\), \(\operatorname{arg\,max}_{x\in K}f(x)\)를 구하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(f(K) = [0, 1)\)이다. 실수선에서 이 집합의 상한은 \(\sup_{x \in K} f(x) = 1\)이다.<br/>
+          그러나 \(1 \notin f(K)\)이므로(즉, \(x = 1\)이나 \(x = -1\)은 열린구간 \(K\)에 속하지 않음), 최대값 \(\max_{x \in K} f(x)\)는 <strong>존재하지 않는다(does not exist)</strong>.<br/>
+          따라서 최대점을 모은 집합인 인자 집합은 <strong>공집합</strong>이다: \(\operatorname{arg\,max}_{x \in K} f(x) = \varnothing\).
+        </div>
+      </details>
+    </li>
+    <li>
+      함수 \(f:X\to Y\)와 집합 \(B\subseteq Y\)에 대해 \(f^{-1}(B)\)가 역함수의 값이 아니라 원상임을 예를 들어 설명하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          역함수 \(f^{-1}: Y \to X\)는 \(f\)가 전단사(일대일 대응)일 때만 정의되는 사상이다. 반면 원상(preimage)은 임의의 함수 \(f: X \to Y\)와 공역의 부분집합 \(B \subseteq Y\)에 대해 항상 다음과 같이 정의되는 집합이다:
+          \[
+          f^{-1}(B) = \{x \in X : f(x) \in B\}.
+          \]
+          예: \(f: \mathbb{R} \to \mathbb{R}\), \(f(x) = x^2\)은 일대일 함수가 아니므로 역함수가 존재하지 않는다. 그러나 \(B = [1, 4]\)에 대해 원상은 \(f^{-1}([1, 4]) = [-2, -1] \cup [1, 2]\)로 명확하게 정의된다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(K_i\subseteq\mathbb R^{n_i}\)가 모두 콤팩트하고 볼록일 때 \(\prod_{i=1}^m K_i\)가 콤팩트하고 볼록임을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) <strong>볼록성:</strong> 임의의 \(x = (x_1, \dots, x_m), y = (y_1, \dots, y_m) \in \prod K_i\)와 \(t \in [0, 1]\)에 대해, \(tx + (1-t)y = (tx_1 + (1-t)y_1, \dots, tx_m + (1-t)y_m)\)이다. 각 \(K_i\)가 볼록이므로 성분별로 \(tx_i + (1-t)y_i \in K_i\)이다. 따라서 곱집합에 속하므로 볼록이다.<br/>
+          2) <strong>콤팩트성:</strong> 각 \(K_i\)가 닫혀 있고 유계이면 유한 곱집합 \(\prod_{i=1}^m K_i \subseteq \mathbb{R}^{\sum n_i}\) 역시 닫혀 있고 유계이다(곱위상에서 닫힌집합들의 유한 곱은 닫힌집합이며, \(\lVert x\rVert^2 = \sum \lVert x_i\rVert^2\)가 유계). 따라서 Heine–Borel 정리에 의해 콤팩트하다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(A,B\subseteq\mathbb R^n\)가 볼록일 때 Minkowski 합 \(A+B\)가 볼록임을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          임의의 \(z_1, z_2 \in A + B\)와 \(t \in [0, 1]\)을 취하자. 정의에 의해 \(z_1 = a_1 + b_1\), \(z_2 = a_2 + b_2\) (\(a_1, a_2 \in A\), \(b_1, b_2 \in B\))이다.<br/>
+          \[
+          tz_1 + (1-t)z_2 = t(a_1 + b_1) + (1-t)(a_2 + b_2) = [t a_1 + (1-t) a_2] + [t b_1 + (1-t) b_2].
+          \]
+          \(A\)의 볼록성에 의해 \(t a_1 + (1-t) a_2 \in A\)이고, \(B\)의 볼록성에 의해 \(t b_1 + (1-t) b_2 \in B\)이다. 따라서 그 합은 \(A + B\)에 속한다.
+        </div>
+      </details>
+    </li>
+    <li>
+      유한집합 \(X\) 위의 완비적이고 이행적인 선호관계를 무차별 동치류의 순서로 표현하고, 실수값 효용함수를 구성하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(\sim\)는 동치관계이므로 유한집합 \(X\)를 상호 배타적인 무차별 동치류(indifference classes) \(I_1, I_2, \dots, I_K\) (\(K \le |X|\))로 분할(partition)한다. 선호의 완비성과 이행성에 의해 서로 다른 동치류 사이에는 엄격한 전순서가 유도된다. 이를 선호수준의 오름차순으로 번호 매기면 다음과 같다.
+          \[
+          I_1 \prec I_2 \prec \cdots \prec I_K.
+          \]
+          이제 각 \(x \in I_k\)에 대해 \(u(x) = k\)로 정의하자. 그러면 \(x\in I_k\), \(y\in I_j\)에 대해 \(x\succeq y\iff k\ge j\iff u(x)\ge u(y)\)가 되어 \(u\)는 선호 \(\succeq\)를 표현한다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(u\)가 \(\succeq\)를 표현하고 \(\phi\)가 \(u(X)\)에서 엄격히 증가하면 \(\phi\circ u\)도 같은 선호를 표현함을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(u\)가 선호를 표현하므로 정의에 의해 \(x \succeq y \iff u(x) \ge u(y)\)이다. \(\phi\)가 \(u(X)\) 위에서 엄격히 증가하므로 \(a,b\in u(X)\)에 대해 \(a \ge b \iff \phi(a) \ge \phi(b)\)이다. 따라서:
+          \[
+          x \succeq y \iff u(x) \ge u(y) \iff \phi(u(x)) \ge \phi(u(y)) \iff (\phi \circ u)(x) \ge (\phi \circ u)(y).
+          \]
+          따라서 \(\phi \circ u\) 역시 동일한 선호 \(\succeq\)를 표현한다.
+        </div>
+      </details>
+    </li>
+  </ol>
+
+  <h3>B. 집합·위상·콤팩트성</h3>
+  <ol class="exercise-list">
+    <li>
+      \(A=(0,1)\subset\mathbb R\)가 열린집합이지만 닫힌집합은 아님을 정의에 따라 보이고, \([0,1]\)이 닫힌집합이자 콤팩트 집합임을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(x \in (0, 1)\)에 대해 \(\varepsilon = \min\{x, 1-x\} > 0\)로 잡으면 \(B_\varepsilon(x) = (x-\varepsilon, x+\varepsilon) \subseteq (0, 1)\)이므로 열린집합이다. 수열 \(k\ge2\)에 대해 \(x^k=1/k\in(0,1)\)로 두면 \(x^k\to0\)이지만 \(0 \notin (0, 1)\)이므로 닫힌집합이 아니다.<br/>
+          \([0, 1]\)의 여집합은 \((-\infty, 0) \cup (1, \infty)\)로 두 열린구간의 합집합이므로 열린집합이다. 따라서 \([0, 1]\)은 닫힌집합이다. 또한 \([0, 1] \subseteq [-1, 2]\)이므로 유계이다. Heine-Borel 정리에 의해 닫혀 있고 유계이므로 콤팩트하다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(K\subseteq\mathbb R^n\)가 콤팩트하고 \(f:K\to\mathbb R^m\)가 연속이면 \(f(K)\)도 콤팩트함을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          본문 Section 0.4.3의 Proposition 증명을 참조하라. 순차콤팩트성을 이용해 \(y^k = f(x^k) \in f(K)\)에서 수렴 부분수열 \(x^{k_j} \to x^* \in K\)를 추출하고, \(f\)의 연속성에 의해 \(y^{k_j} \to f(x^*) \in f(K)\)가 됨을 보이면 완결된다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(p\gg0\), \(m>0\), \(X=\mathbb R_+^n\)일 때 \(B(p,m)=\{x\in X:p\cdot x\le m\}\)가 콤팩트함을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) <strong>닫힌집합:</strong> \(B(p, m) = X \cap \{x : p \cdot x \le m\}\)이다. \(X = \mathbb{R}_+^n\)은 닫힌집합이고, 연속함수 \(g(x) = p \cdot x\)의 역상 \(g^{-1}((-\infty, m])\)은 닫힌집합이므로 두 닫힌집합의 교집합인 \(B(p, m)\)은 닫힌집합이다.<br/>
+          2) <strong>유계:</strong> \(p \gg 0\)이므로 \(p_{\min} = \min_{i} p_i > 0\)이다. 임의의 \(x \in B(p, m)\)와 각 성분 \(i\)에 대해 \(p_i x_i \le \sum p_j x_j \le m\)이므로 \(0 \le x_i \le m / p_i \le m / p_{\min}\)이다. 따라서 \(\lVert x\rVert \le \sqrt{n} (m / p_{\min})\)으로 유계이다.<br/>
+          Heine-Borel 정리에 의해 닫혀 있고 유계이므로 콤팩트하다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(p\in\mathbb R_+^n\)에서 어떤 \(p_\ell=0\)일 때 예산집합이 유계가 아닐 수 있음을 예로 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(n=2\)이고 \(p = (1, 0)\), \(m = 1\)이라 하자. 예산집합은 \(B(p, m) = \{(x_1, x_2) \in \mathbb{R}_+^2 : 1 \cdot x_1 + 0 \cdot x_2 \le 1\}\)이다. 이는 \(0 \le x_1 \le 1\)이고 \(x_2 \ge 0\)은 임의의 크기를 가질 수 있음을 의미한다. 모든 \(k \in \mathbb{N}\)에 대해 점 \((0, k) \in B(p, m)\)이므로 집합은 유계가 아니며 콤팩트하지 않다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(f(x)=x\)를 \((0,1)\), \([0,1]\), \([0,\infty)\) 위에서 각각 최대화할 때 최대값의 존재 여부를 비교하고, 어떤 가정이 실패하는지 설명하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) \((0, 1)\): \(\sup = 1\)이지만 \(1 \notin (0, 1)\)이므로 최대값 없음 (정의역이 닫힌집합이 아님).<br/>
+          2) \([0, 1]\): 정의역이 콤팩트(닫힌 유계)이고 \(f\)가 연속이므로 Weierstrass 정리에 의해 \(x^* = 1\)에서 최대값 1 달성.<br/>
+          3) \([0, \infty)\): \(x \to \infty\)일 때 \(f(x) \to \infty\)이므로 최대값 없음 (정의역이 유계가 아님).
+        </div>
+      </details>
+    </li>
+  </ol>
+
+  <h3>C. 대응과 최대정리</h3>
+  <ol class="exercise-list">
+    <li>
+      \(x\in[0,1]\)에서 \(F(x)=[0,x]\)로 주어진 대응의 그래프를 기술하고, \(F\)가 UHC와 LHC를 모두 만족함을 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(\operatorname{gph} F = \{(x, y) \in [0, 1]^2 : 0 \le y \le x\}\)는 삼각형 영역이며 \([0, 1]^2\)의 닫힌부분집합이다. 공역 \([0, 1]\)이 콤팩트하므로 Theorem 0.5.1에 의해 \(F\)는 UHC이다.<br/>
+          LHC 검증: \(x^k \to x\)이고 \(y \in [0, x]\)라 하자. 만약 \(x=0\)이면 \(y=0\)이고 \(y^k = 0 \in [0, x^k]\)로 두면 \(y^k \to 0\). \(x>0\)이면 \(y^k = y \cdot \min\{1, x^k / x\}\)로 두면 \(y^k \in [0, x^k]\)이고 \(y^k \to y\)이다. 따라서 수열적 조건에 의해 LHC이다. UHC와 LHC를 모두 만족하므로 \(F\)는 연속 대응이다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(F(0)=[0,1]\), \(x\in(0,1]\)에서 \(F(x)=\{0\}\)인 대응 \(F:[0,1]\rightrightarrows[0,1]\)이 UHC이지만 LHC가 아님을 정의에 따라 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) <strong>UHC:</strong> \(x=0\)에서 \(F(0)=[0, 1]\)을 포함하는 열린집합 \(V\)를 잡으면, \(0 \in [0, 1] \subseteq V\)이므로 모든 \(x \ne 0\)에 대해 \(F(x) = \{0\} \subseteq V\)이다. 따라서 \(x=0\)에서 UHC다. \(x>0\)에서는 대응이 국소적으로 상수이므로 UHC다.<br/>
+          2) <strong>LHC 실패:</strong> \(y = 1 \in F(0)\)을 잡고 열린집합 \(V = (1/2, 3/2)\)를 잡으면 \(F(0) \cap V \ne \varnothing\)이다. 그러나 임의의 \(x \ne 0\)에 대해 \(F(x) = \{0\}\)이므로 \(F(x) \cap V = \{0\} \cap (1/2, 3/2) = \varnothing\)이다. 따라서 0의 어떤 근방에서도 교집합 조건을 만족할 수 없으므로 LHC가 아니다 (상(image)이 0으로 급격히 붕괴함).
+        </div>
+      </details>
+    </li>
+    <li>
+      \(Y\)가 콤팩트할 때, 공집합이 아닌 닫힌값을 갖는 대응 \(F:X\rightrightarrows Y\)에 대해 닫힌 그래프 성질과 UHC가 동치임을 수열판정법으로 보이라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          본문 Section 0.5.3의 Theorem 0.5.1 증명을 참조하라. 콤팩트 공역에서 Bolzano-Weierstrass 정리로 수렴하는 부분수열을 뽑아내어 모순을 유도하는 표준 증명이다.
+        </div>
+      </details>
+    </li>
+  </ol>
+
+  <h3>D. 볼록성·최적화·KKT</h3>
+  <ol class="exercise-list">
+    <li>
+      \(C=\{(x_1,x_2)\in\mathbb R_+^2:x_1x_2\ge1\}\)의 볼록성을 판정하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(x_1 x_2 \ge 1\)을 만족하는 점은 자동으로 \(x_1 > 0, x_2 > 0\)이므로 \(C \subseteq \mathbb{R}_{++}^2\)이다. 함수 \(f(x_1, x_2) = \log x_1 + \log x_2\)는 \(\mathbb{R}_{++}^2\)에서 오목함수이다. 따라서 \(C = \{(x_1, x_2) \in \mathbb{R}_{++}^2 : \log x_1 + \log x_2 \ge 0\}\)는 오목함수의 상위수준집합(upper contour set)이므로 볼록집합이다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(p_1,p_2,m>0\), \(x_1,x_2>0\)라 하자. \(u(x_1,x_2)=\log x_1+\log x_2\)를 \(p_1x_1+p_2x_2\le m\) 아래에서 최대화하라. KKT 조건을 쓰고, 해가 양의 소비영역의 내부에 놓임을 확인하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          라그랑지안: \(\mathcal{L} = \log x_1 + \log x_2 + \lambda (m - p_1 x_1 - p_2 x_2)\).<br/>
+          FOC: \(\frac{\partial \mathcal{L}}{\partial x_1} = \frac{1}{x_1} - \lambda p_1 = 0 \implies p_1 x_1 = \frac{1}{\lambda}\).<br/>
+          \(\frac{\partial \mathcal{L}}{\partial x_2} = \frac{1}{x_2} - \lambda p_2 = 0 \implies p_2 x_2 = \frac{1}{\lambda}\).<br/>
+          예산제약: \(p_1 x_1 + p_2 x_2 = \frac{2}{\lambda} = m \implies \lambda = \frac{2}{m} > 0\).<br/>
+          따라서 \(x_1^* = \frac{m}{2p_1} > 0\), \(x_2^* = \frac{m}{2p_2} > 0\). 두 변수 모두 엄격한 양수이므로 내부해이다.
+        </div>
+      </details>
+    </li>
+    <li>
+      오목한 목적함수와 볼록한 실행가능집합 아래에서 KKT 조건이 전역최적성의 충분조건이 되는 이유를 지지초평면의 관점에서 설명하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          오목함수의 그래프 위의 점 \((x^*, f(x^*))\)에서의 접초평면은 함수 전체를 위에서 지지(support)한다. 실행가능집합이 볼록하고 제약함수들이 오목하면 KKT 승수들로 구성된 법선벡터는 목적함수의 상위윤곽집합과 실행가능집합을 경계점 \(x^*\)에서 분리하는 지지초평면의 법선벡터가 된다. 따라서 국소 1계조건을 만족하는 점이 필연적으로 전역 최대점이 된다.
+        </div>
+      </details>
+    </li>
+    <li>
+      \(x_1,x_2>0\)에서 \(f(x_1,x_2)=x_1^{1/3}x_2^{2/3}\)가 1차 동차임을 보이고, Euler 정리로 \(x\cdot\nabla f(x)=f(x)\)를 확인하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(f(t x_1, t x_2) = (t x_1)^{1/3} (t x_2)^{2/3} = t^{1/3+2/3} x_1^{1/3} x_2^{2/3} = t f(x_1, x_2)\). 따라서 1차 동차이다.<br/>
+          편도함수: \(f_1 = \frac{1}{3} x_1^{-2/3} x_2^{2/3}\), \(f_2 = \frac{2}{3} x_1^{1/3} x_2^{-1/3}\).<br/>
+          \(x_1 f_1 + x_2 f_2 = \frac{1}{3} x_1^{1/3} x_2^{2/3} + \frac{2}{3} x_1^{1/3} x_2^{2/3} = f(x_1, x_2)\). 오일러 정리가 정확히 성립한다.
+        </div>
+      </details>
+    </li>
+  </ol>
+
+  <h3>E. 행렬미분·비교정태·Envelope</h3>
+  <ol class="exercise-list">
+    <li>
+      \(\Phi(q,p)=q^2-p=0\), \(q^*>0\)을 만족하는 점을 생각하자. 음함수 정리를 적용하여 \(dq/dp\)를 구하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          \(\frac{\partial \Phi}{\partial q} = 2q\). \(q^* > 0\)에서 \(2q^* \ne 0\)이므로 정칙조건(invertibility)이 만족된다.<br/>
+          \(\frac{\partial \Phi}{\partial p} = -1\).<br/>
+          음함수 정리 공식에 의해: \(\frac{dq}{dp} = - \left( \frac{\partial \Phi}{\partial q} \right)^{-1} \frac{\partial \Phi}{\partial p} = - \frac{1}{2q^*} (-1) = \frac{1}{2q^*} = \frac{1}{2\sqrt{p}}\).
+        </div>
+      </details>
+    </li>
+    <li>
+      비용최소화 문제 \(c(w,q)=\min_{z\ge 0}\{w\cdot z : f(z)\ge q\}\) (\(w\gg0\), \(q\gt f(0)\), \(f\)는 \(C^1\)이고 단조적·엄격준오목하며, 유일한 내부해 \(z^*(w,q)\gg0\) 및 미분가능한 최적값을 가정)에 포락선 정리를 적용하여 \(\frac{\partial c(w,q)}{\partial w_i}=z_i^*(w,q)\) (Shephard's lemma)와 한계비용 \(\frac{\partial c(w,q)}{\partial q}=\lambda^*(w,q)\)를 유도하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          라그랑지안을 \(\mathcal{L}(z, \lambda; w, q) = w \cdot z + \lambda (q - f(z))\)라 두자(최소화 문제에서 제약 \(q - f(z) \le 0\)의 승수 \(\lambda \ge 0\)).<br/>
+          내부해의 1계조건 \(\nabla_z \mathcal{L} = w - \lambda^* \nabla f(z^*) = 0\)과 활성화된 산출량 제약 \(f(z^*(w,q)) = q\)가 성립한다.<br/>
+          포락선 정리에 의해 가치함수 \(c(w,q) = \mathcal{L}(z^*(w,q), \lambda^*(w,q); w, q)\)의 편도함수는 내생변수 반응항이 1계조건으로 소거된 직접 편미분과 같다:
+          \[
+          \frac{\partial c(w,q)}{\partial w_i} = \left.\frac{\partial \mathcal{L}}{\partial w_i}\right|_{(z^*, \lambda^*)} = z_i^*(w,q), \qquad \frac{\partial c(w,q)}{\partial q} = \left.\frac{\partial \mathcal{L}}{\partial q}\right|_{(z^*, \lambda^*)} = \lambda^*(w,q).
+          \]
+          즉, 요소가격에 대한 비용함수의 기울기가 곧 조건부 요소수요이며, 산출량에 대한 한계비용은 생산량 제약의 라그랑지 승수와 일치한다.
+        </div>
+      </details>
+    </li>
+  </ol>
+
+  <h3>F. 고정점·분리·경제적 해석</h3>
+  <ol class="exercise-list">
+    <li>
+      \(n\)재화 경제에서 정규화된 가격 simplex \(\Delta^{n-1} = \{p \in \mathbb{R}_+^n : \sum_{i=1}^n p_i = 1\}\)가 \(\mathbb{R}^n\)의 공집합이 아닌 콤팩트한 볼록집합임을 증명하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) <strong>비공집합:</strong> 표준 단위벡터 \(e_1 = (1, 0, \dots, 0) \in \Delta^{n-1}\)이므로 공집합이 아니다.<br/>
+          2) <strong>볼록성:</strong> 임의의 \(p, q \in \Delta^{n-1}\)와 \(t \in [0, 1]\)에 대해 \(r = tp + (1-t)q\)라 두면, \(p_i, q_i \ge 0\)이므로 \(r_i \ge 0\)이고 \(\sum_{i=1}^n r_i = t\sum_{i=1}^n p_i + (1-t)\sum_{i=1}^n q_i = t + (1-t) = 1\)이므로 \(r \in \Delta^{n-1}\)이다.<br/>
+          3) <strong>닫힘성:</strong> \(\Delta^{n-1} = \left(\bigcap_{i=1}^n \{p \in \mathbb{R}^n : p_i \ge 0\}\right) \cap \left\{p \in \mathbb{R}^n : \sum_{i=1}^n p_i = 1\right\}\)은 연속함수들의 닫힌 원상(\([0, \infty)\) 및 \(\{1\}\)의 역상)들의 유한 교집합이므로 닫힌집합이다.<br/>
+          4) <strong>유계성:</strong> 모든 \(p \in \Delta^{n-1}\)에 대해 \(0 \le p_i \le 1\)이므로 \(\lVert p\rVert_2 = \sqrt{\sum_{i=1}^n p_i^2} \le \sqrt{\sum_{i=1}^n p_i} = 1\)로 유계이다.<br/>
+          Heine–Borel 정리에 의해 \(\Delta^{n-1}\)은 \(\mathbb{R}^n\)에서 콤팩트한 볼록집합이며, 이는 Brouwer/Kakutani 고정점정리를 일반균형 가격 탐색에 적용할 수 있는 토대다.
+        </div>
+      </details>
+    </li>
+    <li>
+      서로소인 두 볼록집합을 분리하는 초평면의 법선벡터가 어떤 조건에서 가격벡터의 후보가 되는지 설명하라. 또한 순수교환경제의 실행가능집합을 예로 들어 법선벡터의 비음수성이 분리정리만으로 보장되지 않는 이유를 논하라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) 분리초평면의 법선벡터 \(p\)는 한 집합(상위선호집합)에서는 지출을 최소화하고 다른 집합(실행가능집합)에서는 가치를 최대화하는 방향을 가리키므로, 시장에서 재화의 한계대체율과 교환비율을 규정하는 가격의 역할을 한다.<br/>
+          2) 그러나 순수 기하학적 분리정리는 단지 \(p \ne 0\)만을 보장할 뿐 \(p \ge 0\)을 보장하지 않는다. 가격벡터의 비음수성(\(p \ge 0\))을 확보하려면 분리부등식의 방향을 확인한 뒤 <strong>자유처분(Free Disposal, 실행가능집합에 \(-\mathbb{R}_+^n\) 방향의 포괄성)</strong> 또는 <strong>단조성(Monotonicity, 상위선호집합에 \(+\mathbb{R}_+^n\) 방향의 포괄성)</strong>과 같은 추가적인 경제적 가정을 활용할 수 있다. 예컨대 분리된 집합이 음의 좌표방향으로 무한히 확장되는 경우, 이를 위에서 지지하는 법선벡터의 성분이 음수일 수 없다.
+        </div>
+      </details>
+    </li>
+    <li>
+      제2후생정리에서 분리정리만으로 충분하지 않은 이유를 세 가지 이상 적어라.
+      <details class="extension">
+        <summary>💡 해설 및 풀이</summary>
+        <div class="details-body">
+          1) <strong>준균형(Quasi-equilibrium) 문제:</strong> 분리정리는 오직 \(p \cdot x \ge p \cdot x^*\) (지출최소화의 필요조건)만을 줄 뿐, 최소 지출액보다 소득이 진정으로 엄격히 커서 국소불포화 선호 아래 효용극대화로 승격(promotion)될 수 있는 조건(Cheaper Consumption Point)을 보장하지 못한다.<br/>
+          2) <strong>가격의 비음수성:</strong> 앞선 문제처럼 자유처분이나 단조성이 없으면 분리벡터 \(p\)의 성분이 음수가 될 수 있다.<br/>
+          3) <strong>소득의 재분배 가능성:</strong> 분리정리는 가격벡터의 존재를 보장할 뿐, 각 소비자가 기존 부존량의 가치 \(p\cdot\omega_i\)로 목표 배분 \(x_i^*\)를 구입할 수 있다는 사실까지 보장하지 않는다. 목표 배분의 분권화를 위해서는 적절한 부존량 재배분이나 일괄적 이전지급(lump-sum transfers)이 허용되어야 할 수 있다.
+        </div>
+      </details>
+    </li>
+  </ol>
+</section>
+
+
+<section class="references" id="references">
+<h2>참고문헌</h2>
+<p>Jehle, G. A., and P. J. Reny (2011). <em>Advanced Microeconomic Theory</em>, 3rd ed. Financial Times / Prentice Hall. Mathematical Appendices A1–A2.</p>
+<p>Mas-Colell, A., M. D. Whinston, and J. R. Green (1995). <em>Microeconomic Theory</em>. Oxford University Press. Mathematical Appendix M; Chapters 3, 17, 18.</p>
+<p>Sundaram, R. K. (1996). <em>A First Course in Optimization Theory</em>. Cambridge University Press.</p>
+<p>Rockafellar, R. T. (1970). <em>Convex Analysis</em>. Princeton University Press.</p>
+<p>de la Fuente, A. (2000). <em>Mathematical Methods and Models for Economists</em>. Cambridge University Press.</p>
+<p>Ok, E. A. (2007). <em>Real Analysis with Economic Applications</em>. Princeton University Press.</p>
+</section>
+
+<nav aria-label="Chapter navigation" class="chapter-pager">
+<a href="../microeconomics.html">← 미시경제이론 로드맵</a>
+<a href="micro-ch1.html">Chapter 1 · 소비자이론 →</a>
+</nav>
+
+<section class="references discussion-section" id="discussion">
+<h2>학술 토론 및 질문</h2>
+<p class="discussion-lead">노트 내용에 대한 질문, 수식 정정, 학술적 의견을 자유롭게 남겨주세요. (GitHub Discussions 연동)</p>
+<script async crossorigin="anonymous" data-category="General" data-category-id="DIC_kwDOVpbZ2c4DK0yv" data-emit-metadata="0" data-input-position="top" data-lang="ko" data-mapping="pathname" data-reactions-enabled="1" data-repo="Hyeongjin3544/HyeongjinHome" data-repo-id="R_kgDOVpbZ2Q" data-strict="0" data-theme="noborder_light" src="https://giscus.app/client.js"></script>
+</section>
+</article>
+</main>
+</div>
+<button aria-label="맨 위로 이동" class="back-to-top" title="맨 위로 이동" type="button">↑</button>
+<script>
+    (function () {
+      const topButton = document.querySelector('.back-to-top');
+      topButton.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+      window.addEventListener('scroll', () => {
+        topButton.classList.toggle('show', window.scrollY > 650);
+      }, {passive: true});
+
+      const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+      const sectionEls = tocLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.filter(e => e.isIntersecting).sort((a,b) => b.intersectionRatio-a.intersectionRatio)[0];
+        if (!visible) return;
+        const id = '#' + visible.target.id;
+        tocLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === id));
+      }, {rootMargin: '-16% 0px -72% 0px', threshold: [0.01, 0.2, 0.6]});
+      sectionEls.forEach(el => observer.observe(el));
+
+      document.querySelectorAll('details').forEach(d => {
+        d.addEventListener('toggle', () => {
+          if (d.open && window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([d]);
+        });
+      });
+
+    })();
+  </script>
+</body>
+</html>
