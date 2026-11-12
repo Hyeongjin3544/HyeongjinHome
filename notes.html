@@ -122,75 +122,18 @@
         <div>
           <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
             <span>Econometrics</span>
-            <span class="text-xs font-sans text-stone-400 font-normal">/ 계량경제학 이론 (15 Chapters)</span>
+            <span class="text-xs font-sans text-stone-400 font-normal">/ 계량경제학 이론 (11 Chapters)</span>
           </h2>
-          <p class="text-xs text-stone-500 mt-1">확률 기초부터 OLS 대수·점근이론, GMM, 도구변수(IV), 약한 식별까지 체계화된 전개</p>
+          <p class="text-xs text-stone-500 mt-1">식별·추정·추론·검정의 흐름을 따라 정리한 대학원 계량경제학 노트</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        
-        <!-- Part 1 -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part I · Chapters 01–05</span>
-            <span class="text-xs font-mono text-stone-400">Foundation</span>
-          </div>
-          <h3 class="font-bold text-stone-900 dark:text-white text-base">확률 기초, 식별 및 조건부 기댓값</h3>
-          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
-            <li>• ch01–02: 확률 정보 구조와 모형의 기초</li>
-            <li>• ch03: 모수 식별 문제 (Target Model Identification)</li>
-            <li>• ch04: 모집단 최적화 (Population Optimization)</li>
-            <li>• ch05: 조건부 기댓값 함수(CEF)의 성질과 오차항</li>
-          </ul>
-        </div>
-
-        <!-- Part 2 -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part II · Chapters 06–10</span>
-            <span class="text-xs font-mono text-stone-400">Least Squares</span>
-          </div>
-          <h3 class="font-bold text-stone-900 dark:text-white text-base">최소자승법(OLS)과 점근 이론</h3>
-          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
-            <li>• ch06–07: 모집단 선형 회귀 & 표본 최소자승법</li>
-            <li>• ch08: OLS 표본이론과 기하학적 투영 (Projection Geometry)</li>
-            <li>• ch09: 정확 추론 (Exact Finite-Sample Inference)</li>
-            <li>• ch10: 대표본 점근 분포 (Large Sample Least Squares)</li>
-          </ul>
-        </div>
-
-        <!-- Part 3 -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part III · Chapters 11–14</span>
-            <span class="text-xs font-mono text-stone-400">IV & GMM</span>
-          </div>
-          <h3 class="font-bold text-stone-900 dark:text-white text-base">M-추정, 도구변수(IV) 및 약한 식별</h3>
-          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
-            <li>• ch11: M/Z-추정 이론의 통일적 체계</li>
-            <li>• ch12: 도구변수(IV) 2SLS 및 일반화 적률법(GMM)</li>
-            <li>• ch13: 우도 및 준우도(Quasi-Likelihood) 추정</li>
-            <li>• ch14: 약한 식별(Weak Identification)과 비정규 점근론</li>
-          </ul>
-        </div>
-
-        <!-- Part 4 -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-mono font-semibold text-stone-500 uppercase">Part IV · Chapter 15</span>
-            <span class="text-xs font-mono text-stone-400">Time Series</span>
-          </div>
-          <h3 class="font-bold text-stone-900 dark:text-white text-base">종속 자료와 시계열 계량분석</h3>
-          <ul class="text-xs text-stone-600 dark:text-stone-400 space-y-1.5">
-            <li>• ch15: Dependent Data & Time-Series Foundations</li>
-            <li>• 정상성(Stationarity)과 에르고딕성(Ergodicity)</li>
-            <li>• HAC 표준오차 (Newey-West 분산 공분산 행렬)</li>
-            <li>• 마팅게일 차분 계열(MDS) 중심극한정리</li>
-          </ul>
-        </div>
-
-      </div>
+      <a href="econometrics.html" class="subtle-card block bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3 hover:border-stone-400 dark:hover:border-stone-600 transition-colors">
+        <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Graduate Econometric Theory · Chapters 00–10</span>
+        <h3 class="font-bold text-stone-900 dark:text-white text-lg">계량경제학: 모집단에서 가설검정까지</h3>
+        <p class="text-sm text-stone-600 dark:text-stone-400 leading-relaxed">극값추정, 선형회귀, 도구변수, 인과추론, GMM, 최대우도, 부트스트랩, 패널자료와 이산선택 모형을 장별로 살펴봅니다.</p>
+        <span class="inline-block text-xs font-semibold text-stone-900 dark:text-white">11개 장과 정리·증명 색인 보기 →</span>
+      </a>
 
     </section>
 
