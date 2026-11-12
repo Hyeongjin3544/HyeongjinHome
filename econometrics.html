@@ -1,2021 +1,729 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="scroll-smooth">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<meta content="계량경제학 수학적 정의·정리·증명 통합 교재. 모집단 식별, 표본 대응식, 점근적 선형화, 횡단면·시계열·패널 중심극한정리, GMM, MLE, FE 및 가설검정." name="description"/>
-<title>계량경제학 | Study Notes | Hyeongjin Oh</title>
-<link crossorigin="" href="https://cdn.jsdelivr.net" rel="preconnect"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Noto+Sans+KR:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
-<style>
-  :root {
-    /* Pure Zinc Architectural Surface Scale (Light) */
-    --bg-canvas: #ffffff;
-    --bg-paper: #ffffff;
-    --bg-subtle: #fafafa;
-    --bg-elevated: #f4f4f5;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Econometrics | Study Notes | Hyeongjin Oh</title>
+  <meta name="description" content="서울시립대학교 경제학과 오형진의 대학원 계량경제학 정리노트입니다. 극값추정이론, 선형회귀, 도구변수, 인과추론, GMM, 최대우도, Bootstrap, 패널자료, DiD 및 이산선택 모형을 다룹니다.">
 
-    --ink: #09090b;
-    --ink-soft: #27272a;
-    --muted: #71717a;
-    --muted-soft: #a1a1aa;
-    --line: rgba(9, 9, 11, 0.08);
-    --line-strong: rgba(9, 9, 11, 0.15);
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/profile.jpg">
 
-    /* Restrained Signature Indigo + Crisp Semantic Dots */
-    --primary: #4f46e5;
-    --primary-deep: #3730a3;
-    --primary-soft: rgba(79, 70, 229, 0.055);
-    --primary-border: rgba(79, 70, 229, 0.24);
-
-    --cyan: #0284c7;
-    --indigo: #4f46e5;
-    --teal: #0d9488;
-    --amber: #d97706;
-    --slate: #64748b;
-
-    --danger: #e11d48;
-    --danger-soft: rgba(225, 29, 72, 0.045);
-    --danger-border: rgba(225, 29, 72, 0.24);
-
-    --topbar-bg: rgba(255, 255, 255, 0.82);
-    --hero-glow: rgba(79, 70, 229, 0.075);
-    --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
-    --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
-
-    --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    --font-math: "Times New Roman", Georgia, serif;
-
-    --topbar-h: 50px;
-    --sidebar-w: 278px;
-    --container-w: 1200px;
-    --measure-w: 76ch;
-  }
-
-  html[data-theme="dark"] {
-    --bg-canvas: #09090b;
-    --bg-paper: #09090b;
-    --bg-subtle: #111114;
-    --bg-elevated: #18181b;
-
-    --ink: #fafafa;
-    --ink-soft: #d4d4d8;
-    --muted: #a1a1aa;
-    --muted-soft: #71717a;
-    --line: rgba(255, 255, 255, 0.09);
-    --line-strong: rgba(255, 255, 255, 0.16);
-
-    --primary: #818cf8;
-    --primary-deep: #a5b4fc;
-    --primary-soft: rgba(129, 140, 248, 0.10);
-    --primary-border: rgba(129, 140, 248, 0.30);
-
-    --cyan: #38bdf8;
-    --indigo: #818cf8;
-    --teal: #2dd4bf;
-    --amber: #fbbf24;
-    --slate: #94a3b8;
-
-    --danger: #fb7185;
-    --danger-soft: rgba(251, 113, 133, 0.09);
-    --danger-border: rgba(251, 113, 133, 0.30);
-
-    --topbar-bg: rgba(9, 9, 11, 0.80);
-    --hero-glow: rgba(99, 102, 241, 0.14);
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
-    --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
-  }
-
-  * { box-sizing: border-box; }
-  html {
-    scroll-behavior: smooth;
-    font-size: 16px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  body {
-    margin: 0;
-    color: var(--ink-soft);
-    background-color: var(--bg-canvas);
-    font-family: var(--font-sans);
-    font-size: 15.8px;
-    line-height: 1.78;
-    text-rendering: optimizeLegibility;
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
-  ::selection {
-    background: var(--primary-soft);
-    color: var(--primary);
-  }
-
-  html:not(.math-ready) mjx-container { visibility: hidden; }
-  mjx-container { overflow-x: visible; overflow-y: visible; color: var(--ink); }
-  mjx-container:not([display="true"]) {
-    padding: 0 1.5px;
-    vertical-align: baseline;
-  }
-  .math-display,
-  mjx-container[display="true"] {
-    display: block;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 4px 2px;
-    scrollbar-width: thin;
-    overscroll-behavior-x: contain;
-  }
-  .math-display { margin: 18px 0; }
-  mjx-container[display="true"] { margin: 1em 0 !important; }
-  .math-display mjx-container[display="true"],
-  .object-card__formula mjx-container[display="true"],
-  .problem-map-card__formula mjx-container[display="true"],
-  .property-row__formula mjx-container[display="true"],
-  .callout-strip mjx-container[display="true"],
-  .formula-card mjx-container[display="true"] {
-    margin: 0 !important;
-  }
-
-  a {
-    color: var(--primary);
-    text-decoration-color: var(--primary-border);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-    transition: color .15s, text-decoration-color .15s;
-  }
-  a:hover {
-    color: var(--primary-deep);
-    text-decoration-color: var(--primary);
-  }
-
-  /* ── Ultra-Clean Frosted Topbar ── */
-  .sitebar {
-    position: sticky;
-    top: 0;
-    z-index: 40;
-    height: var(--topbar-h);
-    background: var(--topbar-bg);
-    border-bottom: 1px solid var(--line);
-    backdrop-filter: saturate(180%) blur(16px);
-    -webkit-backdrop-filter: saturate(180%) blur(16px);
-  }
-  .sitebar__inner {
-    max-width: var(--container-w);
-    height: 100%;
-    margin: 0 auto;
-    padding: 0 28px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .sitebar__brand {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-  .brand-mark {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    border-radius: 6px;
-    background: var(--ink);
-    color: var(--bg-paper);
-    font-family: var(--font-math);
-    font-style: italic;
-    font-weight: 700;
-    font-size: 13.5px;
-    flex-shrink: 0;
-  }
-  .sitebar__series {
-    color: var(--ink);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
-  .sitebar__chapter {
-    color: var(--muted);
-    font-size: 12.6px;
-    font-weight: 450;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .sitebar__section {
-    color: var(--primary);
-    font-size: 12.2px;
-    font-weight: 550;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    padding-left: 8px;
-    border-left: 1px solid var(--line-strong);
-    opacity: 0;
-    transition: opacity .18s ease;
-  }
-  .sitebar__section.is-visible { opacity: 1; }
-  .study-controls {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-shrink: 0;
-  }
-  .study-controls__label {
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--muted);
-  }
-  .study-segmented {
-    display: inline-flex;
-    background: var(--bg-elevated);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 2px;
-    gap: 2px;
-  }
-  .study-btn {
-    appearance: none;
-    border: 0;
-    background: transparent;
-    color: var(--muted);
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 500;
-    padding: 3.5px 9px;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background .15s, color .15s, box-shadow .15s;
-    white-space: nowrap;
-  }
-  .study-btn:hover { color: var(--ink); }
-  .study-btn.is-active {
-    background: var(--bg-paper);
-    color: var(--ink);
-    font-weight: 600;
-    box-shadow: var(--shadow-xs);
-  }
-  .theme-btn {
-    appearance: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    border: 1px solid var(--line);
-    background: var(--bg-paper);
-    color: var(--ink-soft);
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 550;
-    padding: 4.5px 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: border-color .15s, background .15s, color .15s;
-    white-space: nowrap;
-  }
-  .theme-btn::before {
-    content: "";
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    box-shadow: inset -3.5px -1.5px 0 0 currentColor;
-    transition: transform .2s, background .2s, box-shadow .2s;
-    flex-shrink: 0;
-  }
-  html[data-theme="dark"] .theme-btn::before {
-    background: #fbbf24;
-    box-shadow: 0 0 8px rgba(251, 191, 36, 0.55);
-  }
-  .theme-btn:hover {
-    border-color: var(--line-strong);
-    background: var(--bg-subtle);
-    color: var(--ink);
-  }
-  .reading-progress {
-    position: absolute;
-    left: 0;
-    bottom: -1px;
-    width: 100%;
-    height: 1.5px;
-    background: transparent;
-    pointer-events: none;
-  }
-  .reading-progress__bar {
-    height: 100%;
-    width: 0%;
-    background: var(--primary);
-    transition: width .08s linear;
-  }
-
-  /* ── Architectural Editorial Hero ── */
-  .chapter-hero {
-    position: relative;
-    background: var(--bg-paper);
-    border-bottom: 1px solid var(--line);
-    padding: 52px 28px 40px;
-    overflow: hidden;
-  }
-  .chapter-hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 75% 60% at 50% -12%, var(--hero-glow) 0%, transparent 75%);
-    pointer-events: none;
-  }
-  .hero-inner {
-    position: relative;
-    z-index: 1;
-    max-width: var(--container-w);
-    margin: 0 auto;
-  }
-  .chapter-kicker {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--primary);
-    margin-bottom: 10px;
-  }
-  h1 {
-    margin: 0;
-    font-family: var(--font-sans);
-    font-size: clamp(1.95rem, 3.6vw, 2.75rem);
-    line-height: 1.15;
-    letter-spacing: -0.035em;
-    font-weight: 800;
-    color: var(--ink);
-  }
-  .subtitle {
-    margin: 10px 0 0;
-    color: var(--muted);
-    font-size: 1.02rem;
-    font-weight: 450;
-    line-height: 1.5;
-    letter-spacing: -0.01em;
-  }
-  .hero-rule {
-    width: 36px;
-    height: 1px;
-    background: var(--line-strong);
-    margin: 20px 0;
-  }
-  .lead {
-    max-width: 72ch;
-    margin: 0;
-    font-size: 0.975rem;
-    color: var(--ink-soft);
-    line-height: 1.78;
-  }
-  .roadmap {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 28px;
-  }
-  .roadmap > div {
-    background: var(--bg-paper);
-    padding: 13px 16px;
-    transition: background .15s;
-  }
-  .roadmap > div:hover { background: var(--bg-subtle); }
-  .roadmap .label {
-    display: block;
-    font-family: var(--font-mono);
-    color: var(--muted);
-    font-weight: 600;
-    font-size: 11px;
-    letter-spacing: 0.03em;
-    margin-bottom: 4px;
-    font-variant-numeric: tabular-nums;
-  }
-  .roadmap .text {
-    display: block;
-    color: var(--ink);
-    font-size: 13.2px;
-    font-weight: 600;
-    line-height: 1.42;
-  }
-
-  /* ── Borderless Editorial 2-Column Layout ── */
-  .layout {
-    max-width: var(--container-w);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
-    gap: 48px;
-    padding: 36px 28px 96px;
-    align-items: start;
-  }
-  .toc {
-    position: sticky;
-    top: calc(var(--topbar-h) + 24px);
-    max-height: calc(100vh - var(--topbar-h) - 44px);
-    overflow-y: auto;
-    padding: 2px 18px 24px 0;
-    border-right: 1px solid var(--line);
-    scrollbar-width: thin;
-  }
-  .toc-title {
-    margin: 0 0 10px;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-  .toc-search {
-    position: relative;
-    margin: 0 0 12px;
-  }
-  .toc-search::after {
-    content: "/";
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--muted);
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 0 5px;
-    line-height: 1.45;
-    pointer-events: none;
-  }
-  .toc-search--mobile {
-    margin: 10px 14px 4px;
-  }
-  .toc-search--mobile::after { display: none; }
-  .toc-filter {
-    appearance: none;
-    width: 100%;
-    padding: 6.5px 28px 6.5px 10px;
-    font-family: var(--font-sans);
-    font-size: 12.2px;
-    color: var(--ink);
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color .15s, background .15s, box-shadow .15s;
-  }
-  .toc-filter--mobile { padding-right: 10px; }
-  .toc-filter::placeholder { color: var(--muted); font-size: 12px; }
-  .toc-filter:focus {
-    background: var(--bg-paper);
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-soft);
-  }
-  .toc-empty {
-    margin: 8px 4px;
-    font-size: 12px;
-    color: var(--muted);
-  }
-  .toc nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  .toc nav a {
-    display: block;
-    padding: 4.5px 8px 4.5px 10px;
-    color: var(--ink-soft);
-    text-decoration: none;
-    font-size: 12.6px;
-    line-height: 1.44;
-    font-weight: 500;
-    border-radius: 6px;
-    border-left: 2px solid transparent;
-    font-variant-numeric: tabular-nums;
-    transition: color .12s, background .12s, border-color .12s;
-  }
-  .toc nav a.sub {
-    margin-left: 8px;
-    padding: 3.5px 8px 3.5px 12px;
-    font-weight: 400;
-    font-size: 12px;
-    line-height: 1.42;
-    color: var(--muted);
-    border-left: 1px solid var(--line);
-    border-radius: 0 6px 6px 0;
-  }
-  .toc nav a:hover {
-    background: var(--bg-subtle);
-    color: var(--ink);
-  }
-  .toc nav a.active {
-    color: var(--primary);
-    border-left: 2px solid var(--primary);
-    font-weight: 600;
-    background: transparent;
-  }
-  .toc-divider {
-    height: 1px;
-    background: var(--line);
-    margin: 10px 0;
-  }
-  .is-hidden-by-filter { display: none !important; }
-
-  /* Mobile inline TOC */
-  .mobile-toc {
-    display: none;
-    margin: 0 0 24px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-  .mobile-toc summary {
-    list-style: none;
-    cursor: pointer;
-    padding: 11px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    user-select: none;
-  }
-  .mobile-toc summary::-webkit-details-marker { display: none; }
-  .mobile-toc summary::after { content: "+"; font-family: var(--font-mono); color: var(--muted); font-size: 14px; }
-  .mobile-toc[open] summary::after { content: "−"; }
-  .mobile-toc nav {
-    padding: 8px 14px 14px;
-    border-top: 1px solid var(--line);
-    background: var(--bg-paper);
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 4px 12px;
-  }
-  .mobile-toc nav a {
-    display: block;
-    padding: 4px 6px;
-    font-size: 12.5px;
-    color: var(--ink-soft);
-    text-decoration: none;
-    border-radius: 5px;
-  }
-  .mobile-toc nav a.sub { color: var(--muted); padding-left: 14px; font-size: 12px; }
-  .mobile-toc nav a:hover { background: var(--bg-subtle); color: var(--primary); }
-  .mobile-toc .mobile-toc__groups {
-    padding: 8px 12px 14px;
-    border-top: 1px solid var(--line);
-    background: var(--bg-paper);
-    max-height: 60vh;
-    overflow-y: auto;
-  }
-
-  main { min-width: 0; }
-  .note-content {
-    max-width: var(--measure-w);
-    padding: 0 0 40px;
-    min-width: 0;
-  }
-
-  /* ── Sections & Crisp Editorial Typography ── */
-  section {
-    padding-top: 44px;
-    margin-top: 48px;
-    border-top: 1px solid var(--line);
-    scroll-margin-top: calc(var(--topbar-h) + 18px);
-  }
-  section.sub-section {
-    padding-top: 10px;
-    margin-top: 26px;
-    border-top: 0;
-  }
-  .note-content > section:first-of-type {
-    padding-top: 0;
-    margin-top: 0;
-    border-top: 0;
-  }
-  h2, h3, h4 {
-    scroll-margin-top: calc(var(--topbar-h) + 20px);
-  }
-  h2 {
-    margin: 0 0 20px;
-    font-family: var(--font-sans);
-    font-size: 1.48rem;
-    line-height: 1.28;
-    letter-spacing: -0.025em;
-    font-weight: 750;
-    color: var(--ink);
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  .section-number {
-    font-family: var(--font-mono);
-    font-size: 0.88rem;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-    color: var(--primary);
-    letter-spacing: 0.01em;
-  }
-  h3 {
-    margin: 34px 0 12px;
-    font-family: var(--font-sans);
-    font-size: 1.15rem;
-    line-height: 1.38;
-    font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-    display: flex;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  h3 .section-number {
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-  h4 {
-    margin: 24px 0 10px;
-    font-family: var(--font-sans);
-    font-size: 0.96rem;
-    font-weight: 650;
-    color: var(--ink);
-    line-height: 1.45;
-    letter-spacing: -0.01em;
-  }
-  .heading-anchor {
-    font-family: var(--font-mono);
-    font-size: 0.82em;
-    font-weight: 500;
-    color: var(--muted-soft);
-    text-decoration: none;
-    opacity: 0;
-    transition: opacity .15s, color .15s;
-    user-select: none;
-  }
-  h2:hover .heading-anchor,
-  h3:hover .heading-anchor,
-  .heading-anchor:focus-visible {
-    opacity: 1;
-  }
-  .heading-anchor:hover { color: var(--primary); }
-  p { margin: 0 0 15px; }
-  p:last-child { margin-bottom: 0; }
-  strong { color: var(--ink); font-weight: 650; }
-
-  .topic-opening {
-    margin: 0 0 26px;
-    padding: 0 0 18px;
-    border-bottom: 1px dashed var(--line-strong);
-    color: var(--muted);
-    font-size: 0.96rem;
-    line-height: 1.75;
-  }
-
-  /* ── Lists ── */
-  ul, ol { margin: 10px 0 18px; padding-left: 22px; }
-  li { margin: 6px 0; }
-  ul.tight li, ol.tight li { margin: 4px 0; }
-  ol.rule-list {
-    margin: 16px 0 24px;
-    padding: 18px 22px 18px 38px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  ol.rule-list li { margin: 9px 0; }
-
-  /* ── Restrained High-Craft Statement Cards ── */
-  .statement {
-    margin: 22px 0;
-    padding: 18px 22px;
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .statement:has(+ details.proof-box) {
-    margin-bottom: 8px;
-  }
-  .statement + details.proof-box {
-    margin-top: 8px;
-  }
-  .statement .statement-head {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 9px;
-    margin-bottom: 10px;
-    line-height: 1.35;
-  }
-  .stmt-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .stmt-badge::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    flex-shrink: 0;
-  }
-  .stmt-title {
-    font-family: var(--font-sans);
-    font-weight: 650;
-    font-size: 15px;
-    color: var(--ink);
-    letter-spacing: -0.015em;
-  }
-  .statement p:last-child,
-  .statement ul:last-child,
-  .statement ol:last-child { margin-bottom: 0; }
-
-  /* Definition */
-  .statement.definition {
-    background: var(--bg-subtle);
-    border-color: var(--line);
-  }
-  .statement.definition .stmt-badge { color: var(--teal); }
-  .statement.definition .stmt-badge::before { background: var(--teal); }
-
-  /* Axiom / Assumption */
-  .statement.axiom {
-    background: var(--bg-subtle);
-    border-color: var(--line);
-  }
-  .statement.axiom .stmt-badge { color: var(--indigo); }
-  .statement.axiom .stmt-badge::before { background: var(--indigo); }
-
-  /* Theorem / Lemma: Primary Architectural Accent */
-  .statement.theorem {
-    border-color: var(--primary-border);
-    background: linear-gradient(180deg, var(--primary-soft) 0%, var(--bg-paper) 65%);
-    box-shadow: inset 0 2px 0 0 var(--primary);
-  }
-  .statement.theorem .stmt-badge { color: var(--primary); }
-  .statement.theorem .stmt-badge::before { background: var(--primary); }
-
-  /* Proposition / Corollary */
-  .statement.proposition {
-    background: var(--bg-paper);
-    border-color: var(--line-strong);
-  }
-  .statement.proposition .stmt-badge { color: var(--amber); }
-  .statement.proposition .stmt-badge::before { background: var(--amber); }
-
-  /* Remark / Convention */
-  .statement.remark {
-    background: transparent;
-    border: 1px dashed var(--line-strong);
-  }
-  .statement.remark .stmt-badge { color: var(--slate); }
-  .statement.remark .stmt-badge::before { background: var(--slate); }
-
-  /* Caution / Warning */
-  .statement.warning {
-    border-color: var(--danger-border);
-    background: var(--danger-soft);
-    box-shadow: inset 0 2px 0 0 var(--danger);
-  }
-  .statement.warning .stmt-badge { color: var(--danger); }
-  .statement.warning .stmt-badge::before { background: var(--danger); }
-
-  /* Example */
-  .statement.example {
-    background: var(--bg-subtle);
-    border-color: var(--line);
-  }
-  .statement.example .stmt-badge { color: var(--cyan); }
-  .statement.example .stmt-badge::before { background: var(--cyan); }
-
-  /* ── Minimal Disclosure Proof Blocks ── */
-  details.proof-box {
-    margin: 12px 0 26px;
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    color: var(--ink-soft);
-    overflow: hidden;
-  }
-  details.proof-box.is-technical {
-    border-style: dashed;
-    border-color: var(--line-strong);
-  }
-  summary.proof-summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 9px 15px;
-    user-select: none;
-    background: var(--bg-subtle);
-    transition: background .15s;
-  }
-  summary.proof-summary::-webkit-details-marker { display: none; }
-  summary.proof-summary:hover { background: var(--bg-elevated); }
-  .proof-summary__left {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 9px;
-    min-width: 0;
-  }
-  .proof-chevron {
-    display: inline-block;
-    width: 5.5px;
-    height: 5.5px;
-    border-right: 1.6px solid var(--muted);
-    border-bottom: 1.6px solid var(--muted);
-    transform: rotate(-45deg);
-    transition: transform .18s ease, border-color .15s;
-    margin-right: 1px;
-    flex-shrink: 0;
-  }
-  details.proof-box[open] .proof-chevron {
-    transform: rotate(45deg);
-    border-color: var(--ink);
-  }
-  .proof-badge {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    padding: 1px 6px;
-    border-radius: 5px;
-    flex-shrink: 0;
-  }
-  details.proof-box.is-technical .proof-badge {
-    color: var(--primary);
-    background: var(--primary-soft);
-    border-color: var(--primary-border);
-  }
-  .proof-title {
-    font-size: 13.2px;
-    font-weight: 550;
-    color: var(--ink);
-  }
-  .proof-summary__hint { flex-shrink: 0; }
-  .proof-summary__hint::after {
-    content: "열기";
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--muted);
-  }
-  details.proof-box[open] .proof-summary__hint::after {
-    content: "접기";
-  }
-  .proof-body {
-    padding: 15px 20px;
-    border-top: 1px solid var(--line);
-    background: var(--bg-paper);
-    font-size: 0.955rem;
-    line-height: 1.78;
-  }
-  .proof-body p { margin: 0 0 12px; }
-  .proof-body p:last-of-type { margin-bottom: 6px; }
-  .qed-row {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-top: 6px;
-    line-height: 1;
-  }
-  .qed {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-    user-select: none;
-  }
-
-  /* ── Gallery Figures + Click-to-Zoom Lightbox ── */
-  .diagram-wrap {
-    margin: 26px 0 30px;
-    padding: 18px 20px 16px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-  }
-  .diagram-wrap svg {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 0 auto;
-    background: #ffffff;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 6px;
-    cursor: zoom-in;
-    transition: border-color .15s, box-shadow .15s;
-  }
-  .diagram-wrap svg:hover {
-    border-color: var(--primary-border);
-    box-shadow: 0 0 0 3px var(--primary-soft);
-  }
-  .diagram-caption {
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
-    font-size: 13.5px;
-    line-height: 1.66;
-    color: var(--muted);
-  }
-  .diagram-caption .fig-label {
-    font-family: var(--font-mono);
-    font-size: 12.2px;
-    font-weight: 600;
-    color: var(--ink);
-    margin-right: 4px;
-  }
-  .diagram-lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    background: rgba(9, 9, 11, 0.72);
-    backdrop-filter: blur(6px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .diagram-lightbox[hidden] { display: none; }
-  .diagram-lightbox__stage {
-    position: relative;
-    max-width: min(1040px, 94vw);
-    max-height: 90vh;
-    overflow: auto;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
-  }
-  .diagram-lightbox__stage svg {
-    display: block;
-    width: min(920px, 86vw);
-    max-width: none;
-    height: auto;
-  }
-  .diagram-lightbox__close {
-    position: sticky;
-    top: 0;
-    float: right;
-    appearance: none;
-    border: 1px solid rgba(9, 9, 11, 0.15);
-    background: #ffffff;
-    color: #09090b;
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 600;
-    padding: 4px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  .diagram-lightbox__close:hover { background: #f4f4f5; }
-
-  /* ── Modern Editorial Booktabs Tables ── */
-  .display-table-wrap {
-    margin: 22px 0 26px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    border-top: 1.5px solid var(--ink);
-    border-bottom: 1.5px solid var(--ink);
-    font-size: 14px;
-    line-height: 1.62;
-    background: transparent;
-  }
-  thead th {
-    padding: 10px 12px;
-    text-align: left;
-    font-weight: 650;
-    font-size: 12.5px;
-    letter-spacing: -0.01em;
-    color: var(--ink);
-    background: transparent;
-    border-bottom: 1px solid var(--line-strong);
-    white-space: nowrap;
-  }
-  tbody td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--line);
-    vertical-align: top;
-    color: var(--ink-soft);
-  }
-  tbody tr:last-child td { border-bottom: 0; }
-  tbody tr:hover td { background: var(--bg-subtle); }
-  .notation-table td:first-child {
-    font-weight: 600;
-    color: var(--ink);
-    white-space: nowrap;
-  }
-
-  /* ── Bento Summary & Spec Grids ── */
-  .callout-strip {
-    display: grid;
-    grid-template-columns: 146px minmax(0, 1fr);
-    margin: 22px 0 26px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--bg-subtle);
-  }
-  .callout-strip .left {
-    padding: 15px 16px;
-    background: var(--bg-elevated);
-    border-right: 1px solid var(--line);
-    color: var(--primary);
-    font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.02em;
-    display: flex;
-    align-items: flex-start;
-    line-height: 1.45;
-  }
-  .callout-strip .right {
-    padding: 15px 18px;
-    background: var(--bg-paper);
-    color: var(--ink-soft);
-    font-size: 14.5px;
-    line-height: 1.72;
-  }
-
-  .assumption-grid {
-    display: grid;
-    grid-template-columns: 175px minmax(0, 1fr);
-    gap: 16px;
-    margin: 20px 0;
-    padding: 16px 20px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .assumption-label {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    font-size: 12px;
-    color: var(--primary);
-    line-height: 1.5;
-  }
-  .assumption-body p:last-child { margin-bottom: 0; }
-
-  .object-overview {
-    margin: 24px 0 28px;
-    padding: 20px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-  }
-  .object-overview__title {
-    margin: 0 0 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary);
-  }
-  .object-overview__lead {
-    margin: 0 0 14px;
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.66;
-  }
-  .object-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 10px;
-  }
-  .object-card {
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 9px;
-    padding: 14px 16px;
-  }
-  .object-card__label {
-    margin: 0 0 6px;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--ink);
-  }
-  .object-card__formula {
-    margin: 6px 0 8px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-  .object-card__text {
-    margin: 0;
-    font-size: 13.5px;
-    color: var(--muted);
-    line-height: 1.62;
-  }
-
-  .formula-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 20px 0 24px;
-  }
-  .formula-grid--long { grid-template-columns: 1fr; }
-  .formula-card {
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 14px 17px;
-  }
-  .formula-card__head {
-    font-weight: 650;
-    font-size: 13.8px;
-    color: var(--ink);
-    margin-bottom: 6px;
-  }
-  .formula-card p { font-size: 14.2px; line-height: 1.68; margin: 0 0 8px; }
-  .formula-card p:last-child { margin-bottom: 0; }
-
-  .two-problem-map {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-    margin: 22px 0 26px;
-  }
-  .problem-map-card {
-    background: var(--bg-subtle);
-    border: 1px solid var(--primary-border);
-    border-radius: 10px;
-    padding: 16px 18px;
-  }
-  .problem-map-card--expenditure,
-  .problem-map-card--alt {
-    border-color: var(--line-strong);
-  }
-  .problem-map-card__title {
-    margin: 0 0 8px;
-    font-weight: 650;
-    font-size: 14.2px;
-    color: var(--primary);
-  }
-  .problem-map-card--expenditure .problem-map-card__title,
-  .problem-map-card--alt .problem-map-card__title {
-    color: var(--teal);
-  }
-  .problem-map-card__formula {
-    margin: 8px 0 10px;
-    padding: 8px 10px;
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-  .problem-map-card__text {
-    margin: 0;
-    font-size: 13.6px;
-    line-height: 1.65;
-    color: var(--ink-soft);
-  }
-
-  .property-sheet {
-    margin: 22px 0 26px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--bg-paper);
-  }
-  .property-sheet__head {
-    padding: 10px 16px;
-    background: var(--bg-subtle);
-    border-bottom: 1px solid var(--line);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    text-transform: uppercase;
-  }
-  .property-row {
-    display: grid;
-    grid-template-columns: 165px minmax(0, 1fr);
-    border-bottom: 1px solid var(--line);
-  }
-  .property-row:last-child { border-bottom: 0; }
-  .property-row__key {
-    padding: 12px 15px;
-    font-weight: 600;
-    font-size: 13.5px;
-    color: var(--ink);
-    border-right: 1px solid var(--line);
-    background: var(--bg-subtle);
-  }
-  .property-row__body {
-    padding: 12px 16px;
-    font-size: 14.2px;
-    line-height: 1.68;
-    color: var(--ink-soft);
-    min-width: 0;
-  }
-  .property-row__body p:last-child { margin-bottom: 0; }
-  .property-row__formula {
-    margin-top: 8px;
-    padding: 7px 10px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 7px;
-    overflow-x: auto;
-    scrollbar-width: thin;
-  }
-
-  .mini-note {
-    margin: 16px 0 20px;
-    padding: 13px 16px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    font-size: 14px;
-    color: var(--muted);
-    line-height: 1.68;
-  }
-
-  /* ── Exercises & Solutions ── */
-  .exercise-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 18px 0 24px;
-    padding: 10px 14px;
-    background: var(--bg-subtle);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-  }
-  .exercise-toolbar__title {
-    font-size: 12.5px;
-    font-weight: 550;
-    color: var(--muted);
-  }
-  .exercise-toolbar__btns {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  .pill-btn {
-    appearance: none;
-    border: 1px solid var(--line);
-    background: var(--bg-paper);
-    color: var(--ink);
-    font-family: var(--font-sans);
-    font-size: 12px;
-    font-weight: 550;
-    padding: 5px 11px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: background .15s, border-color .15s;
-  }
-  .pill-btn:hover {
-    background: var(--bg-elevated);
-    border-color: var(--line-strong);
-  }
-
-  .exercise-list {
-    counter-reset: ex;
-    list-style: none;
-    margin: 14px 0 28px;
-    padding: 0;
-  }
-  .exercise-list > li {
-    counter-increment: ex;
-    position: relative;
-    padding: 16px 0 16px 3.2em;
-    margin: 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .exercise-list > li:last-child { border-bottom: 0; }
-  .exercise-list > li::before {
-    content: counter(ex) ".";
-    position: absolute;
-    left: 0;
-    top: 17px;
-    display: inline-block;
-    min-width: 2.25em;
-    text-align: center;
-    padding: 1px 6px;
-    border-radius: 6px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--line);
-    color: var(--ink);
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 600;
-    line-height: 1.5;
-    font-variant-numeric: tabular-nums;
-  }
-  .exercise-list--a > li::before { content: "A." counter(ex); }
-  .exercise-list--b > li::before { content: "B." counter(ex); }
-  .exercise-list--c > li::before { content: "C." counter(ex); }
-  .exercise-list--d > li::before { content: "D." counter(ex); }
-  .exercise-list--e > li::before { content: "E." counter(ex); }
-  .exercise-list--f > li::before { content: "F." counter(ex); }
-
-  details.extension {
-    margin: 12px 0 4px;
-    background: var(--bg-paper);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  summary.ext-summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 8px 13px;
-    user-select: none;
-    background: var(--bg-subtle);
-    transition: background .15s;
-  }
-  summary.ext-summary::-webkit-details-marker { display: none; }
-  summary.ext-summary:hover { background: var(--bg-elevated); }
-  .ext-summary__left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .ext-badge {
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--primary);
-    background: var(--primary-soft);
-    border: 1px solid var(--primary-border);
-    padding: 1px 6px;
-    border-radius: 5px;
-  }
-  .ext-title {
-    font-size: 12.8px;
-    font-weight: 550;
-    color: var(--ink);
-  }
-  .ext-hint::after {
-    content: "열기";
-    font-size: 11.5px;
-    color: var(--muted);
-  }
-  details.extension[open] .ext-hint::after { content: "접기"; }
-  details.extension .details-body {
-    padding: 13px 16px 15px;
-    border-top: 1px solid var(--line);
-    background: var(--bg-paper);
-    font-size: 14.4px;
-    line-height: 1.75;
-    color: var(--ink-soft);
-  }
-
-  /* ── References ── */
-  section.references ul,
-  section.references ol {
-    font-size: 14.3px;
-    line-height: 1.72;
-    color: var(--muted);
-  }
-
-  /* ── Floating Back to Top ── */
-  .back-to-top {
-    position: fixed;
-    right: 24px;
-    bottom: 24px;
-    z-index: 35;
-    appearance: none;
-    border: 1px solid var(--line-strong);
-    background: var(--bg-paper);
-    color: var(--ink);
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 600;
-    padding: 7px 13px;
-    border-radius: 999px;
-    box-shadow: var(--shadow-float);
-    cursor: pointer;
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(8px);
-    transition: opacity .18s, transform .18s, background .15s, border-color .15s;
-  }
-  .back-to-top.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-  .back-to-top:hover {
-    background: var(--ink);
-    color: var(--bg-paper);
-    border-color: var(--ink);
-  }
-
-  /* ── Integrated Book Cover & Multi-Chapter Navigation ── */
-  .book-cover {
-    position: relative;
-    background: var(--bg-paper);
-    border-bottom: 1px solid var(--line);
-    padding: 58px 28px 44px;
-    overflow: hidden;
-  }
-  .book-cover::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 75% 60% at 50% -12%, var(--hero-glow) 0%, transparent 75%);
-    pointer-events: none;
-  }
-  .book-cover__inner {
-    position: relative;
-    z-index: 1;
-    max-width: var(--container-w);
-    margin: 0 auto;
-  }
-  .book-kicker {
-    font-family: var(--font-mono);
-    font-size: 11.5px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--primary);
-    margin-bottom: 10px;
-  }
-  .book-subtitle {
-    margin: 10px 0 0;
-    color: var(--muted);
-    font-size: 1.02rem;
-    font-weight: 450;
-  }
-  .book-roadmap {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 28px;
-  }
-  .book-roadmap__item {
-    display: block;
-    text-decoration: none;
-    background: var(--bg-paper);
-    padding: 13px 15px;
-    transition: background .15s;
-  }
-  .book-roadmap__item:hover { background: var(--bg-subtle); }
-  .book-roadmap__no {
-    display: block;
-    font-family: var(--font-mono);
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--primary);
-    margin-bottom: 4px;
-  }
-  .book-roadmap__text {
-    display: block;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--ink);
-    line-height: 1.4;
-  }
-  .book-layout {
-    max-width: var(--container-w);
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 286px minmax(0, 1fr);
-    gap: 48px;
-    padding: 36px 28px 96px;
-    align-items: start;
-  }
-  .book-toc {
-    position: sticky;
-    top: calc(var(--topbar-h) + 24px);
-    max-height: calc(100vh - var(--topbar-h) - 44px);
-    overflow-y: auto;
-    padding: 2px 18px 24px 0;
-    border-right: 1px solid var(--line);
-    scrollbar-width: thin;
-  }
-  .book-toc__title {
-    margin: 0 0 10px;
-    color: var(--muted);
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-  }
-  .book-toc__top-link {
-    display: block;
-    padding: 5px 8px;
-    font-size: 12.4px;
-    font-weight: 550;
-    color: var(--ink-soft);
-    text-decoration: none;
-    border-radius: 6px;
-    margin-bottom: 8px;
-  }
-  .book-toc__top-link:hover,
-  .book-toc__top-link.active {
-    background: var(--bg-subtle);
-    color: var(--primary);
-  }
-  .book-toc__group {
-    border-top: 1px solid var(--line);
-    padding: 6px 0;
-  }
-  .book-toc__group-summary {
-    list-style: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-    padding: 5px 6px;
-    border-radius: 6px;
-    font-size: 12.4px;
-    font-weight: 600;
-    color: var(--ink);
-    user-select: none;
-    transition: background .12s, color .12s;
-  }
-  .book-toc__group-summary::-webkit-details-marker { display: none; }
-  .book-toc__group-summary:hover { background: var(--bg-subtle); }
-  .book-toc__group-summary::after {
-    content: "+";
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .book-toc__group[open] .book-toc__group-summary::after { content: "−"; }
-  .book-toc__group[open] .book-toc__group-summary { color: var(--primary); }
-  .book-toc__group-links { padding: 3px 0 4px 2px; }
-  .book-toc__chapter-link,
-  .book-toc__sub-link {
-    display: block;
-    padding: 3.5px 8px;
-    text-decoration: none;
-    border-radius: 5px;
-    line-height: 1.42;
-    font-variant-numeric: tabular-nums;
-    border-left: 2px solid transparent;
-  }
-  .book-toc__chapter-link {
-    font-size: 12.2px;
-    font-weight: 550;
-    color: var(--ink-soft);
-    margin-bottom: 2px;
-  }
-  .book-toc__sub-link {
-    font-size: 11.8px;
-    color: var(--muted);
-    margin-left: 6px;
-    padding-left: 10px;
-    border-left: 1px solid var(--line);
-    border-radius: 0 5px 5px 0;
-  }
-  .book-toc a:hover,
-  .mobile-toc__groups a:hover {
-    background: var(--bg-subtle);
-    color: var(--ink);
-  }
-  .book-toc a.active {
-    color: var(--primary);
-    border-left: 2px solid var(--primary);
-    font-weight: 600;
-    background: transparent;
-  }
-  .book-main { min-width: 0; }
-  .book-chapter {
-    margin: 0 0 72px;
-    padding-bottom: 56px;
-    border-bottom: 1px solid var(--line-strong);
-    scroll-margin-top: calc(var(--topbar-h) + 20px);
-  }
-  .book-chapter:last-child {
-    margin-bottom: 0;
-    padding-bottom: 0;
-    border-bottom: 0;
-  }
-  .book-chapter .chapter-hero {
-    padding: 28px 0 28px;
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--line);
-    max-width: var(--measure-w);
-  }
-  .book-chapter .chapter-hero::before { display: none; }
-  .book-chapter .note-content {
-    padding: 0;
-  }
-
-  /* ── Responsive Breakpoints ── */
-  @media (max-width: 1040px) {
-    .layout, .book-layout {
-      grid-template-columns: 1fr;
-      gap: 16px;
-      padding: 20px 20px 76px;
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
     }
-    .toc, .book-toc { display: none; }
-    .sitebar__section { display: none; }
-    .mobile-toc { display: block; }
-    .note-content, .book-chapter .chapter-hero { max-width: 100%; }
-    .book-roadmap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (max-width: 720px) {
-    .sitebar__inner { padding: 0 16px; }
-    .sitebar__chapter, .sitebar__sep, .study-controls__label { display: none; }
-    .chapter-hero, .book-cover { padding: 34px 16px 26px; }
-    .layout, .book-layout { padding: 18px 16px 68px; }
-    .roadmap, .book-roadmap { grid-template-columns: 1fr; }
-    .object-grid, .formula-grid, .two-problem-map { grid-template-columns: 1fr; }
-    .callout-strip, .assumption-grid, .property-row { grid-template-columns: 1fr; }
-    .property-row__key { border-right: 0; border-bottom: 1px solid var(--line); }
-    .mobile-toc nav { grid-template-columns: 1fr; }
-    .exercise-list > li { padding-left: 0; padding-top: 38px; }
-    .exercise-list > li::before { top: 14px; }
-  }
+  </script>
 
-  /* ── Print Stylesheet (Forces Light Variables Even When Dark Mode Is Active) ── */
-  @media print {
-    @page { size: A4; margin: 16mm 15mm 18mm; }
-    html, html[data-theme="dark"] {
-      --bg-canvas: #ffffff !important;
-      --bg-paper: #ffffff !important;
-      --bg-subtle: #fafafa !important;
-      --bg-elevated: #f4f4f5 !important;
-      --ink: #09090b !important;
-      --ink-soft: #27272a !important;
-      --muted: #52525b !important;
-      --muted-soft: #71717a !important;
-      --line: rgba(9, 9, 11, 0.14) !important;
-      --line-strong: rgba(9, 9, 11, 0.24) !important;
-      --primary: #3730a3 !important;
-      --primary-soft: rgba(79, 70, 229, 0.05) !important;
-      --primary-border: rgba(79, 70, 229, 0.28) !important;
-      --danger: #be123c !important;
-      --danger-soft: rgba(225, 29, 72, 0.04) !important;
-      --danger-border: rgba(225, 29, 72, 0.24) !important;
-    }
-    body { background: #ffffff !important; color: #09090b !important; font-size: 9.8pt; line-height: 1.65; }
-    .sitebar, .toc, .book-toc, .mobile-toc, .exercise-toolbar, .back-to-top, .diagram-lightbox, .heading-anchor { display: none !important; }
-    .chapter-hero, .book-cover { background: #ffffff !important; border-bottom: 1px solid #09090b; padding: 0 0 8mm !important; }
-    .chapter-hero::before, .book-cover::before { display: none !important; }
-    .layout, .book-layout { display: block !important; max-width: none !important; padding: 0 !important; }
-    .note-content { max-width: none !important; padding: 0 !important; }
-    .book-chapter { border-bottom: 0 !important; padding-bottom: 0 !important; margin-bottom: 0 !important; page-break-after: always; }
-    .book-chapter:last-child { page-break-after: auto; }
-    h2, h3, h4, summary.proof-summary { break-after: avoid; page-break-after: avoid; }
-    .statement, .diagram-wrap, .callout-strip, .two-problem-map, .object-card {
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-    details.proof-box:not([open]) > .proof-body,
-    details.extension:not([open]) > .details-body {
-      display: none !important;
-    }
-    .proof-summary__hint { display: none; }
-  }
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 
-  /* ── Econometrics Integrated Monograph Extensions ── */
-  mjx-container[jax="SVG"] { visibility: visible; }
-  mjx-container[jax="SVG"][display="true"] { text-align: center; }
-  .math-inline { display: inline; }
-  .math-display.is-numbered {
-    position: relative;
-    padding-right: 64px;
-  }
-  .math-display.is-numbered .eq-number {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--muted);
-    font-variant-numeric: tabular-nums;
-  }
-  .statement[id] {
-    scroll-margin-top: calc(var(--topbar-h) + 20px);
-  }
-  .statement ol.assumption-list {
-    margin: 10px 0 14px;
-    padding-left: 22px;
-  }
-  .statement ol.assumption-list li {
-    margin: 7px 0;
-  }
-  .diagram-wrap svg {
-    color: #09090b;
-  }
-  @media (min-width: 1041px) {
-    .book-roadmap { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  }
-  .textbook-index-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    columns: 2;
-    column-gap: 32px;
-  }
-  .textbook-index-list li {
-    break-inside: avoid;
-    margin: 0;
-    padding: 7px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 13.4px;
-    line-height: 1.5;
-  }
-  .textbook-index-list li a {
-    text-decoration: none;
-    color: var(--ink-soft);
-  }
-  .textbook-index-list li a:hover {
-    color: var(--primary);
-    text-decoration: underline;
-  }
-  .site-footer {
-    max-width: var(--container-w);
-    margin: 0 auto;
-    padding: 24px 28px 48px;
-    border-top: 1px solid var(--line);
-    font-size: 12.5px;
-    color: var(--muted);
-    text-align: center;
-  }
-  @media (max-width: 720px) {
-    .math-display.is-numbered { padding-right: 46px; }
-    .math-display.is-numbered .eq-number { font-size: 11px; }
-    .textbook-index-list { columns: 1; }
-  }
-  @media print {
-    .book-chapter#formal-index { page-break-after: auto; }
-  }
-</style>
-<script>
-(function () {
-try {
-  if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-} catch (_) {}
-})();
-window.MathJax = {
-tex: {
-  inlineMath: [['\\(', '\\)']],
-  displayMath: [['\\[', '\\]']],
-  processEscapes: true,
-  processEnvironments: true,
-  tags: 'ams',
-  packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
-  macros: { lt: '{<}', gt: '{>}' }
-},
-chtml: {
-  scale: 0.96,
-  matchFontHeight: false,
-  mtextInheritFont: true
-},
-options: {
-  enableMenu: false,
-  skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-},
-startup: {
-  ready: () => {
-    MathJax.startup.defaultReady();
-    MathJax.startup.promise.then(() => {
-      document.documentElement.classList.add('math-ready');
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderKaTeX();"></script>
+  <script>
+    function renderKaTeX() {
+      if (typeof renderMathInElement === 'function' && document.body) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    document.addEventListener("DOMContentLoaded", renderKaTeX);
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .subtle-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .subtle-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER & TOP NAV ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+
+      <div class="flex items-center gap-3 text-sm">
+        <a href="notes.html" class="group flex items-center gap-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Study Notes</span>
+        </a>
+        <span class="text-stone-300 dark:text-stone-700">/</span>
+        <span class="font-medium text-stone-900 dark:text-white academic-serif text-base">Econometrics</span>
+      </div>
+
+      <nav class="flex items-center gap-6 text-sm text-stone-600 dark:text-stone-400">
+        <a href="index.html" class="hover:text-stone-900 dark:hover:text-white transition-colors text-xs font-mono">Home (오형진)</a>
+
+        <div class="w-px h-3.5 bg-stone-300 dark:bg-stone-700"></div>
+
+        <!-- Dark Mode Switch -->
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-14">
+
+    <!-- TITLE & OVERVIEW -->
+    <section class="space-y-4">
+
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-stone-700/60">
+        <i class="fas fa-chart-line text-stone-400"></i>
+        Graduate Econometric Theory
+      </div>
+
+      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+        계량경제학 (Econometrics)
+      </h1>
+
+      <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base leading-relaxed max-w-3xl">
+        관측분포로부터 구조모수가 어떻게 식별(Identification)되는지 먼저 밝히고, 이를 표본 목적함수 또는 표본 적률조건으로 구현합니다. 추정량의 확률극한과 점근분포는 자료의 확률구조에 부합하는 대수의 법칙, 중심극한정리 및 최적화 이론을 통해 유도하며, 검정통계량은 도출된 점근분포를 바탕으로 체계화합니다.
+      </p>
+
+      <div class="pt-2 flex flex-wrap gap-2 text-xs font-mono text-stone-500">
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Population → Sample → Inference → Testing</span>
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">11 Chapters (00–10)</span>
+        <a href="notes/econometrics-index.html#formal-index" class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700 hover:border-stone-400 dark:hover:border-stone-500 text-stone-700 dark:text-stone-300 transition-colors">
+          정리·증명 색인 (53 Formal Items) →
+        </a>
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== CHAPTER ROADMAP & SECTIONS ==================== -->
+    <section class="space-y-8">
+
+      <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Chapter Roadmap</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 11개 핵심 단원 편성</span>
+      </h2>
+
+      <div class="space-y-6">
+
+        <!-- CHAPTER 00 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 00</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch00.html#general" class="hover:underline">일반 극값추정이론 (Extremum Estimation)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch00.html#general" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              4 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            모집단 분포 $P_0$에 의해 결정되는 대상모수 $\theta_0$의 식별로부터 유한표본 극값추정량 $\hat\theta_n$의 일치성, 점근선형화 및 횡단면·시계열·패널 중심극한정리(CLT), 가설검정으로 이어지는 계량경제학의 4단계 공통 골격을 정식화합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 장 표지 · 개요</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• I. Population — 모집단 모수와 식별</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• II. Sample Counterpart — 일치성</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• III. Inference — 점근선형화와 CLT</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general-clt-data-structures" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• CLT · 횡단면·시계열·패널</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch00.html#general-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• IV. Testing — 추정과 가설검정</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 01 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 01</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch01.html#linear" class="hover:underline">선형투영과 선형회귀 (OLS · FWL · GLS)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch01.html#linear" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              11 Sections · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            모집단 선형투영(Linear Projection)과 구조회귀의 구분, OVB와 FWL 정리, OLS의 유한표본·점근 성질, 조건부분산과 Sandwich 강건분산(이분산·자기상관·군집), GLS 효율성 및 가설검정까지 체계화합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-00" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.1 기본 모형과 표기</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-01" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.2 모집단 선형투영과 구조회귀</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-02" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.3 식별, OVB, FWL 정리</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-03" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.4 OLS와 모멘트 추정</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-04" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.5 유한표본 및 점근 성질</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-05" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.6 조건부분산과 Sandwich</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-06" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.7 이분산·자기상관·군집</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-07" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.8 효율성, GLS와 GMM 가중</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-08" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.9 가설검정과 신뢰구간</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-09" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.10 실증 사례 분석</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch01.html#linear-topic-10" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 1.11 주요 이론의 통합</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 02 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 02</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch02.html#iv" class="hover:underline">내생성과 도구변수 (IV · 2SLS · Weak IV)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch02.html#iv" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              11 Sections · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            내생성의 세 원인(누락변수·측정오차·동시성), 제외도구의 타당성과 위수·계수조건(Rank Condition), Wald 비율, 2SLS와 IV-FWL 정리, 효율적 GMM 가중과의 동치성, 약한·다수 도구변수 문제를 분석합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-00" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.1 기본 체계와 표기</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-01" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.2 내생성과 선형회귀의 식별</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-02" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.3 내생성의 세 원인</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-03" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.4 도구변수의 타당성과 식별</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-04" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.5 Wald 비율과 이진 도구변수</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-05" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.6 다변량 IV: 위수·계수조건</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-06" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.7 2SLS의 의미와 표본 추정</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-07" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.8 외생 통제변수와 IV-FWL</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-08" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.9 2SLS의 일치성과 점근분포</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-09" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.10 2SLS와 효율적 GMM</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch02.html#iv-topic-10" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 2.11 약한·다수 도구변수</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 03 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 03</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch03.html#causal" class="hover:underline">인과효과의 식별 (ATE · ATT · LATE)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch03.html#causal" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              5 Sections · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            잠재결과(Potential Outcomes) 프레임워크에서 평균처치효과(ATE·ATT)의 식별 가정인 선택무시성(Unconfoundedness)과 중첩성(Overlap), 그리고 처치효과 이질성 하에서의 LATE 및 조건부 LATE의 경험적 해석을 다룹니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch03.html#causal-topic-11" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 3.1 잠재결과와 평균처치효과</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch03.html#causal-topic-12" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 3.2 선택무시와 중첩성</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch03.html#causal-topic-13" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 3.3 처치효과의 이질성과 LATE</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch03.html#causal-topic-14" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 3.4 조건부 LATE와 경험적 해석</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+            <div class="font-medium text-stone-900 dark:text-white">
+              <a href="notes/econometrics-ch03.html#causal-topic-15" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white">
+                <span>• 3.5 식별·추정·효율성·추론 통합</span>
+                <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 04 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 04</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch04.html#gmm" class="hover:underline">일반화 적률법 (GMM)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch04.html#gmm" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              19 Sections · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            모집단 적률제약과 조건부 모멘트의 식별 조건, 표본 GMM 목적함수와 선형 GMM(OLS·IV·2SLS) 포섭, ULLN 기반 일치성, 점근정규성, 독립·시계열·패널 장기공분산 $S$, 최적 가중행렬, Two-Step/Iterated/CUE, 과대식별 $J$-검정 및 Stacked GMM까지 총망라합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-00" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.1 기본 설정과 계량이론 구조</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-01" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.2 모집단 적률제약과 조건부 모멘트</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-02" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.3 경제모형과 적률조건</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-03" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.4 식별: 모멘트 수, Rank, 관심 모수</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-04" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.5 GMM 목적함수와 가중행렬</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-05" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.6 선형 GMM: OLS·IV·2SLS</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-06" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.7 GMM 일치성: ULLN과 최적화</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-07" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.8 일반 극값추정량 점근정규성</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-08" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.9 GMM 점근분산의 직접 유도</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-09" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.10 독립·시계열·패널의 S</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-10" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.11 공분산 일치추정과 2SLS</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-11" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.12 효율적 GMM과 최적 가중</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-12" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.13 Two-Step, Iterated, CUE</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-13" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.14 최적 도구함수와 WLS</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-14" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.15 함수형 모수와 Wald 추론</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-15" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.16 과대식별·추가 모멘트 검정</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-16" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.17 선행단계 오차와 Stacked GMM</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch04.html#gmm-topic-17" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 4.18 식별·일치·효율·추론 구분</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 05 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 05</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch05.html#ml" class="hover:underline">최대우도와 준최대우도 (MLE · QMLE · Wald/LR/LM)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch05.html#ml" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              23 Sections · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            KL 발산과 Jensen 부등식을 통한 우도 식별, Fisher 정보 항등식과 Cramér–Rao 효율성 하한, 모형 오지정 하의 준최대우도(QMLE)와 Sandwich 분산, 의존자료·미관측 이질성 통합우도, Newton–Raphson 최적화 및 Wald·LR·LM 삼각검정의 국소 동치성을 증명합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-00" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.1 기본 설정과 모수의 의미</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-01" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.2 우도함수와 로그우도</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-06" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.3 모집단 식별: KL과 Jensen</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-02" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.4 MLE와 정규 선형회귀</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-03" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.5 동시방정식과 LIML</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-04" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.6 이산선택과 계수자료 우도</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-05" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.7 Score와 GMM의 관계</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-07" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.8 MLE의 일치성 원리</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-08" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.9 점근정규성: Score 전개</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-09" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.10 Fisher 정보와 항등식</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-10" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.11 Cramér–Rao 하한과 효율성</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-11" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.12 조건부 평균과 우도 선택</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-12" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.13 모형 오지정과 Quasi-MLE</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-13" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.14 정보행렬과 Sandwich 분산</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-16" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.15 의존자료: 완전·조건부 우도</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-17" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.16 군집 및 HAC Score 공분산</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-18" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.17 미관측 이질성과 통합우도</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-19" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.18 선행단계 오차와 Stacked EE</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-20" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.19 수치최적화와 Newton–Raphson</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-14" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.20 모수제약 검정: Wald, LR, LM</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-15" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.21 Wald·LR·LM 국소 동치성</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch05.html#ml-topic-21" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 5.22 식별·추정·효율·추론 통합</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 06 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 06</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch06.html#bootstrap" class="hover:underline">Bootstrap 추론 (Resampling &amp; Asymptotic Refinements)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch06.html#bootstrap" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              4 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            모집단 분포 $P_0$를 경험분포 $\hat{P}_n$으로 대체하는 재표집 원리, 분위수·Studentized Bootstrap과 점근적 정교화(Asymptotic Refinement), 그리고 귀무가설 제약 하의 조건부 검정분포 구성을 다룹니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch06.html#bootstrap" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 장 표지 · 개요</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch06.html#bootstrap-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• I. Population — 표본분포의 대상</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch06.html#bootstrap-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• II. Sample Counterpart — 재표집</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch06.html#bootstrap-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• III. Inference — 분위수와 Studentization</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch06.html#bootstrap-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• IV. Testing — 조건부 검정분포</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 07 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 07</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch07.html#panel" class="hover:underline">정태적 패널 (FE · FD · RE · CRE)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch07.html#panel" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              4 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            미관측 개체효과가 공변량과 상관된 정태적 패널자료에서 Within 변환을 통한 식별, 고정효과(FE)·1차차분(FD)·확률효과(RE)·CRE·Panel ML 추정량의 비교, 짧은 패널($N\to\infty$, $T$ 고정) 군집추론 및 Hausman 검정을 정리합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch07.html#panel" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 장 표지 · 개요</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch07.html#panel-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• I. Population — Within 식별</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch07.html#panel-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• II. Sample Counterpart — FE·FD·RE</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch07.html#panel-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• III. Inference — 짧은 패널 추론</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch07.html#panel-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• IV. Testing — Hausman 검정</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 08 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 08</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch08.html#did" class="hover:underline">차분의 차분과 Event Study (DiD · ATT(g,t) · TWFE)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch08.html#did" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              4 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            평행추세 가정에 기반한 2×2 DiD의 반사실적 식별과 포화 OLS 동치성, 동태적 Event Study 모형, 사전추세 검정(Pre-Trends) 및 엇갈린 처치(Staggered Adoption) 하에서 TWFE의 가중평균 분해와 대안 추정량을 분석합니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch08.html#did" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 장 표지 · 개요</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch08.html#did-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• I. Population — 2×2 DiD 식별</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch08.html#did-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• II. Sample Counterpart — OLS 동치</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch08.html#did-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• III. Inference — Event Study</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch08.html#did-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• IV. Testing — Pre-Trends &amp; Staggered</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 09 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 09</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch09.html#dynamic" class="hover:underline">동태적 패널 GMM (Nickell Bias · Arellano–Bond)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch09.html#dynamic" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              4 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            시차 종속변수가 포함된 동태적 패널에서 발생하는 Nickell 편의와 동태적 내생성, 1차차분 및 시차 수준변수를 도구변수로 활용하는 Arellano–Bond GMM, Windmeijer 보정 표준오차, 직렬상관 AR(1)/AR(2) 및 Hansen $J$-검정을 다룹니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch09.html#dynamic" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 장 표지 · 개요</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch09.html#dynamic-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• I. Population — 동태적 내생성</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch09.html#dynamic-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• II. Sample Counterpart — Arellano–Bond</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch09.html#dynamic-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• III. Inference — 점근분포와 가중</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch09.html#dynamic-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• IV. Testing — 직렬상관과 J-검정</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+        <!-- CHAPTER 10 -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 10</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">
+                <a href="notes/econometrics-ch10.html#discrete" class="hover:underline">이산선택·검열·표본선택 (Logit · Probit · Tobit · Heckman · PPML)</a>
+              </h3>
+            </div>
+            <a href="notes/econometrics-ch10.html#discrete" class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start hover:opacity-90 transition-opacity">
+              8 Stages · 전체 열람 →
+            </a>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            이진선택(Logit·Probit)의 잠재변수 척도 식별과 한계효과, 다항·순서형 선택 모형, 검열(Tobit) 모형과 Heckman 2단계 표본선택 보정, 계수자료의 Poisson·PPML 준최대우도 및 단계별 가정 비교를 통합적으로 다룹니다.
+          </p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-stone-600 dark:text-stone-400 pt-1">
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• 장 표지 · 개요</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-0" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• I. Population — Binary Choice</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-1" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• II. Sample Counterpart — Binary ML</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-2" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• III. Inference — 패널·내생성</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-3" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• IV. Testing — 다항·순서 모형</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-4" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• V. Censoring — Tobit 모형</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-5" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• VI. Selection — Heckman 모형</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-6" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• VII. Count Data — Poisson &amp; PPML</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+            <div class="font-medium text-stone-900 dark:text-white"><a href="notes/econometrics-ch10.html#discrete-stage-7" class="inline-flex items-center gap-1 hover:underline text-stone-900 dark:text-white"><span>• VIII. 통합: 단계별 가정 비교</span><span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 font-mono">열람</span></a></div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== REFERENCE INDEX & FRAMEWORK ==================== -->
+    <section class="space-y-5">
+
+      <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+        <span>Formal Index &amp; Framework</span>
+        <span class="text-xs font-sans text-stone-400 font-normal">/ 통합 색인 및 분석 체계</span>
+      </h2>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
+
+        <a href="notes/econometrics-index.html#formal-index" class="subtle-card block bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2 group hover:border-stone-400 dark:hover:border-stone-600 transition-colors">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>Chapter 00–10 통합 색인</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 group-hover:bg-stone-200 dark:group-hover:bg-stone-700 transition-colors">열람 →</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base group-hover:underline">정리 및 증명 색인 (Formal Index)</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            전체 11개 장에 수록된 53개의 공식 정의·정리·보조정리·명제·예제 및 주석으로 즉시 이동할 수 있는 통합 색인입니다.
+          </p>
+        </a>
+
+        <a href="notes/econometrics-ch00.html#general-clt-data-structures" class="subtle-card block bg-white dark:bg-stone-900/60 rounded-xl p-5 border border-stone-200/80 dark:border-stone-800 space-y-2 group hover:border-stone-400 dark:hover:border-stone-600 transition-colors">
+          <div class="flex items-center justify-between text-xs font-mono text-stone-400">
+            <span>공통 점근 추론 구조</span>
+            <span class="text-[10px] px-1.5 py-0.2 rounded bg-stone-100 dark:bg-stone-800 group-hover:bg-stone-200 dark:group-hover:bg-stone-700 transition-colors">열람 →</span>
+          </div>
+          <h3 class="font-bold text-stone-900 dark:text-white text-base group-hover:underline">횡단면·시계열·패널 CLT 비교</h3>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            독립항등분포, 정상·혼합 시계열(HAC), 군집 패널 자료구조에 따른 중심극한정리와 공분산 추정량의 대응 관계를 정리합니다.
+          </p>
+        </a>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER NAV -->
+    <div class="pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
+      <a href="notes.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        <i class="fas fa-arrow-left"></i> Study Notes 메인으로
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        오형진 프로필 (Home) →
+      </a>
+    </div>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-4xl mx-auto px-6 space-y-1">
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
     });
-  }
-}
-};
-</script>
-<script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-<style>
-.sitebar__home { color: inherit; text-decoration: none; font-weight: 700; }
-.chapter-links { display:flex; flex-wrap:wrap; justify-content:space-between; gap:1rem; max-width: 1050px; margin:2rem auto; padding:1.25rem 0; border-top:1px solid var(--border, #ddd); }
-.chapter-links a,.archive-return { color:inherit; font-weight:700; }
-.discussion-section { max-width:1050px; margin:2rem auto; padding-top:1.5rem; border-top:1px solid var(--border, #ddd); }
-.book-main { min-width:0; }
-</style><style>.hub-list {max-width:1050px;margin:2rem auto;padding:0 1.25rem 3rem}.hub-list .book-toc__group {margin:1rem 0;padding:1rem;border:1px solid #d6d3d1;border-radius:12px}.hub-list a {display:block;margin:.55rem 0}.hub-back {display:block;padding:1rem 1.5rem}</style></head>
-<body><a class="hub-back archive-return" href="notes.html">← Study Notes &amp; Archive</a><header class="book-cover" id="book-top">
-<div class="book-cover__inner">
-<div class="book-kicker">Graduate Econometric Theory · Coursework Monograph</div>
-<h1>계량경제학 — 모집단에서 가설검정까지</h1>
-<p class="book-subtitle">Identification · Estimation · Asymptotic Inference · Testing</p>
-<div class="hero-rule"></div>
-<p class="lead">먼저 관측분포로부터 구조모수가 어떻게 식별되는지 밝히고, 이를 표본 목적함수 또는 표본 적률조건으로 구현한다. 추정량의 확률극한과 점근분포는 자료의 확률구조에 부합하는 대수의 법칙, 중심극한정리 및 최적화 이론을 통해 유도하며, 검정통계량은 도출된 점근분포를 바탕으로 구성한다.</p>
-<div class="book-roadmap">
-<a class="book-roadmap__item" href="notes/econometrics-ch00.html#general"><span class="book-roadmap__no">CH 00</span><span class="book-roadmap__text">극값추정이론</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch01.html#linear"><span class="book-roadmap__no">CH 01</span><span class="book-roadmap__text">선형회귀</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch02.html#iv"><span class="book-roadmap__no">CH 02</span><span class="book-roadmap__text">도구변수</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch03.html#causal"><span class="book-roadmap__no">CH 03</span><span class="book-roadmap__text">인과추론</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch04.html#gmm"><span class="book-roadmap__no">CH 04</span><span class="book-roadmap__text">GMM</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch05.html#ml"><span class="book-roadmap__no">CH 05</span><span class="book-roadmap__text">최대우도</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch06.html#bootstrap"><span class="book-roadmap__no">CH 06</span><span class="book-roadmap__text">Bootstrap</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch07.html#panel"><span class="book-roadmap__no">CH 07</span><span class="book-roadmap__text">정태적 패널</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch08.html#did"><span class="book-roadmap__no">CH 08</span><span class="book-roadmap__text">DiD &amp; Event Study</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch09.html#dynamic"><span class="book-roadmap__no">CH 09</span><span class="book-roadmap__text">동태적 패널</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-ch10.html#discrete"><span class="book-roadmap__no">CH 10</span><span class="book-roadmap__text">이산선택·검열</span></a>
-<a class="book-roadmap__item" href="notes/econometrics-index.html#formal-index"><span class="book-roadmap__no">INDEX</span><span class="book-roadmap__text">정리 · 증명 색인</span></a>
-</div>
-</div>
-</header>
-<main class="hub-list"><h2>장별 목차</h2><details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 00 · 극값추정이론</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch00.html#general">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch00.html#general-stage-0">I. Population — 모집단 모수와 식별</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch00.html#general-stage-1">II. Sample Counterpart — 일치성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch00.html#general-stage-2">III. Inference — 점근선형화와 CLT</a>
-<a class="book-toc__sub-link" href="notes/econometrics-ch00.html#general-clt-data-structures">CLT · 횡단면·시계열·패널</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch00.html#general-stage-3">IV. Testing — 추정과 가설검정</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 01 · 선형회귀</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-00">1.1 기본 모형과 표기</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-01">1.2 모집단 선형투영과 구조회귀</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-02">1.3 식별, OVB, FWL 정리</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-03">1.4 OLS와 모멘트 추정</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-04">1.5 유한표본 및 점근 성질</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-05">1.6 조건부분산과 Sandwich</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-06">1.7 이분산·자기상관·군집</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-07">1.8 효율성, GLS와 GMM 가중</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-08">1.9 가설검정과 신뢰구간</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-09">1.10 실증 사례 분석</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch01.html#linear-topic-10">1.11 주요 이론의 통합</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 02 · 도구변수</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-00">2.1 기본 체계와 표기</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-01">2.2 내생성과 선형회귀의 식별</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-02">2.3 내생성의 세 원인</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-03">2.4 도구변수의 타당성과 식별</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-04">2.5 Wald 비율과 이진 도구변수</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-05">2.6 다변량 IV: 위수·계수조건</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-06">2.7 2SLS의 의미와 표본 추정</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-07">2.8 외생 통제변수와 IV-FWL</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-08">2.9 2SLS의 일치성과 점근분포</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-09">2.10 2SLS와 효율적 GMM</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch02.html#iv-topic-10">2.11 약한·다수 도구변수</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 03 · 인과추론</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal-topic-11">3.1 잠재결과와 평균처치효과</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal-topic-12">3.2 선택무시와 중첩성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal-topic-13">3.3 처치효과의 이질성과 LATE</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal-topic-14">3.4 조건부 LATE와 경험적 해석</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch03.html#causal-topic-15">3.5 식별·추정·효율성·추론 통합</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 04 · GMM</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-00">4.1 기본 설정과 계량이론 구조</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-01">4.2 모집단 적률제약과 조건부 모멘트</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-02">4.3 경제모형과 적률조건</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-03">4.4 식별: 모멘트 수, Rank, 관심 모수</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-04">4.5 GMM 목적함수와 가중행렬</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-05">4.6 선형 GMM: OLS·IV·2SLS</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-06">4.7 GMM 일치성: ULLN과 최적화</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-07">4.8 일반 극값추정량 점근정규성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-08">4.9 GMM 점근분산의 직접 유도</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-09">4.10 독립·시계열·패널의 S</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-10">4.11 공분산 일치추정과 2SLS</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-11">4.12 효율적 GMM과 최적 가중</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-12">4.13 Two-Step, Iterated, CUE</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-13">4.14 최적 도구함수와 WLS</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-14">4.15 함수형 모수와 Wald 추론</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-15">4.16 과대식별·추가 모멘트 검정</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-16">4.17 선행단계 오차와 Stacked GMM</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch04.html#gmm-topic-17">4.18 식별·일치·효율·추론 구분</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 05 · 최대우도</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-00">5.1 기본 설정과 모수의 의미</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-01">5.2 우도함수와 로그우도</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-06">5.3 모집단 식별: KL과 Jensen</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-02">5.4 MLE와 정규 선형회귀</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-03">5.5 동시방정식과 LIML</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-04">5.6 이산선택과 계수자료 우도</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-05">5.7 Score와 GMM의 관계</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-07">5.8 MLE의 일치성 원리</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-08">5.9 점근정규성: Score 전개</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-09">5.10 Fisher 정보와 항등식</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-10">5.11 Cramér–Rao 하한과 효율성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-11">5.12 조건부 평균과 우도 선택</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-12">5.13 모형 오지정과 Quasi-MLE</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-13">5.14 정보행렬과 Sandwich 분산</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-16">5.15 의존자료: 완전·조건부 우도</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-17">5.16 군집 및 HAC Score 공분산</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-18">5.17 미관측 이질성과 통합우도</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-19">5.18 선행단계 오차와 Stacked EE</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-20">5.19 수치최적화와 Newton–Raphson</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-14">5.20 모수제약 검정: Wald, LR, LM</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-15">5.21 Wald·LR·LM 국소 동치성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch05.html#ml-topic-21">5.22 식별·추정·효율·추론 통합</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 06 · Bootstrap</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch06.html#bootstrap">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch06.html#bootstrap-stage-0">I. Population — 표본분포의 대상</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch06.html#bootstrap-stage-1">II. Sample Counterpart — 재표집</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch06.html#bootstrap-stage-2">III. Inference — 분위수와 Studentization</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch06.html#bootstrap-stage-3">IV. Testing — 조건부 검정분포</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 07 · 정태적 패널</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch07.html#panel">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch07.html#panel-stage-0">I. Population — Within 식별</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch07.html#panel-stage-1">II. Sample Counterpart — FE·FD·RE</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch07.html#panel-stage-2">III. Inference — 짧은 패널 추론</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch07.html#panel-stage-3">IV. Testing — Hausman 검정</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 08 · DiD &amp; Event Study</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch08.html#did">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch08.html#did-stage-0">I. Population — 2×2 DiD 식별</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch08.html#did-stage-1">II. Sample Counterpart — OLS 동치</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch08.html#did-stage-2">III. Inference — Event Study</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch08.html#did-stage-3">IV. Testing — Pre-Trends &amp; Staggered</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 09 · 동태적 패널</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch09.html#dynamic">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch09.html#dynamic-stage-0">I. Population — 동태적 내생성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch09.html#dynamic-stage-1">II. Sample Counterpart — Arellano–Bond</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch09.html#dynamic-stage-2">III. Inference — 점근분포와 가중</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch09.html#dynamic-stage-3">IV. Testing — 직렬상관과 J-검정</a>
-</div>
-</details>
-<details open class="book-toc__group">
-<summary class="book-toc__group-summary">Ch 10 · 이산선택·검열</summary>
-<div class="book-toc__group-links">
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete">장 표지 · 개요</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-0">I. Population — Binary Choice</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-1">II. Sample Counterpart — Binary ML</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-2">III. Inference — 패널·내생성</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-3">IV. Testing — 다항·순서 모형</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-4">V. Censoring — Tobit 모형</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-5">VI. Selection — Heckman 모형</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-6">VII. Count Data — Poisson &amp; PPML</a>
-<a class="book-toc__chapter-link" href="notes/econometrics-ch10.html#discrete-stage-7">VIII. 통합: 단계별 가정 비교</a>
-</div>
-</details><p><a href="notes/econometrics-index.html">정리 및 증명 색인 →</a></p></main><footer class="site-footer"><a href="index.html">Home</a> · <a href="notes.html">Study Notes</a></footer></body></html>
+  </script>
+
+</body>
+</html>
