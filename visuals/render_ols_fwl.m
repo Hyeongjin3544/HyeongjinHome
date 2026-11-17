@@ -32,6 +32,22 @@ else
 end
 end
 
+function e = smootherstep(t)
+t = min(max(t, 0), 1);
+e = t^3 * (10 + t * (-15 + 6 * t));
+end
+
+function setOrbitCamera(ax, tgt, radius, azDeg, elDeg, camFovDeg)
+az = deg2rad(azDeg);
+el = deg2rad(elDeg);
+pos = tgt + radius * [cos(el)*sin(az), -cos(el)*cos(az), sin(el)];
+set(ax, 'CameraTargetMode', 'manual', 'CameraPositionMode', 'manual', ...
+    'CameraUpVectorMode', 'manual', 'CameraViewAngleMode', 'manual', ...
+    'CameraTarget', tgt, 'CameraPosition', pos, ...
+    'CameraUpVector', [0 0 1], 'CameraViewAngle', camFovDeg, ...
+    'Projection', 'perspective');
+end
+
 function c = blendCol(col, bgCol, alpha)
 alpha = min(max(alpha, 0), 1);
 c = bgCol + alpha * (col - bgCol);
@@ -143,24 +159,23 @@ for k = 1:nFrames
     t = (k - 1) / fps;
     cla(ax);
     hold(ax, 'on');
-    axis(ax, 'equal');
     axis(ax, 'off');
     xlim(ax, [-0.6 3.2]);
     ylim(ax, [-0.6 3.2]);
     zlim(ax, [-0.3 2.7]);
+    daspect(ax, [1 1 1]);
+    axis(ax, 'vis3d');
 
-    % Camera orbit from 5.0s to 9.0s
+    % Smooth C2 360-deg orbit from 5.2s to 9.6s (locked camera prevents zoom wobble)
     azBase = 38;
     elBase = 23;
-    if t >= 5.0 && t <= 9.2
-        orb = easeInOutCubic((t - 5.0) / 4.2);
-        az = azBase + 46 * sin(pi * orb);
-        el = elBase + 8 * sin(2 * pi * orb);
+    if t >= 5.2 && t <= 9.6
+        orb = smootherstep((t - 5.2) / 4.4);
+        az = azBase + 360 * orb;
     else
         az = azBase;
-        el = elBase;
     end
-    view(ax, az, el);
+    setOrbitCamera(ax, [1.05 1.00 0.75], 14.5, az, elBase, 19);
 
     % Subtle base axes
     plot3(ax, [-0.3 2.9], [0 0], [0 0], 'Color', gridCol, 'LineWidth', 0.8);
@@ -312,23 +327,23 @@ for k = 1:nFrames
     t = (k - 1) / fps;
     cla(ax);
     hold(ax, 'on');
-    axis(ax, 'equal');
     axis(ax, 'off');
     xlim(ax, [-0.5 3.1]);
     ylim(ax, [-0.6 2.5]);
     zlim(ax, [-0.2 3.3]);
+    daspect(ax, [1 1 1]);
+    axis(ax, 'vis3d');
 
+    % Smooth C2 360-deg orbit from 7.8s to 11.6s (locked camera prevents zoom wobble)
     azBase = 42;
     elBase = 24;
-    if t >= 8.2 && t <= 11.4
-        orb = easeInOutCubic((t - 8.2) / 3.2);
-        az = azBase + 38 * sin(pi * orb);
-        el = elBase + 10 * sin(2 * pi * orb);
+    if t >= 7.8 && t <= 11.6
+        orb = smootherstep((t - 7.8) / 3.8);
+        az = azBase + 360 * orb;
     else
         az = azBase;
-        el = elBase;
     end
-    view(ax, az, el);
+    setOrbitCamera(ax, [1.05 0.85 0.95], 14.5, az, elBase, 20);
 
     % Base orthogonal subspace plane C(X1)^perp (z = 0)
     [px, py] = meshgrid(linspace(-0.3, 2.7, 2), linspace(-0.3, 2.2, 2));
