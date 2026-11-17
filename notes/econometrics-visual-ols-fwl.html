@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 01 — OLS 직교 사영, 다중공선성과 FWL 정리의 기하학" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>Visual Supplement 01 — OLS · FWL 정리의 사영 기하학</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow-x: auto; overflow-y: visible; color: var(--ink); max-width: 100%; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner {
+      max-width: var(--container-w);
+      margin: 0 auto;
+    }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.5px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    /* Callouts & Formula Cards */
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+    }
+    .formula-box__title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .formula-box__desc {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Track A: Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0c0f14;
+    }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+
+    /* Track B: Interactive 60fps Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .lab-sub {
+      font-family: var(--font-mono);
+      font-size: 11.2px;
+      color: var(--muted);
+    }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas {
+      display: block;
+      width: 100%;
+      height: 360px;
+      cursor: grab;
+      touch-action: none;
+    }
+    .canvas-stage canvas:active { cursor: grabbing; }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .lab-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .controls-card, .metrics-card, .scatter-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row {
+      margin-bottom: 11px;
+    }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.8px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .btn-pill.is-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-pill.is-primary:hover {
+      opacity: 0.92;
+      color: #ffffff;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k {
+      font-family: var(--font-mono);
+      font-size: 10.6px;
+      color: var(--muted);
+    }
+    .metric-tile__v {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 1px;
+    }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+
+    .scatter-card canvas {
+      display: block;
+      width: 100%;
+      height: 155px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+    .scatter-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    /* Footer Pager & Discussion */
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .discussion-section {
+      margin-top: 42px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+    .discussion-section h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .discussion-lead {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics.html">← 계량경제학 목차</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">Visual Supplement 01 · OLS &amp; FWL Geometry</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero" id="top">
+    <div class="hero-inner">
+      <div class="chapter-kicker">VISUAL SUPPLEMENT 01 · CH 01 COMPANION</div>
+      <h1>OLS · FWL 정리의 사영 기하학</h1>
+      <p class="subtitle">Orthogonal Projection, Multicollinearity, and Residual-on-Residual Regression in Sample Space \(\mathbb{R}^n\)</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        표본공간 \(\mathbb{R}^n\)에서 최소제곱추정(OLS)은 반응벡터 \(y\)를 설명변수들의 열공간 \(\mathcal{C}(X)\) 위로 직교 사영하는 기하학적 연산이다.
+        이 보충자료에서는 60fps 렌더링 영상과 실시간 인터랙티브 캔버스를 통해 직교 분해 \(y = P_X y + M_X y\), 다중공선성과 \(\mathrm{VIF}\),
+        그리고 Frisch–Waugh–Lovell 정리와 누락변수 편의(OVB)의 구조를 직접 조작하며 확인한다.
+      </p>
+      <div aria-label="Visual sections" class="roadmap">
+        <a href="#sec-ols-video"><span class="label">01 · RENDERED CLIP</span><span class="text">OLS 직교 사영과 피타고라스 분해</span></a>
+        <a href="#sec-ols-lab"><span class="label">02 · 3D INTERACTIVE</span><span class="text">다중공선성 · VIF 실시간 탐색</span></a>
+        <a href="#sec-fwl-video"><span class="label">03 · RENDERED CLIP</span><span class="text">FWL 정리 부분소거 기하학</span></a>
+        <a href="#sec-fwl-lab"><span class="label">04 · MORPHING LAB</span><span class="text">3단계 잔차화 · OVB 비교 시연</span></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <p class="toc-title">On this page</p>
+      <nav>
+        <a href="#sec-ols-video">01. OLS 직교 사영 영상</a>
+        <a href="#sec-ols-lab">02. 3D 사영 &amp; 다중공선성 탐색기</a>
+        <a href="#sec-fwl-video">03. FWL 정리 부분소거 영상</a>
+        <a href="#sec-fwl-lab">04. FWL 모핑 &amp; OVB 시연기</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ch01.html#linear-topic-02">↗ Ch 01 본문 (1.3 FWL)</a>
+        <a class="ext-link" href="../econometrics.html">← 계량경제학 허브</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-ols-video">01. OLS 직교 사영 영상</a>
+          <a href="#sec-ols-lab">02. 3D 사영 &amp; 다중공선성 탐색기</a>
+          <a href="#sec-fwl-video">03. FWL 정리 부분소거 영상</a>
+          <a href="#sec-fwl-lab">04. FWL 모핑 &amp; OVB 시연기</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ch01.html#linear-topic-02">↗ Ch 01 본문 (1.3 FWL)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-ols-video">
+        <h2><span class="sec-tag">01</span>OLS 직교 사영과 피타고라스 분해</h2>
+        <p>
+          모형 \(y = X\beta + u\)에서 \(n\)개의 관측치는 각각 \(\mathbb{R}^n\)의 벡터에 해당한다.
+          잔차제곱합 \(\|y - X\beta\|_2^2\)을 최소화하는 문제의 일계조건 \(X'(y - X\hat{\beta}) = 0\)은
+          잔차벡터 \(\hat{u} = M_X y\)가 열공간 \(\mathcal{C}(X) = \mathrm{span}(x_1, \dots, x_k)\) 전체와 직교한다는 기하학적 명제와 동치이다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title">사영행렬과 직교 여사영행렬</div>
+            \[
+              P_X = X(X'X)^{-1}X', \qquad M_X = I_n - P_X
+            \]
+            <p class="formula-box__desc">두 행렬 모두 대칭(\(A'=A\))이고 멱등(\(A^2=A\))이며, \(P_X M_X = 0\)을 만족한다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title">피타고라스 분산 분해</div>
+            \[
+              \|y\|_2^2 = \|P_X y\|_2^2 + \|M_X y\|_2^2 \quad (\mathrm{TSS}=\mathrm{ESS}+\mathrm{RSS})
+            \]
+            <p class="formula-box__desc">\(\hat{y} \perp \hat{u}\) 이므로 직각삼각형이 성립하며, 결정계수 \(R^2 = \cos^2 \angle(y, \hat{y})\)로 해석된다.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · Orthogonal Projection \(y = P_X y + M_X y\) in Sample Space</span>
+            <span class="video-card__badge">1280×720 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/ols-projection.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            MATLAB으로 60fps 렌더링한 3차원 표본공간 직교 사영 시연이다. 기저벡터 \(x_1, x_2\)가 생성하는 평면 \(\mathcal{C}(X)\) 위로 \(y\)가 수직 낙하하여
+            \(\hat{y}=P_X y = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)와 직교 잔차 \(\hat{u}=M_X y\)로 분해되는 과정을 보여 준다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-ols-lab">
+        <h2><span class="sec-tag">02</span>인터랙티브 3D OLS 사영 &amp; 다중공선성 탐색기</h2>
+        <p>
+          두 설명변수 \(x_1, x_2\) 사이의 상관계수 \(\rho(x_1, x_2)\)가 \(1\)에 가까워지면 사잇각 \(\theta\)가 좁아져 열공간 \(\mathcal{C}(X)\)의 기저가 붕괴한다.
+          사영벡터 \(\hat{y} = P_X y\) 자체의 길이와 위치는 크게 변하지 않더라도, 평행사변형 분해 \(\hat{y} = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)를 맞추기 위해
+          두 계수 추정량 \(\hat{\beta}_1, \hat{\beta}_2\)가 서로 반대 방향으로 폭발하며 \(\mathrm{VIF} = (1-\rho^2)^{-1}\)가 급증한다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 01 · 3D Sample-Space Projection &amp; VIF</span>
+            <span class="lab-sub">드래그: 시점 회전 · 60fps 실시간 벡터 대수</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="olsCanvas" aria-label="3D OLS 직교 사영 캔버스"></canvas>
+              <div class="canvas-hint">마우스로 드래그하여 3차원 공간 회전</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>설명변수 간 상관 \(\rho(x_1, x_2)\)</span>
+                    <span class="control-val" id="olsRhoVal">0.35</span>
+                  </div>
+                  <input id="olsRho" type="range" min="-0.94" max="0.94" step="0.01" value="0.35" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>직교 오차 크기 \(\sigma_u\) (\(\|M_X y\|\))</span>
+                    <span class="control-val" id="olsSigVal">1.35</span>
+                  </div>
+                  <input id="olsSig" type="range" min="0.10" max="2.40" step="0.05" value="1.35" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>사영 낙하 진행률 \(p\)</span>
+                    <span class="control-val" id="olsDropVal">1.00</span>
+                  </div>
+                  <input id="olsDrop" type="range" min="0" max="1" step="0.005" value="1" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" id="olsPlayBtn">사영 낙하 재생</button>
+                  <button type="button" class="btn-pill" id="olsResetView">시점 초기화</button>
+                  <button type="button" class="btn-pill" id="olsCollinearBtn">고공선성 (\(\rho=0.92\))</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">기저 사잇각 θ(x₁, x₂)</div>
+                    <div class="metric-tile__v" id="mAngle">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">VIF = 1 / (1 − ρ²)</div>
+                    <div class="metric-tile__v" id="mVif">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">추정계수 (β̂₁, β̂₂)</div>
+                    <div class="metric-tile__v accent" id="mBeta">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">적합도 R² = ESS / TSS</div>
+                    <div class="metric-tile__v ok" id="mR2">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-fwl-video">
+        <h2><span class="sec-tag">03</span>Frisch–Waugh–Lovell 정리의 부분소거 기하학</h2>
+        <p>
+          분할회귀모형 \(y = X_1\beta_1 + X_2\beta_2 + u\)에서 통제변수 \(X_1\)이 관심변수 \(X_2\)와 상관되어 있으면,
+          \(y\)를 \(X_2\)에만 단순회귀한 계수는 \(\beta_1\)의 영향을 흡수하여 누락변수 편의(OVB)를 겪는다.
+          FWL 정리는 \(X_1\)의 여공간 사영행렬 \(M_1 = I - X_1(X_1'X_1)^{-1}X_1'\)을 양쪽에 먼저 적용하면 전체 OLS 추정량과 정확히 일치함을 보장한다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">FWL Projection Identity &amp; Omitted Variable Bias</div>
+          \[
+            \hat{\beta}_2^{\mathrm{FWL}} = (X_2' M_1 X_2)^{-1} X_2' M_1 y \;\equiv\; \hat{\beta}_2^{\mathrm{Full}},
+            \qquad
+            \hat{\beta}_2^{\mathrm{Short}} - \hat{\beta}_2^{\mathrm{Full}} = (X_2'X_2)^{-1} X_2' X_1 \hat{\beta}_1 = \hat{\delta}_{12}\hat{\beta}_1
+          \]
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · FWL Partial-Out &amp; Orthogonal Subspace Projection \(\mathcal{C}(X_1)^\perp\)</span>
+            <span class="video-card__badge">1280×720 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/fwl-geometry.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            1단계에서 \(X_2\)와 \(y\)로부터 \(X_1\) 방향 성분을 모두 제거하여 직교 여공간 \(\mathcal{C}(X_1)^\perp\)의 잔차벡터
+            \(\tilde{X}_2 = M_1 X_2\), \(\tilde{y} = M_1 y\)를 구한 뒤, 2단계로 부분공간 내부에서 \(\tilde{y}\)를 \(\tilde{X}_2\)에 사영하면
+            전체 회귀와 동일한 계수 \(\hat{\beta}_2\)와 잔차 \(\hat{u} = M_X y\)를 얻는다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 -->
+      <section class="module" id="sec-fwl-lab">
+        <h2><span class="sec-tag">04</span>FWL 3단계 모핑 &amp; 누락변수 편의(OVB) 시연기</h2>
+        <p>
+          모핑 슬라이더 \(t \in [0, 1]\)를 움직이면 원자료 공간 \((t=0)\)에서 통제변수 \(X_1\)을 직교 사영으로 소거한 잔차 공간 \((t=0.5)\),
+          그리고 잔차 대 잔차 회귀 \((t=1)\)까지 벡터들이 연속적으로 이동한다. 우측 2D 산점도에서는 통제 전 단순회귀 기울기(OVB 포함)와
+          FWL 잔차회귀 기울기(\(\hat{\beta}_2^{\mathrm{FWL}}\))의 차이를 직접 비교할 수 있다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 02 · FWL 3-Stage Morphing &amp; OVB Comparator</span>
+            <span class="lab-sub">t ∈ [0, 0.5]: M₁ 부분소거 · t ∈ [0.5, 1]: 잔차회귀 사영</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="fwlCanvas" aria-label="FWL 3단계 모핑 3D 캔버스"></canvas>
+              <div class="canvas-hint" id="fwlStageBadge">Stage 0 · 원자료 공간 (X₁, X₂, y)</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>FWL 변환 진행도 \(t\)</span>
+                    <span class="control-val" id="fwlTVal">0.00</span>
+                  </div>
+                  <input id="fwlT" type="range" min="0" max="1" step="0.002" value="0" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>교란 상관 \(\rho(X_1, X_2)\)</span>
+                    <span class="control-val" id="fwlRhoVal">0.68</span>
+                  </div>
+                  <input id="fwlRho" type="range" min="-0.85" max="0.85" step="0.01" value="0.68" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>통제변수 효과 \(\beta_1\) (OVB 강도)</span>
+                    <span class="control-val" id="fwlB1Val">1.20</span>
+                  </div>
+                  <input id="fwlB1" type="range" min="-1.50" max="1.50" step="0.05" value="1.20" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" id="fwlPlayBtn">전체 재생 (Play)</button>
+                  <button type="button" class="btn-pill" data-fwl-jump="0">원자료 (t=0)</button>
+                  <button type="button" class="btn-pill" data-fwl-jump="0.5">M₁ 소거 (t=0.5)</button>
+                  <button type="button" class="btn-pill" data-fwl-jump="1">FWL 완성 (t=1)</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">단순회귀 β̂₂(Short)</div>
+                    <div class="metric-tile__v warn" id="mShort">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">FWL · 전체 β̂₂(Full)</div>
+                    <div class="metric-tile__v ok" id="mFull">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">누락변수 편의 (OVB)</div>
+                    <div class="metric-tile__v" id="mOvb">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">잔차 분산비 ||M₁X₂||²/||X₂||²</div>
+                    <div class="metric-tile__v accent" id="mVarRatio">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="scatter-card">
+                <div class="scatter-head">
+                  <span>2D 기울기 비교: Short vs Partialled-out</span>
+                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);">n = 36 표본</span>
+                </div>
+                <canvas id="fwlScatterCanvas" aria-label="Short vs FWL 2D 산점도 비교"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="econometrics-ch01.html#linear-topic-02">← Ch 01 본문 · 1.3 식별과 FWL 정리</a>
+        <a href="../econometrics.html">계량경제학 허브로 돌아가기 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">시각화 수식, 기하학적 직관, 인터랙티브 동작에 대한 질문이나 의견을 자유롭게 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="noborder_light"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button type="button" class="back-to-top" aria-label="맨 위로 이동">↑ Top</button>
+
+  <script>
+  (function () {
+    // -------------------------------------------------------------------------
+    // 1. Theme Sync, Reading Progress, Scroll Spy
+    // -------------------------------------------------------------------------
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(next) {
+      document.documentElement.setAttribute('data-theme', next);
+      if (themeBtn) themeBtn.textContent = next === 'dark' ? 'Light' : 'Dark';
+      try { localStorage.setItem('coursework-monograph-theme', next); } catch (_) {}
+      const giscusTheme = next === 'dark' ? 'noborder_dark' : 'noborder_light';
+      const gScript = document.querySelector('script[src*="giscus.app/client.js"]');
+      if (gScript) gScript.setAttribute('data-theme', giscusTheme);
+      const gFrame = document.querySelector('iframe.giscus-frame');
+      if (gFrame && gFrame.contentWindow) {
+        gFrame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme } } }, 'https://giscus.app');
+      }
+      onThemeCallbacks.forEach(fn => fn());
+    }
+
+    let savedTheme = 'light';
+    try { savedTheme = localStorage.getItem('coursework-monograph-theme') || 'light'; } catch (_) {}
+    syncTheme(savedTheme === 'dark' ? 'dark' : 'light');
+
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = document.documentElement.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    // -------------------------------------------------------------------------
+    // 2. Shared 3D Math & Canvas Helpers
+    // -------------------------------------------------------------------------
+    function getPalette() {
+      const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.22)' : 'rgba(15,23,42,0.22)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        x1: dark ? '#38bdf8' : '#0284c7',
+        x2: dark ? '#2dd4bf' : '#0d9488',
+        yhat: dark ? '#818cf8' : '#4f46e5',
+        y: dark ? '#fbbf24' : '#d97706',
+        u: dark ? '#fb7185' : '#e11d48',
+        planeFill: dark ? 'rgba(99, 102, 241, 0.14)' : 'rgba(79, 70, 229, 0.10)',
+        planeStroke: dark ? 'rgba(129, 140, 248, 0.36)' : 'rgba(79, 70, 229, 0.30)',
+        tealPlaneFill: dark ? 'rgba(45, 212, 191, 0.13)' : 'rgba(13, 148, 136, 0.10)',
+        tealPlaneStroke: dark ? 'rgba(45, 212, 191, 0.35)' : 'rgba(13, 148, 136, 0.28)'
+      };
+    }
+
+    function setupCanvas(canvas) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(260, Math.round(rect.width));
+      const h = Math.max(140, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    function dot3(a, b) { return a[0] * b[0] + a[1] * b[1] + a[2] * b[2]; }
+    function add3(a, b) { return [a[0] + b[0], a[1] + b[1], a[2] + b[2]]; }
+    function sub3(a, b) { return [a[0] - b[0], a[1] - b[1], a[2] - b[2]]; }
+    function scale3(v, s) { return [v[0] * s, v[1] * s, v[2] * s]; }
+    function norm3(v) { return Math.hypot(v[0], v[1], v[2]); }
+    function lerp3(a, b, t) { return [a[0] + t * (b[0] - a[0]), a[1] + t * (b[1] - a[1]), a[2] + t * (b[2] - a[2])]; }
+    function easeInOut(t) {
+      t = Math.max(0, Math.min(1, t));
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function project3D(p, cam, w, h) {
+      const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
+      const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+      const x1 = p[0] * cy - p[1] * sy;
+      const y1 = p[0] * sy + p[1] * cy;
+      const z1 = p[2];
+      const y2 = y1 * cp - z1 * sp;
+      const z2 = y1 * sp + z1 * cp;
+      const dist = 6.6;
+      const persp = dist / Math.max(1.8, dist - y2);
+      const scale = Math.min(w, h) * 0.21 * persp;
+      return {
+        x: w * 0.50 + x1 * scale,
+        y: h * 0.62 - z2 * scale,
+        depth: y2
+      };
+    }
+
+    function drawArrow2D(ctx, p0, p1, color, lw, dashed) {
+      const dx = p1.x - p0.x, dy = p1.y - p0.y;
+      const len = Math.hypot(dx, dy);
+      if (len < 2) return;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = lw;
+      ctx.lineCap = 'round';
+      if (dashed) ctx.setLineDash([5, 4]);
+      ctx.beginPath();
+      ctx.moveTo(p0.x, p0.y);
+      ctx.lineTo(p1.x, p1.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      if (!dashed && len > 10) {
+        const ang = Math.atan2(dy, dx);
+        const hs = Math.min(10, 0.35 * len);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p1.x - hs * Math.cos(ang - 0.38), p1.y - hs * Math.sin(ang - 0.38));
+        ctx.lineTo(p1.x - hs * Math.cos(ang + 0.38), p1.y - hs * Math.sin(ang + 0.38));
+        ctx.closePath();
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    function drawLabel(ctx, p, text, color, dx, dy) {
+      ctx.save();
+      ctx.font = '600 12.5px "JetBrains Mono", monospace';
+      ctx.fillStyle = color;
+      ctx.fillText(text, p.x + (dx || 6), p.y + (dy || -6));
+      ctx.restore();
+    }
+
+    function drawRightAngle3D(ctx, corner, d1, d2, sz, cam, w, h, color) {
+      const n1 = norm3(d1), n2 = norm3(d2);
+      if (n1 < 1e-4 || n2 < 1e-4) return;
+      const u1 = scale3(d1, sz / n1);
+      const u2 = scale3(d2, sz / n2);
+      const a = project3D(add3(corner, u1), cam, w, h);
+      const b = project3D(add3(add3(corner, u1), u2), cam, w, h);
+      const c = project3D(add3(corner, u2), cam, w, h);
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 1.4;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.lineTo(c.x, c.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function bindDragOrbit(canvas, cam, onChange) {
+      let dragging = false, lx = 0, ly = 0;
+      canvas.addEventListener('pointerdown', (e) => {
+        dragging = true;
+        lx = e.clientX; ly = e.clientY;
+        canvas.setPointerCapture(e.pointerId);
+      });
+      canvas.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - lx, dy = e.clientY - ly;
+        lx = e.clientX; ly = e.clientY;
+        cam.yaw -= dx * 0.008;
+        cam.pitch = Math.max(-0.25, Math.min(1.25, cam.pitch + dy * 0.007));
+        onChange();
+      });
+      canvas.addEventListener('pointerup', () => { dragging = false; });
+      canvas.addEventListener('pointercancel', () => { dragging = false; });
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. Widget 1: Interactive 3D OLS Projection & Multicollinearity Explorer
+    // -------------------------------------------------------------------------
+    (function initOlsLab() {
+      const canvas = document.getElementById('olsCanvas');
+      const rhoInput = document.getElementById('olsRho');
+      const sigInput = document.getElementById('olsSig');
+      const dropInput = document.getElementById('olsDrop');
+      const rhoVal = document.getElementById('olsRhoVal');
+      const sigVal = document.getElementById('olsSigVal');
+      const dropVal = document.getElementById('olsDropVal');
+      const playBtn = document.getElementById('olsPlayBtn');
+      const resetBtn = document.getElementById('olsResetView');
+      const colBtn = document.getElementById('olsCollinearBtn');
+      const mAngle = document.getElementById('mAngle');
+      const mVif = document.getElementById('mVif');
+      const mBeta = document.getElementById('mBeta');
+      const mR2 = document.getElementById('mR2');
+
+      const camDefault = { yaw: -0.68, pitch: 0.38 };
+      const cam = { ...camDefault };
+      let animId = null;
+
+      function computeOlsState() {
+        const rho = parseFloat(rhoInput.value);
+        const sig = parseFloat(sigInput.value);
+        const drop = parseFloat(dropInput.value);
+
+        // Two unit-scaled explanatory vectors in z=0 span plane with cosine similarity = rho
+        const L = 1.95;
+        const th = Math.acos(Math.max(-0.99, Math.min(0.99, rho)));
+        const x1 = [L, 0, 0];
+        const x2 = [L * Math.cos(th), L * Math.sin(th), 0];
+
+        // Keep fixed signal vector yhat in span(x1,x2) + orthogonal error along z-axis
+        const yhat = [1.45, 0.92, 0];
+        const u = [0, 0, sig];
+        const y = add3(yhat, u);
+
+        // Solve 2x2 normal equations (X'X) b = X'y
+        const g11 = dot3(x1, x1), g12 = dot3(x1, x2), g22 = dot3(x2, x2);
+        const det = Math.max(1e-6, g11 * g22 - g12 * g12);
+        const r1 = dot3(x1, yhat), r2 = dot3(x2, yhat);
+        const b1 = (g22 * r1 - g12 * r2) / det;
+        const b2 = (-g12 * r1 + g11 * r2) / det;
+
+        const vif = 1 / Math.max(1e-4, 1 - rho * rho);
+        const ess = dot3(yhat, yhat);
+        const rss = dot3(u, u);
+        const r2Val = ess / (ess + rss);
+        const deg = (th * 180) / Math.PI;
+
+        return { rho, sig, drop, x1, x2, yhat, u, y, b1, b2, vif, ess, rss, r2Val, deg };
+      }
+
+      function render() {
+        const pal = getPalette();
+        const { ctx, w, h } = setupCanvas(canvas);
+        const st = computeOlsState();
+
+        rhoVal.textContent = st.rho.toFixed(2);
+        sigVal.textContent = st.sig.toFixed(2);
+        dropVal.textContent = st.drop.toFixed(2);
+
+        mAngle.textContent = st.deg.toFixed(1) + '°';
+        mVif.textContent = st.vif.toFixed(2);
+        mVif.className = 'metric-tile__v ' + (st.vif > 5 ? 'warn' : 'ok');
+        mBeta.textContent = `(${st.b1.toFixed(2)}, ${st.b2.toFixed(2)})`;
+        mR2.textContent = (st.r2Val * 100).toFixed(1) + '%';
+
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        // Span plane col(X) quad (z = 0)
+        const cA = project3D([-0.6, -0.5, 0], cam, w, h);
+        const cB = project3D([2.5, -0.5, 0], cam, w, h);
+        const cC = project3D([2.5, 2.3, 0], cam, w, h);
+        const cD = project3D([-0.6, 2.3, 0], cam, w, h);
+        ctx.save();
+        ctx.fillStyle = pal.planeFill;
+        ctx.strokeStyle = pal.planeStroke;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(cA.x, cA.y); ctx.lineTo(cB.x, cB.y);
+        ctx.lineTo(cC.x, cC.y); ctx.lineTo(cD.x, cD.y);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Subtle grid inside C(X)
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 0.8;
+        for (let g = 0; g <= 2.0; g += 0.5) {
+          const g1 = project3D([-0.4, g, 0], cam, w, h);
+          const g2 = project3D([2.3, g, 0], cam, w, h);
+          ctx.beginPath(); ctx.moveTo(g1.x, g1.y); ctx.lineTo(g2.x, g2.y); ctx.stroke();
+          const g3 = project3D([g, -0.4, 0], cam, w, h);
+          const g4 = project3D([g, 2.1, 0], cam, w, h);
+          ctx.beginPath(); ctx.moveTo(g3.x, g3.y); ctx.lineTo(g4.x, g4.y); ctx.stroke();
+        }
+        ctx.restore();
+
+        const pO = project3D([0, 0, 0], cam, w, h);
+        const pZ = project3D([0, 0, 2.45], cam, w, h);
+        drawArrow2D(ctx, pO, pZ, pal.axis, 1.0, false);
+
+        // Basis vectors x1, x2
+        const px1 = project3D(st.x1, cam, w, h);
+        const px2 = project3D(st.x2, cam, w, h);
+        drawArrow2D(ctx, pO, px1, pal.x1, 2.5, false);
+        drawArrow2D(ctx, pO, px2, pal.x2, 2.5, false);
+        drawLabel(ctx, px1, 'x₁', pal.x1, 6, 4);
+        drawLabel(ctx, px2, 'x₂', pal.x2, 6, -6);
+
+        // Component decomposition lines: b1*x1 and yhat
+        const comp1 = scale3(st.x1, st.b1);
+        const comp2 = scale3(st.x2, st.b2);
+        const pComp1 = project3D(comp1, cam, w, h);
+        const pComp2 = project3D(comp2, cam, w, h);
+        const pyhatFull = project3D(st.yhat, cam, w, h);
+
+        if (st.drop > 0.05) {
+          const ep = easeInOut(st.drop);
+          const curYhat = scale3(st.yhat, ep);
+          const pCurYhat = project3D(curYhat, cam, w, h);
+
+          // Parallelogram showing b1*x1 + b2*x2 = yhat when near completion
+          if (ep > 0.75) {
+            drawArrow2D(ctx, pO, pComp1, pal.x1, 1.4, true);
+            drawArrow2D(ctx, pComp1, pyhatFull, pal.x2, 1.4, true);
+            drawArrow2D(ctx, pO, pComp2, pal.x2, 1.1, true);
+          }
+
+          drawArrow2D(ctx, pO, pCurYhat, pal.yhat, 3.0, false);
+          if (ep > 0.75) {
+            drawLabel(ctx, pyhatFull, 'ŷ = P_X y', pal.yhat, 8, 14);
+            drawRightAngle3D(ctx, st.yhat, scale3(st.yhat, -1), st.u, 0.22, cam, w, h, pal.ink);
+          }
+        }
+
+        // Vector y and projection drop ray
+        const py = project3D(st.y, cam, w, h);
+        const curRay = lerp3(st.y, st.yhat, easeInOut(st.drop));
+        const pCurRay = project3D(curRay, cam, w, h);
+        drawArrow2D(ctx, pO, py, pal.y, 3.0, false);
+        drawLabel(ctx, py, 'y', pal.y, 8, -4);
+
+        if (st.drop > 0.02) {
+          drawArrow2D(ctx, py, pCurRay, pal.u, 2.2, st.drop < 0.96);
+          if (st.drop >= 0.96) {
+            const midU = project3D(add3(st.yhat, scale3(st.u, 0.5)), cam, w, h);
+            drawLabel(ctx, midU, 'û = M_X y', pal.u, 8, 0);
+          }
+        }
+
+        // Origin dot
+        ctx.save();
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(pO.x, pO.y, 3.6, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      bindDragOrbit(canvas, cam, render);
+
+      [rhoInput, sigInput, dropInput].forEach(inp => inp.addEventListener('input', () => {
+        if (animId) { cancelAnimationFrame(animId); animId = null; playBtn.textContent = '사영 낙하 재생'; }
+        render();
+      }));
+
+      playBtn.addEventListener('click', () => {
+        if (animId) {
+          cancelAnimationFrame(animId);
+          animId = null;
+          playBtn.textContent = '사영 낙하 재생';
+          return;
+        }
+        dropInput.value = '0';
+        const start = performance.now();
+        const dur = 1800;
+        playBtn.textContent = '일시정지';
+        function step(now) {
+          const p = Math.min(1, (now - start) / dur);
+          dropInput.value = p.toFixed(3);
+          render();
+          if (p < 1) {
+            animId = requestAnimationFrame(step);
+          } else {
+            animId = null;
+            playBtn.textContent = '사영 낙하 재생';
+          }
+        }
+        animId = requestAnimationFrame(step);
+      });
+
+      resetBtn.addEventListener('click', () => {
+        cam.yaw = camDefault.yaw;
+        cam.pitch = camDefault.pitch;
+        rhoInput.value = '0.35';
+        sigInput.value = '1.35';
+        dropInput.value = '1';
+        render();
+      });
+
+      colBtn.addEventListener('click', () => {
+        rhoInput.value = '0.92';
+        dropInput.value = '1';
+        render();
+      });
+
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+
+    // -------------------------------------------------------------------------
+    // 4. Widget 2: Interactive FWL 3-Stage Morphing & OVB Comparator
+    // -------------------------------------------------------------------------
+    (function initFwlLab() {
+      const canvas3d = document.getElementById('fwlCanvas');
+      const canvas2d = document.getElementById('fwlScatterCanvas');
+      const tInput = document.getElementById('fwlT');
+      const rhoInput = document.getElementById('fwlRho');
+      const b1Input = document.getElementById('fwlB1');
+      const tVal = document.getElementById('fwlTVal');
+      const rhoVal = document.getElementById('fwlRhoVal');
+      const b1Val = document.getElementById('fwlB1Val');
+      const stageBadge = document.getElementById('fwlStageBadge');
+      const playBtn = document.getElementById('fwlPlayBtn');
+      const jumpBtns = document.querySelectorAll('[data-fwl-jump]');
+      const mShort = document.getElementById('mShort');
+      const mFull = document.getElementById('mFull');
+      const mOvb = document.getElementById('mOvb');
+      const mVarRatio = document.getElementById('mVarRatio');
+
+      const cam = { yaw: -0.72, pitch: 0.36 };
+      let playing = false;
+      let rafId = null;
+
+      // Fixed deterministic 36-point sample (Box-Muller style Halton/sin pairs) for 2D OVB scatter
+      const rawZ1 = [], rawZ2 = [], rawEps = [];
+      for (let i = 0; i < 36; i++) {
+        const a = (i + 0.5) / 36;
+        const z1 = Math.sin(i * 2.17 + 0.4) * 1.15 + Math.cos(i * 0.85) * 0.45;
+        const z2 = Math.cos(i * 1.73 - 0.3) * 1.05 + (a - 0.5) * 1.4;
+        const ep = Math.sin(i * 3.91 + 1.1) * 0.55;
+        rawZ1.push(z1);
+        rawZ2.push(z2);
+        rawEps.push(ep);
+      }
+
+      function computeFwlState() {
+        const t = parseFloat(tInput.value);
+        const rho = parseFloat(rhoInput.value);
+        const b1 = parseFloat(b1Input.value);
+        const b2True = 0.85;
+
+        // 3D geometric sample representation (X1 along z-axis, C(X1)^perp is z=0)
+        const x1 = [0, 0, 2.05];
+        const x2Len = 2.0;
+        const x2Z = x2Len * rho;
+        const x2PlaneR = x2Len * Math.sqrt(Math.max(0.05, 1 - rho * rho));
+        const x2 = [x2PlaneR * 0.94, x2PlaneR * 0.34, x2Z];
+
+        // M1 X2 sets z = 0
+        const x2Tilde = [x2[0], x2[1], 0];
+        // Orthogonal noise vector purely inside C(X1)^perp orthogonal to x2Tilde
+        const x2Tn = Math.hypot(x2Tilde[0], x2Tilde[1]);
+        const perpDir = [-x2Tilde[1] / x2Tn, x2Tilde[0] / x2Tn, 0];
+        const uTrue = scale3(perpDir, 1.05);
+
+        // y = b1 * X1 + b2True * X2 + uTrue
+        const y = add3(add3(scale3(x1, b1 * 0.55), scale3(x2, b2True)), uTrue);
+        const yTilde = [y[0], y[1], 0];
+        const b2Hat = dot3(x2Tilde, yTilde) / dot3(x2Tilde, x2Tilde);
+        const yhatFwl = scale3(x2Tilde, b2Hat);
+
+        // OVB / Short regression metrics from deterministic n=36 sample
+        const n = rawZ1.length;
+        const s = Math.sqrt(Math.max(1e-4, 1 - rho * rho));
+        const X1s = rawZ1;
+        const X2s = rawZ1.map((z1, i) => rho * z1 + s * rawZ2[i]);
+        const Ys = X1s.map((v1, i) => b1 * v1 + b2True * X2s[i] + rawEps[i]);
+
+        const mean = arr => arr.reduce((a, b) => a + b, 0) / arr.length;
+        const mx1 = mean(X1s), mx2 = mean(X2s), my = mean(Ys);
+        let s11 = 0, s12 = 0, s22 = 0, s1y = 0, s2y = 0;
+        for (let i = 0; i < n; i++) {
+          const d1 = X1s[i] - mx1, d2 = X2s[i] - mx2, dy = Ys[i] - my;
+          s11 += d1 * d1; s12 += d1 * d2; s22 += d2 * d2; s1y += d1 * dy; s2y += d2 * dy;
+        }
+        const delta12 = s12 / s11;
+        const X2res = X2s.map((v2, i) => (v2 - mx2) - delta12 * (X1s[i] - mx1));
+        const gY1 = s1y / s11;
+        const Yres = Ys.map((vy, i) => (vy - my) - gY1 * (X1s[i] - mx1));
+
+        let res22 = 0, res2y = 0;
+        for (let i = 0; i < n; i++) {
+          res22 += X2res[i] * X2res[i];
+          res2y += X2res[i] * Yres[i];
+        }
+        const b2Short = s2y / s22;
+        const b2Full = res2y / res22;
+        const ovb = b2Short - b2Full;
+        const varRatio = res22 / s22;
+
+        return {
+          t, rho, b1, x1, x2, x2Tilde, y, yTilde, yhatFwl,
+          b2Short, b2Full, ovb, varRatio,
+          X2c: X2s.map(v => v - mx2), Yc: Ys.map(v => v - my),
+          X2res, Yres
+        };
+      }
+
+      function render3D(st, pal) {
+        const { ctx, w, h } = setupCanvas(canvas3d);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        // Orthogonal complement subspace plane C(X1)^perp (z = 0)
+        const cA = project3D([-0.4, -0.4, 0], cam, w, h);
+        const cB = project3D([2.4, -0.4, 0], cam, w, h);
+        const cC = project3D([2.4, 2.2, 0], cam, w, h);
+        const cD = project3D([-0.4, 2.2, 0], cam, w, h);
+        ctx.save();
+        ctx.fillStyle = pal.tealPlaneFill;
+        ctx.strokeStyle = pal.tealPlaneStroke;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(cA.x, cA.y); ctx.lineTo(cB.x, cB.y);
+        ctx.lineTo(cC.x, cC.y); ctx.lineTo(cD.x, cD.y);
+        ctx.closePath();
+        ctx.fill(); ctx.stroke();
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 0.8;
+        for (let g = 0; g <= 2.0; g += 0.5) {
+          const g1 = project3D([-0.3, g, 0], cam, w, h);
+          const g2 = project3D([2.3, g, 0], cam, w, h);
+          ctx.beginPath(); ctx.moveTo(g1.x, g1.y); ctx.lineTo(g2.x, g2.y); ctx.stroke();
+          const g3 = project3D([g, -0.3, 0], cam, w, h);
+          const g4 = project3D([g, 2.1, 0], cam, w, h);
+          ctx.beginPath(); ctx.moveTo(g3.x, g3.y); ctx.lineTo(g4.x, g4.y); ctx.stroke();
+        }
+        ctx.restore();
+
+        const pO = project3D([0, 0, 0], cam, w, h);
+        const px1 = project3D(st.x1, cam, w, h);
+        const px2 = project3D(st.x2, cam, w, h);
+        const py = project3D(st.y, cam, w, h);
+        const px2T = project3D(st.x2Tilde, cam, w, h);
+        const pyT = project3D(st.yTilde, cam, w, h);
+
+        // X1 control basis
+        drawArrow2D(ctx, pO, px1, pal.x1, 2.5, false);
+        drawLabel(ctx, px1, 'X₁ (통제)', pal.x1, 6, -4);
+
+        // Stage 1: Partial out X1 for t in [0, 0.5]
+        const p1 = easeInOut(Math.min(1, st.t / 0.5));
+        const curX2 = lerp3(st.x2, st.x2Tilde, p1);
+        const curY = lerp3(st.y, st.yTilde, p1);
+        const pCurX2 = project3D(curX2, cam, w, h);
+        const pCurY = project3D(curY, cam, w, h);
+
+        // Ghost original vectors when morphed
+        if (p1 > 0.05) {
+          drawArrow2D(ctx, pO, px2, pal.muted, 1.1, true);
+          drawArrow2D(ctx, pO, py, pal.muted, 1.1, true);
+          drawArrow2D(ctx, px2, pCurX2, pal.x2, 1.5, true);
+          drawArrow2D(ctx, py, pCurY, pal.y, 1.5, true);
+        }
+
+        drawArrow2D(ctx, pO, pCurX2, pal.x2, 2.8, false);
+        drawArrow2D(ctx, pO, pCurY, pal.y, 2.8, false);
+        drawLabel(ctx, pCurX2, p1 > 0.85 ? 'X̃₂ = M₁X₂' : 'X₂', pal.x2, 6, 12);
+        drawLabel(ctx, pCurY, p1 > 0.85 ? 'ỹ = M₁y' : 'y', pal.y, 6, -6);
+
+        if (p1 > 0.85) {
+          drawRightAngle3D(ctx, st.x2Tilde, scale3(st.x2Tilde, -1), st.x1, 0.16, cam, w, h, pal.muted);
+        }
+
+        // Stage 2: Regress yTilde on x2Tilde inside C(X1)^perp for t in [0.5, 1.0]
+        if (st.t > 0.5) {
+          const p2 = easeInOut((st.t - 0.5) / 0.5);
+          const curProj = scale3(st.yhatFwl, p2);
+          const pCurProj = project3D(curProj, cam, w, h);
+          const rayTip = lerp3(st.yTilde, st.yhatFwl, p2);
+          const pRayTip = project3D(rayTip, cam, w, h);
+
+          drawArrow2D(ctx, pyT, pRayTip, pal.u, 2.2, p2 < 0.96);
+          drawArrow2D(ctx, pO, pCurProj, pal.yhat, 3.2, false);
+          if (p2 > 0.88) {
+            const pF = project3D(st.yhatFwl, cam, w, h);
+            drawLabel(ctx, pF, 'β̂₂ X̃₂', pal.yhat, 6, 16);
+            const midU = project3D(lerp3(st.yhatFwl, st.yTilde, 0.5), cam, w, h);
+            drawLabel(ctx, midU, 'û = M_X y', pal.u, 6, -4);
+            drawRightAngle3D(ctx, st.yhatFwl, scale3(st.yhatFwl, -1), sub3(st.yTilde, st.yhatFwl), 0.18, cam, w, h, pal.ink);
+          }
+        }
+
+        ctx.save();
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(pO.x, pO.y, 3.6, 0, Math.PI * 2); ctx.fill();
+        ctx.restore();
+      }
+
+      function renderScatter2D(st, pal) {
+        const { ctx, w, h } = setupCanvas(canvas2d);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padX = 24, padY = 16;
+        const maxR = 3.2;
+        const mapX = v => padX + ((v + maxR) / (2 * maxR)) * (w - 2 * padX);
+        const mapY = v => h - padY - ((v + maxR) / (2 * maxR)) * (h - 2 * padY);
+
+        // Axes
+        ctx.save();
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(padX, mapY(0)); ctx.lineTo(w - padX, mapY(0));
+        ctx.moveTo(mapX(0), padY); ctx.lineTo(mapX(0), h - padY);
+        ctx.stroke();
+
+        const p1 = easeInOut(Math.min(1, st.t / 0.5));
+        // Points morph from centered raw (X2, Y) to residualized (M1 X2, M1 Y)
+        for (let i = 0; i < st.X2c.length; i++) {
+          const px = st.X2c[i] + p1 * (st.X2res[i] - st.X2c[i]);
+          const py = st.Yc[i] + p1 * (st.Yres[i] - st.Yc[i]);
+          ctx.fillStyle = p1 > 0.5 ? pal.x2 : pal.y;
+          ctx.globalAlpha = 0.72;
+          ctx.beginPath();
+          ctx.arc(mapX(px), mapY(py), 2.7, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // Short regression line (dashed rose)
+        ctx.strokeStyle = pal.u;
+        ctx.lineWidth = 1.6;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath();
+        ctx.moveTo(mapX(-2.8), mapY(-2.8 * st.b2Short));
+        ctx.lineTo(mapX(2.8), mapY(2.8 * st.b2Short));
+        ctx.stroke();
+
+        // FWL / Full regression line (solid indigo)
+        ctx.setLineDash([]);
+        ctx.strokeStyle = pal.yhat;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(mapX(-2.8), mapY(-2.8 * st.b2Full));
+        ctx.lineTo(mapX(2.8), mapY(2.8 * st.b2Full));
+        ctx.stroke();
+
+        // Tiny legend inside 2D box
+        ctx.font = '600 10.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.u;
+        ctx.fillText(`Short: ${st.b2Short.toFixed(2)}`, 8, 14);
+        ctx.fillStyle = pal.yhat;
+        ctx.fillText(`FWL: ${st.b2Full.toFixed(2)}`, w - 76, 14);
+        ctx.restore();
+      }
+
+      function renderAll() {
+        const pal = getPalette();
+        const st = computeFwlState();
+
+        tVal.textContent = st.t.toFixed(2);
+        rhoVal.textContent = st.rho.toFixed(2);
+        b1Val.textContent = st.b1.toFixed(2);
+
+        if (st.t < 0.08) {
+          stageBadge.textContent = 'Stage 0 · 원자료 공간 (X₁, X₂, y)';
+        } else if (st.t < 0.52) {
+          stageBadge.textContent = 'Stage 1 · M₁ 사영으로 X₁ 성분 제거 중';
+        } else if (st.t < 0.96) {
+          stageBadge.textContent = 'Stage 2 · C(X₁)⊥ 내 잔차-대-잔차 사영 중';
+        } else {
+          stageBadge.textContent = '완료 · β̂₂(FWL) ≡ β̂₂(Full) 및 직교 잔차 û';
+        }
+
+        mShort.textContent = st.b2Short.toFixed(3);
+        mFull.textContent = st.b2Full.toFixed(3);
+        mOvb.textContent = (st.ovb >= 0 ? '+' : '') + st.ovb.toFixed(3);
+        mOvb.className = 'metric-tile__v ' + (Math.abs(st.ovb) > 0.15 ? 'warn' : 'ok');
+        mVarRatio.textContent = (st.varRatio * 100).toFixed(1) + '%';
+
+        render3D(st, pal);
+        renderScatter2D(st, pal);
+      }
+
+      bindDragOrbit(canvas3d, cam, renderAll);
+
+      [tInput, rhoInput, b1Input].forEach(inp => inp.addEventListener('input', () => {
+        if (playing) { cancelAnimationFrame(rafId); playing = false; playBtn.textContent = '전체 재생 (Play)'; }
+        renderAll();
+      }));
+
+      playBtn.addEventListener('click', () => {
+        if (playing) {
+          cancelAnimationFrame(rafId);
+          playing = false;
+          playBtn.textContent = '전체 재생 (Play)';
+          return;
+        }
+        playing = true;
+        playBtn.textContent = '일시정지';
+        tInput.value = '0';
+        const start = performance.now();
+        const dur = 4200;
+        function tick(now) {
+          const p = Math.min(1, (now - start) / dur);
+          tInput.value = p.toFixed(3);
+          renderAll();
+          if (p < 1 && playing) {
+            rafId = requestAnimationFrame(tick);
+          } else {
+            playing = false;
+            playBtn.textContent = '전체 재생 (Play)';
+          }
+        }
+        rafId = requestAnimationFrame(tick);
+      });
+
+      jumpBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (playing) { cancelAnimationFrame(rafId); playing = false; playBtn.textContent = '전체 재생 (Play)'; }
+          tInput.value = btn.dataset.fwlJump;
+          renderAll();
+        });
+      });
+
+      onThemeCallbacks.push(renderAll);
+      window.addEventListener('resize', renderAll);
+      renderAll();
+    })();
+  })();
+  </script>
+</body>
+</html>
