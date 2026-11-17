@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Econometrics & Machine Learning | Study Notes | Hyeongjin Oh</title>
+  <meta name="description" content="서울시립대학교 경제학과 오형진의 계량경제학과 머신러닝(Econometrics & Machine Learning) 정리노트 허브입니다. 고차원 정칙화, 앙상블 학습, Double/Debiased ML 및 인과 머신러닝을 다룹니다.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/profile.jpg">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Newsreader"', '"Playfair Display"', 'Georgia', 'serif'],
+            sans: ['"Inter"', '"Pretendard"', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- KaTeX for Math -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="renderKaTeX();"></script>
+  <script>
+    function renderKaTeX() {
+      if (typeof renderMathInElement === 'function' && document.body) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError: false
+        });
+      }
+    }
+    document.addEventListener("DOMContentLoaded", renderKaTeX);
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Pretendard", sans-serif;
+      letter-spacing: -0.012em;
+    }
+    .academic-serif {
+      font-family: 'Newsreader', Georgia, serif;
+    }
+    .subtle-card {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .subtle-card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body class="bg-[#fafaf9] text-stone-800 dark:bg-[#0c0f14] dark:text-stone-200 transition-colors duration-200 antialiased selection:bg-stone-200 selection:text-stone-900 dark:selection:bg-stone-800 dark:selection:text-stone-100 min-h-screen flex flex-col justify-between">
+
+  <!-- ==================== HEADER & TOP NAV ==================== -->
+  <header class="border-b border-stone-200/80 dark:border-stone-800/80 bg-[#fafaf9]/90 dark:bg-[#0c0f14]/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+
+      <div class="flex items-center gap-3 text-sm">
+        <a href="notes.html" class="group flex items-center gap-1.5 text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors">
+          <i class="fas fa-arrow-left text-xs text-stone-400 group-hover:-translate-x-0.5 transition-transform"></i>
+          <span>Study Notes</span>
+        </a>
+        <span class="text-stone-300 dark:text-stone-700">/</span>
+        <span class="font-medium text-stone-900 dark:text-white academic-serif text-base">Econometrics & Machine Learning</span>
+      </div>
+
+      <nav class="flex items-center gap-6 text-sm text-stone-600 dark:text-stone-400">
+        <a href="index.html" class="hover:text-stone-900 dark:hover:text-white transition-colors text-xs font-mono">Home (오형진)</a>
+
+        <div class="w-px h-3.5 bg-stone-300 dark:bg-stone-700"></div>
+
+        <!-- Dark Mode Switch -->
+        <button id="theme-toggle" type="button" aria-label="Toggle theme" class="text-stone-400 hover:text-stone-700 dark:hover:text-stone-200 transition-colors">
+          <i id="theme-toggle-dark-icon" class="fas fa-moon hidden text-sm"></i>
+          <i id="theme-toggle-light-icon" class="fas fa-sun hidden text-sm"></i>
+        </button>
+      </nav>
+
+    </div>
+  </header>
+
+
+  <!-- ==================== MAIN CONTENT CONTAINER ==================== -->
+  <main class="max-w-4xl mx-auto px-6 py-12 sm:py-16 flex-1 space-y-14">
+
+    <!-- TITLE & OVERVIEW -->
+    <section class="space-y-4">
+
+      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-medium bg-stone-100 dark:bg-stone-800 text-stone-700 dark:text-stone-300 border border-stone-200/60 dark:border-stone-700/60">
+        <i class="fas fa-network-wired text-stone-400"></i>
+        Econometrics & Statistical Learning
+      </div>
+
+      <h1 class="academic-serif text-3xl sm:text-4xl text-stone-900 dark:text-white tracking-tight">
+        계량경제학과 머신러닝 (Econometrics & Machine Learning)
+      </h1>
+
+      <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base leading-relaxed max-w-3xl">
+        고차원 회귀와 정칙화(Regularization), 비모수·앙상블 기반 예측 모형, 그리고 Double/Debiased Machine Learning(DML) 및 Causal Forest 등 머신러닝 기법이 계량경제학적 식별과 점근 추론에 결합되는 체계를 정리할 예정입니다.
+      </p>
+
+      <div class="pt-2 flex flex-wrap gap-2 text-xs font-mono text-stone-500">
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Prediction × Causal Inference</span>
+        <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Regularization · DML · Causal ML</span>
+        <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60">정리노트 업로드 예정</span>
+      </div>
+
+    </section>
+
+    <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
+
+
+    <!-- ==================== MODULE ROADMAP (SKELETON) ==================== -->
+    <section class="space-y-8">
+
+      <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
+          <span>Archive Structure</span>
+          <span class="text-xs font-sans text-stone-400 font-normal">/ 구성 예정 단원 골격</span>
+        </h2>
+        <span class="text-xs font-mono text-stone-400">새 노트 파일 업로드 시 순차 연결 예정</span>
+      </div>
+
+      <div class="space-y-6">
+
+        <!-- PART I -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 01</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">고차원 추정과 정칙화 (Regularization & High-Dimensional Models)</h3>
+            </div>
+            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
+              업로드 예정
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            예측($\hat{y}$)과 모수 추정($\hat{\beta}$)의 목적 차이, 편향-분산 절충(Bias–Variance Tradeoff), Ridge·Lasso·Elastic Net 및 고차원 조건 아래에서의 일관성과 Post-Selection Inference를 다룹니다.
+          </p>
+        </div>
+
+        <!-- PART II -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 02</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">비모수 학습과 앙상블 (Trees, Forests, Boosting & Neural Nets)</h3>
+            </div>
+            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
+              업로드 예정
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            교차검증(Cross-Validation)과 경험위험최소화, 의사결정나무·배깅·랜덤 포레스트·그래디언트 부스팅 등 비모수 앙상블 학습기의 수렴 성질과 함수 근사 구조를 정리합니다.
+          </p>
+        </div>
+
+        <!-- PART III -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 03</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">Double / Debiased Machine Learning (DML)</h3>
+            </div>
+            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
+              업로드 예정
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            정칙화 편의(Regularization Bias) 극복을 위한 Neyman 직교성(Orthogonality)과 Cross-Fitting을 도입하고, 부분선형모형(PLR) 및 상호작용 모형에서의 $\sqrt{n}$-점근정규 추론을 유도합니다.
+          </p>
+        </div>
+
+        <!-- PART IV -->
+        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
+            <div>
+              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 04</span>
+              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">이질적 처치효과와 Causal ML (CATE & Generalized Random Forests)</h3>
+            </div>
+            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
+              업로드 예정
+            </span>
+          </div>
+          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
+            조건부 평균처치효과(CATE) 추정을 위한 Meta-Learners, Honest Causal Trees, Generalized Random Forests(GRF) 및 최적 정책 학습(Policy Learning)을 체계화합니다.
+          </p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- FOOTER NAV -->
+    <div class="pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
+      <a href="notes.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        <i class="fas fa-arrow-left"></i> Study Notes 메인으로
+      </a>
+      <a href="index.html" class="inline-flex items-center gap-1.5 font-medium hover:text-stone-900 dark:hover:text-white transition-colors">
+        오형진 프로필 (Home) →
+      </a>
+    </div>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="border-t border-stone-200/80 dark:border-stone-800/80 py-8 text-center text-xs text-stone-400 dark:text-stone-500">
+    <div class="max-w-4xl mx-auto px-6 space-y-1">
+      <p>© 2026 Hyeongjin Oh (오형진). All rights reserved.</p>
+      <p class="font-mono text-[11px]">Department of Economics, University of Seoul</p>
+    </div>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const themeToggleBtn = document.getElementById('theme-toggle');
+
+    if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+      themeToggleLightIcon.classList.remove('hidden');
+    } else {
+      document.documentElement.classList.remove('dark');
+      themeToggleDarkIcon.classList.remove('hidden');
+    }
+
+    themeToggleBtn.addEventListener('click', function() {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
+    });
+  </script>
+
+</body>
+</html>
