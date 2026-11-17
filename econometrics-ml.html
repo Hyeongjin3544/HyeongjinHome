@@ -119,13 +119,13 @@
       </h1>
 
       <p class="text-stone-600 dark:text-stone-400 text-sm sm:text-base leading-relaxed max-w-3xl">
-        고차원 회귀와 정칙화(Regularization), 비모수·앙상블 기반 예측 모형, 그리고 Double/Debiased Machine Learning(DML) 및 Causal Forest 등 머신러닝 기법이 계량경제학적 식별과 점근 추론에 결합되는 체계를 정리할 예정입니다.
+        고차원 회귀와 정칙화(Regularization), 비모수·앙상블 기반 예측 모형, 그리고 Double/Debiased Machine Learning(DML) 및 Causal Forest 등 머신러닝 기법이 계량경제학적 식별과 점근 추론에 결합되는 이론을 정리합니다.
       </p>
 
       <div class="pt-2 flex flex-wrap gap-2 text-xs font-mono text-stone-500">
         <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Prediction × Causal Inference</span>
         <span class="px-2 py-0.5 rounded bg-stone-100 dark:bg-stone-800 border border-stone-200 dark:border-stone-700">Regularization · DML · Causal ML</span>
-        <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60">정리노트 업로드 예정</span>
+        <span class="px-2 py-0.5 rounded bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200/80 dark:border-amber-800/60">12개 장 · 정리 색인</span>
       </div>
 
     </section>
@@ -133,86 +133,200 @@
     <div class="border-t border-stone-200 dark:border-stone-800/80"></div>
 
 
-    <!-- ==================== MODULE ROADMAP (SKELETON) ==================== -->
-    <section class="space-y-8">
-
-      <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
-        <h2 class="academic-serif text-2xl font-normal text-stone-900 dark:text-white flex items-center gap-2">
-          <span>Archive Structure</span>
-          <span class="text-xs font-sans text-stone-400 font-normal">/ 구성 예정 단원 골격</span>
-        </h2>
-        <span class="text-xs font-mono text-stone-400">새 노트 파일 업로드 시 순차 연결 예정</span>
-      </div>
-
-      <div class="space-y-6">
-
-        <!-- PART I -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
-            <div>
-              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 01</span>
-              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">고차원 추정과 정칙화 (Regularization & High-Dimensional Models)</h3>
-            </div>
-            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
-              업로드 예정
-            </span>
-          </div>
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-            예측($\hat{y}$)과 모수 추정($\hat{\beta}$)의 목적 차이, 편향-분산 절충(Bias–Variance Tradeoff), Ridge·Lasso·Elastic Net 및 고차원 조건 아래에서의 일관성과 Post-Selection Inference를 다룹니다.
-          </p>
-        </div>
-
-        <!-- PART II -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
-            <div>
-              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 02</span>
-              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">비모수 학습과 앙상블 (Trees, Forests, Boosting & Neural Nets)</h3>
-            </div>
-            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
-              업로드 예정
-            </span>
-          </div>
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-            교차검증(Cross-Validation)과 경험위험최소화, 의사결정나무·배깅·랜덤 포레스트·그래디언트 부스팅 등 비모수 앙상블 학습기의 수렴 성질과 함수 근사 구조를 정리합니다.
-          </p>
-        </div>
-
-        <!-- PART III -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
-            <div>
-              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 03</span>
-              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">Double / Debiased Machine Learning (DML)</h3>
-            </div>
-            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
-              업로드 예정
-            </span>
-          </div>
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-            정칙화 편의(Regularization Bias) 극복을 위한 Neyman 직교성(Orthogonality)과 Cross-Fitting을 도입하고, 부분선형모형(PLR) 및 상호작용 모형에서의 $\sqrt{n}$-점근정규 추론을 유도합니다.
-          </p>
-        </div>
-
-        <!-- PART IV -->
-        <div class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3">
-          <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-stone-100 dark:border-stone-800 pb-3">
-            <div>
-              <span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Module 04</span>
-              <h3 class="font-bold text-stone-900 dark:text-white text-lg mt-0.5">이질적 처치효과와 Causal ML (CATE & Generalized Random Forests)</h3>
-            </div>
-            <span class="text-xs font-mono px-2.5 py-0.5 rounded bg-stone-100 dark:bg-stone-800 text-stone-500 dark:text-stone-400 self-start">
-              업로드 예정
-            </span>
-          </div>
-          <p class="text-xs text-stone-600 dark:text-stone-400 leading-relaxed">
-            조건부 평균처치효과(CATE) 추정을 위한 Meta-Learners, Honest Causal Trees, Generalized Random Forests(GRF) 및 최적 정책 학습(Policy Learning)을 체계화합니다.
-          </p>
-        </div>
-
-      </div>
-
-    </section>
+    <section class="space-y-6"><div class="flex flex-wrap justify-between gap-2"><h2 class="academic-serif text-2xl text-stone-900 dark:text-white">Chapter Roadmap <span class="text-xs font-sans text-stone-400">/ 12개 장과 정리 색인</span></h2><a href="notes/econometrics-ml-notation.html" class="text-xs font-medium hover:underline">수학적 표기 · 기호 사전 →</a></div><div class="space-y-6"><article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 00</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch00.html" class="hover:underline">확률적 학습과 계량추론의 수학적 기반</a></h3></div><a href="notes/econometrics-ml-ch00.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (11개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch00.html#s0-1" class="hover:underline">0.1 확률공간·조건부 기대·선형투영</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-2" class="hover:underline">0.2 통계적 학습의 대상과 분해</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-3" class="hover:underline">0.3 차원 증가·노름·확률적 수렴</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-4" class="hover:underline">0.4 모집단 FWL과 부분선형 회귀</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-5" class="hover:underline">0.5 모집단 회귀, 선형투영과 구조적 인과모수의 구분</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-6" class="hover:underline">0.6 식별의 수학적 구조: 전역·국소 식별과 역문제</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-7" class="hover:underline">0.7 대수법칙·중심극한정리와 표본평균의 변동</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-8" class="hover:underline">0.8 균등수렴·경험과정·함수족 복잡도의 기초</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-9" class="hover:underline">0.9 조건부 적률·도구함수와 계량경제학적 제약</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-10" class="hover:underline">0.10 함수형 모수·Nuisance·영향함수의 기초</a></li>
+<li><a href="notes/econometrics-ml-ch00.html#s0-11" class="hover:underline">0.11 자료의 확률구조·표본분할·교차적합의 기초</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 01</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch01.html" class="hover:underline">일반 극값추정이론과 M·Z·GMM 추정</a></h3></div><a href="notes/econometrics-ml-ch01.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (21개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch01.html#s1-1" class="hover:underline">1.1 모집단 모수와 극값추정의 대상</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-2" class="hover:underline">1.2 식별의 분리조건과 관측동등성</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-3" class="hover:underline">1.3 표본대응식, 근사최소화와 Argmin 일치성</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-4" class="hover:underline">1.4 점별 수렴이 충분하지 않은 이유</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-5" class="hover:underline">1.5 ULLN의 충분조건: 콤팩트성·Lipschitz envelope</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-6" class="hover:underline">1.6 경험과정·균등확률적 등연속성과 복잡도</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-7" class="hover:underline">1.7 모형 오지정과 의사참모수</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-8" class="hover:underline">1.8 매끄러운 M-estimator의 점근정규성</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-9" class="hover:underline">1.9 Sandwich 분산·이분산·장기분산</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-10" class="hover:underline">1.10 OLS와 비선형 최소제곱의 극값표현</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-11" class="hover:underline">1.11 MLE와 Quasi-MLE: 정보행렬 항등식의 조건</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-12" class="hover:underline">1.12 GMM을 극값추정량으로 유도하기</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-13" class="hover:underline">1.13 Z-estimation, 적률조건과 미분가능성의 구별</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-14" class="hover:underline">1.14 비매끄러운 극값추정: LAD·분위수 회귀</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-15" class="hover:underline">1.15 볼록최적화·KKT·부분경사와 추정의 구분</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-16" class="hover:underline">1.16 Penalized Extremum Estimation과 고차원 곡률</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-17" class="hover:underline">1.17 Lasso의 기본부등식과 정규화 매개변수</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-18" class="hover:underline">1.18 Nuisance function과 Neyman 직교성</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-19" class="hover:underline">1.19 Cross-fitting과 점근선형성의 복원</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-20" class="hover:underline">1.20 비모수 함수추정의 수렴률과 정칙적 추론의 경계</a></li>
+<li><a href="notes/econometrics-ml-ch01.html#s1-21" class="hover:underline">1.21 고전적 극값이론에서 머신러닝 추정으로의 연결</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 02</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch02.html" class="hover:underline">비모수 회귀와 수렴률</a></h3></div><a href="notes/econometrics-ml-ch02.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (9개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch02.html#s2-1" class="hover:underline">2.1 커널·국소상수회귀·가중평균</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-2" class="hover:underline">2.2 국소선형·국소다항식·경계편의</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-3" class="hover:underline">2.3 다변량 비모수 추정과 차원의 저주</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-4" class="hover:underline">2.4 편의와 신뢰구간: 예측률과 추론률</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-5" class="hover:underline">2.5 커널 회귀의 확률적 유도: 편의·분산·점근정규성</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-6" class="hover:underline">2.6 최적 대역폭의 미분유도와 추론용 대역폭</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-7" class="hover:underline">2.7 국소선형회귀의 정규방정식과 경계편의</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-8" class="hover:underline">2.8 선형평활기·유효자유도·Leave-One-Out 교차검증</a></li>
+<li><a href="notes/econometrics-ml-ch02.html#s2-9" class="hover:underline">2.9 함수노름·균등수렴률·DML의 선행단계 조건</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 03</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch03.html" class="hover:underline">급수추정, 함수근사, 비모수 도구변수</a></h3></div><a href="notes/econometrics-ml-ch03.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (11개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch03.html#s3-1" class="hover:underline">3.1 급수회귀와 Sieve 공간: 함수근사에서 추정량까지</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-2" class="hover:underline">3.2 모집단 사영, 정상방정식과 표본 OLS의 관계</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-3" class="hover:underline">3.3 근사편의·추정분산·최적 기저차원</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-4" class="hover:underline">3.4 증가차원 Gram 행렬과 안정성</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-5" class="hover:underline">3.5 급수 추정의 점근정규성·편의·표준오차</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-6" class="hover:underline">3.6 예측위험·LOOCV·Kernel 비교</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-7" class="hover:underline">3.7 부분선형모형과 Sieve 기반 구조추론</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-8" class="hover:underline">3.8 NPIV의 조건부 적률·연산자·Completeness</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-9" class="hover:underline">3.9 Sieve NPIV: 변환된 내생변수와 2SLS</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-10" class="hover:underline">3.10 역문제 불안정성·특이함수·정칙화</a></li>
+<li><a href="notes/econometrics-ml-ch03.html#s3-11" class="hover:underline">3.11 NPIV 수렴률·기능모수와 추론의 경계</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 04</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch04.html" class="hover:underline">모형선택·위험 추정·교차검증</a></h3></div><a href="notes/econometrics-ml-ch04.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (12개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch04.html#s4-1" class="hover:underline">4.1 훈련위험·검증위험·검정위험</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-2" class="hover:underline">4.2 정보기준과 모델선택의 범위</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-3" class="hover:underline">4.3 모형평균·Stacking·Ensembling</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-4" class="hover:underline">4.4 예측위험 최소화와 구조모수의 평균제곱오차</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-5" class="hover:underline">4.5 교차검증 위험의 통계적 의미와 모형선택 후 추론</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-6" class="hover:underline">4.6 Empirical Risk Minimization과 일반화오차의 유한표본 경계</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-7" class="hover:underline">4.7 K-Fold·LOOCV의 수학적 해석과 선택의 낙관성</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-8" class="hover:underline">4.8 자료 의존구조·정보누출·Nested Cross-Validation</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-9" class="hover:underline">4.9 AIC·BIC·Mallows Cp의 유도와 선택목표</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-10" class="hover:underline">4.10 LOOCV·GCV의 계산 항등식과 적용범위</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-11" class="hover:underline">4.11 Model Averaging·Stacking의 이차위험·가중치 추정</a></li>
+<li><a href="notes/econometrics-ml-ch04.html#s4-12" class="hover:underline">4.12 모형선택 후 추론·비정칙성·DML 연결</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 05</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch05.html" class="hover:underline">Ridge·Elastic Net과 정규화</a></h3></div><a href="notes/econometrics-ml-ch05.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (13개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch05.html#s5-1" class="hover:underline">5.1 Ridge의 최적화와 닫힌형 해</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-2" class="hover:underline">5.2 특이값 분해와 정규화의 기하</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-3" class="hover:underline">5.3 편의–분산 절충과 예측위험</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-4" class="hover:underline">5.4 Elastic Net과 두 가지 벌점</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-5" class="hover:underline">5.5 정규화된 최소제곱의 기하와 계산 알고리즘</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-6" class="hover:underline">5.6 Constrained Ridge, Tikhonov 정칙화와 역문제</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-7" class="hover:underline">5.7 유효자유도, Optimism, LOOCV와 GCV</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-8" class="hover:underline">5.8 고유방향별 위험과 벌점강도의 선택</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-9" class="hover:underline">5.9 고차원 Ridge: 식별 한계와 예측위험의 경계</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-10" class="hover:underline">5.10 Bayesian Ridge, 사전분포와 정규화의 해석</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-11" class="hover:underline">5.11 Kernel Ridge Regression과 Representer 정리</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-12" class="hover:underline">5.12 Elastic Net의 Proximal 알고리즘과 수렴</a></li>
+<li><a href="notes/econometrics-ml-ch05.html#s5-13" class="hover:underline">5.13 튜닝·모수추론과 Lasso·DML로의 이론적 연결</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 06</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch06.html" class="hover:underline">Lasso: 최적화, 희소성, 수렴이론</a></h3></div><a href="notes/econometrics-ml-ch06.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (18개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch06.html#s6-1" class="hover:underline">6.1 Lasso 목적함수와 KKT 조건</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-2" class="hover:underline">6.2 Soft Thresholding과 좌표하강</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-3" class="hover:underline">6.3 최대점수 오차·벌점 크기·확률사건</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-4" class="hover:underline">6.4 Basic Inequality와 희소원뿔</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-5" class="hover:underline">6.5 Restricted Eigenvalue와 Lasso Oracle Bound</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-6" class="hover:underline">6.6 Approximate Sparsity와 근사잔차</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-7" class="hover:underline">6.7 Post-Lasso와 선택 후 추론</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-8" class="hover:underline">6.8 Lasso 오차경계의 전체 논리: 사건, 원뿔, 제한적 고유값</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-9" class="hover:underline">6.9 변수선택의 불확실성과 비정칙 후선택 추론</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-10" class="hover:underline">6.10 Lasso의 쌍대문제, Primal–Dual Gap과 적합값 유일성</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-11" class="hover:underline">6.11 고확률 Oracle Inequality의 활용과 수렴률 체계</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-12" class="hover:underline">6.12 Random Design, Compatibility와 Restricted Eigenvalue의 실패</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-13" class="hover:underline">6.13 근사희소성의 편의–분산 절충과 Oracle Approximation</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-14" class="hover:underline">6.14 Sign Consistency, Irrepresentable Condition과 최소신호</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-15" class="hover:underline">6.15 Heteroskedastic Loadings와 Square-root Lasso</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-16" class="hover:underline">6.16 Post-Lasso의 위험, 선택된 모형과 추론의 차이</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-17" class="hover:underline">6.17 De-biased Lasso, 점근선형성 및 잔여편의 제어</a></li>
+<li><a href="notes/econometrics-ml-ch06.html#s6-18" class="hover:underline">6.18 Neyman 직교성과 DML의 수렴률 연결</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 07</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch07.html" class="hover:underline">Tree, Bagging, Random Forest와 앙상블</a></h3></div><a href="notes/econometrics-ml-ch07.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (18개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch07.html#s7-1" class="hover:underline">7.1 회귀트리와 분할손실</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-2" class="hover:underline">7.2 Bagging과 Bootstrap 평균</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-3" class="hover:underline">7.3 Random Forest: 무작위 특성 부분집합</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-4" class="hover:underline">7.4 Honesty와 Forest 기반 추론의 조건</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-5" class="hover:underline">7.5 Stacking과 알고리즘 선택의 한계</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-6" class="hover:underline">7.6 Tree와 Forest를 계량추정량으로 해석하기</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-7" class="hover:underline">7.7 분할 선택의 기하와 Cost-Complexity Pruning</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-8" class="hover:underline">7.8 잎 크기·지역화·편의–분산의 비모수 구조</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-9" class="hover:underline">7.9 Adaptive Neighborhood와 정확한 표본 가중치</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-10" class="hover:underline">7.10 Honest Weighted Regression의 일치성 충분조건</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-11" class="hover:underline">7.11 정직가중 중앙극한정리와 편의 지배 조건</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-12" class="hover:underline">7.12 Wager–Athey Forest 점근정규성: 정리의 정확한 범위</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-13" class="hover:underline">7.13 Forest 분산추정: Infinitesimal Jackknife와 Monte Carlo</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-14" class="hover:underline">7.14 OOB·Permutation Importance·예측력 평가의 한계</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-15" class="hover:underline">7.15 Quantile Forest와 분포·분위수 추정</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-16" class="hover:underline">7.16 Causal Forest와 이질적 처치효과의 식별·추론</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-17" class="hover:underline">7.17 Generalized Random Forest: 국소 적률과 Z-estimation</a></li>
+<li><a href="notes/econometrics-ml-ch07.html#s7-18" class="hover:underline">7.18 Forest 기반 Nuisance 학습과 DML: 필요한 수렴률</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 08</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch08.html" class="hover:underline">고차원 도구변수와 선택 후 구조계수 추론</a></h3></div><a href="notes/econometrics-ml-ch08.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (19개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch08.html#s8-1" class="hover:underline">8.1 다수 도구변수 문제와 첫 단계의 희소성</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-2" class="hover:underline">8.2 Lasso IV와 표본분할 IV</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-3" class="hover:underline">8.3 부분선형 구조모형과 누락변수 편의</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-4" class="hover:underline">8.4 Double Selection Lasso</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-5" class="hover:underline">8.5 Post-Regularization Partialling-Out</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-6" class="hover:underline">8.6 Post-Selection와 Orthogonalization의 수학적 연결</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-7" class="hover:underline">8.7 고차원 IV의 적률식별과 선행단계 학습오차</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-8" class="hover:underline">8.8 고전적 IV·2SLS·FWL: 고차원 방법의 식별 출발점</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-9" class="hover:underline">8.9 Many Instruments Bias: 무작위 잡음의 첫 단계 과적합</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-10" class="hover:underline">8.10 고차원 첫 단계 Lasso의 오차율과 추정목표</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-11" class="hover:underline">8.11 Cross-Fitted Generated Instruments의 점근전개</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-12" class="hover:underline">8.12 식별강도·무효 도구와 반례: 무엇을 검증할 수 없는가</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-13" class="hover:underline">8.13 부분선형 IV(PLIV)의 모형과 세 가지 Nuisance 함수</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-14" class="hover:underline">8.14 PLIV Neyman 직교성의 직접 증명과 이차편의</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-15" class="hover:underline">8.15 Cross-fitted PLIV: 점근선형표현과 이분산 표준오차</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-16" class="hover:underline">8.16 여러 내생변수·여러 도구변수의 Jacobian Rank</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-17" class="hover:underline">8.17 Weak-IV Robust Inference: Anderson–Rubin의 원리</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-18" class="hover:underline">8.18 IV 후선택 추론의 설계: 알고리즘·진단·표준오차</a></li>
+<li><a href="notes/econometrics-ml-ch08.html#s8-19" class="hover:underline">8.19 Chapter 08의 통합: Sparse IV에서 DML로</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 09</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch09.html" class="hover:underline">Double / Debiased Machine Learning</a></h3></div><a href="notes/econometrics-ml-ch09.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (19개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch09.html#s9-1" class="hover:underline">9.1 Neyman Orthogonality의 정의</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-2" class="hover:underline">9.2 부분선형모형의 직교점수 구성</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-3" class="hover:underline">9.3 교차적합과 DML2 추정방정식</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-4" class="hover:underline">9.4 수렴률의 곱 조건과 n^(-1/4) 경계</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-5" class="hover:underline">9.5 Cross-fitting 경험과정 오차의 제어</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-6" class="hover:underline">9.6 DML 점근선형 표현·영향함수·분산추정</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-7" class="hover:underline">9.7 Double Selection·Partialling-Out·DML의 비교</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-8" class="hover:underline">9.8 DML 점근분해: 일차항·편의항·경험과정항</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-9" class="hover:underline">9.9 영향함수 표준오차, 이분산과 군집의 구분</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-10" class="hover:underline">9.10 일반 직교 Z-estimation: Jacobian과 이차 잔여항</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-11" class="hover:underline">9.11 두 부분선형 직교점수의 차이: Residual-on-Residual과 Structural Score</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-12" class="hover:underline">9.12 비직교 Plug-in의 반례: 정규화 편의가 왜 남는가</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-13" class="hover:underline">9.13 잔차화 DML의 유한표본 항등식과 전체 점근증명</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-14" class="hover:underline">9.14 DML1과 DML2의 유한표본 차이와 효율성</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-15" class="hover:underline">9.15 ATE를 위한 AIPW·Double Robustness·Orthogonality</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-16" class="hover:underline">9.16 내생적 처치에 대한 PLIV 직교점수와 식별강도</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-17" class="hover:underline">9.17 영향함수·효율적 영향함수·직교성의 구별</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-18" class="hover:underline">9.18 실증연구의 DML 진단: 학습·식별·분산추정 분리</a></li>
+<li><a href="notes/econometrics-ml-ch09.html#s9-19" class="hover:underline">9.19 통합 정리·학습과제: 고차원 학습에서 저차원 추론까지</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 10</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch10.html" class="hover:underline">인과적 식별과 머신러닝 추정의 연결</a></h3></div><a href="notes/econometrics-ml-ch10.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (24개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch10.html#s10-1" class="hover:underline">10.1 잠재결과·일관성·CATE와 ATE</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-2" class="hover:underline">10.2 조건부 무교란성·중첩성과 식별공식</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-3" class="hover:underline">10.3 Confounder·Mediator·Collider와 조정 집합</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-4" class="hover:underline">10.4 관측동등성·비식별 반례</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-5" class="hover:underline">10.5 ATE의 IPW·AIPW 추정함수</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-6" class="hover:underline">10.6 AIPW의 Orthogonality와 Product Rate</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-7" class="hover:underline">10.7 CATE 식별과 함수형 추정의 두 단계</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-8" class="hover:underline">10.8 정보압축과 인과적 충분성</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-9" class="hover:underline">10.9 미관측 교란·Proxy·NPIV의 개념적 차이</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-10" class="hover:underline">10.10 ATE 식별식과 효율적 영향함수의 단계별 도출</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-11" class="hover:underline">10.11 CATE 함수추정과 ATE 저차원 추론의 수렴률 차이</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-12" class="hover:underline">10.12 G-formula·개입분포와 관측분포의 구별</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-13" class="hover:underline">10.13 Propensity Score·Balancing Score와 충분한 조정</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-14" class="hover:underline">10.14 경로미분·정준기울기와 ATE 효율적 영향함수의 증명</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-15" class="hover:underline">10.15 AIPW·Cross-fitting의 점근선형성 및 분산추정</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-16" class="hover:underline">10.16 약한 중첩성·극단적 가중치·표적모수 변화</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-17" class="hover:underline">10.17 ATT의 식별·이중강건 점수·효율적 영향함수</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-18" class="hover:underline">10.18 CATE 학습: DR-Learner·R-Learner와 학습률의 분리</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-19" class="hover:underline">10.19 정책가치(Policy Value)와 학습된 의사결정의 평가</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-20" class="hover:underline">10.20 차분의 차분법(DiD)과 이중강건 추정의 별도 식별가정</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-21" class="hover:underline">10.21 비식별·민감도 분석과 부분식별 경계</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-22" class="hover:underline">10.22 외적 타당성과 모집단 이동(Transportability)</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-23" class="hover:underline">10.23 Causal Forest·Orthogonal Score·처치이질성 추론의 경계</a></li>
+<li><a href="notes/econometrics-ml-ch10.html#s10-24" class="hover:underline">10.24 연구설계의 통합: 식별에서 검증 가능한 추론까지</a></li></ul></details></article>
+<article class="subtle-card bg-white dark:bg-stone-900/60 rounded-xl p-6 border border-stone-200/80 dark:border-stone-800 space-y-3"><div class="flex flex-wrap justify-between gap-2"><div><span class="text-xs font-mono font-semibold text-stone-400 uppercase tracking-wider">Chapter 11</span><h3 class="font-bold text-stone-900 dark:text-white text-lg mt-1"><a href="notes/econometrics-ml-ch11.html" class="hover:underline">수학적 구조의 통합과 정리 색인</a></h3></div><a href="notes/econometrics-ml-ch11.html" class="text-xs font-mono px-2.5 py-1 rounded bg-stone-900 text-white dark:bg-stone-100 dark:text-stone-900 self-start">전체 열람 →</a></div><details class="text-xs text-stone-600 dark:text-stone-400"><summary class="cursor-pointer font-semibold">세부 목차 (19개 절)</summary><ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-3"><li><a href="notes/econometrics-ml-ch11.html#s11-1" class="hover:underline">11.1 추정대상과 수학적 문제를 분리하는 출발점</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-2" class="hover:underline">11.2 Chapter 00–10의 정리 의존관계와 학습 지도</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-3" class="hover:underline">11.3 기호·목적함수 정규화·수렴 개념의 일관된 표기</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-4" class="hover:underline">11.4 참고문헌과 정리 출처의 범위</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-5" class="hover:underline">11.5 가정의 논리적 유형과 검증가능성</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-6" class="hover:underline">11.6 조건부 기대·투영·FWL의 공통 수학적 구조</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-7" class="hover:underline">11.7 대표 추정량의 노름·수렴률·점근분포 비교</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-8" class="hover:underline">11.8 편의–분산 균형이 추론의 최적화를 대신하지 못하는 이유</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-9" class="hover:underline">11.9 고전적 M·Z·GMM과 고차원 추정의 차이</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-10" class="hover:underline">11.10 역문제·SVD·정칙화와 식별강도의 통합</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-11" class="hover:underline">11.11 Lasso의 수렴정리와 선택 후 추론을 구분하기</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-12" class="hover:underline">11.12 Forest·교차검증·데이터 적응성의 범위</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-13" class="hover:underline">11.13 직교점수·교차적합·선행단계 수렴률의 정확한 연결</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-14" class="hover:underline">11.14 인과식별·효율적 영향함수·중첩성의 경계</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-15" class="hover:underline">11.15 핵심 정리 색인: 실제 장·절로 이동</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-16" class="hover:underline">11.16 연구 설계별 증명 경로와 실패 지점</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-17" class="hover:underline">11.17 잘못된 추론의 전형적인 유형과 반례</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-18" class="hover:underline">11.18 종합 연습문제와 해설</a></li>
+<li><a href="notes/econometrics-ml-ch11.html#s11-19" class="hover:underline">11.19 최종 연구 검토표: 논증의 빠진 고리를 찾는 절차</a></li></ul></details></article></div></section>
 
     <!-- FOOTER NAV -->
     <div class="pt-6 border-t border-stone-200 dark:border-stone-800 flex justify-between items-center text-xs text-stone-500">
