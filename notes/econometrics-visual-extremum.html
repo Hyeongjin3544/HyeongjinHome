@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 00 — 일반 극값추정량(Extremum Estimator)의 식별, ULLN 균등수렴 및 샌드위치 분산의 기하학" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>Visual Supplement 00 — 극값추정(Extremum Estimation)의 원리</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner { max-width: var(--container-w); margin: 0 auto; }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.5px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary { cursor: pointer; font-size: 13px; font-weight: 650; color: var(--ink); }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+    }
+    .formula-box__title { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .formula-box__desc { margin: 6px 0 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #0c0f14; }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
+    /* Interactive Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+    .lab-sub { font-family: var(--font-mono); font-size: 11.2px; color: var(--muted); }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas { display: block; width: 100%; height: 360px; touch-action: none; }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .lab-panel { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .controls-card, .metrics-card, .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row { margin-bottom: 10px; }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val { font-family: var(--font-mono); font-size: 12px; color: var(--primary); }
+    input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.8px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+    .btn-pill.is-primary { background: var(--primary); border-color: var(--primary); color: #ffffff; }
+    .btn-pill.is-primary:hover { opacity: 0.92; color: #ffffff; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k { font-family: var(--font-mono); font-size: 10.6px; color: var(--muted); }
+    .metric-tile__v { font-family: var(--font-mono); font-size: 13.5px; font-weight: 700; color: var(--ink); margin-top: 1px; }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .mini-card canvas {
+      display: block;
+      width: 100%;
+      height: 132px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+    .discussion-section { margin-top: 42px; padding-top: 26px; border-top: 1px solid var(--line); }
+    .discussion-section h2 { margin: 0 0 8px; color: var(--ink); font-size: 1.25rem; font-weight: 700; }
+    .discussion-lead { font-size: 13.5px; color: var(--muted); margin: 0 0 18px; }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics.html">← 계량경제학 목차</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">Visual Supplement 00 · Extremum Estimation</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero">
+    <div class="hero-inner">
+      <div class="chapter-kicker">Econometrics · Visual Supplement 00 (Ch 00 연계)</div>
+      <h1>극값추정(Extremum Estimation)의 원리</h1>
+      <p class="subtitle">식별과 균등수렴(ULLN), 일계조건 테일러 선형화, 그리고 샌드위치 분산 \(H^{-1}\Omega H^{-1}\)</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        OLS, NLS, IV/2SLS, GMM, 최대우도추정량(MLE)은 모두 표본 목적함수 \(\hat{Q}_n(\theta)\)의 극값을 구하는 하나의 틀에 들어간다.
+        본 보충자료는 모집단 목적함수 \(Q(\theta)\)의 식별, 표본 크기 \(n\) 증가에 따른 \(\hat{Q}_n \to Q\) 균등수렴(일치성),
+        그리고 목적함수의 곡률 \(H\)와 기울기 요동 \(\Omega\)가 추정량 분포를 결정하는 원리를 정리한다.
+      </p>
+      <div class="roadmap">
+        <a href="#sec-ext-ulln">
+          <span class="label">01 · 60fps 영상</span>
+          <span class="text">식별과 ULLN 일치성</span>
+        </a>
+        <a href="#sec-ext-asym">
+          <span class="label">02 · 60fps 영상</span>
+          <span class="text">기울기 요동과 곡률 H</span>
+        </a>
+        <a href="#sec-ext-lab">
+          <span class="label">03 · Simulation Lab</span>
+          <span class="text">식별·ULLN·샌드위치 탐색기</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <div class="toc-title">On This Page</div>
+      <nav>
+        <a href="#sec-ext-ulln">01. 식별과 ULLN 일치성</a>
+        <a href="#sec-ext-asym">02. 기울기 요동과 곡률 H</a>
+        <a href="#sec-ext-lab">03. 극값추정 탐색기</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ch00.html#general-stage-1">↗ Ch 00 본문 (II. 일치성)</a>
+        <a class="ext-link" href="econometrics-visual-ols-fwl.html">Visual 01 (OLS · FWL) →</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-ext-ulln">01. 식별과 ULLN 일치성</a>
+          <a href="#sec-ext-asym">02. 기울기 요동과 곡률 H</a>
+          <a href="#sec-ext-lab">03. 극값추정 탐색기</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ch00.html#general-stage-1">↗ Ch 00 본문 (II. 일치성)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-ext-ulln">
+        <h2><span class="sec-tag">01</span><span>식별과 ULLN 일치성: \(\hat{Q}_n(\theta) \to Q(\theta)\)</span></h2>
+        <p>
+          모집단 모수 \(\theta_0 = \arg\min_{\theta \in \Theta} Q(\theta)\)가 유일하게 식별되더라도, 우리가 실제로 관찰하는 것은 표본평균으로 만든
+          무작위 표본 목적함수 \(\hat{Q}_n(\theta)\)뿐이다. 점별 수렴(\(\hat{Q}_n(\theta) \xrightarrow{p} Q(\theta)\))만으로는 극값의 수렴을 보장할 수 없으며,
+          모수공간 \(\Theta\) 전체에서 동시에 오차가 줄어드는 <strong>균등대수의 법칙(ULLN)</strong>이 성립해야 \(\hat{\theta}_n \xrightarrow{p} \theta_0\)가 보장된다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title">극값추정량의 통합 정의</div>
+            \[
+              \hat{\theta}_n = \arg\min_{\theta \in \Theta} \hat{Q}_n(\theta), \qquad
+              \hat{Q}_n(\theta) = \frac{1}{n}\sum_{i=1}^n q(w_i, \theta)
+            \]
+            <p class="formula-box__desc">OLS는 \(q=(y_i-x_i'\beta)^2\), MLE는 \(q=-\log f(w_i|\theta)\), GMM은 \(\bar{g}_n'W\bar{g}_n\)에 해당한다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title">Argmin 일치성의 두 기둥</div>
+            \[
+              \text{식별 (유일 전역 극소 } \theta_0\text{)} \;+\; \sup_{\theta \in \Theta} |\hat{Q}_n(\theta) - Q(\theta)| \xrightarrow{p} 0
+              \;\implies\; \hat{\theta}_n \xrightarrow{p} \theta_0
+            \]
+            <p class="formula-box__desc">표본 곡선 \(\hat{Q}_n\)이 \(Q(\theta) \pm \varepsilon\) 띠 안에 균등하게 갇히면, 그 최소점 \(\hat{\theta}_n\)도 \(\theta_0\) 근방에 갇힌다.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · Identification &amp; Uniform Convergence (ULLN)</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/extremum-ulln-consistency.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            표본 크기 \(n\)이 작을 때는 표본 오차로 인해 \(\hat{Q}_n(\theta)\)의 최소점 \(\hat{\theta}_n\)이 \(\theta_0\)에서 벗어나 있다.
+            \(n\)이 커지면서 \(\hat{Q}_n(\theta)\)가 모집단 목적함수 \(Q(\theta)\) 주변 \(\varepsilon\)-띠 안으로 균등 수렴(ULLN)함에 따라
+            최소점 \(\hat{\theta}_n\)이 \(\theta_0\)로 안정적으로 수렴하는 과정을 보여 준다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-ext-asym">
+        <h2><span class="sec-tag">02</span><span>점근정규성의 기하학: 기울기 요동과 곡률 \(H\)</span></h2>
+        <p>
+          추정량 \(\hat{\theta}_n\)은 표본 일계조건 \(\nabla \hat{Q}_n(\hat{\theta}_n) = 0\)을 만족한다.
+          참모수 \(\theta_0\)에서는 표본 기울기(score) \(\nabla \hat{Q}_n(\theta_0)\)이 정확히 \(0\)이 아니므로,
+          1차 테일러 전개 \(0 \approx \nabla \hat{Q}_n(\theta_0) + H(\hat{\theta}_n - \theta_0)\)에 의해
+          세로축의 기울기 오차가 목적함수 곡률 \(H = \nabla^2 Q(\theta_0)\)을 거쳐 가로축의 추정 오차 \(\hat{\theta}_n - \theta_0\)로 변환된다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">Asymptotic Linearization &amp; Sandwich Variance</div>
+          \[
+            \sqrt{n}(\hat{\theta}_n - \theta_0) \approx -H^{-1}\sqrt{n}\nabla \hat{Q}_n(\theta_0)
+            \;\xrightarrow{d}\; \mathcal{N}\!\left(0,\; H^{-1}\Omega H^{-1}\right),
+            \qquad
+            \Omega = \mathrm{Var}\!\left(\sqrt{n}\nabla \hat{Q}_n(\theta_0)\right)
+          \]
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · Score Fluctuation, Curvature \(H\), and Sandwich Variance</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/extremum-asymptotic-normality.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            동일한 크기의 기울기 요동 \(\nabla \hat{Q}_n(\theta_0)\)가 발생하더라도, 목적함수의 곡률 \(|H|\)가 크면(좌) 근 \(\hat{\theta}_n\)의 흔들림이 작고,
+            곡률이 완만하면(우) 같은 기울기 오차가 \(|H|^{-1}\)배 증폭되어 추정량의 분산 \(H^{-1}\Omega H^{-1}\)이 커진다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-ext-lab">
+        <h2><span class="sec-tag">03</span><span>극값추정 탐색기: 식별 · ULLN · 곡률 \(H\)</span></h2>
+        <p>
+          모집단 목적함수 \(Q(\theta)\)의 형태(강한 곡률, 약한 곡률, 쌍봉 비식별)와 표본 크기 \(n\), 점수 변동 크기를 바꾸어 보며
+          표본 곡선 \(\hat{Q}_n(\theta)\)의 수렴과 \(\hat{\theta}_n\)의 표본분포(샌드위치 표준오차)가 어떻게 달라지는지 직접 확인할 수 있다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Simulation Lab · Population \(Q(\theta)\), Sample \(\hat{Q}_n(\theta)\) &amp; Argmin Distribution</span>
+            <span class="lab-sub">상단: Q(θ) vs Q̂ₙ(θ) 곡선 · 우하: 200회 반복추출 θ̂ₙ 히스토그램</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="extCanvas" aria-label="극값추정 Q(theta) vs Q_hat_n(theta) 캔버스"></canvas>
+              <div class="canvas-hint" id="extHint">실선: Q(θ) · 파란 곡선: 현재 표본 Q̂ₙ(θ) · 옅은 선: 타 표본들</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>표본 크기 \(n\)</span>
+                    <span class="control-val" id="extNVal">60</span>
+                  </div>
+                  <input id="extN" type="range" min="15" max="400" step="5" value="60" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>기울기 요동 강도 \(\sqrt{\Omega}\)</span>
+                    <span class="control-val" id="extSigVal">0.90</span>
+                  </div>
+                  <input id="extSig" type="range" min="0.30" max="1.60" step="0.05" value="0.90" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" data-ext-shape="sharp">강한 곡률 (식별)</button>
+                  <button type="button" class="btn-pill" data-ext-shape="flat">완만한 곡률 (약한 식별)</button>
+                  <button type="button" class="btn-pill" data-ext-shape="double">쌍봉 (비식별)</button>
+                  <button type="button" class="btn-pill" id="extResample">새 표본</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">현재 추정치 θ̂ₙ (θ₀=0.00)</div>
+                    <div class="metric-tile__v accent" id="mExtTheta">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">균등오차 sup|Q̂ₙ − Q|</div>
+                    <div class="metric-tile__v" id="mExtSup">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">곡률 H = Q''(θ₀)</div>
+                    <div class="metric-tile__v ok" id="mExtH">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">샌드위치 SE = √(Ω/(nH²))</div>
+                    <div class="metric-tile__v" id="mExtSe">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>\(\hat{\theta}_n\) 표본분포 (200회 반복추출)</span>
+                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);" id="mExtSpread">점선: θ₀=0</span>
+                </div>
+                <canvas id="extHistCanvas" aria-label="극값추정량 표본분포 히스토그램"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="econometrics-ch00.html#general-stage-1">← Ch 00 본문 · 극값추정이론</a>
+        <a href="econometrics-visual-ols-fwl.html">Visual 01 · OLS · FWL 사영 기하학 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">극값추정량의 식별, 균등수렴(ULLN), 테일러 선형화 및 샌드위치 분산에 관한 질문을 자유롭게 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button aria-label="맨 위로 이동" class="back-to-top" type="button">↑ TOP</button>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(mode) {
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        if (themeBtn) themeBtn.textContent = 'Light';
+      } else {
+        html.removeAttribute('data-theme');
+        if (themeBtn) themeBtn.textContent = 'Dark';
+      }
+      try { localStorage.setItem('coursework-monograph-theme', mode); } catch (_) {}
+      onThemeCallbacks.forEach(fn => fn());
+    }
+    syncTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = html.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    function getPalette() {
+      const dark = html.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.26)' : 'rgba(15,23,42,0.28)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        cyan: dark ? '#38bdf8' : '#0284c7',
+        teal: dark ? '#2dd4bf' : '#0d9488',
+        indigo: dark ? '#818cf8' : '#4f46e5',
+        amber: dark ? '#fbbf24' : '#d97706',
+        rose: dark ? '#fb7185' : '#e11d48'
+      };
+    }
+
+    function setupCanvas(canvas, minH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(240, Math.round(rect.width));
+      const h = Math.max(minH || 130, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    (function initExtremumLab() {
+      const cMain = document.getElementById('extCanvas');
+      const cHist = document.getElementById('extHistCanvas');
+      const nIn = document.getElementById('extN');
+      const sigIn = document.getElementById('extSig');
+      const nVal = document.getElementById('extNVal');
+      const sigVal = document.getElementById('extSigVal');
+      const shapeBtns = document.querySelectorAll('[data-ext-shape]');
+      const resampleBtn = document.getElementById('extResample');
+      const mTheta = document.getElementById('mExtTheta');
+      const mSup = document.getElementById('mExtSup');
+      const mH = document.getElementById('mExtH');
+      const mSe = document.getElementById('mExtSe');
+      const hintEl = document.getElementById('extHint');
+
+      let shape = 'sharp';
+      let seed = 4242;
+
+      function randnFactory(s) {
+        let state = s | 0;
+        return function randn() {
+          function u01() {
+            state = (state + 0x6D2B79F5) | 0;
+            let t = Math.imul(state ^ (state >>> 15), 1 | state);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          }
+          const u1 = Math.max(1e-9, u01());
+          const u2 = u01();
+          return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        };
+      }
+
+      function popFn(t) {
+        if (shape === 'sharp') return 0.30 + 0.72 * t * t;
+        if (shape === 'flat') return 0.30 + 0.14 * t * t + 0.03 * Math.pow(t, 4);
+        // Double well (non-identified symmetric minima at t = ±1.1)
+        const a = t * t - 1.21;
+        return 0.35 + 0.34 * a * a;
+      }
+
+      function curvatureAtZero() {
+        if (shape === 'sharp') return 1.44;
+        if (shape === 'flat') return 0.28;
+        return 0.0; // Non-identified at 0; local maxima
+      }
+
+      const tGrid = [];
+      for (let i = 0; i <= 120; i++) tGrid.push(-2.0 + (i / 120) * 4.0);
+
+      function makeSampleCurve(rnd, n, sig) {
+        const s = sig / Math.sqrt(n);
+        // Smooth Fourier random process approximating empirical objective noise
+        const c1 = rnd() * s * 1.4;
+        const c2 = rnd() * s * 0.55;
+        const c3 = rnd() * s * 0.35;
+        const c0 = rnd() * s * 0.45;
+        const vals = tGrid.map(t => popFn(t) + c0 + c1 * t + c2 * Math.cos(1.9 * t) + c3 * Math.sin(2.8 * t));
+        let bestI = 0;
+        let maxErr = 0;
+        for (let i = 0; i < tGrid.length; i++) {
+          if (vals[i] < vals[bestI]) bestI = i;
+          const err = Math.abs(vals[i] - popFn(tGrid[i]));
+          if (err > maxErr) maxErr = err;
+        }
+        return { vals, thetaHat: tGrid[bestI], qMin: vals[bestI], supErr: maxErr };
+      }
+
+      function render() {
+        const pal = getPalette();
+        const n = parseInt(nIn.value, 10);
+        const sig = parseFloat(sigIn.value);
+        nVal.textContent = String(n);
+        sigVal.textContent = sig.toFixed(2);
+
+        const rnd = randnFactory(seed);
+        const mainSample = makeSampleCurve(rnd, n, sig);
+        const bgSamples = [];
+        for (let k = 0; k < 10; k++) bgSamples.push(makeSampleCurve(rnd, n, sig));
+
+        const histThetas = [mainSample.thetaHat];
+        for (let k = 0; k < 199; k++) histThetas.push(makeSampleCurve(rnd, n, sig).thetaHat);
+
+        const H = curvatureAtZero();
+        const omega = (sig * 1.4) * (sig * 1.4);
+        const se = H > 0.05 ? Math.sqrt(omega / (n * H * H)) : Infinity;
+
+        mTheta.textContent = mainSample.thetaHat.toFixed(3);
+        mSup.textContent = mainSample.supErr.toFixed(3);
+        mH.textContent = shape === 'double' ? '비식별 (쌍봉)' : H.toFixed(2);
+        mH.className = 'metric-tile__v ' + (shape === 'double' || H < 0.5 ? 'warn' : 'ok');
+        mSe.textContent = Number.isFinite(se) ? se.toFixed(3) : '∞';
+        mSe.className = 'metric-tile__v ' + (!Number.isFinite(se) || se > 0.25 ? 'warn' : 'accent');
+
+        hintEl.textContent = shape === 'double'
+          ? '쌍봉 비식별: n이 커져도 θ̂ₙ이 -1.1과 +1.1 사이를 오갑니다'
+          : '실선: 모집단 Q(θ) · 파란 곡선: 표본 Q̂ₙ(θ) · 옅은 선: 타 표본들';
+
+        // 1. Main Canvas: Q(theta) vs Q_hat_n(theta)
+        const { ctx, w, h } = setupCanvas(cMain, 360);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 40, padR = 20, padT = 24, padB = 34;
+        const mapX = t => padL + ((t + 2.0) / 4.0) * (w - padL - padR);
+        const yMin = -0.1, yMax = 2.8;
+        const mapY = y => padT + (1 - (Math.min(yMax, Math.max(yMin, y)) - yMin) / (yMax - yMin)) * (h - padT - padB);
+
+        ctx.save();
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let tv = -1.5; tv <= 1.51; tv += 0.5) {
+          const px = mapX(tv);
+          ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, h - padB); ctx.stroke();
+          ctx.fillStyle = pal.muted;
+          ctx.font = '500 10.5px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(tv.toFixed(1), px, h - padB + 15);
+        }
+        ctx.beginPath(); ctx.moveTo(padL, mapY(0)); ctx.lineTo(w - padR, mapY(0)); ctx.stroke();
+
+        // Background sample curves
+        bgSamples.forEach(s => {
+          ctx.strokeStyle = pal.cyan;
+          ctx.globalAlpha = 0.14;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          for (let i = 0; i < tGrid.length; i++) {
+            const px = mapX(tGrid[i]), py = mapY(s.vals[i]);
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+        });
+        ctx.globalAlpha = 1;
+
+        // Population Q(theta)
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 3.0;
+        ctx.beginPath();
+        for (let i = 0; i < tGrid.length; i++) {
+          const px = mapX(tGrid[i]), py = mapY(popFn(tGrid[i]));
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // Active sample curve
+        ctx.strokeStyle = pal.cyan;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        for (let i = 0; i < tGrid.length; i++) {
+          const px = mapX(tGrid[i]), py = mapY(mainSample.vals[i]);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // True theta0 (if unique) and estimated thetaHat
+        if (shape !== 'double') {
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.4;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath(); ctx.moveTo(mapX(0), mapY(popFn(0))); ctx.lineTo(mapX(0), mapY(0)); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = pal.amber;
+          ctx.beginPath(); ctx.arc(mapX(0), mapY(0), 4.5, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.strokeStyle = pal.cyan;
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(mapX(mainSample.thetaHat), mapY(mainSample.qMin)); ctx.lineTo(mapX(mainSample.thetaHat), mapY(0)); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = pal.cyan;
+        ctx.beginPath(); ctx.arc(mapX(mainSample.thetaHat), mapY(mainSample.qMin), 4.8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mapX(mainSample.thetaHat), mapY(0), 4.5, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = '600 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = pal.indigo; ctx.fillText('— Q(θ) 모집단', padL + 8, padT + 14);
+        ctx.fillStyle = pal.cyan; ctx.fillText('— Q̂ₙ(θ) 표본', padL + 114, padT + 14);
+        ctx.restore();
+
+        // 2. Mini Histogram of 200 draws
+        const hs = setupCanvas(cHist, 132);
+        const hctx = hs.ctx, hw = hs.w, hh = hs.h;
+        hctx.fillStyle = pal.bg;
+        hctx.fillRect(0, 0, hw, hh);
+
+        const nBins = 28;
+        const bins = new Array(nBins).fill(0);
+        histThetas.forEach(th => {
+          const idx = Math.max(0, Math.min(nBins - 1, Math.floor(((th + 2.0) / 4.0) * nBins)));
+          bins[idx]++;
+        });
+        const maxB = Math.max(1, ...bins);
+        const hPadL = 16, hPadR = 16, hPadT = 12, hPadB = 20;
+        const bw = (hw - hPadL - hPadR) / nBins;
+
+        hctx.save();
+        for (let i = 0; i < nBins; i++) {
+          const bh = (bins[i] / maxB) * (hh - hPadT - hPadB);
+          hctx.fillStyle = shape === 'double' ? pal.rose : pal.teal;
+          hctx.globalAlpha = 0.82;
+          hctx.fillRect(hPadL + i * bw + 1, hh - hPadB - bh, Math.max(2, bw - 2), bh);
+        }
+        hctx.globalAlpha = 1;
+        const hx0 = hPadL + ((0 + 2.0) / 4.0) * (hw - hPadL - hPadR);
+        hctx.strokeStyle = pal.amber;
+        hctx.lineWidth = 1.4;
+        hctx.setLineDash([3, 3]);
+        hctx.beginPath(); hctx.moveTo(hx0, hPadT); hctx.lineTo(hx0, hh - hPadB); hctx.stroke();
+        hctx.setLineDash([]);
+        hctx.fillStyle = pal.muted;
+        hctx.font = '500 9.5px "JetBrains Mono", monospace';
+        hctx.textAlign = 'center';
+        hctx.fillText('-2', hPadL + 4, hh - 6);
+        hctx.fillText('θ₀=0', hx0, hh - 6);
+        hctx.fillText('+2', hw - hPadR - 4, hh - 6);
+        hctx.restore();
+      }
+
+      [nIn, sigIn].forEach(el => el.addEventListener('input', render));
+      shapeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          shape = btn.dataset.extShape;
+          shapeBtns.forEach(b => b.classList.toggle('is-primary', b === btn));
+          render();
+        });
+      });
+      resampleBtn.addEventListener('click', () => {
+        seed = (seed + 6151) | 0;
+        render();
+      });
+
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+  })();
+  </script>
+</body>
+</html>
