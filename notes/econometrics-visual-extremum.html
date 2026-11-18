@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 00 — 일반 극값추정량(Extremum Estimator)의 식별, ULLN 균등수렴 및 샌드위치 분산의 기하학" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>Visual Supplement 00 — 극값추정(Extremum Estimation)의 원리</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner { max-width: var(--container-w); margin: 0 auto; }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.5px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary { cursor: pointer; font-size: 13px; font-weight: 650; color: var(--ink); }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+    }
+    .formula-box__title { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .formula-box__desc { margin: 6px 0 0; font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #0c0f14; }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
+    /* Interactive Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title { font-size: 13.5px; font-weight: 700; color: var(--ink); }
+    .lab-sub { font-family: var(--font-mono); font-size: 11.2px; color: var(--muted); }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas { display: block; width: 100%; height: 360px; touch-action: none; }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .lab-panel { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+    .controls-card, .metrics-card, .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row { margin-bottom: 10px; }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val { font-family: var(--font-mono); font-size: 12px; color: var(--primary); }
+    input[type="range"] { width: 100%; accent-color: var(--primary); cursor: pointer; }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.8px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+    .btn-pill.is-primary { background: var(--primary); border-color: var(--primary); color: #ffffff; }
+    .btn-pill.is-primary:hover { opacity: 0.92; color: #ffffff; }
+
+    .metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k { font-family: var(--font-mono); font-size: 10.6px; color: var(--muted); }
+    .metric-tile__v { font-family: var(--font-mono); font-size: 13.5px; font-weight: 700; color: var(--ink); margin-top: 1px; }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .mini-card canvas {
+      display: block;
+      width: 100%;
+      height: 132px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover { border-color: var(--primary-border); color: var(--primary); background: var(--primary-soft); }
+    .discussion-section { margin-top: 42px; padding-top: 26px; border-top: 1px solid var(--line); }
+    .discussion-section h2 { margin: 0 0 8px; color: var(--ink); font-size: 1.25rem; font-weight: 700; }
+    .discussion-lead { font-size: 13.5px; color: var(--muted); margin: 0 0 18px; }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics.html">← 계량경제학 목차</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">Visual Supplement 00 · Extremum Estimation</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero">
+    <div class="hero-inner">
+      <div class="chapter-kicker">Econometrics · Visual Supplement 00 (Ch 00 연계)</div>
+      <h1>극값추정(Extremum Estimation)의 원리</h1>
+      <p class="subtitle">식별과 균등수렴(ULLN), 일계조건 테일러 선형화, 그리고 샌드위치 분산 \(H^{-1}\Omega H^{-1}\)</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        OLS, NLS, IV/2SLS, GMM, 최대우도추정량(MLE)은 모두 표본 목적함수 \(\hat{Q}_n(\theta)\)의 극값을 구하는 하나의 틀에 들어간다.
+        본 보충자료는 모수공간 \(\Theta \subset \mathbb{R}^2\) 위에서 모집단 목적함수 곡면 \(Q(\theta_1,\theta_2)\)의 식별,
+        표본 크기 \(n\) 증가에 따른 \(\hat{Q}_n \to Q\) 균등수렴(일치성), 그리고 이방성 헤시안 곡률 \(H\)와 기울기 요동 \(\Omega\)가
+        신뢰타원 \(H^{-1}\Omega H^{-1}\)을 만드는 3차원 기하학을 정리한다.
+      </p>
+      <div class="roadmap">
+        <a href="#sec-ext-ulln">
+          <span class="label">01 · 3D 60fps 영상</span>
+          <span class="text">식별과 ULLN 곡면 수렴</span>
+        </a>
+        <a href="#sec-ext-asym">
+          <span class="label">02 · 3D 60fps 영상</span>
+          <span class="text">이방성 곡률 H와 신뢰타원</span>
+        </a>
+        <a href="#sec-ext-lab">
+          <span class="label">03 · 3D Simulation Lab</span>
+          <span class="text">극값추정 3D 곡면 탐색기</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <div class="toc-title">On This Page</div>
+      <nav>
+        <a href="#sec-ext-ulln">01. 식별과 ULLN 일치성</a>
+        <a href="#sec-ext-asym">02. 기울기 요동과 곡률 H</a>
+        <a href="#sec-ext-lab">03. 극값추정 탐색기</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ch00.html#general-stage-1">↗ Ch 00 본문 (II. 일치성)</a>
+        <a class="ext-link" href="econometrics-visual-ols-fwl.html">Visual 01 (OLS · FWL) →</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-ext-ulln">01. 식별과 ULLN 일치성</a>
+          <a href="#sec-ext-asym">02. 기울기 요동과 곡률 H</a>
+          <a href="#sec-ext-lab">03. 극값추정 탐색기</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ch00.html#general-stage-1">↗ Ch 00 본문 (II. 일치성)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-ext-ulln">
+        <h2><span class="sec-tag">01</span><span>식별과 ULLN 일치성: \(\hat{Q}_n(\theta) \to Q(\theta)\)</span></h2>
+        <p>
+          모집단 모수 \(\theta_0 = \arg\min_{\theta \in \Theta} Q(\theta)\)가 유일하게 식별되더라도, 우리가 실제로 관찰하는 것은 표본평균으로 만든
+          무작위 표본 목적함수 \(\hat{Q}_n(\theta)\)뿐이다. 점별 수렴(\(\hat{Q}_n(\theta) \xrightarrow{p} Q(\theta)\))만으로는 극값의 수렴을 보장할 수 없으며,
+          모수공간 \(\Theta\) 전체에서 동시에 오차가 줄어드는 <strong>균등대수의 법칙(ULLN)</strong>이 성립해야 \(\hat{\theta}_n \xrightarrow{p} \theta_0\)가 보장된다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title">극값추정량의 통합 정의</div>
+            \[
+              \hat{\theta}_n = \arg\min_{\theta \in \Theta} \hat{Q}_n(\theta), \qquad
+              \hat{Q}_n(\theta) = \frac{1}{n}\sum_{i=1}^n q(w_i, \theta)
+            \]
+            <p class="formula-box__desc">OLS는 \(q=(y_i-x_i'\beta)^2\), MLE는 \(q=-\log f(w_i|\theta)\), GMM은 \(\bar{g}_n'W\bar{g}_n\)에 해당한다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title">Argmin 일치성의 두 기둥</div>
+            \[
+              \text{식별 (유일 전역 극소 } \theta_0\text{)} \;+\; \sup_{\theta \in \Theta} |\hat{Q}_n(\theta) - Q(\theta)| \xrightarrow{p} 0
+              \;\implies\; \hat{\theta}_n \xrightarrow{p} \theta_0
+            \]
+            <p class="formula-box__desc">표본 곡선 \(\hat{Q}_n\)이 \(Q(\theta) \pm \varepsilon\) 띠 안에 균등하게 갇히면, 그 최소점 \(\hat{\theta}_n\)도 \(\theta_0\) 근방에 갇힌다.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · 3D Surface Identification &amp; Uniform Convergence (ULLN)</span>
+            <span class="video-card__badge">3D · 1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/extremum-ulln-consistency.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            모수공간 \((\theta_1, \theta_2)\) 위에 띄워진 보라색 모집단 목적함수 곡면 \(Q(\theta_1, \theta_2)\)는 \(\theta_0\)에서 유일한 최솟값을 가진다.
+            표본 크기 \(n\)이 작을 때는 표본 곡면 \(\hat{Q}_n(\theta_1, \theta_2)\)(하늘색 격자)이 흔들려 최소점 \(\hat{\theta}_n\)이 바닥 평면에서 벗어나지만,
+            \(n\)이 커지며 곡면 전체가 \(Q(\theta)\)로 균등 수렴(ULLN)함에 따라 \(\hat{\theta}_n \xrightarrow{p} \theta_0\)이 성립한다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-ext-asym">
+        <h2><span class="sec-tag">02</span><span>점근정규성의 3D 기하학: 이방성 곡률 \(H\)와 신뢰타원</span></h2>
+        <p>
+          2차원 모수 \(\theta = (\theta_1, \theta_2)'\)에서도 추정량 \(\hat{\theta}_n\)은 표본 일계조건 \(\nabla \hat{Q}_n(\hat{\theta}_n) = 0\)을 만족하며,
+          1차 테일러 전개 \(0 \approx \nabla \hat{Q}_n(\theta_0) + H(\hat{\theta}_n - \theta_0)\)를 통해 기울기 오차가 헤시안 행렬 \(H = \nabla^2 Q(\theta_0)\)의
+          역행렬 \(H^{-1}\)을 거쳐 모수 추정 오차로 변환된다. 한 방향은 가파르고(\(H_{11}\) 큼) 다른 방향은 완만한(\(H_{22}\) 작음) 이방성 곡면에서는
+          동일한 등방 기울기 요동이 가해져도 추정 오차가 완만한 계곡 방향으로 길게 늘어난 타원 분포를 만든다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">Asymptotic Linearization &amp; Sandwich Variance</div>
+          \[
+            \sqrt{n}(\hat{\theta}_n - \theta_0) \approx -H^{-1}\sqrt{n}\nabla \hat{Q}_n(\theta_0)
+            \;\xrightarrow{d}\; \mathcal{N}\!\left(0,\; H^{-1}\Omega H^{-1}\right),
+            \qquad
+            \Omega = \mathrm{Var}\!\left(\sqrt{n}\nabla \hat{Q}_n(\theta_0)\right)
+          \]
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · Anisotropic 3D Bowl, Score Tilt &amp; Confidence Ellipse</span>
+            <span class="video-card__badge">3D · 1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/extremum-asymptotic-normality.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            \(\theta_1\) 축으로는 가파른 곡률(\(H_{11}\) 큼, 청록), \(\theta_2\) 축으로는 완만한 계곡(\(H_{22}\) 작음, 장미색)을 갖는 3D 목적함수에
+            모든 방향으로 크기가 같은 원형 기울기 요동 \(\nabla \hat{Q}_n(\theta_0)\)이 가해질 때, 최소점 \(\hat{\theta}_n\)은 가파른 벽 방향으로는 거의 움직이지 않고
+            완만한 계곡 방향으로 크게 미끄러지며 바닥 평면에 길쭉한 샌드위치 신뢰타원(\(H^{-1}\Omega H^{-1}\))을 그린다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-ext-lab">
+        <h2><span class="sec-tag">03</span><span>극값추정 3D 탐색기: 식별 · ULLN · 곡률 \(H\)</span></h2>
+        <p>
+          3차원 캔버스를 드래그해 목적함수 곡면 \(Q(\theta_1, \theta_2)\)와 표본 곡면 \(\hat{Q}_n(\theta_1, \theta_2)\)을 다양한 각도에서 회전하며 살펴볼 수 있다.
+          곡면 형태(등방 강한 곡률, 이방성 계곡 약식별, 쌍봉 비식별)와 표본 크기 \(n\), 기울기 요동 강도를 바꾸면
+          바닥 평면 위의 200회 반복추출 \(\hat{\theta}_n\) 산점도와 95% 신뢰타원이 어떻게 변하는지 즉시 확인된다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">3D Surface Lab · Drag to Orbit \(Q(\theta_1, \theta_2)\), \(\hat{Q}_n\) &amp; Argmin Ellipse</span>
+            <span class="lab-sub">좌측 3D 곡면을 마우스·터치로 드래그해 시점을 회전하세요</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="extCanvas" style="cursor:grab;touch-action:none;" aria-label="극값추정 3D 곡면 캔버스"></canvas>
+              <div class="canvas-hint" id="extHint">보라 곡면: 모집단 Q(θ) · 하늘 격자: 표본 Q̂ₙ(θ) · 바닥 타원: 95% 신뢰영역</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>표본 크기 \(n\)</span>
+                    <span class="control-val" id="extNVal">60</span>
+                  </div>
+                  <input id="extN" type="range" min="15" max="400" step="5" value="60" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>기울기 요동 강도 \(\sqrt{\Omega}\)</span>
+                    <span class="control-val" id="extSigVal">0.90</span>
+                  </div>
+                  <input id="extSig" type="range" min="0.30" max="1.60" step="0.05" value="0.90" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" data-ext-shape="sharp">등방 강한 곡률</button>
+                  <button type="button" class="btn-pill" data-ext-shape="aniso">이방성 계곡 (약식별)</button>
+                  <button type="button" class="btn-pill" data-ext-shape="double">쌍봉 (비식별)</button>
+                  <button type="button" class="btn-pill" id="extResample">새 표본</button>
+                  <button type="button" class="btn-pill" id="extResetCam">시점 초기화</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">현재 θ̂ₙ (θ₀ = 0, 0)</div>
+                    <div class="metric-tile__v accent" id="mExtTheta">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">균등오차 sup|Q̂ₙ − Q|</div>
+                    <div class="metric-tile__v" id="mExtSup">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">곡률 (H₁₁, H₂₂)</div>
+                    <div class="metric-tile__v ok" id="mExtH">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">표준오차 (SE₁, SE₂)</div>
+                    <div class="metric-tile__v" id="mExtSe">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>바닥 평면 (θ₁, θ₂) · 200회 반복추출 산점도</span>
+                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);" id="mExtSpread">금색 점: θ₀ · 타원: 95% 영역</span>
+                </div>
+                <canvas id="extHistCanvas" aria-label="2차원 모수공간 산점도 및 신뢰타원"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="econometrics-ch00.html#general-stage-1">← Ch 00 본문 · 극값추정이론</a>
+        <a href="econometrics-visual-ols-fwl.html">Visual 01 · OLS · FWL 사영 기하학 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">극값추정량의 식별, 균등수렴(ULLN), 테일러 선형화 및 샌드위치 분산에 관한 질문을 자유롭게 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button aria-label="맨 위로 이동" class="back-to-top" type="button">↑ TOP</button>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(mode) {
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        if (themeBtn) themeBtn.textContent = 'Light';
+      } else {
+        html.removeAttribute('data-theme');
+        if (themeBtn) themeBtn.textContent = 'Dark';
+      }
+      try { localStorage.setItem('coursework-monograph-theme', mode); } catch (_) {}
+      onThemeCallbacks.forEach(fn => fn());
+    }
+    syncTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = html.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    function getPalette() {
+      const dark = html.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.26)' : 'rgba(15,23,42,0.28)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        cyan: dark ? '#38bdf8' : '#0284c7',
+        teal: dark ? '#2dd4bf' : '#0d9488',
+        indigo: dark ? '#818cf8' : '#4f46e5',
+        amber: dark ? '#fbbf24' : '#d97706',
+        rose: dark ? '#fb7185' : '#e11d48'
+      };
+    }
+
+    function setupCanvas(canvas, minH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(240, Math.round(rect.width));
+      const h = Math.max(minH || 130, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    (function initExtremumLab() {
+      const cMain = document.getElementById('extCanvas');
+      const cHist = document.getElementById('extHistCanvas');
+      const nIn = document.getElementById('extN');
+      const sigIn = document.getElementById('extSig');
+      const nVal = document.getElementById('extNVal');
+      const sigVal = document.getElementById('extSigVal');
+      const shapeBtns = document.querySelectorAll('[data-ext-shape]');
+      const resampleBtn = document.getElementById('extResample');
+      const resetCamBtn = document.getElementById('extResetCam');
+      const mTheta = document.getElementById('mExtTheta');
+      const mSup = document.getElementById('mExtSup');
+      const mH = document.getElementById('mExtH');
+      const mSe = document.getElementById('mExtSe');
+      const hintEl = document.getElementById('extHint');
+
+      let shape = 'sharp';
+      let seed = 4242;
+      const camDefault = { yaw: -0.68, pitch: 0.48 };
+      const cam = { yaw: camDefault.yaw, pitch: camDefault.pitch };
+
+      function randnFactory(s) {
+        let state = s | 0;
+        return function randn() {
+          function u01() {
+            state = (state + 0x6D2B79F5) | 0;
+            let t = Math.imul(state ^ (state >>> 15), 1 | state);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          }
+          const u1 = Math.max(1e-9, u01());
+          const u2 = u01();
+          return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+        };
+      }
+
+      function getCurvature() {
+        if (shape === 'sharp') return { h1: 2.20, h2: 1.95 };
+        if (shape === 'aniso') return { h1: 2.60, h2: 0.34 };
+        return { h1: 0.0, h2: 1.80 }; // double well along theta1
+      }
+
+      function popFn(t1, t2) {
+        if (shape === 'sharp') return 0.42 + 0.5 * (2.20 * t1 * t1 + 1.95 * t2 * t2) * 0.45;
+        if (shape === 'aniso') return 0.42 + 0.5 * (2.60 * t1 * t1 + 0.34 * t2 * t2) * 0.48;
+        // Double well along theta1: symmetric minima at (±1.05, 0)
+        const d1 = t1 * t1 - 1.10;
+        return 0.42 + 0.42 * d1 * d1 + 0.45 * t2 * t2;
+      }
+
+      function evalSampleGrid(gridVals, coeffs) {
+        const { c0, g1, g2, w1, w2 } = coeffs;
+        const m = gridVals.length;
+        const out = [];
+        let bestI = 0, bestJ = 0, bestVal = Infinity, maxErr = 0;
+        for (let i = 0; i < m; i++) {
+          const t1 = gridVals[i];
+          const row = new Array(m);
+          for (let j = 0; j < m; j++) {
+            const t2 = gridVals[j];
+            const q0 = popFn(t1, t2);
+            const pert = c0 + g1 * t1 + g2 * t2 + w1 * Math.cos(2.1 * t1 + 0.4) + w2 * Math.sin(2.2 * t2 - 0.5);
+            const val = Math.max(0.05, q0 + pert);
+            row[j] = val;
+            if (val < bestVal) { bestVal = val; bestI = i; bestJ = j; }
+            const err = Math.abs(val - q0);
+            if (err > maxErr) maxErr = err;
+          }
+          out.push(row);
+        }
+        return { zGrid: out, t1Hat: gridVals[bestI], t2Hat: gridVals[bestJ], qMin: bestVal, supErr: maxErr };
+      }
+
+      function drawSampleCoeffs(rnd, n, sig) {
+        const s = sig / Math.sqrt(n);
+        return {
+          c0: rnd() * s * 0.35,
+          g1: rnd() * s * 1.15,
+          g2: rnd() * s * 1.15,
+          w1: rnd() * s * 0.30,
+          w2: rnd() * s * 0.30
+        };
+      }
+
+      // Coarse surface grid for fast crisp 3D painting & wireframe, plus fine search grid for argmin
+      const nSurf = 13;
+      const rMax = 1.50;
+      const surfCoords = [];
+      for (let i = 0; i <= nSurf; i++) surfCoords.push(-rMax + (i / nSurf) * (2 * rMax));
+
+      const fineCoords = [];
+      for (let i = 0; i <= 36; i++) fineCoords.push(-rMax + (i / 36) * (2 * rMax));
+
+      function project3D(p, w, h) {
+        // World coords (x=theta1, y=theta2, z=Q centered around z=0.85)
+        const x = p[0], y = p[1], z = p[2] - 0.82;
+        const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
+        const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+        const xr = x * cy - y * sy;
+        const yr = x * sy + y * cy;
+        const y2 = yr * cp - z * sp;
+        const depth = yr * sp + z * cp;
+        // y_screen uses -y2 wait: camera looking down means positive z points UP screen:
+        const sx = xr;
+        const syScreen = z * cp - yr * sp;
+        const persp = 7.2 / Math.max(2.2, 7.2 - depth);
+        const scale = Math.min(w, h) * 0.245 * persp;
+        return {
+          x: w * 0.50 + sx * scale,
+          y: h * 0.56 - syScreen * scale,
+          depth
+        };
+      }
+
+      // Drag to orbit 3D surface
+      let dragState = null;
+      cMain.addEventListener('pointerdown', (e) => {
+        dragState = { x: e.clientX, y: e.clientY };
+        cMain.style.cursor = 'grabbing';
+        cMain.setPointerCapture(e.pointerId);
+      });
+      cMain.addEventListener('pointermove', (e) => {
+        if (!dragState) return;
+        const dx = e.clientX - dragState.x;
+        const dy = e.clientY - dragState.y;
+        dragState = { x: e.clientX, y: e.clientY };
+        cam.yaw -= dx * 0.0085;
+        cam.pitch = Math.max(0.08, Math.min(1.42, cam.pitch + dy * 0.0075));
+        render();
+      });
+      cMain.addEventListener('pointerup', (e) => {
+        dragState = null;
+        cMain.style.cursor = 'grab';
+        try { cMain.releasePointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      function render() {
+        const pal = getPalette();
+        const n = parseInt(nIn.value, 10);
+        const sig = parseFloat(sigIn.value);
+        nVal.textContent = String(n);
+        sigVal.textContent = sig.toFixed(2);
+
+        const rnd = randnFactory(seed);
+        const activeCoeffs = drawSampleCoeffs(rnd, n, sig);
+        const mainFine = evalSampleGrid(fineCoords, activeCoeffs);
+        const sampSurf = evalSampleGrid(surfCoords, activeCoeffs);
+
+        const mcDraws = [{ t1: mainFine.t1Hat, t2: mainFine.t2Hat }];
+        for (let k = 0; k < 199; k++) {
+          const res = evalSampleGrid(fineCoords, drawSampleCoeffs(rnd, n, sig));
+          mcDraws.push({ t1: res.t1Hat, t2: res.t2Hat });
+        }
+
+        const { h1, h2 } = getCurvature();
+        const omega = (sig * 1.15) * (sig * 1.15);
+        // Hessian of Q(t1, t2) in our popFn formulas:
+        // sharp: 0.45 * 2.20 = 0.99, 0.45 * 1.95 = 0.878; aniso: 0.48 * 2.60 = 1.248, 0.48 * 0.34 = 0.163
+        const effH1 = shape === 'sharp' ? 0.45 * h1 : shape === 'aniso' ? 0.48 * h1 : 0;
+        const effH2 = shape === 'sharp' ? 0.45 * h2 : shape === 'aniso' ? 0.48 * h2 : 0;
+        const se1 = effH1 > 0.05 ? Math.sqrt(omega / (n * effH1 * effH1)) : Infinity;
+        const se2 = effH2 > 0.05 ? Math.sqrt(omega / (n * effH2 * effH2)) : Infinity;
+
+        mTheta.textContent = `(${mainFine.t1Hat.toFixed(2)}, ${mainFine.t2Hat.toFixed(2)})`;
+        mSup.textContent = mainFine.supErr.toFixed(3);
+        mH.textContent = shape === 'double' ? '비식별 (쌍봉)' : `(${h1.toFixed(2)}, ${h2.toFixed(2)})`;
+        mH.className = 'metric-tile__v ' + (shape === 'double' || shape === 'aniso' ? 'warn' : 'ok');
+        mSe.textContent = Number.isFinite(se1) && Number.isFinite(se2) ? `(${se1.toFixed(2)}, ${se2.toFixed(2)})` : '∞';
+        mSe.className = 'metric-tile__v ' + (!Number.isFinite(se1) || se2 > 0.28 ? 'warn' : 'accent');
+
+        hintEl.textContent = shape === 'double'
+          ? '쌍봉 비식별: n이 커져도 θ̂ₙ이 (-1.05, 0)과 (+1.05, 0) 두 골짜기를 오갑니다'
+          : '보라 곡면: 모집단 Q(θ) · 하늘 격자: 표본 Q̂ₙ(θ) · 바닥 타원: 95% 신뢰영역';
+
+        // 1. 3D Canvas render
+        const { ctx, w, h } = setupCanvas(cMain, 380);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        // Floor polygon & coordinate grid at z = 0
+        const fl = [
+          project3D([-rMax, -rMax, 0], w, h),
+          project3D([rMax, -rMax, 0], w, h),
+          project3D([rMax, rMax, 0], w, h),
+          project3D([-rMax, rMax, 0], w, h)
+        ];
+        ctx.fillStyle = pal.dark ? 'rgba(17, 24, 39, 0.72)' : 'rgba(226, 232, 240, 0.60)';
+        ctx.beginPath();
+        ctx.moveTo(fl[0].x, fl[0].y);
+        fl.slice(1).forEach(pt => ctx.lineTo(pt.x, pt.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -1.2; g <= 1.21; g += 0.6) {
+          const a = project3D([-rMax, g, 0], w, h), b = project3D([rMax, g, 0], w, h);
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          const c = project3D([g, -rMax, 0], w, h), d = project3D([g, rMax, 0], w, h);
+          ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
+        }
+
+        // Floor 95% asymptotic ellipse & Monte Carlo dots on floor (when identified)
+        if (shape !== 'double' && Number.isFinite(se1) && Number.isFinite(se2)) {
+          const chi2 = 2.448; // sqrt(5.991) for 95% 2D ellipse
+          const rad1 = Math.min(rMax, se1 * chi2);
+          const rad2 = Math.min(rMax, se2 * chi2);
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 2.0;
+          ctx.beginPath();
+          for (let a = 0; a <= 48; a++) {
+            const ang = (a / 48) * Math.PI * 2;
+            const pt = project3D([rad1 * Math.cos(ang), rad2 * Math.sin(ang), 0.01], w, h);
+            if (a === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.stroke();
+        }
+
+        // Painter-sorted translucent quads for Population Q(theta1, theta2)
+        const quads = [];
+        for (let i = 0; i < nSurf; i++) {
+          for (let j = 0; j < nSurf; j++) {
+            const t1a = surfCoords[i], t1b = surfCoords[i + 1];
+            const t2a = surfCoords[j], t2b = surfCoords[j + 1];
+            const za = popFn(t1a, t2a), zb = popFn(t1b, t2a);
+            const zc = popFn(t1b, t2b), zd = popFn(t1a, t2b);
+            const pa = project3D([t1a, t2a, za], w, h);
+            const pb = project3D([t1b, t2a, zb], w, h);
+            const pc = project3D([t1b, t2b, zc], w, h);
+            const pd = project3D([t1a, t2b, zd], w, h);
+            const avgDepth = (pa.depth + pb.depth + pc.depth + pd.depth) * 0.25;
+            const avgZ = (za + zb + zc + zd) * 0.25;
+            quads.push({ pts: [pa, pb, pc, pd], depth: avgDepth, z: avgZ });
+          }
+        }
+        quads.sort((q1, q2) => q1.depth - q2.depth);
+        quads.forEach(q => {
+          const shade = Math.min(1, Math.max(0, (q.z - 0.4) / 2.0));
+          ctx.fillStyle = pal.dark
+            ? `rgba(99, 102, 241, ${(0.12 + 0.14 * shade).toFixed(2)})`
+            : `rgba(79, 70, 229, ${(0.10 + 0.12 * shade).toFixed(2)})`;
+          ctx.strokeStyle = pal.dark ? 'rgba(129, 140, 248, 0.36)' : 'rgba(79, 70, 229, 0.32)';
+          ctx.lineWidth = 0.85;
+          ctx.beginPath();
+          ctx.moveTo(q.pts[0].x, q.pts[0].y);
+          q.pts.slice(1).forEach(pt => ctx.lineTo(pt.x, pt.y));
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        });
+
+        // Sample wireframe grid Q_hat_n(theta1, theta2) (every 2nd grid line for crispness)
+        ctx.strokeStyle = pal.cyan;
+        ctx.globalAlpha = 0.72;
+        ctx.lineWidth = 1.35;
+        for (let i = 0; i <= nSurf; i += 2) {
+          ctx.beginPath();
+          for (let j = 0; j <= nSurf; j++) {
+            const p = project3D([surfCoords[i], surfCoords[j], sampSurf.zGrid[i][j]], w, h);
+            if (j === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          }
+          ctx.stroke();
+
+          ctx.beginPath();
+          for (let j = 0; j <= nSurf; j++) {
+            const p = project3D([surfCoords[j], surfCoords[i], sampSurf.zGrid[j][i]], w, h);
+            if (j === 0) ctx.moveTo(p.x, p.y);
+            else ctx.lineTo(p.x, p.y);
+          }
+          ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
+
+        // Drop lines and dots for theta0 (when unique) & thetaHat_n
+        if (shape !== 'double') {
+          const pTop0 = project3D([0, 0, popFn(0, 0)], w, h);
+          const pBot0 = project3D([0, 0, 0], w, h);
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.6;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath(); ctx.moveTo(pTop0.x, pTop0.y); ctx.lineTo(pBot0.x, pBot0.y); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = pal.amber;
+          ctx.beginPath(); ctx.arc(pBot0.x, pBot0.y, 4.5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(pTop0.x, pTop0.y, 4.0, 0, Math.PI * 2); ctx.fill();
+        }
+
+        const pTopHat = project3D([mainFine.t1Hat, mainFine.t2Hat, mainFine.qMin], w, h);
+        const pBotHat = project3D([mainFine.t1Hat, mainFine.t2Hat, 0], w, h);
+        ctx.strokeStyle = pal.cyan;
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(pTopHat.x, pTopHat.y); ctx.lineTo(pBotHat.x, pBotHat.y); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = pal.cyan;
+        ctx.beginPath(); ctx.arc(pTopHat.x, pTopHat.y, 4.8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(pBotHat.x, pBotHat.y, 4.8, 0, Math.PI * 2); ctx.fill();
+
+        // Axis labels on 3D floor
+        const pL1 = project3D([rMax + 0.16, 0, 0], w, h);
+        const pL2 = project3D([0, rMax + 0.16, 0], w, h);
+        ctx.fillStyle = pal.muted;
+        ctx.font = '600 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('θ₁', pL1.x, pL1.y + 4);
+        ctx.fillText('θ₂', pL2.x, pL2.y + 4);
+
+        // 2. Bottom-Right Top-Down 2D Parameter Floor Scatter & Confidence Ellipse
+        const hs = setupCanvas(cHist, 148);
+        const hctx = hs.ctx, hw = hs.w, hh = hs.h;
+        hctx.fillStyle = pal.bg;
+        hctx.fillRect(0, 0, hw, hh);
+
+        const pad = 16;
+        const size = Math.min(hw - pad * 2, hh - 22);
+        const cx = hw * 0.5, cy = hh * 0.5 - 3;
+        const map2D = (t1, t2) => [cx + (t1 / rMax) * (size * 0.48), cy - (t2 / rMax) * (size * 0.48)];
+
+        hctx.save();
+        hctx.strokeStyle = pal.grid;
+        hctx.lineWidth = 1;
+        hctx.strokeRect(cx - size * 0.48, cy - size * 0.48, size * 0.96, size * 0.96);
+        hctx.beginPath();
+        hctx.moveTo(cx - size * 0.48, cy); hctx.lineTo(cx + size * 0.48, cy);
+        hctx.moveTo(cx, cy - size * 0.48); hctx.lineTo(cx, cy + size * 0.48);
+        hctx.stroke();
+
+        // Scatter 200 MC estimates
+        mcDraws.forEach(d => {
+          const [px, py] = map2D(d.t1, d.t2);
+          hctx.fillStyle = shape === 'double' ? pal.rose : pal.teal;
+          hctx.globalAlpha = 0.45;
+          hctx.beginPath(); hctx.arc(px, py, 2.2, 0, Math.PI * 2); hctx.fill();
+        });
+        hctx.globalAlpha = 1;
+
+        // Theoretical 95% ellipse
+        if (shape !== 'double' && Number.isFinite(se1) && Number.isFinite(se2)) {
+          const chi2 = 2.448;
+          const rx = Math.min(size * 0.48, (se1 * chi2 / rMax) * (size * 0.48));
+          const ry = Math.min(size * 0.48, (se2 * chi2 / rMax) * (size * 0.48));
+          hctx.strokeStyle = pal.amber;
+          hctx.lineWidth = 1.6;
+          hctx.beginPath();
+          hctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+          hctx.stroke();
+          hctx.fillStyle = pal.amber;
+          hctx.beginPath(); hctx.arc(cx, cy, 3.6, 0, Math.PI * 2); hctx.fill();
+        }
+
+        // Current active estimate
+        const [curX, curY] = map2D(mainFine.t1Hat, mainFine.t2Hat);
+        hctx.fillStyle = pal.cyan;
+        hctx.beginPath(); hctx.arc(curX, curY, 4.2, 0, Math.PI * 2); hctx.fill();
+
+        hctx.fillStyle = pal.muted;
+        hctx.font = '500 9.5px "JetBrains Mono", monospace';
+        hctx.textAlign = 'right';
+        hctx.fillText('θ₁', cx + size * 0.48 - 2, cy - 3);
+        hctx.textAlign = 'left';
+        hctx.fillText('θ₂', cx + 4, cy - size * 0.48 + 10);
+        hctx.restore();
+      }
+
+      [nIn, sigIn].forEach(el => el.addEventListener('input', render));
+      shapeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          shape = btn.dataset.extShape;
+          shapeBtns.forEach(b => b.classList.toggle('is-primary', b === btn));
+          render();
+        });
+      });
+      resampleBtn.addEventListener('click', () => {
+        seed = (seed + 6151) | 0;
+        render();
+      });
+      if (resetCamBtn) {
+        resetCamBtn.addEventListener('click', () => {
+          cam.yaw = camDefault.yaw;
+          cam.pitch = camDefault.pitch;
+          render();
+        });
+      }
+
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+  })();
+  </script>
+</body>
+</html>
