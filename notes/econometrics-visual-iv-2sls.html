@@ -141,7 +141,8 @@
       overflow-wrap: break-word;
     }
     html:not(.math-ready) mjx-container { visibility: hidden; }
-    mjx-container { overflow-x: auto; overflow-y: visible; color: inherit; max-width: 100%; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
 
     /* Topbar */
     .sitebar {
@@ -915,7 +916,7 @@
 
       <!-- SECTION 02 -->
       <section class="module" id="sec-iv-lab">
-        <h2><span class="sec-tag">02</span>인터랙티브 3D 2SLS &amp; 배제·관련성 탐색기</h2>
+        <h2><span class="sec-tag">02</span><span>3D 2SLS &amp; 배제·관련성 탐색기</span></h2>
         <p>
           도구변수 추정량의 오차 구조는 \(\hat{\beta}_{\mathrm{2SLS}} - \beta = \frac{z'u}{z'x}\)로 요약된다.
           관련성 \(\rho(z, x)\)가 약해지면 분모 \(\hat{x} = P_Z x\)의 길이가 급격히 줄어들어,
