@@ -918,6 +918,21 @@
           </div>
         </div>
 
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · The Likelihood Trinity (\(W \approx \mathrm{LR} \approx \mathrm{LM}\) &amp; Finite-Sample Divergence)</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/mle-trinity-geometry.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            정규 이차 곡선 위에서는 수평 거리(Wald), 수직 높이 차(LR), 접선 기울기(LM)가 곡률 \(\mathcal{I}_n\) 변화와 무관하게 정확히 일치한다.
+            반면 유한표본 비대칭 우도로 변형되면 정점 포물선만 쓰는 Wald와 실제 곡선의 LR·기울기 LM이 서로 다른 부등식 방향(\(\mathrm{LM} &gt; \mathrm{LR} &gt; W\))으로 갈라진다.
+          </div>
+        </div>
+
         <div class="interactive-lab">
           <div class="lab-header">
             <span class="lab-title">Interactive Lab 01 · The 1D Likelihood Trinity Explorer</span>
@@ -1007,6 +1022,21 @@
             \nabla_\theta \ell_n(\tilde{\theta}) = \tilde{\lambda}\, \nabla_\theta R(\tilde{\theta})'
             \;\perp\; \ker \nabla R(\tilde{\theta})
           \]
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · 3D Likelihood Hill, Constrained Ridge \(\tilde{\theta}\) &amp; \(\mathcal{I}\)-Metric Projection</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/mle-2d-projection.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            3차원 로그우도 언덕을 제약 평면 \(R(\theta)=r\)이 자를 때 능선의 정점 \(\tilde{\theta}\)가 제약 MLE가 되며, \(\hat{\theta}\)와의 높이 차가 \(\frac{1}{2}\mathrm{LR}\)이다.
+            바닥 평면의 타원 등고선에서 \(\tilde{\theta}\)는 유클리드 수직점이 아니라 Fisher 정보 내적 \(\mathcal{I}\)-사영점이며, 반대로 점수벡터 \(\nabla\ell(\tilde{\theta})\)는 제약선에 직교한다.
+          </div>
         </div>
 
         <div class="interactive-lab">
