@@ -990,7 +990,7 @@
       <section class="module" id="sec-gmm-weight-video">
         <h2><span class="sec-tag">03</span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</h2>
         <p>
-          동일한 가중치(\(W = I\))를 쓰면 정밀도가 낮은 시끄러운 적률(\(\sigma_2 \gg \sigma_1\))의 무작위 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
+          동일한 가중치(\(W = I\))를 쓰면 분산이 큰 불안정한 적률(\(\sigma_2 \gg \sigma_1\))의 표본 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
           반대로 적률 공분산행렬 \(S = \mathrm{Var}(\sqrt{n}\bar{g}_n(\theta_0))\)의 역행렬 \(W^* = S^{-1}\)을 쓰면,
           불확실성이 큰 방향으로는 거리 타원을 늘려 벌점을 낮추고 신뢰할 수 있는 적률 방향으로 추정량을 당겨 점근분산 하한 \((G'S^{-1}G)^{-1}\)을 달성한다.
         </p>
@@ -1014,7 +1014,7 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            적률 공분산 \(S\)에 의해 세로 방향 변동이 클 때, \(W=I\) 원형 거리는 시끄러운 \(\bar{g}_2\)를 과대 반영한다.
+            적률 공분산 \(S\)에 의해 세로 방향 변동이 클 때, \(W=I\) 원형 거리는 변동성이 큰 \(\bar{g}_2\)를 과대 반영한다.
             가중치를 \(W^*=S^{-1}\)로 바꾸면 등고선이 마할라노비스 타원으로 변형되며 접점 \(\hat{\theta}_{S^{-1}}\)이 정밀한 \(\bar{g}_1\) 쪽으로 이동하고,
             최소 타원 높이 \(J = n\,\bar{g}_n(\hat{\theta})' S^{-1}\bar{g}_n(\hat{\theta})\)가 \(\chi^2_{r-k}\) 검정통계량이 된다.
           </div>
@@ -1026,7 +1026,7 @@
         <h2><span class="sec-tag">04</span>이분산·자기상관 아래 2SLS · 2-Step · Iterated · CUE &amp; HAC 비교기</h2>
         <p>
           등분산·무상관(\(\gamma=0, \rho_u=0\))이면 2SLS와 2-Step GMM은 같은 추정량과 표준오차를 준다.
-          그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이 있으면 2-Step·Iterated·CUE는 잡음이 큰 도구변수의 가중치를 줄여 <strong>95% 신뢰구간 폭(SE)을 2SLS보다 좁힌다</strong>.
+          그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이 있으면 2-Step·Iterated·CUE는 오차 분산이 큰 도구변수의 가중치를 줄여 <strong>95% 신뢰구간 폭(SE)을 2SLS보다 좁힌다</strong>.
           또한 <strong>자기상관(\(\rho_u &gt; 0\))</strong>이 있을 때 시차 공분산을 무시한 나이브 표준오차(점선)는 실제보다 과도하게 좁게 계산되며, Newey–West HAC(\(m &gt; 0\))가 이를 보정한다.
         </p>
 
