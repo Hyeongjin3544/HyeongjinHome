@@ -2077,7 +2077,7 @@ startup: {
 </section>
 <section id="gmm-topic-04">
 <h2><span class="section-number">4.5</span>GMM 목적함수와 가중행렬의 역할</h2>
-<div class="topic-opening"><p>가중행렬은 모멘트의 서로 다른 단위와 변동성을 조정한다. 단순히 큰 숫자를 갖는 모멘트에 높은 가중치를 주면 그 모멘트가 정보가 풍부해서가 아니라 측정단위가 커서 목적함수를 지배할 수 있다. 역공분산 가중은 변동성을 표준화하고 서로 중복된 모멘트 사이의 중복된 정보까지 반영한다는 점에서 합리적이다.</p><p>모멘트 조건이 올바르게 지정되면 모집단 모멘트는 참모수에서 모두 0이므로 어떤 양의 정부호 가중행렬을 사용하더라도 그 점의 모집단 목적함수 값은 0이다. 하지만 유한표본에서는 모멘트를 동시에 0으로 맞추기 어렵기 때문에, 특히 과대식별에서 추정량과 점근분산이 가중행렬에 따라 달라질 수 있다.</p></div><div class="statement definition" id="result-4-01">
+<div class="topic-opening"><p>가중행렬은 모멘트의 서로 다른 단위와 변동성을 조정한다. 단순히 큰 숫자를 갖는 모멘트에 높은 가중치를 주면 그 모멘트가 정보가 풍부해서가 아니라 측정단위가 커서 목적함수를 지배할 수 있다. 역공분산 가중은 변동성을 표준화하고 서로 중복된 모멘트 사이의 중복된 정보까지 반영한다는 점에서 합리적이다.</p><p>모멘트 조건이 올바르게 지정되면 모집단 모멘트는 참모수에서 모두 0이므로 어떤 양의 정부호 가중행렬을 사용하더라도 그 점의 모집단 목적함수 값은 0이다. 하지만 유한표본에서는 모멘트를 동시에 0으로 맞추기 어렵기 때문에, 특히 과대식별에서 추정량과 점근분산이 가중행렬에 따라 달라질 수 있다.</p></div><div class="callout-strip"><div class="left">VISUAL<br/>SUPPLEMENT</div><div class="right"><strong>동적 시각화 · GMM 핵심 아이디어와 W-타원 기하학</strong> — 적률법(r=k)에서 일반화적률법(r&gt;k)으로 넘어가는 직관, 최적 가중행렬 W* = S⁻¹의 마할라노비스 타원, Hansen J-검정 및 이분산·자기상관 아래 2SLS·2-Step·CUE·HAC 비교를 영상과 시뮬레이터로 확인할 수 있다.<div style="margin-top:8px;"><a href="econometrics-visual-gmm.html" style="color:var(--primary);font-weight:600;text-decoration:none;">GMM 아이디어 및 가중거리 보충자료 열기 →</a></div></div></div><div class="statement definition" id="result-4-01">
 <div class="statement-head">
 <span class="stmt-badge">정의 4.1</span>
 <span class="stmt-title">모집단 GMM과 표본 GMM</span>

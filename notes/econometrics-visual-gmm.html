@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 03 — GMM(일반화적률법)의 핵심 아이디어, W-타원 기하학, Hansen J-검정 및 2-Step·CUE·HAC 비교" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>Visual Supplement 03 — GMM의 아이디어와 가중거리 기하학</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow-x: auto; overflow-y: visible; color: inherit; max-width: 100%; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner {
+      max-width: var(--container-w);
+      margin: 0 auto;
+    }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.5px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    /* Callouts & Formula Cards */
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+    }
+    .formula-box__title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .formula-box__desc {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0c0f14;
+    }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
+    /* Interactive Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .lab-sub {
+      font-family: var(--font-mono);
+      font-size: 11.2px;
+      color: var(--muted);
+    }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 360px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas {
+      display: block;
+      width: 100%;
+      height: 360px;
+      touch-action: none;
+    }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 8px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+    }
+    .lab-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .controls-card, .metrics-card, .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row { margin-bottom: 10px; }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.8px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .btn-pill.is-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-pill.is-primary:hover { opacity: 0.92; color: #ffffff; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k {
+      font-family: var(--font-mono);
+      font-size: 10.6px;
+      color: var(--muted);
+    }
+    .metric-tile__v {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 1px;
+    }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .mini-card canvas {
+      display: block;
+      width: 100%;
+      height: 138px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+
+    /* Footer Pager & Discussion */
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .discussion-section {
+      margin-top: 42px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+    .discussion-section h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .discussion-lead {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics.html">← 계량경제학 목차</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">Visual Supplement 03 · GMM Intuition &amp; Geometry</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero">
+    <div class="hero-inner">
+      <div class="chapter-kicker">Econometrics · Visual Supplement 03 (Ch 04 연계)</div>
+      <h1>GMM의 아이디어와 가중거리 기하학</h1>
+      <p class="subtitle">적률법(MM)에서 일반화적률법(GMM)으로, $W$-타원, 최적 가중 $W^*=S^{-1}$ 및 Two-Step·CUE·HAC</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        경제이론은 확률변수와 모수에 관한 적률조건 \(\mathbb{E}[g(w_i,\theta_0)]=0\)을 제시한다.
+        식 개수 \(r\)이 모수 개수 \(k\)보다 많을 때(\(r > k\)) 표본적률을 동시에 \(0\)으로 만들 수 없으므로,
+        GMM은 가중 거리 \(Q_n(\theta)=\bar{g}_n(\theta)'W\bar{g}_n(\theta)\)를 최소화해 가장 균형 잡힌 타협점을 찾는다.
+      </p>
+      <div class="roadmap">
+        <a href="#sec-gmm-idea">
+          <span class="label">01 · 60fps 영상</span>
+          <span class="text">GMM이 무엇인가? (r &gt; k)</span>
+        </a>
+        <a href="#sec-gmm-ellipse-lab">
+          <span class="label">02 · Interactive Lab 01</span>
+          <span class="text">두 방정식의 타협 &amp; J-검정</span>
+        </a>
+        <a href="#sec-gmm-weight-video">
+          <span class="label">03 · 60fps 영상</span>
+          <span class="text">최적 가중행렬 W* = S⁻¹</span>
+        </a>
+        <a href="#sec-gmm-step-lab">
+          <span class="label">04 · Interactive Lab 02</span>
+          <span class="text">2SLS·2-Step·CUE &amp; HAC</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <div class="toc-title">On This Page</div>
+      <nav>
+        <a href="#sec-gmm-idea">01. GMM의 핵심 아이디어</a>
+        <a href="#sec-gmm-ellipse-lab">02. 적률 타협 &amp; J-검정 탐색기</a>
+        <a href="#sec-gmm-weight-video">03. 최적 가중행렬 W* = S⁻¹</a>
+        <a href="#sec-gmm-step-lab">04. Two-Step · CUE · HAC 비교기</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ch04.html#gmm-topic-04">↗ Ch 04 본문 (4.5 GMM 목적함수)</a>
+        <a class="ext-link" href="econometrics-visual-iv-2sls.html">← Visual 02 (IV · 2SLS)</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-gmm-idea">01. GMM의 핵심 아이디어</a>
+          <a href="#sec-gmm-ellipse-lab">02. 적률 타협 &amp; J-검정 탐색기</a>
+          <a href="#sec-gmm-weight-video">03. 최적 가중행렬 W* = S⁻¹</a>
+          <a href="#sec-gmm-step-lab">04. Two-Step · CUE · HAC 비교기</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ch04.html#gmm-topic-04">↗ Ch 04 본문 (4.5 GMM 목적함수)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-gmm-idea">
+        <h2><span class="sec-tag">01</span>GMM의 핵심 아이디어: 식이 미지수보다 많을 때</h2>
+        <p>
+          모수 개수와 적률조건 개수가 같으면(\(r = k\), 적정식별) 표본평균 \(\bar{g}_n(\hat{\theta}) = \frac{1}{n}\sum_{i=1}^n g(w_i, \hat{\theta}) = 0\)을
+          직접 푸는 고전적 적률법(Method of Moments)으로 유일한 해를 얻는다. 그러나 도구변수가 여러 개이거나 모형이 부여하는 제약이 더 많아
+          <strong>과대식별(\(r &gt; k\))</strong>이 되면, 유한표본에서 모든 적률식을 동시에 \(0\)으로 만드는 \(\theta\)는 존재하지 않는다.
+          GMM은 남는 정보를 버리는 대신, 적률벡터 \(\bar{g}_n(\theta)\)가 영벡터 \(\mathbf{0}\)에 가장 가까워지도록 양정치 가중행렬 \(W\)로 잰 거리를 최소화한다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title">표본 적률벡터와 GMM 목적함수</div>
+            \[
+              \bar{g}_n(\theta) = \frac{1}{n}\sum_{i=1}^n g(w_i, \theta) \in \mathbb{R}^r, \qquad
+              \hat{\theta}_{\mathrm{GMM}} = \arg\min_{\theta \in \Theta} \; \bar{g}_n(\theta)' W_n \bar{g}_n(\theta)
+            \]
+            <p class="formula-box__desc">OLS(\(\mathbb{E}[x_i u_i]=0\)), IV(\(\mathbb{E}[z_i u_i]=0\)), 2SLS(\(W=(Z'Z)^{-1}\))가 모두 이 틀 안에 포섭된다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title">일계조건과 적률공간 직교성</div>
+            \[
+              G_n(\hat{\theta})' W_n \bar{g}_n(\hat{\theta}) = 0, \qquad G_n(\theta) = \nabla_\theta \bar{g}_n(\theta) \in \mathbb{R}^{r \times k}
+            \]
+            <p class="formula-box__desc">기하학적으로 적률 곡선 위의 점 \(\bar{g}_n(\hat{\theta})\)가 \(W_n\)-내적 기준으로 접공간 \(\mathcal{C}(G_n)\)과 직교한다.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · From Method of Moments (\(r=k\)) to GMM (\(r&gt;k\))</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/gmm-core-idea.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            모수 \(\theta\) 하나에 대해 두 적률조건 \(\bar{g}_1(\theta)=0\)과 \(\bar{g}_2(\theta)=0\)이 서로 다른 해 \(\hat{\theta}_{(1)} \neq \hat{\theta}_{(2)}\)를 제시하면
+            두 식을 동시에 만족시킬 수 없다. 이를 2차원 적률공간 \((\bar{g}_1, \bar{g}_2)\)에 놓으면 곡선 \(\{\bar{g}_n(\theta)\}\)가 원점을 비껴가며,
+            GMM은 원점에서 가장 가까운 타협점 \(\hat{\theta}_{\mathrm{GMM}}\)을 선택한다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-gmm-ellipse-lab">
+        <h2><span class="sec-tag">02</span>적률 타협 &amp; \(W\)-타원 · Hansen \(J\)-검정 탐색기</h2>
+        <p>
+          과대식별 모형에서는 가중행렬 \(W\)를 어떻게 잡느냐에 따라 \(\hat{\theta}_{\mathrm{GMM}}\)이 \(\hat{\theta}_{(1)}\)과 \(\hat{\theta}_{(2)}\) 사이에서 이동한다.
+          또한 두 번째 적률조건에 모형오설정(\(\mathbb{E}[g_2(w_i,\theta_0)] = \delta \neq 0\))이 끼어들면 곡선 전체가 원점에서 멀어져
+          최소 타원 높이인 Hansen \(J\)-통계량이 급격히 커진다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 01 · Moment-Space \(W\)-Ellipse &amp; Overidentification Test</span>
+            <span class="lab-sub">좌: 2D 적률공간 타원 접점 · 우하: 1D 두 방정식 해의 타협</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="gmmEllipseCanvas" aria-label="GMM 2D 적률공간 W-타원 캔버스"></canvas>
+              <div class="canvas-hint" id="gmmEllipseHint">접점: G' W ḡₙ(θ̂) = 0 · 타원 크기 = Qₙ(θ̂)</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>적률 2 표준편차 \(\sigma_2\) (\(\sigma_1 = 0.30\) 고정)</span>
+                    <span class="control-val" id="elSig2Val">1.05</span>
+                  </div>
+                  <input id="elSig2" type="range" min="0.25" max="1.60" step="0.05" value="1.05" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>적률 간 상관 \(\rho_{12}\)</span>
+                    <span class="control-val" id="elRhoVal">0.00</span>
+                  </div>
+                  <input id="elRho" type="range" min="-0.75" max="0.75" step="0.05" value="0.00" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>적률 2 오설정 편의 \(\delta\)</span>
+                    <span class="control-val" id="elDeltaVal">0.00</span>
+                  </div>
+                  <input id="elDelta" type="range" min="-0.90" max="0.90" step="0.05" value="0.00" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill" id="btnWeightIdent">단순 가중 (W = I)</button>
+                  <button type="button" class="btn-pill is-primary" id="btnWeightOpt">최적 가중 (W* = S⁻¹)</button>
+                  <button type="button" class="btn-pill" id="btnMisspec">오설정 실험 (δ=0.70)</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">θ̂_GMM (참값 1.00)</div>
+                    <div class="metric-tile__v accent" id="mElTheta">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">점근 표준오차 SE(θ̂)</div>
+                    <div class="metric-tile__v ok" id="mElSe">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Hansen J-통계량 (n=200)</div>
+                    <div class="metric-tile__v" id="mElJ">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">χ²₁ 유의확률 p-value</div>
+                    <div class="metric-tile__v" id="mElPval">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>1D 적률 방정식 타협: \(\bar{g}_1(\theta)\) vs \(\bar{g}_2(\theta)\)</span>
+                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);" id="mElRoots">θ̂₁ · θ̂₂</span>
+                </div>
+                <canvas id="gmm1dCanvas" aria-label="1차원 적률 방정식 비교 캔버스"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-gmm-weight-video">
+        <h2><span class="sec-tag">03</span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</h2>
+        <p>
+          동일한 가중치(\(W = I\))를 쓰면 정밀도가 낮은 시끄러운 적률(\(\sigma_2 \gg \sigma_1\))의 무작위 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
+          반대로 적률 공분산행렬 \(S = \mathrm{Var}(\sqrt{n}\bar{g}_n(\theta_0))\)의 역행렬 \(W^* = S^{-1}\)을 쓰면,
+          불확실성이 큰 방향으로는 거리 타원을 늘려 벌점을 낮추고 신뢰할 수 있는 적률 방향으로 추정량을 당겨 점근분산 하한 \((G'S^{-1}G)^{-1}\)을 달성한다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">Hansen (1982) Efficiency Bound</div>
+          \[
+            \mathrm{Avar}(\hat{\theta}_{\mathrm{GMM}}(W)) = (G'WG)^{-1} G' W S W G (G'WG)^{-1}
+            \;\succeq\;
+            (G' S^{-1} G)^{-1} = \mathrm{Avar}(\hat{\theta}_{\mathrm{GMM}}(S^{-1}))
+          \]
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · Optimal Weighting \(W^* = S^{-1}\) &amp; Mahalanobis Ellipse</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/gmm-optimal-weight.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            적률 공분산 \(S\)에 의해 세로 방향 변동이 클 때, \(W=I\) 원형 거리는 시끄러운 \(\bar{g}_2\)를 과대 반영한다.
+            가중치를 \(W^*=S^{-1}\)로 바꾸면 등고선이 마할라노비스 타원으로 변형되며 접점 \(\hat{\theta}_{S^{-1}}\)이 정밀한 \(\bar{g}_1\) 쪽으로 이동하고,
+            최소 타원 높이 \(J = n\,\bar{g}_n(\hat{\theta})' S^{-1}\bar{g}_n(\hat{\theta})\)가 \(\chi^2_{r-k}\) 검정통계량이 된다.
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 04 -->
+      <section class="module" id="sec-gmm-step-lab">
+        <h2><span class="sec-tag">04</span>이분산·자기상관 아래 2SLS · 2-Step · Iterated · CUE &amp; HAC 비교기</h2>
+        <p>
+          오차항이 등분산·무상관이면 2SLS(\(W=(Z'Z)^{-1}\))가 이미 효율적 GMM과 일치한다. 그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이나
+          <strong>시계열 자기상관(\(\rho_u \neq 0\))</strong>이 존재하면 2SLS 가중행렬은 \(S^{-1}\)과 달라져 비효율적이 되며,
+          나이브 공분산 추정량 \(S_0\)는 표준오차와 \(J\)-검정을 왜곡한다.
+          아래 시뮬레이터는 선형 과대식별 IV 모형(\(L = 4\) 도구변수)에서 2SLS, 2-Step GMM, Iterated GMM, CUE 및 Newey–West HAC의 목적함수와 표준오차를 비교한다.
+        </p>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 02 · Heteroskedasticity, HAC (\(S_{\mathrm{NW}}\)) &amp; GMM Variants</span>
+            <span class="lab-sub">4개 도구변수 선형 GMM · 2SLS vs 2-Step · Iterated · CUE</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="gmmCompareCanvas" aria-label="2SLS vs GMM vs CUE 목적함수 비교 캔버스"></canvas>
+              <div class="canvas-hint" id="gmmCompHint">곡선: 정규화된 목적함수 Q(θ) · 점선: 참값 θ₀ = 1.00</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>이분산 강도 \(\gamma\)</span>
+                    <span class="control-val" id="cmpHetVal">1.20</span>
+                  </div>
+                  <input id="cmpHet" type="range" min="0.00" max="2.20" step="0.10" value="1.20" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>오차 자기상관 \(\rho_u\) (시계열 AR(1))</span>
+                    <span class="control-val" id="cmpArVal">0.45</span>
+                  </div>
+                  <input id="cmpAr" type="range" min="0.00" max="0.80" step="0.05" value="0.45" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>HAC Bartlett 시차 \(m\)</span>
+                    <span class="control-val" id="cmpLagVal">4</span>
+                  </div>
+                  <input id="cmpLag" type="range" min="0" max="10" step="1" value="4" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>표본 크기 \(n\)</span>
+                    <span class="control-val" id="cmpNVal">240</span>
+                  </div>
+                  <input id="cmpN" type="range" min="100" max="500" step="20" value="240" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill" data-gmm-mode="2sls">1단계 (2SLS)</button>
+                  <button type="button" class="btn-pill is-primary" data-gmm-mode="2step">2-Step GMM</button>
+                  <button type="button" class="btn-pill" data-gmm-mode="iter">Iterated</button>
+                  <button type="button" class="btn-pill" data-gmm-mode="cue">CUE</button>
+                  <button type="button" class="btn-pill" id="cmpResampleBtn">재추출</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">선택 추정량 θ̂</div>
+                    <div class="metric-tile__v accent" id="mCmpTheta">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">효율성 이득 (vs 2SLS SE)</div>
+                    <div class="metric-tile__v ok" id="mCmpGain">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">HAC vs 나이브 SE 비</div>
+                    <div class="metric-tile__v" id="mCmpHacRatio">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Hansen J (df = 3)</div>
+                    <div class="metric-tile__v" id="mCmpJ">—</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="econometrics-visual-iv-2sls.html">← Visual 02 · IV · 2SLS의 기하학</a>
+        <a href="econometrics-ch04.html#gmm-topic-04">Ch 04 본문 · 4.5 GMM 목적함수로 이동 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">GMM 적률거리 직관, 최적 가중행렬, CUE 및 HAC 장기공분산에 관한 질문이나 의견을 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button aria-label="맨 위로 이동" class="back-to-top" type="button">↑ TOP</button>
+
+  <script>
+  (function () {
+    // 1. Theme & Navigation
+    const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(mode) {
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        if (themeBtn) themeBtn.textContent = 'Light';
+      } else {
+        html.removeAttribute('data-theme');
+        if (themeBtn) themeBtn.textContent = 'Dark';
+      }
+      try { localStorage.setItem('coursework-monograph-theme', mode); } catch (_) {}
+      onThemeCallbacks.forEach(fn => fn());
+    }
+    syncTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = html.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    // 2. Shared Palette & Canvas Setup
+    function getPalette() {
+      const dark = html.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.26)' : 'rgba(15,23,42,0.28)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        cyan: dark ? '#38bdf8' : '#0284c7',
+        teal: dark ? '#2dd4bf' : '#0d9488',
+        indigo: dark ? '#818cf8' : '#4f46e5',
+        amber: dark ? '#fbbf24' : '#d97706',
+        rose: dark ? '#fb7185' : '#e11d48',
+        tealFill: dark ? 'rgba(45, 212, 191, 0.10)' : 'rgba(13, 148, 136, 0.08)'
+      };
+    }
+
+    function setupCanvas(canvas, minH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(240, Math.round(rect.width));
+      const h = Math.max(minH || 130, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    // 3. Lab 01: 2D Moment Space W-Ellipse & 1D Compromise
+    (function initEllipseLab() {
+      const c2d = document.getElementById('gmmEllipseCanvas');
+      const c1d = document.getElementById('gmm1dCanvas');
+      const sig2In = document.getElementById('elSig2');
+      const rhoIn = document.getElementById('elRho');
+      const deltaIn = document.getElementById('elDelta');
+      const sig2Val = document.getElementById('elSig2Val');
+      const rhoVal = document.getElementById('elRhoVal');
+      const deltaVal = document.getElementById('elDeltaVal');
+      const btnIdent = document.getElementById('btnWeightIdent');
+      const btnOpt = document.getElementById('btnWeightOpt');
+      const btnMisspec = document.getElementById('btnMisspec');
+      const mTheta = document.getElementById('mElTheta');
+      const mSe = document.getElementById('mElSe');
+      const mJ = document.getElementById('mElJ');
+      const mPval = document.getElementById('mElPval');
+      const mRoots = document.getElementById('mElRoots');
+
+      let useOptimal = true;
+
+      function updateModeBtns() {
+        btnIdent.classList.toggle('is-primary', !useOptimal);
+        btnOpt.classList.toggle('is-primary', useOptimal);
+      }
+
+      // Chi-square(df=1) upper tail p-value: P(X^2_1 >= x) = erfc(sqrt(x/2))
+      function chi2Pval1(x) {
+        if (x <= 0) return 1.0;
+        const z = Math.sqrt(x / 2);
+        // Abramowitz & Stegun erfc approximation
+        const t = 1 / (1 + 0.3275911 * z);
+        const poly = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
+        return Math.min(1, Math.max(0, poly * Math.exp(-z * z)));
+      }
+
+      function computeState() {
+        const sig1 = 0.30;
+        const sig2 = parseFloat(sig2In.value);
+        const rho = parseFloat(rhoIn.value);
+        const delta = parseFloat(deltaIn.value);
+        const n = 200;
+
+        // Finite-sample moment noise realization (fixed clean draw scaled by S^{1/2}/sqrt(n))
+        // g_n(theta) = a + G * (theta - 1.0), where G = [0.85, 0.72]'
+        const G = [0.85, 0.72];
+        const s11 = sig1 * sig1;
+        const s22 = sig2 * sig2;
+        const s12 = rho * sig1 * sig2;
+        // Sample realization at true theta=1: z1 = 0.55 * sig1 / sqrt(n) * sqrt(n) scaled visibly
+        const e1 = 0.22 * sig1;
+        const e2 = -0.34 * sig2 + delta;
+        // Wait: to keep J realistic for n=200 when delta=0: z = [0.85, -0.95] * S^{1/2} / sqrt(n)
+        const scaleNoise = 1 / Math.sqrt(n);
+        const zA = 0.78, zB = -1.12;
+        const l21 = rho * sig2;
+        const l22 = Math.sqrt(Math.max(1e-6, 1 - rho * rho)) * sig2;
+        const g1_0 = (sig1 * zA) * scaleNoise * 4.5; // scaled slightly for crisp visual separation
+        const g2_0 = (l21 * zA + l22 * zB) * scaleNoise * 4.5 + delta;
+
+        // Actually use exact asymptotic covariance S for SE and J (with unscaled sqrt(n) realization):
+        const g1_stat = (sig1 * zA) / Math.sqrt(n);
+        const g2_stat = (l21 * zA + l22 * zB) / Math.sqrt(n) + delta;
+
+        const gAt = (t) => [g1_0 + G[0] * (t - 1.0), g2_0 + G[1] * (t - 1.0)];
+        const theta1 = 1.0 - g1_0 / G[0];
+        const theta2 = 1.0 - g2_0 / G[1];
+
+        // Weighting matrix W
+        const detS = Math.max(1e-8, s11 * s22 - s12 * s12);
+        const Sinv = [
+          [s22 / detS, -s12 / detS],
+          [-s12 / detS, s11 / detS]
+        ];
+        const W = useOptimal ? Sinv : [[1, 0], [0, 1]];
+
+        function quad(v, M) {
+          return v[0] * (M[0][0] * v[0] + M[0][1] * v[1]) + v[1] * (M[1][0] * v[0] + M[1][1] * v[1]);
+        }
+        function matMulVec(M, v) {
+          return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]];
+        }
+
+        const Wg0 = matMulVec(W, [g1_0, g2_0]);
+        const WG = matMulVec(W, G);
+        const denom = G[0] * WG[0] + G[1] * WG[1];
+        const thetaGmm = 1.0 - (G[0] * Wg0[0] + G[1] * Wg0[1]) / denom;
+        const gStar = gAt(thetaGmm);
+        const qMin = quad(gStar, W);
+
+        // Asymptotic variance Avar = (G'WG)^{-2} * (G' W S W G)
+        const SWG = [
+          s11 * WG[0] + s12 * WG[1],
+          s12 * WG[0] + s22 * WG[1]
+        ];
+        const numVar = WG[0] * SWG[0] + WG[1] * SWG[1];
+        const avar = numVar / (denom * denom);
+        const se = Math.sqrt(avar / n);
+
+        // Statistically calibrated J = n * g_stat(theta_opt)' S^{-1} g_stat(theta_opt)
+        const SinvG = matMulVec(Sinv, G);
+        const denOpt = G[0] * SinvG[0] + G[1] * SinvG[1];
+        const SinvGstat0 = matMulVec(Sinv, [g1_stat, g2_stat]);
+        const dThetaStat = -(G[0] * SinvGstat0[0] + G[1] * SinvGstat0[1]) / denOpt;
+        const gStatStar = [g1_stat + G[0] * dThetaStat, g2_stat + G[1] * dThetaStat];
+        const jStat = n * quad(gStatStar, Sinv);
+        const pval = chi2Pval1(jStat);
+
+        return {
+          sig1, sig2, rho, delta, G, W, Sinv,
+          gAt, theta1, theta2, thetaGmm, gStar, qMin, se, jStat, pval
+        };
+      }
+
+      function render2D(st, pal) {
+        const { ctx, w, h } = setupCanvas(c2d, 360);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const maxR = 1.35;
+        const scale = Math.min(w, h) * 0.37 / maxR;
+        const cx = w * 0.50, cy = h * 0.50;
+        const mapX = gx => cx + gx * scale;
+        const mapY = gy => cy - gy * scale;
+
+        // Grid & axes
+        ctx.save();
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -1.0; g <= 1.01; g += 0.5) {
+          ctx.beginPath(); ctx.moveTo(mapX(-1.3), mapY(g)); ctx.lineTo(mapX(1.3), mapY(g)); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(mapX(g), mapY(-1.3)); ctx.lineTo(mapX(g), mapY(1.3)); ctx.stroke();
+        }
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(mapX(-1.35), mapY(0)); ctx.lineTo(mapX(1.35), mapY(0));
+        ctx.moveTo(mapX(0), mapY(-1.35)); ctx.lineTo(mapX(0), mapY(1.35));
+        ctx.stroke();
+
+        ctx.fillStyle = pal.cyan;
+        ctx.font = '600 12px "JetBrains Mono", monospace';
+        ctx.fillText('ḡ₁(θ)', mapX(1.12), mapY(0) - 8);
+        ctx.fillStyle = pal.teal;
+        ctx.fillText('ḡ₂(θ)', mapX(0) + 8, mapY(1.18));
+
+        // Draw W-ellipse level curves g' W g = c (at qMin and 2.5*qMin)
+        function drawWContour(cVal, strokeCol, fillAlpha, lw, dashed) {
+          if (cVal <= 1e-7) return;
+          const W = st.W;
+          const tr = W[0][0] + W[1][1];
+          const det = W[0][0] * W[1][1] - W[0][1] * W[1][0];
+          const disc = Math.sqrt(Math.max(0, 0.25 * tr * tr - det));
+          const l1 = Math.max(1e-5, 0.5 * tr + disc);
+          const l2 = Math.max(1e-5, 0.5 * tr - disc);
+          const ang = Math.abs(W[0][1]) > 1e-7 ? Math.atan2(l1 - W[0][0], W[0][1]) : (W[0][0] >= W[1][1] ? 0 : Math.PI / 2);
+          const r1 = Math.sqrt(cVal / l1) * scale;
+          const r2 = Math.sqrt(cVal / l2) * scale;
+
+          ctx.save();
+          ctx.translate(cx, cy);
+          ctx.rotate(-ang);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, r1, r2, 0, 0, Math.PI * 2);
+          if (fillAlpha > 0) {
+            ctx.fillStyle = strokeCol;
+            ctx.globalAlpha = fillAlpha;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+          ctx.strokeStyle = strokeCol;
+          ctx.lineWidth = lw;
+          if (dashed) ctx.setLineDash([5, 4]);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        drawWContour(st.qMin * 2.5, pal.amber, 0.04, 1.1, true);
+        drawWContour(st.qMin, pal.amber, 0.12, 2.2, false);
+
+        // Draw moment locus g(theta)
+        const gStart = st.gAt(-0.4);
+        const gEnd = st.gAt(2.4);
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 3.0;
+        ctx.beginPath();
+        ctx.moveTo(mapX(gStart[0]), mapY(gStart[1]));
+        ctx.lineTo(mapX(gEnd[0]), mapY(gEnd[1]));
+        ctx.stroke();
+
+        // Residual vector 0 -> gStar
+        ctx.strokeStyle = pal.rose;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(mapX(0), mapY(0));
+        ctx.lineTo(mapX(st.gStar[0]), mapY(st.gStar[1]));
+        ctx.stroke();
+
+        // Dots: Origin, theta1 intercept, theta2 intercept, GMM tangent point
+        function dot(gx, gy, r, col, label, dx, dy) {
+          const px = mapX(gx), py = mapY(gy);
+          ctx.fillStyle = col;
+          ctx.beginPath(); ctx.arc(px, py, r, 0, Math.PI * 2); ctx.fill();
+          if (label) {
+            ctx.font = '600 11.5px "JetBrains Mono", monospace';
+            ctx.fillText(label, px + dx, py + dy);
+          }
+        }
+        dot(0, 0, 4.5, pal.ink, '(0,0)', -36, 14);
+        const gAtT1 = st.gAt(st.theta1);
+        const gAtT2 = st.gAt(st.theta2);
+        dot(gAtT1[0], gAtT1[1], 4.2, pal.cyan, 'θ̂₁', 8, 4);
+        dot(gAtT2[0], gAtT2[1], 4.2, pal.teal, 'θ̂₂', -10, -10);
+        dot(st.gStar[0], st.gStar[1], 5.6, pal.amber, 'ḡₙ(θ̂_GMM)', 8, -8);
+
+        ctx.restore();
+      }
+
+      function render1D(st, pal) {
+        const { ctx, w, h } = setupCanvas(c1d, 138);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const tMin = -0.1, tMax = 2.1;
+        const padL = 24, padR = 14, padT = 14, padB = 22;
+        const mapX = t => padL + ((t - tMin) / (tMax - tMin)) * (w - padL - padR);
+        const mapY = g => padT + (1 - (g + 1.1) / 2.2) * (h - padT - padB);
+
+        ctx.save();
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath(); ctx.moveTo(padL, mapY(0)); ctx.lineTo(w - padR, mapY(0)); ctx.stroke();
+
+        // g1(t) and g2(t)
+        function lineT(idx, col) {
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 2.1;
+          ctx.beginPath();
+          ctx.moveTo(mapX(tMin), mapY(st.gAt(tMin)[idx]));
+          ctx.lineTo(mapX(tMax), mapY(st.gAt(tMax)[idx]));
+          ctx.stroke();
+        }
+        lineT(0, pal.cyan);
+        lineT(1, pal.teal);
+
+        // Vertical dashed line at thetaGmm
+        const pxG = mapX(st.thetaGmm);
+        ctx.strokeStyle = pal.amber;
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(pxG, padT); ctx.lineTo(pxG, h - padB); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = pal.cyan;
+        ctx.beginPath(); ctx.arc(mapX(st.theta1), mapY(0), 3.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(mapX(st.theta2), mapY(0), 3.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.amber;
+        ctx.beginPath(); ctx.arc(pxG, mapY(0), 4.2, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = '600 10.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.amber;
+        ctx.fillText(`θ̂=${st.thetaGmm.toFixed(2)}`, Math.min(w - 60, Math.max(padL, pxG + 5)), padT + 10);
+        ctx.restore();
+      }
+
+      function update() {
+        const pal = getPalette();
+        const st = computeState();
+
+        sig2Val.textContent = st.sig2.toFixed(2);
+        rhoVal.textContent = st.rho.toFixed(2);
+        deltaVal.textContent = st.delta.toFixed(2);
+
+        mTheta.textContent = st.thetaGmm.toFixed(3);
+        mSe.textContent = st.se.toFixed(3);
+        mJ.textContent = st.jStat.toFixed(2);
+        mJ.className = 'metric-tile__v ' + (st.jStat > 3.84 ? 'warn' : 'ok');
+        mPval.textContent = st.pval.toFixed(3);
+        mPval.className = 'metric-tile__v ' + (st.pval < 0.05 ? 'warn' : 'ok');
+        mRoots.textContent = `θ̂₁=${st.theta1.toFixed(2)} · θ̂₂=${st.theta2.toFixed(2)}`;
+
+        render2D(st, pal);
+        render1D(st, pal);
+      }
+
+      [sig2In, rhoIn, deltaIn].forEach(el => el.addEventListener('input', update));
+      btnIdent.addEventListener('click', () => { useOptimal = false; updateModeBtns(); update(); });
+      btnOpt.addEventListener('click', () => { useOptimal = true; updateModeBtns(); update(); });
+      btnMisspec.addEventListener('click', () => {
+        sig2In.value = '0.55'; rhoIn.value = '0.00'; deltaIn.value = '0.70';
+        useOptimal = true; updateModeBtns(); update();
+      });
+
+      updateModeBtns();
+      onThemeCallbacks.push(update);
+      window.addEventListener('resize', update);
+      update();
+    })();
+
+    // 4. Lab 02: 2SLS vs 2-Step GMM vs Iterated vs CUE & HAC (L = 4 instruments)
+    (function initCompareLab() {
+      const canvas = document.getElementById('gmmCompareCanvas');
+      const hetIn = document.getElementById('cmpHet');
+      const arIn = document.getElementById('cmpAr');
+      const lagIn = document.getElementById('cmpLag');
+      const nIn = document.getElementById('cmpN');
+      const hetVal = document.getElementById('cmpHetVal');
+      const arVal = document.getElementById('cmpArVal');
+      const lagVal = document.getElementById('cmpLagVal');
+      const nVal = document.getElementById('cmpNVal');
+      const modeBtns = document.querySelectorAll('[data-gmm-mode]');
+      const resampleBtn = document.getElementById('cmpResampleBtn');
+      const mTheta = document.getElementById('mCmpTheta');
+      const mGain = document.getElementById('mCmpGain');
+      const mHacRatio = document.getElementById('mCmpHacRatio');
+      const mJ = document.getElementById('mCmpJ');
+      const hintEl = document.getElementById('gmmCompHint');
+
+      let activeMode = '2step';
+      let seed = 2026;
+
+      function nextRandn() {
+        function u01() {
+          seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        }
+        const u1 = Math.max(1e-9, u01());
+        const u2 = u01();
+        return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      }
+
+      function invSym(A) {
+        const n = A.length;
+        const M = A.map((row, i) => [...row, ...Array.from({ length: n }, (_, j) => (i === j ? 1 : 0))]);
+        for (let col = 0; col < n; col++) {
+          let piv = col;
+          for (let r = col + 1; r < n; r++) {
+            if (Math.abs(M[r][col]) > Math.abs(M[piv][col])) piv = r;
+          }
+          [M[col], M[piv]] = [M[piv], M[col]];
+          const div = Math.abs(M[col][col]) > 1e-10 ? M[col][col] : 1e-10;
+          for (let c = 0; c < 2 * n; c++) M[col][c] /= div;
+          for (let r = 0; r < n; r++) {
+            if (r === col) continue;
+            const fac = M[r][col];
+            for (let c = 0; c < 2 * n; c++) M[r][c] -= fac * M[col][c];
+          }
+        }
+        return M.map(row => row.slice(n));
+      }
+
+      function computeSim() {
+        const gamma = parseFloat(hetIn.value);
+        const rhoAr = parseFloat(arIn.value);
+        const maxLag = parseInt(lagIn.value, 10);
+        const n = parseInt(nIn.value, 10);
+        const L = 4;
+        const betaTrue = 1.0;
+
+        // Save/restore seed per draw so sliders smoothly update on the SAME underlying draws
+        const savedSeed = seed;
+        const Z = [];
+        const x = new Float64Array(n);
+        const y = new Float64Array(n);
+        let epsPrev = 0;
+        let vPrev = 0;
+
+        for (let i = 0; i < n; i++) {
+          const zi = [nextRandn(), nextRandn(), nextRandn(), nextRandn()];
+          Z.push(zi);
+          // Heteroskedasticity tied strongly to z1 and z2
+          const hetScale = Math.exp(0.45 * gamma * (zi[0] * zi[0] - 1));
+          const innov = nextRandn();
+          const eps = rhoAr * epsPrev + Math.sqrt(Math.max(0.05, 1 - rhoAr * rhoAr)) * innov * hetScale;
+          epsPrev = eps;
+
+          const vInnov = 0.55 * innov + Math.sqrt(1 - 0.55 * 0.55) * nextRandn();
+          const v = 0.35 * vPrev + vInnov;
+          vPrev = v;
+
+          const xi = 0.55 * zi[0] + 0.45 * zi[1] + 0.35 * zi[2] + 0.25 * zi[3] + v;
+          x[i] = xi;
+          y[i] = betaTrue * xi + eps;
+        }
+        seed = savedSeed;
+
+        // Sample moments: g_i(theta) = z_i * (y_i - theta * x_i)
+        function gBar(theta) {
+          const out = [0, 0, 0, 0];
+          for (let i = 0; i < n; i++) {
+            const u = y[i] - theta * x[i];
+            for (let j = 0; j < L; j++) out[j] += Z[i][j] * u;
+          }
+          for (let j = 0; j < L; j++) out[j] /= n;
+          return out;
+        }
+
+        // Jacobian G = -(1/n) sum z_i x_i
+        const G = [0, 0, 0, 0];
+        for (let i = 0; i < n; i++) {
+          for (let j = 0; j < L; j++) G[j] -= Z[i][j] * x[i];
+        }
+        for (let j = 0; j < L; j++) G[j] /= n;
+
+        // Z'Z / n
+        const ZtZ = Array.from({ length: L }, () => Array(L).fill(0));
+        for (let i = 0; i < n; i++) {
+          for (let a = 0; a < L; a++) {
+            for (let b = 0; b < L; b++) ZtZ[a][b] += Z[i][a] * Z[i][b];
+          }
+        }
+        for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) ZtZ[a][b] /= n;
+        const W2sls = invSym(ZtZ);
+
+        function solveWithW(W) {
+          // theta = (G' W G)^{-1} G' W (1/n sum z_i y_i)
+          const Zty = [0, 0, 0, 0];
+          for (let i = 0; i < n; i++) for (let j = 0; j < L; j++) Zty[j] += Z[i][j] * y[i];
+          for (let j = 0; j < L; j++) Zty[j] /= n;
+
+          const WG = [0, 0, 0, 0];
+          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
+          // Note G = -E[z x], so -G' W Zty / (G' W G)
+          let num = 0, den = 0;
+          for (let a = 0; a < L; a++) {
+            num -= WG[a] * Zty[a];
+            den += G[a] * WG[a];
+          }
+          return num / den;
+        }
+
+        function computeS(theta, lagM) {
+          const gi = [];
+          for (let i = 0; i < n; i++) {
+            const u = y[i] - theta * x[i];
+            gi.push([Z[i][0] * u, Z[i][1] * u, Z[i][2] * u, Z[i][3] * u]);
+          }
+          const S = Array.from({ length: L }, () => Array(L).fill(0));
+          for (let i = 0; i < n; i++) {
+            for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) S[a][b] += gi[i][a] * gi[i][b];
+          }
+          for (let lag = 1; lag <= lagM; lag++) {
+            const wBart = 1 - lag / (lagM + 1);
+            for (let i = lag; i < n; i++) {
+              for (let a = 0; a < L; a++) {
+                for (let b = 0; b < L; b++) {
+                  const cov = gi[i][a] * gi[i - lag][b] + gi[i - lag][a] * gi[i][b];
+                  S[a][b] += wBart * cov;
+                }
+              }
+            }
+          }
+          for (let a = 0; a < L; a++) {
+            for (let b = 0; b < L; b++) S[a][b] /= n;
+            S[a][a] += 1e-6;
+          }
+          return S;
+        }
+
+        function seFor(W, S) {
+          const WG = [0, 0, 0, 0];
+          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
+          let den = 0;
+          for (let a = 0; a < L; a++) den += G[a] * WG[a];
+          let num = 0;
+          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) num += WG[a] * S[a][b] * WG[b];
+          return Math.sqrt(Math.max(1e-8, num / (den * den * n)));
+        }
+
+        function evalQ(theta, W) {
+          const g = gBar(theta);
+          let q = 0;
+          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) q += g[a] * W[a][b] * g[b];
+          return q;
+        }
+
+        const th2sls = solveWithW(W2sls);
+        const S_step1 = computeS(th2sls, maxLag);
+        const S_naive = computeS(th2sls, 0);
+        const W2step = invSym(S_step1);
+        const th2step = solveWithW(W2step);
+
+        // Iterated GMM (6 fixed-point iterations)
+        let thIter = th2step;
+        let WIter = W2step;
+        for (let it = 0; it < 6; it++) {
+          const S_it = computeS(thIter, maxLag);
+          WIter = invSym(S_it);
+          thIter = solveWithW(WIter);
+        }
+
+        // CUE via dense grid search on [0.45, 1.55]
+        function evalCueQ(theta) {
+          const S_t = computeS(theta, maxLag);
+          const W_t = invSym(S_t);
+          return evalQ(theta, W_t);
+        }
+        let thCue = thIter;
+        let bestCueQ = Infinity;
+        for (let t = 0.50; t <= 1.5001; t += 0.01) {
+          const q = evalCueQ(t);
+          if (q < bestCueQ) { bestCueQ = q; thCue = t; }
+        }
+
+        const S_final = computeS(thIter, maxLag);
+        const se2sls = seFor(W2sls, S_final);
+        const se2step = seFor(W2step, S_final);
+        const seIter = seFor(WIter, S_final);
+        const seNaive = seFor(W2step, S_naive);
+
+        let thSel = th2step, seSel = se2step, WSel = W2step;
+        if (activeMode === '2sls') { thSel = th2sls; seSel = se2sls; WSel = W2sls; }
+        else if (activeMode === 'iter') { thSel = thIter; seSel = seIter; WSel = WIter; }
+        else if (activeMode === 'cue') { thSel = thCue; seSel = seIter; WSel = invSym(computeS(thCue, maxLag)); }
+
+        const jVal = n * evalQ(thSel, invSym(computeS(thSel, maxLag)));
+
+        return {
+          gamma, rhoAr, maxLag, n,
+          th2sls, th2step, thIter, thCue, thSel,
+          se2sls, seSel, seNaive, jVal,
+          W2sls, W2step, WIter, evalQ, evalCueQ
+        };
+      }
+
+      function render() {
+        const pal = getPalette();
+        const { ctx, w, h } = setupCanvas(canvas, 360);
+        const st = computeSim();
+
+        hetVal.textContent = st.gamma.toFixed(2);
+        arVal.textContent = st.rhoAr.toFixed(2);
+        lagVal.textContent = String(st.maxLag);
+        nVal.textContent = String(st.n);
+
+        mTheta.textContent = st.thSel.toFixed(3);
+        const gainPct = ((st.se2sls - st.seSel) / Math.max(1e-6, st.se2sls)) * 100;
+        mGain.textContent = (gainPct >= 0 ? '+' : '') + gainPct.toFixed(1) + '%';
+        mGain.className = 'metric-tile__v ' + (gainPct > 1 ? 'ok' : '');
+        const hacRatio = st.seSel / Math.max(1e-6, st.seNaive);
+        mHacRatio.textContent = hacRatio.toFixed(2) + '×';
+        mHacRatio.className = 'metric-tile__v ' + (hacRatio > 1.15 ? 'warn' : '');
+        mJ.textContent = st.jVal.toFixed(2);
+        mJ.className = 'metric-tile__v ' + (st.jVal > 7.81 ? 'warn' : 'ok');
+
+        hintEl.textContent = `2SLS=${st.th2sls.toFixed(3)} · 2-Step=${st.th2step.toFixed(3)} · CUE=${st.thCue.toFixed(3)} (참값 1.00)`;
+
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const tMin = 0.55, tMax = 1.45;
+        const padL = 42, padR = 22, padT = 26, padB = 34;
+        const plotW = w - padL - padR;
+        const plotH = h - padT - padB;
+        const mapX = t => padL + ((t - tMin) / (tMax - tMin)) * plotW;
+
+        const gridT = [];
+        for (let i = 0; i <= 90; i++) gridT.push(tMin + (i / 90) * (tMax - tMin));
+
+        // Normalize each Q(theta) by subtracting its min so curvature sharpness is directly comparable
+        function normCurve(fn) {
+          const vals = gridT.map(fn);
+          const mn = Math.min(...vals);
+          return vals.map(v => v - mn);
+        }
+        const q2sls = normCurve(t => st.evalQ(t, st.W2sls));
+        const q2step = normCurve(t => st.evalQ(t, st.W2step));
+        const qCue = normCurve(t => st.evalCueQ(t));
+
+        const maxQ = Math.max(0.08, ...q2step, ...qCue, ...q2sls) * 1.05;
+        const mapY = q => padT + plotH - Math.min(1.0, q / maxQ) * plotH;
+
+        ctx.save();
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let tv = 0.6; tv <= 1.41; tv += 0.2) {
+          const px = mapX(tv);
+          ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, padT + plotH); ctx.stroke();
+          ctx.fillStyle = pal.muted;
+          ctx.font = '500 10.5px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(tv.toFixed(1), px, padT + plotH + 15);
+        }
+        ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(w - padR, padT + plotH); ctx.stroke();
+
+        // True theta = 1.00 line
+        const pxTrue = mapX(1.0);
+        ctx.strokeStyle = pal.ink;
+        ctx.lineWidth = 1.2;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(pxTrue, padT); ctx.lineTo(pxTrue, padT + plotH); ctx.stroke();
+        ctx.setLineDash([]);
+
+        function plotLine(vals, col, lw, dashed) {
+          ctx.save();
+          ctx.strokeStyle = col;
+          ctx.lineWidth = lw;
+          if (dashed) ctx.setLineDash([5, 4]);
+          ctx.beginPath();
+          for (let i = 0; i < gridT.length; i++) {
+            const px = mapX(gridT[i]), py = mapY(vals[i]);
+            if (i === 0) ctx.moveTo(px, py);
+            else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        plotLine(q2sls, pal.rose, activeMode === '2sls' ? 3.0 : 1.8, true);
+        plotLine(qCue, pal.teal, activeMode === 'cue' ? 3.0 : 1.9, false);
+        plotLine(q2step, pal.indigo, activeMode === '2step' || activeMode === 'iter' ? 3.0 : 2.0, false);
+
+        // Legend at top-right inside canvas
+        ctx.font = '600 11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillStyle = pal.rose; ctx.fillText('-- 2SLS', padL + 8, padT + 14);
+        ctx.fillStyle = pal.indigo; ctx.fillText('— 2-Step / Iter', padL + 74, padT + 14);
+        ctx.fillStyle = pal.teal; ctx.fillText('— CUE', padL + 194, padT + 14);
+        ctx.restore();
+      }
+
+      [hetIn, arIn, lagIn, nIn].forEach(el => el.addEventListener('input', render));
+      modeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          activeMode = btn.dataset.gmmMode;
+          modeBtns.forEach(b => b.classList.toggle('is-primary', b === btn));
+          render();
+        });
+      });
+      resampleBtn.addEventListener('click', () => {
+        seed = (seed + 9973) | 0;
+        render();
+      });
+
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+  })();
+  </script>
+</body>
+</html>
