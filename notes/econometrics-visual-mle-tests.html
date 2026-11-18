@@ -886,41 +886,41 @@
 
       <!-- SECTION 01 -->
       <section class="module" id="sec-mle-trinity">
-        <h2><span class="sec-tag">01</span><span>하나의 우도 곡선, 세 방향의 거리: Wald · LR · LM</span></h2>
+        <h2><span class="sec-tag">01</span><span>모집단 정점(\(\theta_0\)), 표본 정점(\(\hat{\theta}_n\)), 그리고 세 방향 거리</span></h2>
         <p>
-          비제약 최대우도추정량 \(\hat{\theta}\)는 로그우도 곡선 \(\ell_n(\theta)\)의 정점(\(\ell_n'(\hat{\theta})=0\))에 놓이고, 귀무가설 \(H_0: \theta = \theta_0\)는 모수축 위의 한 점 \(\theta_0\)를 지정한다.
-          <strong>Likelihood Ratio (LR)</strong>는 실제 곡선 위에서의 <strong>수직 높이 차</strong>를 직접 재는 반면,
-          <strong>Wald</strong>는 정점 \(\hat{\theta}\)의 곡률 \(\hat{\mathcal{I}}_n\)로 만든 포물선 근사 아래 <strong>수평 거리</strong>를,
-          <strong>LM (Score)</strong>은 귀무점 \(\theta_0\)에서의 <strong>접선 기울기</strong> \(S_n(\theta_0) = \ell_n'(\theta_0)\)의 크기를 잰다.
+          귀무가설 \(H_0: \theta = \theta_0\)가 참이면 <strong>모집단 기대 로그우도 \(\mathbb{E}[\ell(\theta)]\)는 참모수 \(\theta_0\)에서 최댓값</strong>을 갖는다.
+          그러나 유한표본 로그우도 \(\ell_n(\theta)\)는 표본오차 때문에 정점이 \(\hat{\theta}_n\)으로 비껴나며(\(n \to \infty\)일 때 \(\hat{\theta}_n \to \theta_0\)),
+          세 고전 검정은 이 \(\hat{\theta}_n\)과 \(\theta_0\) 사이의 간격을 서로 다른 방향으로 잰다:
+          <strong>Wald</strong>는 <strong>수평 거리</strong>를, <strong>LR</strong>은 실제 곡선 위 <strong>수직 높이 차</strong>를, <strong>LM(Score)</strong>은 \(\theta_0\)에서의 <strong>접선 기울기</strong>를 측정한다.
         </p>
 
         <div class="formula-tri">
           <div class="formula-box">
             <div class="formula-box__title"><span class="swatch" style="background:var(--amber);"></span>Wald · 수평 거리</div>
             \[
-              W_n = \hat{\mathcal{I}}_n (\hat{\theta} - \theta_0)^2
+              W_n = \hat{\mathcal{I}}_n (\hat{\theta}_n - \theta_0)^2
             \]
-            <p class="formula-box__desc">정점 \(\hat{\theta}\)만을 사용해 구한 포물선 근사. 비선형 재모수화에 민감하다.</p>
+            <p class="formula-box__desc">표본 정점 \(\hat{\theta}_n\)의 곡률만 쓰는 포물선 근사. 비선형 재모수화에 민감하다.</p>
           </div>
           <div class="formula-box">
             <div class="formula-box__title"><span class="swatch" style="background:var(--indigo);"></span>LR · 수직 높이 차</div>
             \[
-              \mathrm{LR}_n = 2\bigl[\ell_n(\hat{\theta}) - \ell_n(\theta_0)\bigr]
+              \mathrm{LR}_n = 2\bigl[\ell_n(\hat{\theta}_n) - \ell_n(\theta_0)\bigr]
             \]
-            <p class="formula-box__desc">실제 우도 낙차를 직접 측정한다. 1:1 재모수화에 완전히 불변이다.</p>
+            <p class="formula-box__desc">실제 표본 우도의 수직 낙차를 직접 잰다. 1:1 재모수화에 불변이다.</p>
           </div>
           <div class="formula-box">
             <div class="formula-box__title"><span class="swatch" style="background:var(--cyan);"></span>LM (Score) · 접선 기울기</div>
             \[
               \mathrm{LM}_n = \frac{\bigl(\ell_n'(\theta_0)\bigr)^2}{\mathcal{I}_n(\theta_0)}
             \]
-            <p class="formula-box__desc">귀무점 \(\theta_0\)의 기울기만으로 정점까지의 높이를 역추산한다.</p>
+            <p class="formula-box__desc">\(\theta_0\)의 기울기만으로 정점까지의 높이를 역추산한다.</p>
           </div>
         </div>
 
         <div class="video-card">
           <div class="video-card__head">
-            <span>Clip 01 · The Likelihood Trinity (\(W \approx \mathrm{LR} \approx \mathrm{LM}\) &amp; Finite-Sample Divergence)</span>
+            <span>Clip 01 · Population Peak \(\theta_0\), Sample Peak \(\hat{\theta}_n\) &amp; The Likelihood Trinity</span>
             <span class="video-card__badge">1920×1080 · 60fps</span>
           </div>
           <video controls loop muted playsinline preload="metadata">
@@ -928,50 +928,51 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            정규 이차 곡선 위에서는 수평 거리(Wald), 수직 높이 차(LR), 접선 기울기(LM)가 곡률 \(\mathcal{I}_n\) 변화와 무관하게 정확히 일치한다.
-            반면 유한표본 비대칭 우도로 변형되면 정점 포물선만 쓰는 Wald와 실제 곡선의 LR·기울기 LM이 서로 다른 부등식 방향(\(\mathrm{LM} &gt; \mathrm{LR} &gt; W\))으로 갈라진다.
+            청록 점선(모집단 기대 우도)은 참모수 \(\theta_0\)에서 최대를 이룬다. 유한표본 오차로 표본 곡선 정점이 \(\hat{\theta}_n\)으로 이동할 때 생기는 세 거리(Wald·LR·LM)는
+            \(n\)이 커지며 \(\hat{\theta}_n \to \theta_0\)으로 수렴해도 정규 이차에서는 일치하고, 비대칭 우도에서는 부등식 방향이 갈라진다.
           </div>
         </div>
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 01 · The 1D Likelihood Trinity Explorer</span>
-            <span class="lab-sub">주황: 수평 Wald · 보라: 수직 LR · 하늘: 접선 기울기 LM</span>
+            <span class="lab-title">Interactive Lab 01 · Population (\(\theta_0\)) vs. Sample (\(\hat{\theta}_n\)) Trinity Explorer</span>
+            <span class="lab-sub">청록 점선: 모집단 최대(\(\theta_{\text{true}}\)) · 보라 실선: 표본 \(\ell_n(\theta)\) · 주황/보라/하늘: Wald·LR·LM</span>
           </div>
           <div class="lab-body">
             <div class="canvas-stage">
               <canvas id="trinityCanvas" aria-label="Wald LR LM 기하학 비교 캔버스"></canvas>
-              <div class="canvas-hint" id="trinityHint">점선 곡선 = Wald가 가정한 θ̂ 기준 대칭 포물선 · 실선 = 실제 로그우도 ℓₙ(θ)</div>
+              <div class="canvas-hint" id="trinityHint">청록 점선 정점: 모집단 참모수 · 보라 실선 정점: 표본 MLE θ̂ₙ · 점선 포물선: Wald 근사</div>
             </div>
 
             <div class="lab-panel">
               <div class="controls-card">
                 <div class="control-row">
                   <div class="control-head">
-                    <span>귀무가설 거리 \(\delta = \theta_0 - \hat{\theta}\)</span>
-                    <span class="control-val" id="trDeltaVal">0.35</span>
+                    <span>참모수 편차 \(\theta_{\text{true}} - \theta_0\) (\(0 = H_0\) 참)</span>
+                    <span class="control-val" id="trTrueVal">0.00</span>
                   </div>
-                  <input id="trDelta" type="range" min="-0.55" max="0.80" step="0.02" value="0.35" />
+                  <input id="trTrue" type="range" min="-0.40" max="0.45" step="0.05" value="0.00" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>단위 정보량 (곡률) \(\mathcal{I}_1\)</span>
-                    <span class="control-val" id="trInfoVal">1.00</span>
+                    <span>표본오차 \(z = \sqrt{n\mathcal{I}_1}(\hat{\theta}_n - \theta_{\text{true}})\)</span>
+                    <span class="control-val" id="trNoiseVal">+1.80</span>
                   </div>
-                  <input id="trInfo" type="range" min="0.40" max="2.20" step="0.10" value="1.00" />
+                  <input id="trNoise" type="range" min="-2.60" max="2.60" step="0.10" value="1.80" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>표본크기 \(n\) (곡률 확대)</span>
-                    <span class="control-val" id="trNVal">25</span>
+                    <span>표본크기 \(n\) (커질수록 \(\hat{\theta}_n \to \theta_{\text{true}}\))</span>
+                    <span class="control-val" id="trNVal">18</span>
                   </div>
-                  <input id="trN" type="range" min="5" max="60" step="1" value="25" />
+                  <input id="trN" type="range" min="6" max="80" step="1" value="18" />
                 </div>
                 <div class="btn-row">
                   <button type="button" class="btn-pill is-primary" data-tr-mode="quad">정규 이차 (W=LR=LM)</button>
                   <button type="button" class="btn-pill" data-tr-mode="skew">비대칭 지수족 (괴리)</button>
                   <button type="button" class="btn-pill" data-tr-mode="reparam">재모수화 φ=e^(1.2θ)</button>
-                  <button type="button" class="btn-pill" id="trPlayBtn">▶ 자동 시연</button>
+                  <button type="button" class="btn-pill" id="trNullBtn">H₀ 참 (θ_true=θ₀)</button>
+                  <button type="button" class="btn-pill" id="trPlayBtn">▶ 표본크기 n↑ 시연</button>
                 </div>
               </div>
 
@@ -990,12 +991,12 @@
                     <div class="metric-tile__v cyan" id="mTrLM">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">부등식 · p-value (LR)</div>
+                    <div class="metric-tile__k">표본정점 θ̂ₙ · p-value</div>
                     <div class="metric-tile__v" id="mTrOrder">—</div>
                   </div>
                 </div>
                 <div class="verdict-note" id="trVerdict">
-                  정규 이차 우도에서는 어느 지점에서도 곡률이 일정하므로 \(W = \mathrm{LR} = \mathrm{LM}\)이 정확히 성립한다.
+                  모집단 기대 로그우도(청록 점선)는 θ₀에서 최대이며, 유한표본 오차 때문에 표본 정점 θ̂ₙ이 비껴난다. n이 커질수록 θ̂ₙ → θ₀으로 수렴한다.
                 </div>
               </div>
             </div>
@@ -1139,7 +1140,7 @@
         <div class="interactive-lab">
           <div class="lab-header">
             <span class="lab-title">Interactive Lab 03 · Information Identity vs. Misspecification \(\chi^2_1\) Simulator</span>
-            <span class="lab-sub">300회 몬테카를로 반복 · 실선 곡선: 이론 \(\chi^2_1\) 밀도 · 세로 점선: 5% 임계값 3.841</span>
+            <span class="lab-sub">300회 몬테카를로 표본 추출 (\(Y_i \sim \text{Gamma}(1/\kappa, \kappa)\), 지수 QMLE) · 실선 곡선: 이론 \(\chi^2_1\) 밀도 · 세로 점선: 5% 임계값 3.841</span>
           </div>
           <div class="lab-body">
             <div class="canvas-stage">
@@ -1335,16 +1336,17 @@
       return Math.max(0, Math.min(1, erfc(Math.sqrt(stat / 2))));
     }
 
-    /* ==================== LAB 01: 1D TRINITY ==================== */
+    /* ==================== LAB 01: 1D TRINITY (POPULATION VS SAMPLE) ==================== */
     (function initTrinityLab() {
       const canvas = document.getElementById('trinityCanvas');
-      const deltaIn = document.getElementById('trDelta');
-      const infoIn = document.getElementById('trInfo');
+      const trueIn = document.getElementById('trTrue');
+      const noiseIn = document.getElementById('trNoise');
       const nIn = document.getElementById('trN');
-      const deltaVal = document.getElementById('trDeltaVal');
-      const infoVal = document.getElementById('trInfoVal');
+      const trueVal = document.getElementById('trTrueVal');
+      const noiseVal = document.getElementById('trNoiseVal');
       const nVal = document.getElementById('trNVal');
       const modeBtns = document.querySelectorAll('[data-tr-mode]');
+      const nullBtn = document.getElementById('trNullBtn');
       const mWald = document.getElementById('mTrWald');
       const mWaldLabel = document.getElementById('mTrWaldLabel');
       const mLR = document.getElementById('mTrLR');
@@ -1354,42 +1356,53 @@
       const hintEl = document.getElementById('trinityHint');
 
       let mode = 'quad';
+      const aExp = 0.65;
 
-      function logLik(t, nEff) {
+      function popLik(t, tTrue, n) {
         if (mode === 'skew') {
-          const mu = Math.max(0.18, 1 + t);
-          return nEff * (-Math.log(mu) - 1 / mu + 1);
+          const mu = Math.max(0.22, 1 + aExp * t);
+          const muT = Math.max(0.22, 1 + aExp * tTrue);
+          return (n / (aExp * aExp)) * (Math.log(muT / mu) - (muT / mu) + 1);
         }
-        return -0.5 * nEff * t * t;
+        return -0.5 * n * (t - tTrue) * (t - tTrue);
       }
-      function scoreFn(t, nEff) {
+      function sampleLik(t, tHat, n) {
         if (mode === 'skew') {
-          const mu = Math.max(0.18, 1 + t);
-          return nEff * (1 - mu) / (mu * mu);
+          const mu = Math.max(0.22, 1 + aExp * t);
+          const muH = Math.max(0.22, 1 + aExp * tHat);
+          return (n / (aExp * aExp)) * (Math.log(muH / mu) - (muH / mu) + 1);
         }
-        return -nEff * t;
+        return -0.5 * n * (t - tHat) * (t - tHat);
       }
-      function infoAt(t, nEff) {
+      function sampleScore(t, tHat, n) {
         if (mode === 'skew') {
-          const mu = Math.max(0.18, 1 + t);
-          return nEff / (mu * mu);
+          const mu = Math.max(0.22, 1 + aExp * t);
+          const muH = Math.max(0.22, 1 + aExp * tHat);
+          return (n / aExp) * (muH - mu) / (mu * mu);
         }
-        return nEff;
+        return -n * (t - tHat);
+      }
+      function infoAt(t, n) {
+        if (mode === 'skew') {
+          const mu = Math.max(0.22, 1 + aExp * t);
+          return n / (mu * mu);
+        }
+        return n;
       }
 
-      function computeStats(delta, nEff) {
-        const l0 = logLik(delta, nEff);
-        const s0 = scoreFn(delta, nEff);
-        const i0 = infoAt(delta, nEff);
-        const iHat = infoAt(0, nEff);
+      function computeStats(tHat, n) {
+        const l0 = sampleLik(0, tHat, n);
+        const s0 = sampleScore(0, tHat, n);
+        const i0 = infoAt(0, n);
+        const iHat = infoAt(tHat, n);
 
         let wald;
         if (mode === 'reparam') {
           const a = 1.2;
-          const dPhi = (1 - Math.exp(a * delta)) / a;
+          const dPhi = (1 - Math.exp(-a * tHat)) / a;
           wald = iHat * dPhi * dPhi;
         } else {
-          wald = iHat * delta * delta;
+          wald = iHat * tHat * tHat;
         }
         const lr = Math.max(0, -2 * l0);
         const lm = (s0 * s0) / i0;
@@ -1398,47 +1411,40 @@
 
       function render() {
         const pal = getPalette();
-        const delta = parseFloat(deltaIn.value);
-        const i1 = parseFloat(infoIn.value);
+        const tTrue = parseFloat(trueIn.value);
+        const zNoise = parseFloat(noiseIn.value);
         const n = parseInt(nIn.value, 10);
-        const nEff = n * i1;
+        const tHat = Math.max(-0.62, Math.min(0.85, tTrue + zNoise / Math.sqrt(n)));
 
-        deltaVal.textContent = (delta >= 0 ? '+' : '') + delta.toFixed(2);
-        infoVal.textContent = i1.toFixed(2);
+        trueVal.textContent = (tTrue >= 0 ? '+' : '') + tTrue.toFixed(2);
+        noiseVal.textContent = (zNoise >= 0 ? '+' : '') + zNoise.toFixed(2);
         nVal.textContent = String(n);
+        nullBtn.classList.toggle('is-primary', Math.abs(tTrue) < 0.01);
 
-        const st = computeStats(delta, nEff);
+        const st = computeStats(tHat, n);
         mWald.textContent = st.wald.toFixed(2);
         mLR.textContent = st.lr.toFixed(2);
         mLM.textContent = st.lm.toFixed(2);
         mWaldLabel.textContent = mode === 'reparam' ? 'Wald in φ (W_φ)' : 'Wald (Wₙ)';
 
         const pLR = pValChi1(st.lr);
-        let ordText;
-        if (Math.abs(delta) < 0.015) {
-          ordText = 'W = LR = LM = 0';
-        } else if (mode === 'quad') {
-          ordText = `W = LR = LM (p=${pLR.toFixed(3)})`;
-        } else if (mode === 'skew') {
-          ordText = delta < 0 ? `LM > LR > W (p=${pLR.toFixed(3)})` : `W > LR > LM (p=${pLR.toFixed(3)})`;
-        } else {
-          ordText = delta < 0 ? `W_φ < LR = LM (p=${pLR.toFixed(3)})` : `W_φ > LR = LM (p=${pLR.toFixed(3)})`;
-        }
-        mOrder.textContent = ordText;
+        mOrder.textContent = `θ̂=${tHat >= 0 ? '+' : ''}${tHat.toFixed(2)} (p=${pLR.toFixed(3)})`;
         mOrder.className = 'metric-tile__v ' + (pLR < 0.05 ? 'warn' : 'ok');
 
         if (mode === 'quad') {
-          verdictEl.textContent = '정규 이차 우도에서는 곡률 Iₙ이 전 구간에서 일정하므로 수평(Wald)·수직(LR)·기울기(LM)가 정확히 일치한다.';
-          hintEl.textContent = '주황: Wald(수평거리) · 보라: LR(수직낙차) · 하늘: LM(θ₀ 접선 기울기)';
+          verdictEl.textContent = Math.abs(tTrue) < 0.01
+            ? `H₀ 참(θ_true = θ₀): 청록 모집단 곡선은 θ₀에서 최대이고 표본 정점 θ̂ₙ=${tHat.toFixed(2)}만 오차로 비껴났다. W=LR=LM 일치.`
+            : `대립가설(θ_true=${tTrue.toFixed(2)}): 모집단 정점 자체가 θ₀에서 떨어져 n이 커질수록 세 검정값이 모두 급증한다.`;
+          hintEl.textContent = '청록 점선: 모집단 E[ℓ(θ)] (참모수 최대) · 보라 실선: 표본 ℓₙ(θ) (정점 θ̂ₙ)';
         } else if (mode === 'skew') {
-          verdictEl.textContent = delta < 0
-            ? '지수족 우도의 가파른 왼쪽 영역(δ < 0): θ₀의 곡률과 기울기가 커져 LM > LR > W 순으로 갈라진다.'
-            : (delta > 0
-              ? '완만한 오른쪽 꼬리(δ > 0): 실제 우도 낙차는 완만하지만 정점 곡률 기반 Wald는 과대 계산되어 W > LR > LM이 된다.'
-              : '귀무가설이 θ̂와 일치(δ=0)하면 세 통계량 모두 0이다.');
-          hintEl.textContent = '점선: θ̂ 곡률 기반 Wald 포물선 · 실선: 실제 비대칭 로그우도 ℓₙ(θ)';
+          verdictEl.textContent = tHat > 0.02
+            ? `양(+)의 표본 변동(θ̂ₙ=${tHat.toFixed(2)} > θ₀): 완만한 오른쪽 정점 곡률 ℐ̂ₙ 때문에 Wald 포물선이 실제 곡선보다 완만해 W < LR < LM 이 된다.`
+            : (tHat < -0.02
+              ? `음(-)의 표본 변동(θ̂ₙ=${tHat.toFixed(2)} < θ₀): 가파른 왼쪽 정점 곡률 때문에 Wald가 과대 계산되어 W > LR > LM 이 된다.`
+              : '표본 정점 θ̂ₙ이 θ₀와 일치하면 세 통계량 모두 0이다.');
+          hintEl.textContent = '주황 점선: θ̂ₙ 곡률 기반 Wald 포물선 · 보라 실선: 비대칭 지수족 표본 우도';
         } else {
-          verdictEl.textContent = 'φ = exp(1.2θ)로 비선형 변환해도 수직 높이 차(LR)와 점수 검정(LM)은 불변이지만, 선형 근사에 의존하는 Wald(W_φ)만 크게 왜곡된다.';
+          verdictEl.textContent = 'φ = exp(1.2θ)로 재모수화해도 수직 차(LR)와 점수 검정(LM)은 완전히 불변이지만, 선형화 근사를 쓰는 Wald(W_φ)만 달라진다.';
           hintEl.textContent = '주황 점선: φ-공간 선형화가 유도한 왜곡 Wald 포물선 · LR과 LM은 원래 값과 동일';
         }
 
@@ -1447,10 +1453,10 @@
         ctx.fillRect(0, 0, w, h);
 
         const padL = 56, padR = 26, padT = 34, padB = 46;
-        const xMin = -0.68, xMax = 0.92;
-        const yMaxVal = 1.4;
-        const cornerVal = Math.min(logLik(xMin, nEff), logLik(xMax, nEff), st.l0);
-        const yMinVal = Math.min(-7.5, Math.max(-28, cornerVal * 1.18 - 1.5));
+        const xMin = -0.82, xMax = 1.02;
+        const yMaxVal = 1.6;
+        const cornerVal = Math.min(sampleLik(xMin, tHat, n), sampleLik(xMax, tHat, n), st.l0);
+        const yMinVal = Math.min(-7.5, Math.max(-24, cornerVal * 1.12 - 1.5));
 
         const mapX = t => padL + ((t - xMin) / (xMax - xMin)) * (w - padL - padR);
         const mapY = y => padT + ((yMaxVal - y) / (yMaxVal - yMinVal)) * (h - padT - padB);
@@ -1468,14 +1474,16 @@
           ctx.beginPath(); ctx.moveTo(padL, py); ctx.lineTo(w - padR, py); ctx.stroke();
         }
 
-        // Peak baseline y = 0
+        // Peak baseline y = 0 and Null axis x = 0 (theta_0)
         const yPeak = mapY(0);
+        const x0 = mapX(0);
+        const xHat = mapX(tHat);
+        const xTrue = mapX(tTrue);
+
         ctx.strokeStyle = pal.axis;
         ctx.lineWidth = 1.3;
         ctx.beginPath(); ctx.moveTo(padL, yPeak); ctx.lineTo(w - padR, yPeak); ctx.stroke();
-        // Vertical axis at theta = 0 (thetaHat)
-        const xHat = mapX(0);
-        ctx.beginPath(); ctx.moveTo(xHat, padT); ctx.lineTo(xHat, h - padB); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x0, padT); ctx.lineTo(x0, h - padB); ctx.stroke();
 
         // Clip curves strictly inside plot area
         ctx.save();
@@ -1483,56 +1491,70 @@
         ctx.rect(padL, padT, w - padL - padR, h - padT - padB);
         ctx.clip();
 
-        // Wald implied parabola (from -0.5 * W_eff)
+        // 0. Population expected log-likelihood (dashed teal, peaks at tTrue!)
         ctx.save();
-        ctx.strokeStyle = pal.amber;
-        ctx.lineWidth = 1.8;
-        ctx.setLineDash([5, 4]);
+        ctx.strokeStyle = pal.teal;
+        ctx.globalAlpha = 0.65;
+        ctx.lineWidth = 2.0;
+        ctx.setLineDash([4, 4]);
         ctx.beginPath();
         for (let k = 0; k <= 120; k++) {
           const t = xMin + (k / 120) * (xMax - xMin);
-          let yw;
-          if (mode === 'reparam') {
-            const dPhi = (1 - Math.exp(1.2 * t)) / 1.2;
-            yw = -0.5 * st.iHat * dPhi * dPhi;
-          } else {
-            yw = -0.5 * st.iHat * t * t;
-          }
-          const px = mapX(t), py = mapY(yw);
+          const px = mapX(t), py = mapY(popLik(t, tTrue, n));
           if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
         }
         ctx.stroke();
         ctx.restore();
 
-        // True log-likelihood curve
+        // 1. Wald implied parabola centered at tHat (when non-quadratic)
+        if (mode !== 'quad') {
+          ctx.save();
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.9;
+          ctx.setLineDash([5, 4]);
+          ctx.beginPath();
+          for (let k = 0; k <= 120; k++) {
+            const t = xMin + (k / 120) * (xMax - xMin);
+            let yw;
+            if (mode === 'reparam') {
+              const dPhi = (1 - Math.exp(1.2 * (t - tHat))) / 1.2;
+              yw = -0.5 * st.iHat * dPhi * dPhi;
+            } else {
+              yw = -0.5 * st.iHat * (t - tHat) * (t - tHat);
+            }
+            const px = mapX(t), py = mapY(yw);
+            if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // 2. Sample log-likelihood curve centered at tHat
         ctx.strokeStyle = pal.indigo;
         ctx.lineWidth = 3.0;
         ctx.beginPath();
         for (let k = 0; k <= 140; k++) {
           const t = xMin + (k / 140) * (xMax - xMin);
-          const y = logLik(t, nEff);
-          const px = mapX(t), py = mapY(y);
+          const px = mapX(t), py = mapY(sampleLik(t, tHat, n));
           if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
         }
         ctx.stroke();
         ctx.restore();
 
-        const x0 = mapX(delta);
-        const y0 = mapY(st.l0);
+        const yAtNull = mapY(st.l0);
 
-        if (Math.abs(delta) >= 0.015) {
-          // 1. Horizontal Wald bracket near top peak line (y = 0)
+        if (Math.abs(tHat) >= 0.015) {
+          // 1. Horizontal Wald bracket between theta_0 (0) and thetaHat
           const waldDropY = mapY(-0.5 * st.wald);
           ctx.strokeStyle = pal.amber;
           ctx.lineWidth = 2.4;
           ctx.beginPath();
-          ctx.moveTo(xHat, yPeak - 14);
-          ctx.lineTo(x0, yPeak - 14);
-          ctx.moveTo(xHat, yPeak - 20); ctx.lineTo(xHat, yPeak - 8);
-          ctx.moveTo(x0, yPeak - 20); ctx.lineTo(x0, yPeak - 8);
+          ctx.moveTo(x0, yPeak - 16);
+          ctx.lineTo(xHat, yPeak - 16);
+          ctx.moveTo(x0, yPeak - 22); ctx.lineTo(x0, yPeak - 10);
+          ctx.moveTo(xHat, yPeak - 22); ctx.lineTo(xHat, yPeak - 10);
           ctx.stroke();
 
-          // Vertical guide at theta0 to Wald parabola
           if (mode !== 'quad') {
             ctx.save();
             ctx.strokeStyle = pal.amber;
@@ -1547,65 +1569,63 @@
             ctx.beginPath(); ctx.arc(x0, Math.min(h - padB, waldDropY), 4.2, 0, Math.PI * 2); ctx.fill();
           }
 
-          // 2. Vertical LR drop bar at theta0
+          // 2. Vertical LR drop bar along x0 (theta_0 = 0)
           ctx.strokeStyle = pal.indigo;
           ctx.lineWidth = 3.0;
           ctx.beginPath();
           ctx.moveTo(x0, yPeak);
-          ctx.lineTo(x0, y0);
+          ctx.lineTo(x0, yAtNull);
           ctx.stroke();
-          // Arrowheads on LR segment
           ctx.fillStyle = pal.indigo;
-          const dirLR = y0 > yPeak ? 1 : -1;
+          const dirLR = yAtNull > yPeak ? 1 : -1;
           ctx.beginPath();
-          ctx.moveTo(x0, y0);
-          ctx.lineTo(x0 - 4.5, y0 - 7 * dirLR);
-          ctx.lineTo(x0 + 4.5, y0 - 7 * dirLR);
+          ctx.moveTo(x0, yAtNull);
+          ctx.lineTo(x0 - 4.5, yAtNull - 7 * dirLR);
+          ctx.lineTo(x0 + 4.5, yAtNull - 7 * dirLR);
           ctx.closePath();
           ctx.fill();
 
-          // 3. Tangent slope at theta0 (Score / LM)
+          // 3. Tangent slope at theta_0 = 0 (Score / LM)
           const span = 0.24;
-          const tA = delta - span, tB = delta + span;
-          const yA = st.l0 + st.s0 * (tA - delta);
-          const yB = st.l0 + st.s0 * (tB - delta);
+          const yA = st.l0 + st.s0 * (-span);
+          const yB = st.l0 + st.s0 * (+span);
           ctx.strokeStyle = pal.cyan;
           ctx.lineWidth = 2.6;
           ctx.beginPath();
-          ctx.moveTo(mapX(tA), mapY(Math.max(yMinVal, Math.min(yMaxVal, yA))));
-          ctx.lineTo(mapX(tB), mapY(Math.max(yMinVal, Math.min(yMaxVal, yB))));
+          ctx.moveTo(mapX(-span), mapY(Math.max(yMinVal, Math.min(yMaxVal, yA))));
+          ctx.lineTo(mapX(+span), mapY(Math.max(yMinVal, Math.min(yMaxVal, yB))));
           ctx.stroke();
 
-          // Null dot on curve
           ctx.fillStyle = pal.cyan;
-          ctx.beginPath(); ctx.arc(x0, y0, 5.2, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(x0, yAtNull, 5.2, 0, Math.PI * 2); ctx.fill();
 
-          // Labels on canvas
           ctx.font = '650 11.5px "JetBrains Mono", monospace';
           ctx.fillStyle = pal.amber;
-          const midX = (xHat + x0) * 0.5;
-          ctx.fillText(`Wald: ${st.wald.toFixed(1)}`, midX - 30, yPeak - 22);
+          ctx.fillText(`Wald: ${st.wald.toFixed(1)}`, (x0 + xHat) * 0.5 - 30, yPeak - 25);
 
           ctx.fillStyle = pal.indigo;
-          const lrLblX = delta >= 0 ? Math.min(w - padR - 86, x0 + 8) : Math.max(padL + 6, x0 - 92);
-          ctx.fillText(`½LR = ${(0.5 * st.lr).toFixed(2)}`, lrLblX, (yPeak + y0) * 0.5 + 4);
+          const lrLblX = tHat >= 0 ? x0 - 96 : x0 + 8;
+          ctx.fillText(`½LR = ${(0.5 * st.lr).toFixed(2)}`, lrLblX, (yPeak + yAtNull) * 0.5 + 4);
 
           ctx.fillStyle = pal.cyan;
-          const scLblX = delta >= 0 ? Math.min(w - padR - 110, x0 + 8) : Math.max(padL + 6, x0 - 118);
-          ctx.fillText(`기울기 S(θ₀)=${st.s0.toFixed(1)}`, scLblX, Math.min(h - padB - 8, y0 + 16));
+          const scLblX = tHat >= 0 ? x0 + 10 : x0 - 118;
+          ctx.fillText(`기울기 S(θ₀)=${st.s0.toFixed(1)}`, scLblX, Math.min(h - padB - 8, yAtNull + 16));
         }
 
-        // Peak dot thetaHat
-        ctx.fillStyle = pal.ink;
-        ctx.beginPath(); ctx.arc(xHat, yPeak, 5.0, 0, Math.PI * 2); ctx.fill();
+        // Peak markers: Population (theta_true) & Sample (thetaHat)
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(xTrue, yPeak, 4.6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.indigo;
+        ctx.beginPath(); ctx.arc(xHat, yPeak, 5.2, 0, Math.PI * 2); ctx.fill();
+
         ctx.font = '650 11.5px "JetBrains Mono", monospace';
-        ctx.fillText('θ̂ (MLE 정점)', xHat + 8, yPeak + 15);
-        if (Math.abs(delta) >= 0.015) {
-          ctx.fillStyle = pal.muted;
-          ctx.fillText('θ₀', x0 - 8, h - padB + 18);
-        }
-        ctx.fillText('0', xHat - 4, h - padB + 18);
-        ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂)', padL + 8, padT + 14);
+        ctx.fillStyle = pal.indigo;
+        ctx.fillText('θ̂ₙ', xHat + (tHat >= 0 ? 7 : -22), yPeak + 15);
+        ctx.fillStyle = pal.teal;
+        ctx.fillText(Math.abs(tTrue) < 0.01 ? 'θ₀ (모집단 최대)' : 'θ_true', xTrue + (tTrue >= 0 ? -96 : 8), yPeak + 15);
+        ctx.fillStyle = pal.muted;
+        ctx.fillText('θ₀=0', x0 - 15, h - padB + 18);
+        ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂ₙ)', padL + 8, padT + 14);
       }
 
       const trPlayBtn = document.getElementById('trPlayBtn');
@@ -1617,7 +1637,7 @@
           cancelAnimationFrame(trAnimId);
           trAnimId = null;
         }
-        trPlayBtn.textContent = '▶ 자동 시연';
+        trPlayBtn.textContent = '▶ 표본크기 n↑ 시연';
         trPlayBtn.classList.remove('is-primary');
       }
 
@@ -1632,13 +1652,18 @@
         function tick(now) {
           const dt = Math.min(0.05, (now - lastT) / 1000);
           lastT = now;
-          trPhase += dt * 1.15;
-          const d = 0.12 + 0.64 * Math.sin(trPhase);
-          deltaIn.value = Math.max(-0.54, Math.min(0.78, d)).toFixed(2);
+          trPhase += dt * 0.75;
+          const nValAnim = Math.round(43 - 37 * Math.cos(trPhase)); // 6 -> 80 -> 6
+          nIn.value = String(Math.max(6, Math.min(80, nValAnim)));
           render();
           trAnimId = requestAnimationFrame(tick);
         }
         trAnimId = requestAnimationFrame(tick);
+      });
+
+      nullBtn.addEventListener('click', () => {
+        trueIn.value = '0.00';
+        render();
       });
 
       modeBtns.forEach(btn => {
@@ -1648,8 +1673,8 @@
           render();
         });
       });
-      [deltaIn, infoIn, nIn].forEach(el => el.addEventListener('input', () => {
-        if (el === deltaIn) stopTrinityAnim();
+      [trueIn, noiseIn, nIn].forEach(el => el.addEventListener('input', () => {
+        if (el === nIn) stopTrinityAnim();
         render();
       }));
       onThemeCallbacks.push(render);
@@ -1770,6 +1795,7 @@
 
       let drag = null;
       c3d.addEventListener('pointerdown', e => {
+        if (typeof stopM2Anim === 'function') stopM2Anim();
         drag = { x: e.clientX, y: e.clientY };
         c3d.style.cursor = 'grabbing';
         c3d.setPointerCapture(e.pointerId);
@@ -1959,13 +1985,14 @@
         ctx.stroke();
 
         // Draw elliptical log-likelihood contours centered at thetaHat passing through k * contourLevel
-        const targetDrop = Math.max(0.25, st.lr);
-        const levels = [targetDrop * 0.35, targetDrop, targetDrop * 2.0];
+        const hasDrop = st.lr > 0.015;
+        const targetDrop = hasDrop ? st.lr : 0.45;
+        const levels = [targetDrop * 0.35, targetDrop, Math.max(targetDrop * 2.0, 0.55)];
         levels.forEach((lvl, idx) => {
           ctx.save();
-          ctx.strokeStyle = idx === 1 ? pal.indigo : pal.indigo;
-          ctx.globalAlpha = idx === 1 ? 0.90 : 0.28;
-          ctx.lineWidth = idx === 1 ? 2.1 : 1.1;
+          ctx.strokeStyle = pal.indigo;
+          ctx.globalAlpha = (hasDrop && idx === 1) ? 0.90 : 0.28;
+          ctx.lineWidth = (hasDrop && idx === 1) ? 2.1 : 1.1;
           // Parametrize ellipse (d1, d2) such that 4.5 * d' I d = lvl
           // Diagonalize or trace via angle u -> radius along unit vector u
           ctx.beginPath();
@@ -2134,17 +2161,35 @@
 
       let seed = 202611;
 
-      function randnFactory(s) {
+      function rngFactory(s) {
         let state = s | 0;
-        return function randn() {
-          function u01() {
-            state = (state + 0x6D2B79F5) | 0;
-            let t = Math.imul(state ^ (state >>> 15), 1 | state);
-            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        function u01() {
+          state = (state + 0x6D2B79F5) | 0;
+          let t = Math.imul(state ^ (state >>> 15), 1 | state);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return Math.max(1e-9, ((t ^ (t >>> 14)) >>> 0) / 4294967296);
+        }
+        function randn() {
+          return Math.sqrt(-2 * Math.log(u01())) * Math.cos(2 * Math.PI * u01());
+        }
+        function sampleGamma(shape) {
+          if (Math.abs(shape - 1.0) < 1e-6) return -Math.log(u01());
+          if (shape < 1.0) return sampleGamma(shape + 1.0) * Math.pow(u01(), 1.0 / shape);
+          const d = shape - 1.0 / 3.0;
+          const c = 1.0 / Math.sqrt(9.0 * d);
+          for (;;) {
+            let x, v;
+            do {
+              x = randn();
+              v = 1.0 + c * x;
+            } while (v <= 0);
+            v = v * v * v;
+            const u = u01();
+            if (u < 1.0 - 0.0331 * x * x * x * x) return d * v;
+            if (Math.log(u) < 0.5 * x * x + d * (1.0 - v + Math.log(v))) return d * v;
           }
-          return Math.sqrt(-2 * Math.log(Math.max(1e-9, u01()))) * Math.cos(2 * Math.PI * u01());
-        };
+        }
+        return { sampleGamma };
       }
 
       function render() {
@@ -2157,29 +2202,32 @@
         btnWell.classList.toggle('is-primary', Math.abs(kappa - 1.0) < 0.05);
         btnOver.classList.toggle('is-primary', Math.abs(kappa - 2.0) < 0.05);
 
-        // Monte Carlo: True DGP for misspecified Normal model with unit variance, score variance = kappa
-        // Sample average yBar has variance kappa / n; naive Hessian assumes unit variance => I_naive = n
-        const R = 320;
-        const rnd = randnFactory(seed);
+        // Monte Carlo: Genuine n-sample draws from Y_i ~ Gamma(shape = 1/kappa, scale = kappa)
+        // E[Y_i] = 1 (true parameter mu_0 = 1), Var(Y_i) = kappa.
+        // Fit Exponential(mu) quasi-MLE => H_0: mu = 1, hat{mu} = bar{Y}, naive H(hat{mu}) = 1/bar{Y}^2,
+        // score variance hat{Omega}(hat{mu}) = S^2 / bar{Y}^4 => sandwich variance = S^2.
+        const R = 300;
+        const { sampleGamma } = rngFactory(seed);
+        const shape = 1.0 / kappa;
         const lrStats = new Array(R);
         const robStats = new Array(R);
         let rejW = 0, rejLR = 0, rejRob = 0, sumLR = 0;
         const crit = 3.841;
 
         for (let r = 0; r < R; r++) {
-          // Simulate thetaHat - theta0 ~ N(0, kappa / n) and sample variance estimate S2 ~ kappa * chi2(n-1)/(n-1)
-          const z = rnd();
-          const dHat = z * Math.sqrt(kappa / n);
-          // Approximate sample score variance ratio (chi2(n-1)/(n-1) using Wilson-Hilferty)
-          const z2 = rnd();
-          const df = Math.max(4, n - 1);
-          const wh = Math.pow(Math.max(0.2, 1 - 2 / (9 * df) + z2 * Math.sqrt(2 / (9 * df))), 3);
-          const omegaHat = kappa * wh;
+          let mean = 0, m2 = 0;
+          for (let i = 0; i < n; i++) {
+            const y = kappa * sampleGamma(shape);
+            const delta = y - mean;
+            mean += delta / (i + 1);
+            m2 += delta * (y - mean);
+          }
+          const barY = Math.max(0.05, mean);
+          const s2 = m2 / Math.max(1, n - 1);
 
-          // Finite-sample mild skewness / non-quadratic curvature effect via studentized t-like denominator
-          const wald = n * dHat * dHat;
-          const lr = n * Math.log(1 + dHat * dHat); // genuine nonlinear LR transformation (e.g. Gaussian scale or log-lik difference)
-          const rob = (n * dHat * dHat) / Math.max(0.15, omegaHat);
+          const wald = (n * Math.pow(barY - 1, 2)) / (barY * barY);
+          const lr = Math.max(0, 2 * n * (barY - 1 - Math.log(barY)));
+          const rob = (n * Math.pow(barY - 1, 2)) / Math.max(0.02, s2);
 
           lrStats[r] = lr;
           robStats[r] = rob;
