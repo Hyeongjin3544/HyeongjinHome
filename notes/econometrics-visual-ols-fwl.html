@@ -141,7 +141,7 @@
       overflow-wrap: break-word;
     }
     html:not(.math-ready) mjx-container { visibility: hidden; }
-    mjx-container { overflow-x: auto; overflow-y: visible; color: var(--ink); max-width: 100%; }
+    mjx-container { overflow-x: auto; overflow-y: visible; color: inherit; max-width: 100%; }
 
     /* Topbar */
     .sitebar {
@@ -520,6 +520,8 @@
       border-top: 1px solid rgba(255, 255, 255, 0.08);
       line-height: 1.55;
     }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
 
     /* Track B: Interactive 60fps Canvas Labs */
     .interactive-lab {
@@ -884,14 +886,14 @@
         <div class="video-card">
           <div class="video-card__head">
             <span>Clip 01 · Orthogonal Projection \(y = P_X y + M_X y\) in Sample Space</span>
-            <span class="video-card__badge">1280×720 · 60fps</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
           </div>
           <video controls loop muted playsinline preload="metadata">
             <source src="../assets/media/ols-projection.mp4" type="video/mp4" />
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            MATLAB으로 60fps 렌더링한 3차원 표본공간 직교 사영 시연이다. 기저벡터 \(x_1, x_2\)가 생성하는 평면 \(\mathcal{C}(X)\) 위로 \(y\)가 수직 낙하하여
+            Python(Manim)으로 1080p 60fps 렌더링한 3차원 표본공간 직교 사영 시연이다. 기저벡터 \(x_1, x_2\)가 생성하는 평면 \(\mathcal{C}(X)\) 위로 \(y\)가 수직 낙하하여
             \(\hat{y}=P_X y = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)와 직교 잔차 \(\hat{u}=M_X y\)로 분해되는 과정을 보여 준다.
           </div>
         </div>
@@ -993,7 +995,7 @@
         <div class="video-card">
           <div class="video-card__head">
             <span>Clip 02 · FWL Partial-Out &amp; Orthogonal Subspace Projection \(\mathcal{C}(X_1)^\perp\)</span>
-            <span class="video-card__badge">1280×720 · 60fps</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
           </div>
           <video controls loop muted playsinline preload="metadata">
             <source src="../assets/media/fwl-geometry.mp4" type="video/mp4" />
