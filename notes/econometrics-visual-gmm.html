@@ -803,7 +803,7 @@
     <div class="hero-inner">
       <div class="chapter-kicker">Econometrics · Visual Supplement 03 (Ch 04 연계)</div>
       <h1>GMM의 아이디어와 가중거리 기하학</h1>
-      <p class="subtitle">적률법(MM)에서 일반화적률법(GMM)으로, $W$-타원, 최적 가중 $W^*=S^{-1}$ 및 Two-Step·CUE·HAC</p>
+      <p class="subtitle">적률법(MM)에서 일반화적률법(GMM)으로, \(W\)-타원, 최적 가중 \(W^*=S^{-1}\) 및 Two-Step·CUE·HAC</p>
       <div class="hero-rule"></div>
       <p class="lead">
         경제이론은 확률변수와 모수에 관한 적률조건 \(\mathbb{E}[g(w_i,\theta_0)]=0\)을 제시한다.
@@ -1025,21 +1025,20 @@
       <section class="module" id="sec-gmm-step-lab">
         <h2><span class="sec-tag">04</span>이분산·자기상관 아래 2SLS · 2-Step · Iterated · CUE &amp; HAC 비교기</h2>
         <p>
-          오차항이 등분산·무상관이면 2SLS(\(W=(Z'Z)^{-1}\))가 이미 효율적 GMM과 일치한다. 그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이나
-          <strong>시계열 자기상관(\(\rho_u \neq 0\))</strong>이 존재하면 2SLS 가중행렬은 \(S^{-1}\)과 달라져 비효율적이 되며,
-          나이브 공분산 추정량 \(S_0\)는 표준오차와 \(J\)-검정을 왜곡한다.
-          아래 시뮬레이터는 선형 과대식별 IV 모형(\(L = 4\) 도구변수)에서 2SLS, 2-Step GMM, Iterated GMM, CUE 및 Newey–West HAC의 목적함수와 표준오차를 비교한다.
+          등분산·무상관(\(\gamma=0, \rho_u=0\))이면 2SLS와 2-Step GMM은 같은 추정량과 표준오차를 준다.
+          그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이 있으면 2-Step·Iterated·CUE는 잡음이 큰 도구변수의 가중치를 줄여 <strong>95% 신뢰구간 폭(SE)을 2SLS보다 좁힌다</strong>.
+          또한 <strong>자기상관(\(\rho_u &gt; 0\))</strong>이 있을 때 시차 공분산을 무시한 나이브 표준오차(점선)는 실제보다 과도하게 좁게 계산되며, Newey–West HAC(\(m &gt; 0\))가 이를 보정한다.
         </p>
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 02 · Heteroskedasticity, HAC (\(S_{\mathrm{NW}}\)) &amp; GMM Variants</span>
-            <span class="lab-sub">4개 도구변수 선형 GMM · 2SLS vs 2-Step · Iterated · CUE</span>
+            <span class="lab-title">Interactive Lab 02 · 95% 신뢰구간 폭 · 도구 가중치 · HAC 시차 합산 비교</span>
+            <span class="lab-sub">상단: 추정치·95% CI · 좌하: 도구별 가중 비중 · 우하: 자기상관 &amp; Bartlett 커널</span>
           </div>
           <div class="lab-body">
-            <div class="canvas-stage">
-              <canvas id="gmmCompareCanvas" aria-label="2SLS vs GMM vs CUE 목적함수 비교 캔버스"></canvas>
-              <div class="canvas-hint" id="gmmCompHint">곡선: 정규화된 목적함수 Q(θ) · 점선: 참값 θ₀ = 1.00</div>
+            <div class="canvas-stage" style="min-height:400px;">
+              <canvas id="gmmCompareCanvas" style="height:400px;" aria-label="2SLS vs GMM vs CUE 신뢰구간 및 가중치·HAC 비교 캔버스"></canvas>
+              <div class="canvas-hint" id="gmmCompHint">실선: HAC 95% CI · 점선 괄호: 나이브 CI · 수직 점선: 참값 θ₀ = 1.00</div>
             </div>
 
             <div class="lab-panel">
@@ -1594,7 +1593,6 @@
         const L = 4;
         const betaTrue = 1.0;
 
-        // Save/restore seed per draw so sliders smoothly update on the SAME underlying draws
         const savedSeed = seed;
         const Z = [];
         const x = new Float64Array(n);
@@ -1605,23 +1603,22 @@
         for (let i = 0; i < n; i++) {
           const zi = [nextRandn(), nextRandn(), nextRandn(), nextRandn()];
           Z.push(zi);
-          // Heteroskedasticity tied strongly to z1 and z2
-          const hetScale = Math.exp(0.45 * gamma * (zi[0] * zi[0] - 1));
+          // Heteroskedasticity concentrated on z3 and z4 while z1 stays clean
+          const hetScale = 1.0 + gamma * (0.12 * zi[0] * zi[0] + 0.55 * zi[1] * zi[1] + 1.35 * zi[2] * zi[2] + 2.20 * zi[3] * zi[3]);
           const innov = nextRandn();
           const eps = rhoAr * epsPrev + Math.sqrt(Math.max(0.05, 1 - rhoAr * rhoAr)) * innov * hetScale;
           epsPrev = eps;
 
-          const vInnov = 0.55 * innov + Math.sqrt(1 - 0.55 * 0.55) * nextRandn();
-          const v = 0.35 * vPrev + vInnov;
+          const vInnov = 0.50 * innov + Math.sqrt(1 - 0.50 * 0.50) * nextRandn();
+          const v = 0.30 * vPrev + vInnov;
           vPrev = v;
 
-          const xi = 0.55 * zi[0] + 0.45 * zi[1] + 0.35 * zi[2] + 0.25 * zi[3] + v;
+          const xi = 0.50 * zi[0] + 0.45 * zi[1] + 0.42 * zi[2] + 0.38 * zi[3] + v;
           x[i] = xi;
           y[i] = betaTrue * xi + eps;
         }
         seed = savedSeed;
 
-        // Sample moments: g_i(theta) = z_i * (y_i - theta * x_i)
         function gBar(theta) {
           const out = [0, 0, 0, 0];
           for (let i = 0; i < n; i++) {
@@ -1632,14 +1629,12 @@
           return out;
         }
 
-        // Jacobian G = -(1/n) sum z_i x_i
         const G = [0, 0, 0, 0];
         for (let i = 0; i < n; i++) {
           for (let j = 0; j < L; j++) G[j] -= Z[i][j] * x[i];
         }
         for (let j = 0; j < L; j++) G[j] /= n;
 
-        // Z'Z / n
         const ZtZ = Array.from({ length: L }, () => Array(L).fill(0));
         for (let i = 0; i < n; i++) {
           for (let a = 0; a < L; a++) {
@@ -1649,15 +1644,20 @@
         for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) ZtZ[a][b] /= n;
         const W2sls = invSym(ZtZ);
 
+        function effShares(W) {
+          const WG = [0, 0, 0, 0];
+          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
+          const absSum = WG.reduce((acc, v) => acc + Math.abs(v), 0) || 1;
+          return WG.map(v => Math.abs(v) / absSum);
+        }
+
         function solveWithW(W) {
-          // theta = (G' W G)^{-1} G' W (1/n sum z_i y_i)
           const Zty = [0, 0, 0, 0];
           for (let i = 0; i < n; i++) for (let j = 0; j < L; j++) Zty[j] += Z[i][j] * y[i];
           for (let j = 0; j < L; j++) Zty[j] /= n;
 
           const WG = [0, 0, 0, 0];
           for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
-          // Note G = -E[z x], so -G' W Zty / (G' W G)
           let num = 0, den = 0;
           for (let a = 0; a < L; a++) {
             num -= WG[a] * Zty[a];
@@ -1694,6 +1694,25 @@
           return S;
         }
 
+        // Compute normalized lag autocovariance profile tr(Gamma_j)/tr(Gamma_0) for HAC visual
+        function computeLagProfile(theta, maxShow) {
+          const gi = [];
+          for (let i = 0; i < n; i++) {
+            const u = y[i] - theta * x[i];
+            gi.push([Z[i][0] * u, Z[i][1] * u, Z[i][2] * u, Z[i][3] * u]);
+          }
+          const tr = [];
+          for (let lag = 0; lag <= maxShow; lag++) {
+            let s = 0;
+            for (let i = lag; i < n; i++) {
+              for (let a = 0; a < L; a++) s += gi[i][a] * gi[i - lag][a];
+            }
+            tr.push(s / n);
+          }
+          const g0 = Math.max(1e-8, tr[0]);
+          return tr.map(v => v / g0);
+        }
+
         function seFor(W, S) {
           const WG = [0, 0, 0, 0];
           for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
@@ -1713,11 +1732,9 @@
 
         const th2sls = solveWithW(W2sls);
         const S_step1 = computeS(th2sls, maxLag);
-        const S_naive = computeS(th2sls, 0);
         const W2step = invSym(S_step1);
         const th2step = solveWithW(W2step);
 
-        // Iterated GMM (6 fixed-point iterations)
         let thIter = th2step;
         let WIter = W2step;
         for (let it = 0; it < 6; it++) {
@@ -1726,11 +1743,9 @@
           thIter = solveWithW(WIter);
         }
 
-        // CUE via dense grid search on [0.45, 1.55]
         function evalCueQ(theta) {
           const S_t = computeS(theta, maxLag);
-          const W_t = invSym(S_t);
-          return evalQ(theta, W_t);
+          return evalQ(theta, invSym(S_t));
         }
         let thCue = thIter;
         let bestCueQ = Infinity;
@@ -1738,31 +1753,46 @@
           const q = evalCueQ(t);
           if (q < bestCueQ) { bestCueQ = q; thCue = t; }
         }
+        const WCue = invSym(computeS(thCue, maxLag));
 
-        const S_final = computeS(thIter, maxLag);
-        const se2sls = seFor(W2sls, S_final);
-        const se2step = seFor(W2step, S_final);
-        const seIter = seFor(WIter, S_final);
-        const seNaive = seFor(W2step, S_naive);
+        // Compare true long-run S_true (lag=8) vs naive S_0 (lag=0) and selected S_hac(maxLag)
+        const S_true = computeS(thIter, Math.max(8, maxLag));
+        const S_hac = computeS(thIter, maxLag);
+        const S_naive = computeS(thIter, 0);
 
-        let thSel = th2step, seSel = se2step, WSel = W2step;
-        if (activeMode === '2sls') { thSel = th2sls; seSel = se2sls; WSel = W2sls; }
-        else if (activeMode === 'iter') { thSel = thIter; seSel = seIter; WSel = WIter; }
-        else if (activeMode === 'cue') { thSel = thCue; seSel = seIter; WSel = invSym(computeS(thCue, maxLag)); }
+        const se2sls = seFor(W2sls, S_hac);
+        const se2step = seFor(W2step, S_hac);
+        const seIter = seFor(WIter, S_hac);
+        const seCue = seFor(WCue, S_hac);
+
+        const se2slsNaive = seFor(W2sls, S_naive);
+        const se2stepNaive = seFor(W2step, S_naive);
+        const seIterNaive = seFor(WIter, S_naive);
+        const seCueNaive = seFor(WCue, S_naive);
+
+        let thSel = th2step, seSel = se2step, seSelNaive = se2stepNaive;
+        if (activeMode === '2sls') { thSel = th2sls; seSel = se2sls; seSelNaive = se2slsNaive; }
+        else if (activeMode === 'iter') { thSel = thIter; seSel = seIter; seSelNaive = seIterNaive; }
+        else if (activeMode === 'cue') { thSel = thCue; seSel = seCue; seSelNaive = seCueNaive; }
 
         const jVal = n * evalQ(thSel, invSym(computeS(thSel, maxLag)));
 
         return {
           gamma, rhoAr, maxLag, n,
           th2sls, th2step, thIter, thCue, thSel,
-          se2sls, seSel, seNaive, jVal,
-          W2sls, W2step, WIter, evalQ, evalCueQ
+          se2sls, se2step, seIter, seCue, seSel,
+          se2slsNaive, se2stepNaive, seIterNaive, seCueNaive, seSelNaive,
+          seTrueRef: seFor(WIter, S_true),
+          shares2sls: effShares(W2sls),
+          shares2step: effShares(W2step),
+          lagProfile: computeLagProfile(thIter, 8),
+          jVal
         };
       }
 
       function render() {
         const pal = getPalette();
-        const { ctx, w, h } = setupCanvas(canvas, 360);
+        const { ctx, w, h } = setupCanvas(canvas, 400);
         const st = computeSim();
 
         hetVal.textContent = st.gamma.toFixed(2);
@@ -1773,86 +1803,205 @@
         mTheta.textContent = st.thSel.toFixed(3);
         const gainPct = ((st.se2sls - st.seSel) / Math.max(1e-6, st.se2sls)) * 100;
         mGain.textContent = (gainPct >= 0 ? '+' : '') + gainPct.toFixed(1) + '%';
-        mGain.className = 'metric-tile__v ' + (gainPct > 1 ? 'ok' : '');
-        const hacRatio = st.seSel / Math.max(1e-6, st.seNaive);
+        mGain.className = 'metric-tile__v ' + (gainPct > 3 ? 'ok' : '');
+        const hacRatio = st.seSel / Math.max(1e-6, st.seSelNaive);
         mHacRatio.textContent = hacRatio.toFixed(2) + '×';
-        mHacRatio.className = 'metric-tile__v ' + (hacRatio > 1.15 ? 'warn' : '');
+        mHacRatio.className = 'metric-tile__v ' + (hacRatio > 1.12 ? 'warn' : '');
         mJ.textContent = st.jVal.toFixed(2);
         mJ.className = 'metric-tile__v ' + (st.jVal > 7.81 ? 'warn' : 'ok');
 
-        hintEl.textContent = `2SLS=${st.th2sls.toFixed(3)} · 2-Step=${st.th2step.toFixed(3)} · CUE=${st.thCue.toFixed(3)} (참값 1.00)`;
+        hintEl.textContent = st.maxLag === 0 && st.rhoAr > 0.1
+          ? '주의: HAC 시차 m=0 이므로 자기상관이 무시되어 CI가 과소추정됩니다'
+          : `실선: HAC 95% CI · 점선: 나이브 CI · 수직 점선: 참값 θ₀ = 1.00`;
 
         ctx.fillStyle = pal.bg;
         ctx.fillRect(0, 0, w, h);
 
-        const tMin = 0.55, tMax = 1.45;
-        const padL = 42, padR = 22, padT = 26, padB = 34;
-        const plotW = w - padL - padR;
-        const plotH = h - padT - padB;
-        const mapX = t => padL + ((t - tMin) / (tMax - tMin)) * plotW;
-
-        const gridT = [];
-        for (let i = 0; i <= 90; i++) gridT.push(tMin + (i / 90) * (tMax - tMin));
-
-        // Normalize each Q(theta) by subtracting its min so curvature sharpness is directly comparable
-        function normCurve(fn) {
-          const vals = gridT.map(fn);
-          const mn = Math.min(...vals);
-          return vals.map(v => v - mn);
-        }
-        const q2sls = normCurve(t => st.evalQ(t, st.W2sls));
-        const q2step = normCurve(t => st.evalQ(t, st.W2step));
-        const qCue = normCurve(t => st.evalCueQ(t));
-
-        const maxQ = Math.max(0.08, ...q2step, ...qCue, ...q2sls) * 1.05;
-        const mapY = q => padT + plotH - Math.min(1.0, q / maxQ) * plotH;
+        // ---------------------------------------------------------------
+        // Panel A (Top): Estimator Point Estimates + 95% CI Comparison
+        // ---------------------------------------------------------------
+        const padL = 74, padR = 66, topY = 26, ciH = 148;
+        const tMin = 0.35, tMax = 1.65;
+        const mapX = t => padL + ((Math.max(tMin, Math.min(tMax, t)) - tMin) / (tMax - tMin)) * (w - padL - padR);
 
         ctx.save();
+        ctx.fillStyle = pal.ink;
+        ctx.font = '700 11.5px "JetBrains Mono", monospace';
+        ctx.fillText('① 추정량별 점추정치 ± 95% 신뢰구간 (SE 비교)', 14, 18);
+
+        // Grid & true theta = 1.00
         ctx.strokeStyle = pal.grid;
         ctx.lineWidth = 1;
-        for (let tv = 0.6; tv <= 1.41; tv += 0.2) {
+        for (let tv = 0.5; tv <= 1.51; tv += 0.25) {
           const px = mapX(tv);
-          ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, padT + plotH); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(px, topY); ctx.lineTo(px, topY + ciH); ctx.stroke();
           ctx.fillStyle = pal.muted;
-          ctx.font = '500 10.5px "JetBrains Mono", monospace';
+          ctx.font = '500 10px "JetBrains Mono", monospace';
           ctx.textAlign = 'center';
-          ctx.fillText(tv.toFixed(1), px, padT + plotH + 15);
+          ctx.fillText(tv.toFixed(2), px, topY + ciH + 12);
         }
-        ctx.beginPath(); ctx.moveTo(padL, padT + plotH); ctx.lineTo(w - padR, padT + plotH); ctx.stroke();
-
-        // True theta = 1.00 line
         const pxTrue = mapX(1.0);
         ctx.strokeStyle = pal.ink;
         ctx.lineWidth = 1.2;
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath(); ctx.moveTo(pxTrue, padT); ctx.lineTo(pxTrue, padT + plotH); ctx.stroke();
+        ctx.setLineDash([4, 3]);
+        ctx.beginPath(); ctx.moveTo(pxTrue, topY); ctx.lineTo(pxTrue, topY + ciH); ctx.stroke();
         ctx.setLineDash([]);
 
-        function plotLine(vals, col, lw, dashed) {
-          ctx.save();
-          ctx.strokeStyle = col;
-          ctx.lineWidth = lw;
-          if (dashed) ctx.setLineDash([5, 4]);
+        const rows = [
+          { key: '2sls', label: '2SLS', th: st.th2sls, se: st.se2sls, seN: st.se2slsNaive, col: pal.rose },
+          { key: '2step', label: '2-Step', th: st.th2step, se: st.se2step, seN: st.se2stepNaive, col: pal.indigo },
+          { key: 'iter', label: 'Iterated', th: st.thIter, se: st.seIter, seN: st.seIterNaive, col: pal.cyan },
+          { key: 'cue', label: 'CUE', th: st.thCue, se: st.seCue, seN: st.seCueNaive, col: pal.teal }
+        ];
+
+        rows.forEach((r, idx) => {
+          const ry = topY + 20 + idx * 33;
+          const isSel = activeMode === r.key;
+
+          ctx.textAlign = 'right';
+          ctx.fillStyle = isSel ? pal.ink : pal.muted;
+          ctx.font = (isSel ? '700' : '500') + ' 11px "JetBrains Mono", monospace';
+          ctx.fillText(r.label, padL - 10, ry + 4);
+
+          // Naive CI (dashed thin bar)
+          const nL = mapX(r.th - 1.96 * r.seN);
+          const nR = mapX(r.th + 1.96 * r.seN);
+          ctx.strokeStyle = r.col;
+          ctx.globalAlpha = 0.45;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
           ctx.beginPath();
-          for (let i = 0; i < gridT.length; i++) {
-            const px = mapX(gridT[i]), py = mapY(vals[i]);
-            if (i === 0) ctx.moveTo(px, py);
-            else ctx.lineTo(px, py);
-          }
+          ctx.moveTo(nL, ry - 5); ctx.lineTo(nL, ry + 5);
+          ctx.moveTo(nR, ry - 5); ctx.lineTo(nR, ry + 5);
+          ctx.moveTo(nL, ry); ctx.lineTo(nR, ry);
           ctx.stroke();
-          ctx.restore();
+          ctx.setLineDash([]);
+
+          // Robust/HAC CI (solid thick bar)
+          const hL = mapX(r.th - 1.96 * r.se);
+          const hR = mapX(r.th + 1.96 * r.se);
+          ctx.globalAlpha = isSel ? 1.0 : 0.72;
+          ctx.lineWidth = isSel ? 3.4 : 2.2;
+          ctx.beginPath();
+          ctx.moveTo(hL, ry); ctx.lineTo(hR, ry);
+          ctx.moveTo(hL, ry - 5); ctx.lineTo(hL, ry + 5);
+          ctx.moveTo(hR, ry - 5); ctx.lineTo(hR, ry + 5);
+          ctx.stroke();
+
+          // Point estimate dot
+          ctx.fillStyle = r.col;
+          ctx.beginPath(); ctx.arc(mapX(r.th), ry, isSel ? 5.2 : 4.0, 0, Math.PI * 2); ctx.fill();
+          ctx.globalAlpha = 1;
+
+          // Numeric SE tag
+          ctx.textAlign = 'left';
+          ctx.fillStyle = isSel ? pal.ink : pal.muted;
+          ctx.font = '600 10px "JetBrains Mono", monospace';
+          ctx.fillText(`SE=${r.se.toFixed(3)}`, w - padR + 8, ry + 3);
+        });
+
+        // Divider line
+        const divY = topY + ciH + 26;
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(14, divY); ctx.lineTo(w - 14, divY); ctx.stroke();
+
+        // ---------------------------------------------------------------
+        // Panel B (Bottom-Left): Instrument Effective Weights (2SLS vs 2-Step)
+        // ---------------------------------------------------------------
+        const bTop = divY + 22;
+        const bH = h - bTop - 42;
+        const halfW = w * 0.48;
+
+        ctx.textAlign = 'left';
+        ctx.fillStyle = pal.ink;
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.fillText('② 도구별 가중 비중 (이분산 대응)', 14, divY + 14);
+
+        const maxShare = Math.max(0.45, ...st.shares2sls, ...st.shares2step) * 1.15;
+        const grpW = (halfW - 34) / 4;
+        for (let j = 0; j < 4; j++) {
+          const gx = 20 + j * grpW;
+          const bw = Math.max(10, grpW * 0.34);
+          const h1 = (st.shares2sls[j] / maxShare) * bH;
+          const h2 = (st.shares2step[j] / maxShare) * bH;
+          const baseY = bTop + bH;
+
+          ctx.fillStyle = pal.rose;
+          ctx.globalAlpha = 0.78;
+          ctx.fillRect(gx + 4, baseY - h1, bw, h1);
+          ctx.fillStyle = pal.indigo;
+          ctx.globalAlpha = 0.92;
+          ctx.fillRect(gx + 6 + bw, baseY - h2, bw, h2);
+          ctx.globalAlpha = 1;
+
+          ctx.fillStyle = pal.muted;
+          ctx.font = '500 10px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(`z${j + 1}`, gx + 5 + bw, baseY + 12);
+        }
+        ctx.textAlign = 'left';
+        ctx.font = '600 9.8px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.rose; ctx.fillText('■ 2SLS', 20, bTop + bH + 25);
+        ctx.fillStyle = pal.indigo; ctx.fillText('■ 2-Step(S⁻¹)', 76, bTop + bH + 25);
+
+        // ---------------------------------------------------------------
+        // Panel C (Bottom-Right): Moment Autocorrelation & Bartlett Kernel
+        // ---------------------------------------------------------------
+        const rLeft = w * 0.52;
+        const rW = w - rLeft - 16;
+        ctx.fillStyle = pal.ink;
+        ctx.font = '700 11px "JetBrains Mono", monospace';
+        ctx.fillText(`③ 적률 자기상관 & HAC (m=${st.maxLag})`, rLeft, divY + 14);
+
+        const baseY2 = bTop + bH;
+        const nLags = st.lagProfile.length; // 0..8
+        const lagSlot = rW / nLags;
+        const bw2 = Math.max(8, lagSlot * 0.56);
+
+        for (let j = 0; j < nLags; j++) {
+          const lx = rLeft + j * lagSlot + 2;
+          const val = Math.max(0, st.lagProfile[j]);
+          const barH = Math.min(1.0, val) * bH;
+          const inHac = j <= st.maxLag;
+          const bart = inHac ? (1 - j / (st.maxLag + 1)) : 0;
+
+          // Raw autocovariance bar
+          ctx.fillStyle = inHac ? pal.teal : pal.muted;
+          ctx.globalAlpha = inHac ? 0.35 : 0.18;
+          ctx.fillRect(lx, baseY2 - barH, bw2, barH);
+
+          // Weighted Bartlett contribution
+          if (inHac) {
+            ctx.globalAlpha = 0.90;
+            ctx.fillRect(lx, baseY2 - barH * bart, bw2, barH * bart);
+          }
+          ctx.globalAlpha = 1;
+
+          ctx.fillStyle = pal.muted;
+          ctx.font = '500 9.5px "JetBrains Mono", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText(String(j), lx + bw2 / 2, baseY2 + 12);
         }
 
-        plotLine(q2sls, pal.rose, activeMode === '2sls' ? 3.0 : 1.8, true);
-        plotLine(qCue, pal.teal, activeMode === 'cue' ? 3.0 : 1.9, false);
-        plotLine(q2step, pal.indigo, activeMode === '2step' || activeMode === 'iter' ? 3.0 : 2.0, false);
+        // Bartlett triangle line
+        ctx.strokeStyle = pal.amber;
+        ctx.lineWidth = 1.6;
+        ctx.beginPath();
+        for (let j = 0; j < nLags; j++) {
+          const cxBar = rLeft + j * lagSlot + 2 + bw2 / 2;
+          const wB = j <= st.maxLag ? (1 - j / (st.maxLag + 1)) : 0;
+          const pyB = baseY2 - wB * bH;
+          if (j === 0) ctx.moveTo(cxBar, pyB);
+          else ctx.lineTo(cxBar, pyB);
+        }
+        ctx.stroke();
 
-        // Legend at top-right inside canvas
-        ctx.font = '600 11px "JetBrains Mono", monospace';
         ctx.textAlign = 'left';
-        ctx.fillStyle = pal.rose; ctx.fillText('-- 2SLS', padL + 8, padT + 14);
-        ctx.fillStyle = pal.indigo; ctx.fillText('— 2-Step / Iter', padL + 74, padT + 14);
-        ctx.fillStyle = pal.teal; ctx.fillText('— CUE', padL + 194, padT + 14);
+        ctx.font = '600 9.8px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.teal; ctx.fillText('■ 반영 시차', rLeft, bTop + bH + 25);
+        ctx.fillStyle = pal.amber; ctx.fillText('— Bartlett 가중', rLeft + 76, bTop + bH + 25);
+
         ctx.restore();
       }
 
