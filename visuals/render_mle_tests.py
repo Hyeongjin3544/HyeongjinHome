@@ -196,10 +196,20 @@ class MLETrinityScene(Scene):
             c = curv_tr.get_value()
             return -0.5 * c * t * t
 
+        def valid_x_bounds():
+            # Keep plot strictly within [-1.04, 1.25] AND eval_ll(t) >= -3.48 so curve stays inside axes
+            lo = -1.04
+            while lo < -0.05 and eval_ll(lo) < -3.48:
+                lo += 0.02
+            hi = 1.25
+            while hi > 0.05 and eval_ll(hi) < -3.48:
+                hi -= 0.02
+            return [lo, hi]
+
         ll_curve = always_redraw(
             lambda: ax.plot(
                 eval_ll,
-                x_range=[-1.02, 1.25],
+                x_range=valid_x_bounds(),
                 color=INDIGO_LIGHT_HEX,
                 stroke_width=3.6,
             )
@@ -216,7 +226,7 @@ class MLETrinityScene(Scene):
         )
 
         dot_hat = Dot(ax.c2p(0.0, 0.0), color=TEAL_HEX, radius=0.085)
-        lbl_hat = MathTex(r"\hat{\theta}", font_size=24, color=TEAL_HEX).next_to(dot_hat, UR if False else UP, buff=0.14)
+        lbl_hat = pill_tex(r"\hat{\theta}", ax.c2p(0.11, -0.22), TEAL_HEX, font_size=23)
 
         self.play(FadeIn(ax), FadeIn(x_lbl), FadeIn(y_lbl), run_time=0.55)
         self.play(Create(ll_curve), FadeIn(dot_hat), FadeIn(lbl_hat), run_time=1.0, rate_func=smooth)
@@ -224,28 +234,29 @@ class MLETrinityScene(Scene):
         # Null point & 3 geometric tests
         dot_0 = always_redraw(lambda: Dot(ax.c2p(theta0_tr.get_value(), eval_ll(theta0_tr.get_value())), color=CYAN_HEX, radius=0.085))
         lbl_0 = always_redraw(
-            lambda: MathTex(r"\theta_0", font_size=23, color=CYAN_HEX).next_to(
-                ax.c2p(theta0_tr.get_value(), 0.0),
-                UP,
-                buff=0.12,
+            lambda: pill_tex(
+                r"\theta_0",
+                ax.c2p(theta0_tr.get_value() + (-0.11 if theta0_tr.get_value() < 0 else 0.11), -0.18),
+                CYAN_HEX,
+                font_size=22,
             )
         )
 
-        # 1. Wald: horizontal bracket at top peak line y=0
+        # 1. Wald: horizontal bracket above peak line y=0
         wald_bar = always_redraw(
             lambda: Line(
-                ax.c2p(0.0, 0.14),
-                ax.c2p(theta0_tr.get_value(), 0.14),
+                ax.c2p(0.0, 0.22),
+                ax.c2p(theta0_tr.get_value(), 0.22),
                 color=AMBER_HEX,
                 stroke_width=3.2,
             )
         )
-        wald_tick_l = always_redraw(lambda: Line(ax.c2p(0.0, 0.06), ax.c2p(0.0, 0.22), color=AMBER_HEX, stroke_width=2.4))
-        wald_tick_r = always_redraw(lambda: Line(ax.c2p(theta0_tr.get_value(), 0.06), ax.c2p(theta0_tr.get_value(), 0.22), color=AMBER_HEX, stroke_width=2.4))
+        wald_tick_l = always_redraw(lambda: Line(ax.c2p(0.0, 0.14), ax.c2p(0.0, 0.30), color=AMBER_HEX, stroke_width=2.4))
+        wald_tick_r = always_redraw(lambda: Line(ax.c2p(theta0_tr.get_value(), 0.14), ax.c2p(theta0_tr.get_value(), 0.30), color=AMBER_HEX, stroke_width=2.4))
         wald_lbl = always_redraw(
             lambda: pill_tex(
                 r"\text{Wald: } \hat{\mathcal{I}}_n(\hat{\theta}-\theta_0)^2",
-                ax.c2p(theta0_tr.get_value() * 0.5, 0.42),
+                ax.c2p(theta0_tr.get_value() * 0.5 + (-0.18 if theta0_tr.get_value() < 0 else 0.18), 0.50),
                 AMBER_HEX,
                 font_size=20,
             )
@@ -255,7 +266,7 @@ class MLETrinityScene(Scene):
         lr_line = always_redraw(
             lambda: Line(
                 ax.c2p(theta0_tr.get_value(), 0.0),
-                ax.c2p(theta0_tr.get_value(), max(-3.55, eval_ll(theta0_tr.get_value()))),
+                ax.c2p(theta0_tr.get_value(), max(-3.50, eval_ll(theta0_tr.get_value()))),
                 color=INDIGO_LIGHT_HEX,
                 stroke_width=3.6,
             )
@@ -263,7 +274,7 @@ class MLETrinityScene(Scene):
         lr_lbl = always_redraw(
             lambda: pill_tex(
                 r"\tfrac{1}{2}\mathrm{LR} = \ell_n(\hat{\theta})-\ell_n(\theta_0)",
-                ax.c2p(theta0_tr.get_value() + (0.48 if theta0_tr.get_value() >= 0 else -0.52), max(-3.2, eval_ll(theta0_tr.get_value()) * 0.52)),
+                ax.c2p(theta0_tr.get_value() + (0.48 if theta0_tr.get_value() >= 0 else -0.52), max(-3.1, eval_ll(theta0_tr.get_value()) * 0.52)),
                 INDIGO_LIGHT_HEX,
                 font_size=20,
             )
@@ -274,16 +285,19 @@ class MLETrinityScene(Scene):
             t0 = theta0_tr.get_value()
             y0 = eval_ll(t0)
             s0 = eval_score(t0)
-            dt = 0.26
-            p1 = ax.c2p(t0 - dt, max(-3.55, min(0.45, y0 - s0 * dt)))
-            p2 = ax.c2p(t0 + dt, max(-3.55, min(0.45, y0 + s0 * dt)))
+            dt = 0.24
+            p1 = ax.c2p(t0 - dt, max(-3.50, min(0.42, y0 - s0 * dt)))
+            p2 = ax.c2p(t0 + dt, max(-3.50, min(0.42, y0 + s0 * dt)))
             return Line(p1, p2, color=CYAN_HEX, stroke_width=3.2)
 
         lm_tangent = always_redraw(make_tangent)
         lm_lbl = always_redraw(
             lambda: pill_tex(
                 r"\text{LM: } S_n(\theta_0) = \ell_n'(\theta_0)",
-                ax.c2p(theta0_tr.get_value(), max(-3.3, eval_ll(theta0_tr.get_value()) - 0.36)),
+                ax.c2p(
+                    theta0_tr.get_value() + (0.42 if theta0_tr.get_value() < 0 else 0.0),
+                    max(-3.3, eval_ll(theta0_tr.get_value()) - (0.18 if theta0_tr.get_value() < 0 else 0.36)),
+                ),
                 CYAN_HEX,
                 font_size=20,
             )
@@ -337,7 +351,7 @@ class MLETrinityScene(Scene):
 class MLEProjection3DScene(ThreeDScene):
     def construct(self):
         self.camera.background_color = BG_HEX
-        self.set_camera_orientation(phi=64 * DEGREES, theta=-50 * DEGREES, zoom=0.96)
+        self.set_camera_orientation(phi=62 * DEGREES, theta=-52 * DEGREES, zoom=1.18)
 
         title_row, sub_tex = make_hud(
             "Constrained MLE (3D):",
@@ -438,8 +452,8 @@ class MLEProjection3DScene(ThreeDScene):
         lr_bridge = make_dashed_3d(p_hat_top, p_til_at_hat, color=INDIGO_LIGHT_HEX, num_dashes=7)
         lr_drop = Line(p_til_at_hat, p_til_top, color=INDIGO_LIGHT_HEX, stroke_width=3.6)
 
-        lbl_til = pill_tex(r"\tilde{\theta}", p_til_top + np.array([-0.24, -0.22, 0.20]), AMBER_HEX, font_size=24)
-        lbl_lr3d = pill_tex(r"\tfrac{1}{2}\mathrm{LR}", (p_til_at_hat + p_til_top) * 0.5 + np.array([0.28, 0.0, 0.0]), INDIGO_LIGHT_HEX, font_size=21)
+        lbl_til = pill_tex(r"\tilde{\theta}", p_til_fl + np.array([-0.26, -0.24, 0.08]), AMBER_HEX, font_size=24)
+        lbl_lr3d = pill_tex(r"\tfrac{1}{2}\mathrm{LR}", (p_til_at_hat + p_til_top) * 0.5 + np.array([-0.44, 0.12, 0.08]), INDIGO_LIGHT_HEX, font_size=21)
         self.add_fixed_orientation_mobjects(lbl_til, lbl_lr3d)
 
         sub_tex = swap_sub_3d(
