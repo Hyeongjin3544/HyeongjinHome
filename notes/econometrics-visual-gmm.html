@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="계량경제학 동적 시각 보충자료 03 — GMM(일반화적률법)의 핵심 아이디어, W-타원 기하학, Hansen J-검정 및 2-Step·CUE·HAC 비교" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 03 — GMM(일반화적률법)의 핵심 아이디어, W-타원 기하학 및 최적 가중행렬 효율성" />
   <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
   <title>Visual Supplement 03 — GMM의 아이디어와 가중거리 기하학</title>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
@@ -300,7 +300,7 @@
     .roadmap {
       margin-top: 22px;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
     }
     .roadmap a {
@@ -803,29 +803,25 @@
     <div class="hero-inner">
       <div class="chapter-kicker">Econometrics · Visual Supplement 03 (Ch 04 연계)</div>
       <h1>GMM의 아이디어와 가중거리 기하학</h1>
-      <p class="subtitle">적률법(MM)에서 일반화적률법(GMM)으로, \(W\)-타원, 최적 가중 \(W^*=S^{-1}\) 및 Two-Step·CUE·HAC</p>
+      <p class="subtitle">적률법(MM)에서 일반화적률법(GMM)으로, \(W\)-타원 및 최적 가중행렬 \(W^*=S^{-1}\)</p>
       <div class="hero-rule"></div>
       <p class="lead">
         경제이론은 확률변수와 모수에 관한 적률조건 \(\mathbb{E}[g(w_i,\theta_0)]=0\)을 제시한다.
         식 개수 \(r\)이 모수 개수 \(k\)보다 많을 때(\(r > k\)) 표본적률을 동시에 \(0\)으로 만들 수 없으므로,
-        GMM은 가중 거리 \(Q_n(\theta)=\bar{g}_n(\theta)'W\bar{g}_n(\theta)\)를 최소화해 가장 균형 잡힌 타협점을 찾는다.
+        GMM은 가중 거리 \(Q_n(\theta)=\bar{g}_n(\theta)'W\bar{g}_n(\theta)\)를 최소화해 여러 적률정보를 하나의 추정량으로 결합한다.
       </p>
       <div class="roadmap">
         <a href="#sec-gmm-idea">
           <span class="label">01 · 60fps 영상</span>
           <span class="text">GMM이 무엇인가? (r &gt; k)</span>
         </a>
-        <a href="#sec-gmm-ellipse-lab">
-          <span class="label">02 · Interactive Lab 01</span>
-          <span class="text">두 방정식의 타협 &amp; J-검정</span>
-        </a>
         <a href="#sec-gmm-weight-video">
-          <span class="label">03 · 60fps 영상</span>
+          <span class="label">02 · 60fps 영상</span>
           <span class="text">최적 가중행렬 W* = S⁻¹</span>
         </a>
-        <a href="#sec-gmm-step-lab">
-          <span class="label">04 · Interactive Lab 02</span>
-          <span class="text">2SLS·2-Step·CUE &amp; HAC</span>
+        <a href="#sec-gmm-ellipse-lab">
+          <span class="label">03 · Interactive Lab</span>
+          <span class="text">W-타원 &amp; 가중 효율성 탐색기</span>
         </a>
       </div>
     </div>
@@ -836,9 +832,8 @@
       <div class="toc-title">On This Page</div>
       <nav>
         <a href="#sec-gmm-idea">01. GMM의 핵심 아이디어</a>
-        <a href="#sec-gmm-ellipse-lab">02. 적률 타협 &amp; J-검정 탐색기</a>
-        <a href="#sec-gmm-weight-video">03. 최적 가중행렬 W* = S⁻¹</a>
-        <a href="#sec-gmm-step-lab">04. Two-Step · CUE · HAC 비교기</a>
+        <a href="#sec-gmm-weight-video">02. 최적 가중행렬 W* = S⁻¹</a>
+        <a href="#sec-gmm-ellipse-lab">03. W-타원 &amp; 가중 효율성 탐색기</a>
         <a href="#discussion">학술 토론 (댓글)</a>
         <a class="ext-link" href="econometrics-ch04.html#gmm-topic-04">↗ Ch 04 본문 (4.5 GMM 목적함수)</a>
         <a class="ext-link" href="econometrics-visual-iv-2sls.html">← Visual 02 (IV · 2SLS)</a>
@@ -850,9 +845,8 @@
         <summary>목차 (Contents)</summary>
         <nav>
           <a href="#sec-gmm-idea">01. GMM의 핵심 아이디어</a>
-          <a href="#sec-gmm-ellipse-lab">02. 적률 타협 &amp; J-검정 탐색기</a>
-          <a href="#sec-gmm-weight-video">03. 최적 가중행렬 W* = S⁻¹</a>
-          <a href="#sec-gmm-step-lab">04. Two-Step · CUE · HAC 비교기</a>
+          <a href="#sec-gmm-weight-video">02. 최적 가중행렬 W* = S⁻¹</a>
+          <a href="#sec-gmm-ellipse-lab">03. W-타원 &amp; 가중 효율성 탐색기</a>
           <a href="#discussion">학술 토론 (댓글)</a>
           <a href="econometrics-ch04.html#gmm-topic-04">↗ Ch 04 본문 (4.5 GMM 목적함수)</a>
         </nav>
@@ -898,99 +892,16 @@
           <div class="video-card__cap">
             모수 \(\theta\) 하나에 대해 두 적률조건 \(\bar{g}_1(\theta)=0\)과 \(\bar{g}_2(\theta)=0\)이 서로 다른 해 \(\hat{\theta}_{(1)} \neq \hat{\theta}_{(2)}\)를 제시하면
             두 식을 동시에 만족시킬 수 없다. 이를 2차원 적률공간 \((\bar{g}_1, \bar{g}_2)\)에 놓으면 곡선 \(\{\bar{g}_n(\theta)\}\)가 원점을 비껴가며,
-            GMM은 원점에서 가장 가까운 타협점 \(\hat{\theta}_{\mathrm{GMM}}\)을 선택한다.
+            GMM은 원점에서의 거리가 최소가 되는 점 \(\hat{\theta}_{\mathrm{GMM}}\)을 선택한다.
           </div>
         </div>
       </section>
 
       <!-- SECTION 02 -->
-      <section class="module" id="sec-gmm-ellipse-lab">
-        <h2><span class="sec-tag">02</span>적률 타협 &amp; \(W\)-타원 · Hansen \(J\)-검정 탐색기</h2>
-        <p>
-          과대식별 모형에서는 가중행렬 \(W\)를 어떻게 잡느냐에 따라 \(\hat{\theta}_{\mathrm{GMM}}\)이 \(\hat{\theta}_{(1)}\)과 \(\hat{\theta}_{(2)}\) 사이에서 이동한다.
-          또한 두 번째 적률조건에 모형오설정(\(\mathbb{E}[g_2(w_i,\theta_0)] = \delta \neq 0\))이 끼어들면 곡선 전체가 원점에서 멀어져
-          최소 타원 높이인 Hansen \(J\)-통계량이 급격히 커진다.
-        </p>
-
-        <div class="interactive-lab">
-          <div class="lab-header">
-            <span class="lab-title">Interactive Lab 01 · Moment-Space \(W\)-Ellipse &amp; Overidentification Test</span>
-            <span class="lab-sub">좌: 2D 적률공간 타원 접점 · 우하: 1D 두 방정식 해의 타협</span>
-          </div>
-          <div class="lab-body">
-            <div class="canvas-stage">
-              <canvas id="gmmEllipseCanvas" aria-label="GMM 2D 적률공간 W-타원 캔버스"></canvas>
-              <div class="canvas-hint" id="gmmEllipseHint">접점: G' W ḡₙ(θ̂) = 0 · 타원 크기 = Qₙ(θ̂)</div>
-            </div>
-
-            <div class="lab-panel">
-              <div class="controls-card">
-                <div class="control-row">
-                  <div class="control-head">
-                    <span>적률 2 표준편차 \(\sigma_2\) (\(\sigma_1 = 0.30\) 고정)</span>
-                    <span class="control-val" id="elSig2Val">1.05</span>
-                  </div>
-                  <input id="elSig2" type="range" min="0.25" max="1.60" step="0.05" value="1.05" />
-                </div>
-                <div class="control-row">
-                  <div class="control-head">
-                    <span>적률 간 상관 \(\rho_{12}\)</span>
-                    <span class="control-val" id="elRhoVal">0.00</span>
-                  </div>
-                  <input id="elRho" type="range" min="-0.75" max="0.75" step="0.05" value="0.00" />
-                </div>
-                <div class="control-row">
-                  <div class="control-head">
-                    <span>적률 2 오설정 편의 \(\delta\)</span>
-                    <span class="control-val" id="elDeltaVal">0.00</span>
-                  </div>
-                  <input id="elDelta" type="range" min="-0.90" max="0.90" step="0.05" value="0.00" />
-                </div>
-                <div class="btn-row">
-                  <button type="button" class="btn-pill" id="btnWeightIdent">단순 가중 (W = I)</button>
-                  <button type="button" class="btn-pill is-primary" id="btnWeightOpt">최적 가중 (W* = S⁻¹)</button>
-                  <button type="button" class="btn-pill" id="btnMisspec">오설정 실험 (δ=0.70)</button>
-                </div>
-              </div>
-
-              <div class="metrics-card">
-                <div class="metric-grid">
-                  <div class="metric-tile">
-                    <div class="metric-tile__k">θ̂_GMM (참값 1.00)</div>
-                    <div class="metric-tile__v accent" id="mElTheta">—</div>
-                  </div>
-                  <div class="metric-tile">
-                    <div class="metric-tile__k">점근 표준오차 SE(θ̂)</div>
-                    <div class="metric-tile__v ok" id="mElSe">—</div>
-                  </div>
-                  <div class="metric-tile">
-                    <div class="metric-tile__k">Hansen J-통계량 (n=200)</div>
-                    <div class="metric-tile__v" id="mElJ">—</div>
-                  </div>
-                  <div class="metric-tile">
-                    <div class="metric-tile__k">χ²₁ 유의확률 p-value</div>
-                    <div class="metric-tile__v" id="mElPval">—</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="mini-card">
-                <div class="mini-head">
-                  <span>1D 적률 방정식 타협: \(\bar{g}_1(\theta)\) vs \(\bar{g}_2(\theta)\)</span>
-                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);" id="mElRoots">θ̂₁ · θ̂₂</span>
-                </div>
-                <canvas id="gmm1dCanvas" aria-label="1차원 적률 방정식 비교 캔버스"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SECTION 03 -->
       <section class="module" id="sec-gmm-weight-video">
-        <h2><span class="sec-tag">03</span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</h2>
+        <h2><span class="sec-tag">02</span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</h2>
         <p>
-          동일한 가중치(\(W = I\))를 쓰면 정밀도가 낮은 시끄러운 적률(\(\sigma_2 \gg \sigma_1\))의 무작위 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
+          동일한 가중치(\(W = I\))를 쓰면 분산이 큰 불안정한 적률(\(\sigma_2 \gg \sigma_1\))의 표본 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
           반대로 적률 공분산행렬 \(S = \mathrm{Var}(\sqrt{n}\bar{g}_n(\theta_0))\)의 역행렬 \(W^* = S^{-1}\)을 쓰면,
           불확실성이 큰 방향으로는 거리 타원을 늘려 벌점을 낮추고 신뢰할 수 있는 적률 방향으로 추정량을 당겨 점근분산 하한 \((G'S^{-1}G)^{-1}\)을 달성한다.
         </p>
@@ -1014,91 +925,82 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            적률 공분산 \(S\)에 의해 세로 방향 변동이 클 때, \(W=I\) 원형 거리는 시끄러운 \(\bar{g}_2\)를 과대 반영한다.
-            가중치를 \(W^*=S^{-1}\)로 바꾸면 등고선이 마할라노비스 타원으로 변형되며 접점 \(\hat{\theta}_{S^{-1}}\)이 정밀한 \(\bar{g}_1\) 쪽으로 이동하고,
-            최소 타원 높이 \(J = n\,\bar{g}_n(\hat{\theta})' S^{-1}\bar{g}_n(\hat{\theta})\)가 \(\chi^2_{r-k}\) 검정통계량이 된다.
+            적률 공분산 \(S\)에 의해 세로 방향 변동이 클 때, \(W=I\) 원형 거리는 변동성이 큰 \(\bar{g}_2\)를 과대 반영한다.
+            가중치를 \(W^*=S^{-1}\)로 바꾸면 등고선이 마할라노비스 타원으로 변형되며 접점 \(\hat{\theta}_{S^{-1}}\)이 정밀한 \(\bar{g}_1\) 쪽으로 이동해 점근분산을 최소화한다.
           </div>
         </div>
       </section>
 
-      <!-- SECTION 04 -->
-      <section class="module" id="sec-gmm-step-lab">
-        <h2><span class="sec-tag">04</span>이분산·자기상관 아래 2SLS · 2-Step · Iterated · CUE &amp; HAC 비교기</h2>
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-gmm-ellipse-lab">
+        <h2><span class="sec-tag">03</span>인터랙티브 \(W\)-타원 &amp; 가중 효율성 탐색기</h2>
         <p>
-          등분산·무상관(\(\gamma=0, \rho_u=0\))이면 2SLS와 2-Step GMM은 같은 추정량과 표준오차를 준다.
-          그러나 <strong>이분산(\(\gamma &gt; 0\))</strong>이 있으면 2-Step·Iterated·CUE는 잡음이 큰 도구변수의 가중치를 줄여 <strong>95% 신뢰구간 폭(SE)을 2SLS보다 좁힌다</strong>.
-          또한 <strong>자기상관(\(\rho_u &gt; 0\))</strong>이 있을 때 시차 공분산을 무시한 나이브 표준오차(점선)는 실제보다 과도하게 좁게 계산되며, Newey–West HAC(\(m &gt; 0\))가 이를 보정한다.
+          과대식별 모형에서는 가중행렬 \(W\)의 선택에 따라 \(\hat{\theta}_{\mathrm{GMM}}\)이 개별 적률의 해 \(\hat{\theta}_{(1)}\)과 \(\hat{\theta}_{(2)}\) 사이에서 이동한다.
+          아래 탐색기에서 적률 2의 표준편차 \(\sigma_2\)와 적률 간 상관 \(\rho_{12}\)를 조절해 보며,
+          단순 가중(\(W=I\))의 원형 거리와 최적 가중(\(W^*=S^{-1}\))의 마할라노비스 타원이 어떻게 달라지고 점근 표준오차가 어떻게 줄어드는지 직접 확인할 수 있다.
         </p>
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 02 · 95% 신뢰구간 폭 · 도구 가중치 · HAC 시차 합산 비교</span>
-            <span class="lab-sub">상단: 추정치·95% CI · 좌하: 도구별 가중 비중 · 우하: 자기상관 &amp; Bartlett 커널</span>
+            <span class="lab-title">Interactive Lab · Moment-Space \(W\)-Ellipse &amp; Weighting Efficiency</span>
+            <span class="lab-sub">좌: 2D 적률공간 \(W\)-타원 접점 · 우하: 1D 두 적률방정식 해 비교</span>
           </div>
           <div class="lab-body">
-            <div class="canvas-stage" style="min-height:400px;">
-              <canvas id="gmmCompareCanvas" style="height:400px;" aria-label="2SLS vs GMM vs CUE 신뢰구간 및 가중치·HAC 비교 캔버스"></canvas>
-              <div class="canvas-hint" id="gmmCompHint">실선: HAC 95% CI · 점선 괄호: 나이브 CI · 수직 점선: 참값 θ₀ = 1.00</div>
+            <div class="canvas-stage">
+              <canvas id="gmmEllipseCanvas" aria-label="GMM 2D 적률공간 W-타원 캔버스"></canvas>
+              <div class="canvas-hint" id="gmmEllipseHint">접점: G' W ḡₙ(θ̂) = 0 · 타원 크기 = Qₙ(θ̂)</div>
             </div>
 
             <div class="lab-panel">
               <div class="controls-card">
                 <div class="control-row">
                   <div class="control-head">
-                    <span>이분산 강도 \(\gamma\)</span>
-                    <span class="control-val" id="cmpHetVal">1.20</span>
+                    <span>적률 2 표준편차 \(\sigma_2\) (\(\sigma_1 = 0.30\) 고정)</span>
+                    <span class="control-val" id="elSig2Val">1.05</span>
                   </div>
-                  <input id="cmpHet" type="range" min="0.00" max="2.20" step="0.10" value="1.20" />
+                  <input id="elSig2" type="range" min="0.25" max="1.60" step="0.05" value="1.05" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>오차 자기상관 \(\rho_u\) (시계열 AR(1))</span>
-                    <span class="control-val" id="cmpArVal">0.45</span>
+                    <span>적률 간 상관 \(\rho_{12}\)</span>
+                    <span class="control-val" id="elRhoVal">0.00</span>
                   </div>
-                  <input id="cmpAr" type="range" min="0.00" max="0.80" step="0.05" value="0.45" />
-                </div>
-                <div class="control-row">
-                  <div class="control-head">
-                    <span>HAC Bartlett 시차 \(m\)</span>
-                    <span class="control-val" id="cmpLagVal">4</span>
-                  </div>
-                  <input id="cmpLag" type="range" min="0" max="10" step="1" value="4" />
-                </div>
-                <div class="control-row">
-                  <div class="control-head">
-                    <span>표본 크기 \(n\)</span>
-                    <span class="control-val" id="cmpNVal">240</span>
-                  </div>
-                  <input id="cmpN" type="range" min="100" max="500" step="20" value="240" />
+                  <input id="elRho" type="range" min="-0.75" max="0.75" step="0.05" value="0.00" />
                 </div>
                 <div class="btn-row">
-                  <button type="button" class="btn-pill" data-gmm-mode="2sls">1단계 (2SLS)</button>
-                  <button type="button" class="btn-pill is-primary" data-gmm-mode="2step">2-Step GMM</button>
-                  <button type="button" class="btn-pill" data-gmm-mode="iter">Iterated</button>
-                  <button type="button" class="btn-pill" data-gmm-mode="cue">CUE</button>
-                  <button type="button" class="btn-pill" id="cmpResampleBtn">재추출</button>
+                  <button type="button" class="btn-pill" id="btnWeightIdent">단순 가중 (W = I)</button>
+                  <button type="button" class="btn-pill is-primary" id="btnWeightOpt">최적 가중 (W* = S⁻¹)</button>
+                  <button type="button" class="btn-pill" id="btnResetLab">기본값 복원</button>
                 </div>
               </div>
 
               <div class="metrics-card">
                 <div class="metric-grid">
                   <div class="metric-tile">
-                    <div class="metric-tile__k">선택 추정량 θ̂</div>
-                    <div class="metric-tile__v accent" id="mCmpTheta">—</div>
+                    <div class="metric-tile__k">θ̂_GMM (참값 1.00)</div>
+                    <div class="metric-tile__v accent" id="mElTheta">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">효율성 이득 (vs 2SLS SE)</div>
-                    <div class="metric-tile__v ok" id="mCmpGain">—</div>
+                    <div class="metric-tile__k">점근 표준오차 SE(θ̂)</div>
+                    <div class="metric-tile__v ok" id="mElSe">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">HAC vs 나이브 SE 비</div>
-                    <div class="metric-tile__v" id="mCmpHacRatio">—</div>
+                    <div class="metric-tile__k">효율성 하한 SE*</div>
+                    <div class="metric-tile__v" id="mElSeOpt">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">Hansen J (df = 3)</div>
-                    <div class="metric-tile__v" id="mCmpJ">—</div>
+                    <div class="metric-tile__k">W=I 대비 SE 감소</div>
+                    <div class="metric-tile__v ok" id="mElGain">—</div>
                   </div>
                 </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>1D 적률방정식 해 비교: \(\bar{g}_1(\theta)\) vs \(\bar{g}_2(\theta)\)</span>
+                  <span style="font-family:var(--font-mono);font-size:10.8px;color:var(--muted);" id="mElRoots">θ̂₁ · θ̂₂</span>
+                </div>
+                <canvas id="gmm1dCanvas" aria-label="1차원 적률 방정식 비교 캔버스"></canvas>
               </div>
             </div>
           </div>
@@ -1112,7 +1014,7 @@
 
       <section id="discussion" class="discussion-section">
         <h2>학술 토론 및 질문</h2>
-        <p class="discussion-lead">GMM 적률거리 직관, 최적 가중행렬, CUE 및 HAC 장기공분산에 관한 질문이나 의견을 남겨주세요.</p>
+        <p class="discussion-lead">GMM 적률거리 직관과 최적 가중행렬 기하학에 관한 질문이나 의견을 자유롭게 남겨주세요.</p>
         <script src="https://giscus.app/client.js"
                 data-repo="Hyeongjin3544/HyeongjinHome"
                 data-repo-id="R_kgDOVpbZ2Q"
@@ -1231,23 +1133,21 @@
       return { ctx, w, h };
     }
 
-    // 3. Lab 01: 2D Moment Space W-Ellipse & 1D Compromise
+    // 3. Interactive Lab: 2D Moment Space W-Ellipse & Weighting Efficiency
     (function initEllipseLab() {
       const c2d = document.getElementById('gmmEllipseCanvas');
       const c1d = document.getElementById('gmm1dCanvas');
       const sig2In = document.getElementById('elSig2');
       const rhoIn = document.getElementById('elRho');
-      const deltaIn = document.getElementById('elDelta');
       const sig2Val = document.getElementById('elSig2Val');
       const rhoVal = document.getElementById('elRhoVal');
-      const deltaVal = document.getElementById('elDeltaVal');
       const btnIdent = document.getElementById('btnWeightIdent');
       const btnOpt = document.getElementById('btnWeightOpt');
-      const btnMisspec = document.getElementById('btnMisspec');
+      const btnReset = document.getElementById('btnResetLab');
       const mTheta = document.getElementById('mElTheta');
       const mSe = document.getElementById('mElSe');
-      const mJ = document.getElementById('mElJ');
-      const mPval = document.getElementById('mElPval');
+      const mSeOpt = document.getElementById('mElSeOpt');
+      const mGain = document.getElementById('mElGain');
       const mRoots = document.getElementById('mElRoots');
 
       let useOptimal = true;
@@ -1257,91 +1157,72 @@
         btnOpt.classList.toggle('is-primary', useOptimal);
       }
 
-      // Chi-square(df=1) upper tail p-value: P(X^2_1 >= x) = erfc(sqrt(x/2))
-      function chi2Pval1(x) {
-        if (x <= 0) return 1.0;
-        const z = Math.sqrt(x / 2);
-        // Abramowitz & Stegun erfc approximation
-        const t = 1 / (1 + 0.3275911 * z);
-        const poly = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
-        return Math.min(1, Math.max(0, poly * Math.exp(-z * z)));
+      function quad(v, M) {
+        return v[0] * (M[0][0] * v[0] + M[0][1] * v[1]) + v[1] * (M[1][0] * v[0] + M[1][1] * v[1]);
+      }
+      function matMulVec(M, v) {
+        return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]];
       }
 
       function computeState() {
         const sig1 = 0.30;
         const sig2 = parseFloat(sig2In.value);
         const rho = parseFloat(rhoIn.value);
-        const delta = parseFloat(deltaIn.value);
         const n = 200;
 
-        // Finite-sample moment noise realization (fixed clean draw scaled by S^{1/2}/sqrt(n))
-        // g_n(theta) = a + G * (theta - 1.0), where G = [0.85, 0.72]'
         const G = [0.85, 0.72];
         const s11 = sig1 * sig1;
         const s22 = sig2 * sig2;
         const s12 = rho * sig1 * sig2;
-        // Sample realization at true theta=1: z1 = 0.55 * sig1 / sqrt(n) * sqrt(n) scaled visibly
-        const e1 = 0.22 * sig1;
-        const e2 = -0.34 * sig2 + delta;
-        // Wait: to keep J realistic for n=200 when delta=0: z = [0.85, -0.95] * S^{1/2} / sqrt(n)
+
         const scaleNoise = 1 / Math.sqrt(n);
         const zA = 0.78, zB = -1.12;
         const l21 = rho * sig2;
         const l22 = Math.sqrt(Math.max(1e-6, 1 - rho * rho)) * sig2;
-        const g1_0 = (sig1 * zA) * scaleNoise * 4.5; // scaled slightly for crisp visual separation
-        const g2_0 = (l21 * zA + l22 * zB) * scaleNoise * 4.5 + delta;
-
-        // Actually use exact asymptotic covariance S for SE and J (with unscaled sqrt(n) realization):
-        const g1_stat = (sig1 * zA) / Math.sqrt(n);
-        const g2_stat = (l21 * zA + l22 * zB) / Math.sqrt(n) + delta;
+        const g1_0 = (sig1 * zA) * scaleNoise * 4.5;
+        const g2_0 = (l21 * zA + l22 * zB) * scaleNoise * 4.5;
 
         const gAt = (t) => [g1_0 + G[0] * (t - 1.0), g2_0 + G[1] * (t - 1.0)];
         const theta1 = 1.0 - g1_0 / G[0];
         const theta2 = 1.0 - g2_0 / G[1];
 
-        // Weighting matrix W
         const detS = Math.max(1e-8, s11 * s22 - s12 * s12);
         const Sinv = [
           [s22 / detS, -s12 / detS],
           [-s12 / detS, s11 / detS]
         ];
-        const W = useOptimal ? Sinv : [[1, 0], [0, 1]];
+        const I2 = [[1, 0], [0, 1]];
+        const W = useOptimal ? Sinv : I2;
 
-        function quad(v, M) {
-          return v[0] * (M[0][0] * v[0] + M[0][1] * v[1]) + v[1] * (M[1][0] * v[0] + M[1][1] * v[1]);
+        function solveFor(Wmat) {
+          const Wg0 = matMulVec(Wmat, [g1_0, g2_0]);
+          const WG = matMulVec(Wmat, G);
+          const denom = G[0] * WG[0] + G[1] * WG[1];
+          const th = 1.0 - (G[0] * Wg0[0] + G[1] * Wg0[1]) / denom;
+          const gPt = gAt(th);
+          const qMin = quad(gPt, Wmat);
+          const SWG = [
+            s11 * WG[0] + s12 * WG[1],
+            s12 * WG[0] + s22 * WG[1]
+          ];
+          const avar = (WG[0] * SWG[0] + WG[1] * SWG[1]) / (denom * denom);
+          return { th, gPt, qMin, se: Math.sqrt(avar / n) };
         }
-        function matMulVec(M, v) {
-          return [M[0][0] * v[0] + M[0][1] * v[1], M[1][0] * v[0] + M[1][1] * v[1]];
-        }
 
-        const Wg0 = matMulVec(W, [g1_0, g2_0]);
-        const WG = matMulVec(W, G);
-        const denom = G[0] * WG[0] + G[1] * WG[1];
-        const thetaGmm = 1.0 - (G[0] * Wg0[0] + G[1] * Wg0[1]) / denom;
-        const gStar = gAt(thetaGmm);
-        const qMin = quad(gStar, W);
-
-        // Asymptotic variance Avar = (G'WG)^{-2} * (G' W S W G)
-        const SWG = [
-          s11 * WG[0] + s12 * WG[1],
-          s12 * WG[0] + s22 * WG[1]
-        ];
-        const numVar = WG[0] * SWG[0] + WG[1] * SWG[1];
-        const avar = numVar / (denom * denom);
-        const se = Math.sqrt(avar / n);
-
-        // Statistically calibrated J = n * g_stat(theta_opt)' S^{-1} g_stat(theta_opt)
-        const SinvG = matMulVec(Sinv, G);
-        const denOpt = G[0] * SinvG[0] + G[1] * SinvG[1];
-        const SinvGstat0 = matMulVec(Sinv, [g1_stat, g2_stat]);
-        const dThetaStat = -(G[0] * SinvGstat0[0] + G[1] * SinvGstat0[1]) / denOpt;
-        const gStatStar = [g1_stat + G[0] * dThetaStat, g2_stat + G[1] * dThetaStat];
-        const jStat = n * quad(gStatStar, Sinv);
-        const pval = chi2Pval1(jStat);
+        const resCur = solveFor(W);
+        const resIdent = solveFor(I2);
+        const resOpt = solveFor(Sinv);
+        const seGainPct = ((resIdent.se - resCur.se) / Math.max(1e-8, resIdent.se)) * 100;
 
         return {
-          sig1, sig2, rho, delta, G, W, Sinv,
-          gAt, theta1, theta2, thetaGmm, gStar, qMin, se, jStat, pval
+          sig1, sig2, rho, G, W, Sinv,
+          gAt, theta1, theta2,
+          thetaGmm: resCur.th,
+          gStar: resCur.gPt,
+          qMin: resCur.qMin,
+          se: resCur.se,
+          seOpt: resOpt.se,
+          seGainPct
         };
       }
 
@@ -1503,25 +1384,24 @@
 
         sig2Val.textContent = st.sig2.toFixed(2);
         rhoVal.textContent = st.rho.toFixed(2);
-        deltaVal.textContent = st.delta.toFixed(2);
 
         mTheta.textContent = st.thetaGmm.toFixed(3);
-        mSe.textContent = st.se.toFixed(3);
-        mJ.textContent = st.jStat.toFixed(2);
-        mJ.className = 'metric-tile__v ' + (st.jStat > 3.84 ? 'warn' : 'ok');
-        mPval.textContent = st.pval.toFixed(3);
-        mPval.className = 'metric-tile__v ' + (st.pval < 0.05 ? 'warn' : 'ok');
+        mSe.textContent = st.se.toFixed(4);
+        mSe.className = 'metric-tile__v ' + (st.se > st.seOpt * 1.05 ? 'warn' : 'ok');
+        mSeOpt.textContent = st.seOpt.toFixed(4);
+        mGain.textContent = (st.seGainPct >= 0 ? '-' : '+') + Math.abs(st.seGainPct).toFixed(1) + '%';
+        mGain.className = 'metric-tile__v ' + (st.seGainPct > 1 ? 'ok' : '');
         mRoots.textContent = `θ̂₁=${st.theta1.toFixed(2)} · θ̂₂=${st.theta2.toFixed(2)}`;
 
         render2D(st, pal);
         render1D(st, pal);
       }
 
-      [sig2In, rhoIn, deltaIn].forEach(el => el.addEventListener('input', update));
+      [sig2In, rhoIn].forEach(el => el.addEventListener('input', update));
       btnIdent.addEventListener('click', () => { useOptimal = false; updateModeBtns(); update(); });
       btnOpt.addEventListener('click', () => { useOptimal = true; updateModeBtns(); update(); });
-      btnMisspec.addEventListener('click', () => {
-        sig2In.value = '0.55'; rhoIn.value = '0.00'; deltaIn.value = '0.70';
+      btnReset.addEventListener('click', () => {
+        sig2In.value = '1.05'; rhoIn.value = '0.00';
         useOptimal = true; updateModeBtns(); update();
       });
 
@@ -1529,498 +1409,6 @@
       onThemeCallbacks.push(update);
       window.addEventListener('resize', update);
       update();
-    })();
-
-    // 4. Lab 02: 2SLS vs 2-Step GMM vs Iterated vs CUE & HAC (L = 4 instruments)
-    (function initCompareLab() {
-      const canvas = document.getElementById('gmmCompareCanvas');
-      const hetIn = document.getElementById('cmpHet');
-      const arIn = document.getElementById('cmpAr');
-      const lagIn = document.getElementById('cmpLag');
-      const nIn = document.getElementById('cmpN');
-      const hetVal = document.getElementById('cmpHetVal');
-      const arVal = document.getElementById('cmpArVal');
-      const lagVal = document.getElementById('cmpLagVal');
-      const nVal = document.getElementById('cmpNVal');
-      const modeBtns = document.querySelectorAll('[data-gmm-mode]');
-      const resampleBtn = document.getElementById('cmpResampleBtn');
-      const mTheta = document.getElementById('mCmpTheta');
-      const mGain = document.getElementById('mCmpGain');
-      const mHacRatio = document.getElementById('mCmpHacRatio');
-      const mJ = document.getElementById('mCmpJ');
-      const hintEl = document.getElementById('gmmCompHint');
-
-      let activeMode = '2step';
-      let seed = 2026;
-
-      function nextRandn() {
-        function u01() {
-          seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
-          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
-          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-        }
-        const u1 = Math.max(1e-9, u01());
-        const u2 = u01();
-        return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
-      }
-
-      function invSym(A) {
-        const n = A.length;
-        const M = A.map((row, i) => [...row, ...Array.from({ length: n }, (_, j) => (i === j ? 1 : 0))]);
-        for (let col = 0; col < n; col++) {
-          let piv = col;
-          for (let r = col + 1; r < n; r++) {
-            if (Math.abs(M[r][col]) > Math.abs(M[piv][col])) piv = r;
-          }
-          [M[col], M[piv]] = [M[piv], M[col]];
-          const div = Math.abs(M[col][col]) > 1e-10 ? M[col][col] : 1e-10;
-          for (let c = 0; c < 2 * n; c++) M[col][c] /= div;
-          for (let r = 0; r < n; r++) {
-            if (r === col) continue;
-            const fac = M[r][col];
-            for (let c = 0; c < 2 * n; c++) M[r][c] -= fac * M[col][c];
-          }
-        }
-        return M.map(row => row.slice(n));
-      }
-
-      function computeSim() {
-        const gamma = parseFloat(hetIn.value);
-        const rhoAr = parseFloat(arIn.value);
-        const maxLag = parseInt(lagIn.value, 10);
-        const n = parseInt(nIn.value, 10);
-        const L = 4;
-        const betaTrue = 1.0;
-
-        const savedSeed = seed;
-        const Z = [];
-        const x = new Float64Array(n);
-        const y = new Float64Array(n);
-        let epsPrev = 0;
-        let vPrev = 0;
-
-        for (let i = 0; i < n; i++) {
-          const zi = [nextRandn(), nextRandn(), nextRandn(), nextRandn()];
-          Z.push(zi);
-          // Heteroskedasticity concentrated on z3 and z4 while z1 stays clean
-          const hetScale = 1.0 + gamma * (0.12 * zi[0] * zi[0] + 0.55 * zi[1] * zi[1] + 1.35 * zi[2] * zi[2] + 2.20 * zi[3] * zi[3]);
-          const innov = nextRandn();
-          const eps = rhoAr * epsPrev + Math.sqrt(Math.max(0.05, 1 - rhoAr * rhoAr)) * innov * hetScale;
-          epsPrev = eps;
-
-          const vInnov = 0.50 * innov + Math.sqrt(1 - 0.50 * 0.50) * nextRandn();
-          const v = 0.30 * vPrev + vInnov;
-          vPrev = v;
-
-          const xi = 0.50 * zi[0] + 0.45 * zi[1] + 0.42 * zi[2] + 0.38 * zi[3] + v;
-          x[i] = xi;
-          y[i] = betaTrue * xi + eps;
-        }
-        seed = savedSeed;
-
-        function gBar(theta) {
-          const out = [0, 0, 0, 0];
-          for (let i = 0; i < n; i++) {
-            const u = y[i] - theta * x[i];
-            for (let j = 0; j < L; j++) out[j] += Z[i][j] * u;
-          }
-          for (let j = 0; j < L; j++) out[j] /= n;
-          return out;
-        }
-
-        const G = [0, 0, 0, 0];
-        for (let i = 0; i < n; i++) {
-          for (let j = 0; j < L; j++) G[j] -= Z[i][j] * x[i];
-        }
-        for (let j = 0; j < L; j++) G[j] /= n;
-
-        const ZtZ = Array.from({ length: L }, () => Array(L).fill(0));
-        for (let i = 0; i < n; i++) {
-          for (let a = 0; a < L; a++) {
-            for (let b = 0; b < L; b++) ZtZ[a][b] += Z[i][a] * Z[i][b];
-          }
-        }
-        for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) ZtZ[a][b] /= n;
-        const W2sls = invSym(ZtZ);
-
-        function effShares(W) {
-          const WG = [0, 0, 0, 0];
-          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
-          const absSum = WG.reduce((acc, v) => acc + Math.abs(v), 0) || 1;
-          return WG.map(v => Math.abs(v) / absSum);
-        }
-
-        function solveWithW(W) {
-          const Zty = [0, 0, 0, 0];
-          for (let i = 0; i < n; i++) for (let j = 0; j < L; j++) Zty[j] += Z[i][j] * y[i];
-          for (let j = 0; j < L; j++) Zty[j] /= n;
-
-          const WG = [0, 0, 0, 0];
-          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
-          let num = 0, den = 0;
-          for (let a = 0; a < L; a++) {
-            num -= WG[a] * Zty[a];
-            den += G[a] * WG[a];
-          }
-          return num / den;
-        }
-
-        function computeS(theta, lagM) {
-          const gi = [];
-          for (let i = 0; i < n; i++) {
-            const u = y[i] - theta * x[i];
-            gi.push([Z[i][0] * u, Z[i][1] * u, Z[i][2] * u, Z[i][3] * u]);
-          }
-          const S = Array.from({ length: L }, () => Array(L).fill(0));
-          for (let i = 0; i < n; i++) {
-            for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) S[a][b] += gi[i][a] * gi[i][b];
-          }
-          for (let lag = 1; lag <= lagM; lag++) {
-            const wBart = 1 - lag / (lagM + 1);
-            for (let i = lag; i < n; i++) {
-              for (let a = 0; a < L; a++) {
-                for (let b = 0; b < L; b++) {
-                  const cov = gi[i][a] * gi[i - lag][b] + gi[i - lag][a] * gi[i][b];
-                  S[a][b] += wBart * cov;
-                }
-              }
-            }
-          }
-          for (let a = 0; a < L; a++) {
-            for (let b = 0; b < L; b++) S[a][b] /= n;
-            S[a][a] += 1e-6;
-          }
-          return S;
-        }
-
-        // Compute normalized lag autocovariance profile tr(Gamma_j)/tr(Gamma_0) for HAC visual
-        function computeLagProfile(theta, maxShow) {
-          const gi = [];
-          for (let i = 0; i < n; i++) {
-            const u = y[i] - theta * x[i];
-            gi.push([Z[i][0] * u, Z[i][1] * u, Z[i][2] * u, Z[i][3] * u]);
-          }
-          const tr = [];
-          for (let lag = 0; lag <= maxShow; lag++) {
-            let s = 0;
-            for (let i = lag; i < n; i++) {
-              for (let a = 0; a < L; a++) s += gi[i][a] * gi[i - lag][a];
-            }
-            tr.push(s / n);
-          }
-          const g0 = Math.max(1e-8, tr[0]);
-          return tr.map(v => v / g0);
-        }
-
-        function seFor(W, S) {
-          const WG = [0, 0, 0, 0];
-          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) WG[a] += W[a][b] * G[b];
-          let den = 0;
-          for (let a = 0; a < L; a++) den += G[a] * WG[a];
-          let num = 0;
-          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) num += WG[a] * S[a][b] * WG[b];
-          return Math.sqrt(Math.max(1e-8, num / (den * den * n)));
-        }
-
-        function evalQ(theta, W) {
-          const g = gBar(theta);
-          let q = 0;
-          for (let a = 0; a < L; a++) for (let b = 0; b < L; b++) q += g[a] * W[a][b] * g[b];
-          return q;
-        }
-
-        const th2sls = solveWithW(W2sls);
-        const S_step1 = computeS(th2sls, maxLag);
-        const W2step = invSym(S_step1);
-        const th2step = solveWithW(W2step);
-
-        let thIter = th2step;
-        let WIter = W2step;
-        for (let it = 0; it < 6; it++) {
-          const S_it = computeS(thIter, maxLag);
-          WIter = invSym(S_it);
-          thIter = solveWithW(WIter);
-        }
-
-        function evalCueQ(theta) {
-          const S_t = computeS(theta, maxLag);
-          return evalQ(theta, invSym(S_t));
-        }
-        let thCue = thIter;
-        let bestCueQ = Infinity;
-        for (let t = 0.50; t <= 1.5001; t += 0.01) {
-          const q = evalCueQ(t);
-          if (q < bestCueQ) { bestCueQ = q; thCue = t; }
-        }
-        const WCue = invSym(computeS(thCue, maxLag));
-
-        // Compare true long-run S_true (lag=8) vs naive S_0 (lag=0) and selected S_hac(maxLag)
-        const S_true = computeS(thIter, Math.max(8, maxLag));
-        const S_hac = computeS(thIter, maxLag);
-        const S_naive = computeS(thIter, 0);
-
-        const se2sls = seFor(W2sls, S_hac);
-        const se2step = seFor(W2step, S_hac);
-        const seIter = seFor(WIter, S_hac);
-        const seCue = seFor(WCue, S_hac);
-
-        const se2slsNaive = seFor(W2sls, S_naive);
-        const se2stepNaive = seFor(W2step, S_naive);
-        const seIterNaive = seFor(WIter, S_naive);
-        const seCueNaive = seFor(WCue, S_naive);
-
-        let thSel = th2step, seSel = se2step, seSelNaive = se2stepNaive;
-        if (activeMode === '2sls') { thSel = th2sls; seSel = se2sls; seSelNaive = se2slsNaive; }
-        else if (activeMode === 'iter') { thSel = thIter; seSel = seIter; seSelNaive = seIterNaive; }
-        else if (activeMode === 'cue') { thSel = thCue; seSel = seCue; seSelNaive = seCueNaive; }
-
-        const jVal = n * evalQ(thSel, invSym(computeS(thSel, maxLag)));
-
-        return {
-          gamma, rhoAr, maxLag, n,
-          th2sls, th2step, thIter, thCue, thSel,
-          se2sls, se2step, seIter, seCue, seSel,
-          se2slsNaive, se2stepNaive, seIterNaive, seCueNaive, seSelNaive,
-          seTrueRef: seFor(WIter, S_true),
-          shares2sls: effShares(W2sls),
-          shares2step: effShares(W2step),
-          lagProfile: computeLagProfile(thIter, 8),
-          jVal
-        };
-      }
-
-      function render() {
-        const pal = getPalette();
-        const { ctx, w, h } = setupCanvas(canvas, 400);
-        const st = computeSim();
-
-        hetVal.textContent = st.gamma.toFixed(2);
-        arVal.textContent = st.rhoAr.toFixed(2);
-        lagVal.textContent = String(st.maxLag);
-        nVal.textContent = String(st.n);
-
-        mTheta.textContent = st.thSel.toFixed(3);
-        const gainPct = ((st.se2sls - st.seSel) / Math.max(1e-6, st.se2sls)) * 100;
-        mGain.textContent = (gainPct >= 0 ? '+' : '') + gainPct.toFixed(1) + '%';
-        mGain.className = 'metric-tile__v ' + (gainPct > 3 ? 'ok' : '');
-        const hacRatio = st.seSel / Math.max(1e-6, st.seSelNaive);
-        mHacRatio.textContent = hacRatio.toFixed(2) + '×';
-        mHacRatio.className = 'metric-tile__v ' + (hacRatio > 1.12 ? 'warn' : '');
-        mJ.textContent = st.jVal.toFixed(2);
-        mJ.className = 'metric-tile__v ' + (st.jVal > 7.81 ? 'warn' : 'ok');
-
-        hintEl.textContent = st.maxLag === 0 && st.rhoAr > 0.1
-          ? '주의: HAC 시차 m=0 이므로 자기상관이 무시되어 CI가 과소추정됩니다'
-          : `실선: HAC 95% CI · 점선: 나이브 CI · 수직 점선: 참값 θ₀ = 1.00`;
-
-        ctx.fillStyle = pal.bg;
-        ctx.fillRect(0, 0, w, h);
-
-        // ---------------------------------------------------------------
-        // Panel A (Top): Estimator Point Estimates + 95% CI Comparison
-        // ---------------------------------------------------------------
-        const padL = 74, padR = 66, topY = 26, ciH = 148;
-        const tMin = 0.35, tMax = 1.65;
-        const mapX = t => padL + ((Math.max(tMin, Math.min(tMax, t)) - tMin) / (tMax - tMin)) * (w - padL - padR);
-
-        ctx.save();
-        ctx.fillStyle = pal.ink;
-        ctx.font = '700 11.5px "JetBrains Mono", monospace';
-        ctx.fillText('① 추정량별 점추정치 ± 95% 신뢰구간 (SE 비교)', 14, 18);
-
-        // Grid & true theta = 1.00
-        ctx.strokeStyle = pal.grid;
-        ctx.lineWidth = 1;
-        for (let tv = 0.5; tv <= 1.51; tv += 0.25) {
-          const px = mapX(tv);
-          ctx.beginPath(); ctx.moveTo(px, topY); ctx.lineTo(px, topY + ciH); ctx.stroke();
-          ctx.fillStyle = pal.muted;
-          ctx.font = '500 10px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(tv.toFixed(2), px, topY + ciH + 12);
-        }
-        const pxTrue = mapX(1.0);
-        ctx.strokeStyle = pal.ink;
-        ctx.lineWidth = 1.2;
-        ctx.setLineDash([4, 3]);
-        ctx.beginPath(); ctx.moveTo(pxTrue, topY); ctx.lineTo(pxTrue, topY + ciH); ctx.stroke();
-        ctx.setLineDash([]);
-
-        const rows = [
-          { key: '2sls', label: '2SLS', th: st.th2sls, se: st.se2sls, seN: st.se2slsNaive, col: pal.rose },
-          { key: '2step', label: '2-Step', th: st.th2step, se: st.se2step, seN: st.se2stepNaive, col: pal.indigo },
-          { key: 'iter', label: 'Iterated', th: st.thIter, se: st.seIter, seN: st.seIterNaive, col: pal.cyan },
-          { key: 'cue', label: 'CUE', th: st.thCue, se: st.seCue, seN: st.seCueNaive, col: pal.teal }
-        ];
-
-        rows.forEach((r, idx) => {
-          const ry = topY + 20 + idx * 33;
-          const isSel = activeMode === r.key;
-
-          ctx.textAlign = 'right';
-          ctx.fillStyle = isSel ? pal.ink : pal.muted;
-          ctx.font = (isSel ? '700' : '500') + ' 11px "JetBrains Mono", monospace';
-          ctx.fillText(r.label, padL - 10, ry + 4);
-
-          // Naive CI (dashed thin bar)
-          const nL = mapX(r.th - 1.96 * r.seN);
-          const nR = mapX(r.th + 1.96 * r.seN);
-          ctx.strokeStyle = r.col;
-          ctx.globalAlpha = 0.45;
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([3, 3]);
-          ctx.beginPath();
-          ctx.moveTo(nL, ry - 5); ctx.lineTo(nL, ry + 5);
-          ctx.moveTo(nR, ry - 5); ctx.lineTo(nR, ry + 5);
-          ctx.moveTo(nL, ry); ctx.lineTo(nR, ry);
-          ctx.stroke();
-          ctx.setLineDash([]);
-
-          // Robust/HAC CI (solid thick bar)
-          const hL = mapX(r.th - 1.96 * r.se);
-          const hR = mapX(r.th + 1.96 * r.se);
-          ctx.globalAlpha = isSel ? 1.0 : 0.72;
-          ctx.lineWidth = isSel ? 3.4 : 2.2;
-          ctx.beginPath();
-          ctx.moveTo(hL, ry); ctx.lineTo(hR, ry);
-          ctx.moveTo(hL, ry - 5); ctx.lineTo(hL, ry + 5);
-          ctx.moveTo(hR, ry - 5); ctx.lineTo(hR, ry + 5);
-          ctx.stroke();
-
-          // Point estimate dot
-          ctx.fillStyle = r.col;
-          ctx.beginPath(); ctx.arc(mapX(r.th), ry, isSel ? 5.2 : 4.0, 0, Math.PI * 2); ctx.fill();
-          ctx.globalAlpha = 1;
-
-          // Numeric SE tag
-          ctx.textAlign = 'left';
-          ctx.fillStyle = isSel ? pal.ink : pal.muted;
-          ctx.font = '600 10px "JetBrains Mono", monospace';
-          ctx.fillText(`SE=${r.se.toFixed(3)}`, w - padR + 8, ry + 3);
-        });
-
-        // Divider line
-        const divY = topY + ciH + 26;
-        ctx.strokeStyle = pal.grid;
-        ctx.lineWidth = 1;
-        ctx.beginPath(); ctx.moveTo(14, divY); ctx.lineTo(w - 14, divY); ctx.stroke();
-
-        // ---------------------------------------------------------------
-        // Panel B (Bottom-Left): Instrument Effective Weights (2SLS vs 2-Step)
-        // ---------------------------------------------------------------
-        const bTop = divY + 22;
-        const bH = h - bTop - 42;
-        const halfW = w * 0.48;
-
-        ctx.textAlign = 'left';
-        ctx.fillStyle = pal.ink;
-        ctx.font = '700 11px "JetBrains Mono", monospace';
-        ctx.fillText('② 도구별 가중 비중 (이분산 대응)', 14, divY + 14);
-
-        const maxShare = Math.max(0.45, ...st.shares2sls, ...st.shares2step) * 1.15;
-        const grpW = (halfW - 34) / 4;
-        for (let j = 0; j < 4; j++) {
-          const gx = 20 + j * grpW;
-          const bw = Math.max(10, grpW * 0.34);
-          const h1 = (st.shares2sls[j] / maxShare) * bH;
-          const h2 = (st.shares2step[j] / maxShare) * bH;
-          const baseY = bTop + bH;
-
-          ctx.fillStyle = pal.rose;
-          ctx.globalAlpha = 0.78;
-          ctx.fillRect(gx + 4, baseY - h1, bw, h1);
-          ctx.fillStyle = pal.indigo;
-          ctx.globalAlpha = 0.92;
-          ctx.fillRect(gx + 6 + bw, baseY - h2, bw, h2);
-          ctx.globalAlpha = 1;
-
-          ctx.fillStyle = pal.muted;
-          ctx.font = '500 10px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(`z${j + 1}`, gx + 5 + bw, baseY + 12);
-        }
-        ctx.textAlign = 'left';
-        ctx.font = '600 9.8px "JetBrains Mono", monospace';
-        ctx.fillStyle = pal.rose; ctx.fillText('■ 2SLS', 20, bTop + bH + 25);
-        ctx.fillStyle = pal.indigo; ctx.fillText('■ 2-Step(S⁻¹)', 76, bTop + bH + 25);
-
-        // ---------------------------------------------------------------
-        // Panel C (Bottom-Right): Moment Autocorrelation & Bartlett Kernel
-        // ---------------------------------------------------------------
-        const rLeft = w * 0.52;
-        const rW = w - rLeft - 16;
-        ctx.fillStyle = pal.ink;
-        ctx.font = '700 11px "JetBrains Mono", monospace';
-        ctx.fillText(`③ 적률 자기상관 & HAC (m=${st.maxLag})`, rLeft, divY + 14);
-
-        const baseY2 = bTop + bH;
-        const nLags = st.lagProfile.length; // 0..8
-        const lagSlot = rW / nLags;
-        const bw2 = Math.max(8, lagSlot * 0.56);
-
-        for (let j = 0; j < nLags; j++) {
-          const lx = rLeft + j * lagSlot + 2;
-          const val = Math.max(0, st.lagProfile[j]);
-          const barH = Math.min(1.0, val) * bH;
-          const inHac = j <= st.maxLag;
-          const bart = inHac ? (1 - j / (st.maxLag + 1)) : 0;
-
-          // Raw autocovariance bar
-          ctx.fillStyle = inHac ? pal.teal : pal.muted;
-          ctx.globalAlpha = inHac ? 0.35 : 0.18;
-          ctx.fillRect(lx, baseY2 - barH, bw2, barH);
-
-          // Weighted Bartlett contribution
-          if (inHac) {
-            ctx.globalAlpha = 0.90;
-            ctx.fillRect(lx, baseY2 - barH * bart, bw2, barH * bart);
-          }
-          ctx.globalAlpha = 1;
-
-          ctx.fillStyle = pal.muted;
-          ctx.font = '500 9.5px "JetBrains Mono", monospace';
-          ctx.textAlign = 'center';
-          ctx.fillText(String(j), lx + bw2 / 2, baseY2 + 12);
-        }
-
-        // Bartlett triangle line
-        ctx.strokeStyle = pal.amber;
-        ctx.lineWidth = 1.6;
-        ctx.beginPath();
-        for (let j = 0; j < nLags; j++) {
-          const cxBar = rLeft + j * lagSlot + 2 + bw2 / 2;
-          const wB = j <= st.maxLag ? (1 - j / (st.maxLag + 1)) : 0;
-          const pyB = baseY2 - wB * bH;
-          if (j === 0) ctx.moveTo(cxBar, pyB);
-          else ctx.lineTo(cxBar, pyB);
-        }
-        ctx.stroke();
-
-        ctx.textAlign = 'left';
-        ctx.font = '600 9.8px "JetBrains Mono", monospace';
-        ctx.fillStyle = pal.teal; ctx.fillText('■ 반영 시차', rLeft, bTop + bH + 25);
-        ctx.fillStyle = pal.amber; ctx.fillText('— Bartlett 가중', rLeft + 76, bTop + bH + 25);
-
-        ctx.restore();
-      }
-
-      [hetIn, arIn, lagIn, nIn].forEach(el => el.addEventListener('input', render));
-      modeBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          activeMode = btn.dataset.gmmMode;
-          modeBtns.forEach(b => b.classList.toggle('is-primary', b === btn));
-          render();
-        });
-      });
-      resampleBtn.addEventListener('click', () => {
-        seed = (seed + 9973) | 0;
-        render();
-      });
-
-      onThemeCallbacks.push(render);
-      window.addEventListener('resize', render);
-      render();
     })();
   })();
   </script>
