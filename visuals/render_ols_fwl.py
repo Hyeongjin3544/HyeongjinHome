@@ -37,6 +37,7 @@ from manim import (
     ReplacementTransform,
     Text,
     ThreeDScene,
+    UP,
     VGroup,
     VMobject,
     smooth,
@@ -168,6 +169,26 @@ def make_hud_header(title_str: str, math_str: str, subtitle_str: str):
     return title_row, sub
 
 
+def swap_hud_subtitle(
+    scene: ThreeDScene,
+    title_row: VGroup,
+    old_sub: MathTex,
+    new_tex: str,
+    font_size: int = 21,
+    color: str = MUTED_HEX,
+) -> MathTex:
+    """Smoothly cross-slide HUD subtitle in fixed screen space without 3D perspective bleed."""
+    scene.play(FadeOut(old_sub, shift=UP * 0.08, run_time=0.24, rate_func=smooth))
+    scene.remove_fixed_in_frame_mobjects(old_sub)
+    scene.remove(old_sub)
+
+    new_sub = MathTex(new_tex, font_size=font_size, color=color)
+    new_sub.next_to(title_row, DOWN, buff=0.16, aligned_edge=LEFT)
+    scene.add_fixed_in_frame_mobjects(new_sub)
+    scene.play(FadeIn(new_sub, shift=UP * 0.08, run_time=0.28, rate_func=smooth))
+    return new_sub
+
+
 class OLSProjectionScene(ThreeDScene):
     def construct(self):
         self.camera.background_color = BG_HEX
@@ -273,15 +294,14 @@ class OLSProjectionScene(ThreeDScene):
         self.play(FadeIn(lbl_y), run_time=0.4)
 
         # Update HUD subtitle for Phase 3 (projection drop)
-        sub_step2 = MathTex(
+        sub_step2 = swap_hud_subtitle(
+            self,
+            title_row,
+            sub_tex,
             r"\text{Step 2: Minimize } \|y - X\beta\|_2^2 \;\Leftrightarrow\; \text{Orthogonal drop onto } \mathcal{C}(X) \; (X'\hat{u}=0)",
             font_size=21,
             color=MUTED_HEX,
         )
-        sub_step2.next_to(title_row, DOWN, buff=0.16, aligned_edge=LEFT)
-        self.add_fixed_in_frame_mobjects(sub_step2)
-        self.remove_fixed_in_frame_mobjects(sub_tex)
-        self.play(FadeOut(sub_tex, run_time=0.25), FadeIn(sub_step2, run_time=0.35))
 
         # Phase 3: orthogonal drop from y to yhat + uhat + parallelogram decomposition
         proj_ray = make_dashed_3d(y, yhat, color=ROSE_HEX, num_dashes=10, stroke_width=2.5)
@@ -314,15 +334,14 @@ class OLSProjectionScene(ThreeDScene):
         )
 
         # Phase 4: Pythagorean decomposition HUD + slow gentle orbit arc (46 deg out & back)
-        sub_step3 = MathTex(
+        swap_hud_subtitle(
+            self,
+            title_row,
+            sub_step2,
             r"\text{Pythagorean Decomposition: } \|y\|_2^2 = \|P_X y\|_2^2 + \|M_X y\|_2^2 \;\; (\mathrm{TSS}=\mathrm{ESS}+\mathrm{RSS})",
             font_size=21,
             color=INK_HEX,
         )
-        sub_step3.next_to(title_row, DOWN, buff=0.16, aligned_edge=LEFT)
-        self.add_fixed_in_frame_mobjects(sub_step3)
-        self.remove_fixed_in_frame_mobjects(sub_step2)
-        self.play(FadeOut(sub_step2, run_time=0.25), FadeIn(sub_step3, run_time=0.4))
 
         self.move_camera(theta=theta_0 + 46 * DEGREES, run_time=3.4, rate_func=smooth)
         self.wait(0.6)
@@ -418,15 +437,14 @@ class FWLGeometryScene(ThreeDScene):
         self.play(FadeIn(lbl_x1), FadeIn(lbl_x2), FadeIn(lbl_y), run_time=0.45)
 
         # Stage 1: Partial out X1 -> project X2 and y vertically onto C(X1)^perp
-        sub_s1 = MathTex(
+        sub_s1 = swap_hud_subtitle(
+            self,
+            title_row,
+            sub_tex,
             r"\text{Stage 1 (Partial Out } X_1\text{): } \tilde{X}_2 = M_1 X_2,\;\; \tilde{y} = M_1 y \in \mathcal{C}(X_1)^\perp",
             font_size=21,
             color=MUTED_HEX,
         )
-        sub_s1.next_to(title_row, DOWN, buff=0.16, aligned_edge=LEFT)
-        self.add_fixed_in_frame_mobjects(sub_s1)
-        self.remove_fixed_in_frame_mobjects(sub_tex)
-        self.play(FadeOut(sub_tex, run_time=0.25), FadeIn(sub_s1, run_time=0.35))
 
         drop_x2 = make_dashed_3d(x2, x2_tilde, color=TEAL_HEX, num_dashes=9, stroke_width=2.0)
         drop_y = make_dashed_3d(y, y_tilde, color=AMBER_HEX, num_dashes=11, stroke_width=2.0)
@@ -463,15 +481,14 @@ class FWLGeometryScene(ThreeDScene):
         )
 
         # Stage 2: Residual-on-residual projection inside C(X1)^perp
-        sub_s2 = MathTex(
+        swap_hud_subtitle(
+            self,
+            title_row,
+            sub_s1,
             r"\text{Stage 2: Regress } \tilde{y} \text{ on } \tilde{X}_2 \;\Rightarrow\; \hat{\beta}_2^{\mathrm{FWL}} = (\tilde{X}_2'\tilde{X}_2)^{-1}\tilde{X}_2'\tilde{y} \equiv \hat{\beta}_2^{\mathrm{Full}}",
             font_size=20,
             color=INK_HEX,
         )
-        sub_s2.next_to(title_row, DOWN, buff=0.16, aligned_edge=LEFT)
-        self.add_fixed_in_frame_mobjects(sub_s2)
-        self.remove_fixed_in_frame_mobjects(sub_s1)
-        self.play(FadeOut(sub_s1, run_time=0.25), FadeIn(sub_s2, run_time=0.4))
 
         proj_ray = make_dashed_3d(y_tilde, yhat_fwl, color=ROSE_HEX, num_dashes=10, stroke_width=2.4)
         arr_yhat_fwl = make_vec3d(o_pt, yhat_fwl, color=INDIGO_LIGHT_HEX, stroke_width=6.0, tip_len=0.23, tip_rad=0.074)
