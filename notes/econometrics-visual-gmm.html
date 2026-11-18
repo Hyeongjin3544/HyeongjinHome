@@ -141,7 +141,8 @@
       overflow-wrap: break-word;
     }
     html:not(.math-ready) mjx-container { visibility: hidden; }
-    mjx-container { overflow-x: auto; overflow-y: visible; color: inherit; max-width: 100%; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
 
     /* Topbar */
     .sitebar {
@@ -899,7 +900,7 @@
 
       <!-- SECTION 02 -->
       <section class="module" id="sec-gmm-weight-video">
-        <h2><span class="sec-tag">02</span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</h2>
+        <h2><span class="sec-tag">02</span><span>왜 최적 가중행렬 \(W^* = S^{-1}\) 인가?</span></h2>
         <p>
           동일한 가중치(\(W = I\))를 쓰면 분산이 큰 불안정한 적률(\(\sigma_2 \gg \sigma_1\))의 표본 오차가 추정량 \(\hat{\theta}_I\)에 그대로 섞여 들어간다.
           반대로 적률 공분산행렬 \(S = \mathrm{Var}(\sqrt{n}\bar{g}_n(\theta_0))\)의 역행렬 \(W^* = S^{-1}\)을 쓰면,
@@ -933,7 +934,7 @@
 
       <!-- SECTION 03 -->
       <section class="module" id="sec-gmm-ellipse-lab">
-        <h2><span class="sec-tag">03</span>인터랙티브 \(W\)-타원 &amp; 가중 효율성 탐색기</h2>
+        <h2><span class="sec-tag">03</span><span>\(W\)-타원 &amp; 가중 효율성 탐색기</span></h2>
         <p>
           과대식별 모형에서는 가중행렬 \(W\)의 선택에 따라 \(\hat{\theta}_{\mathrm{GMM}}\)이 개별 적률의 해 \(\hat{\theta}_{(1)}\)과 \(\hat{\theta}_{(2)}\) 사이에서 이동한다.
           아래 탐색기에서 적률 2의 표준편차 \(\sigma_2\)와 적률 간 상관 \(\rho_{12}\)를 조절해 보며,

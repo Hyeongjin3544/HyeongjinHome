@@ -141,7 +141,8 @@
       overflow-wrap: break-word;
     }
     html:not(.math-ready) mjx-container { visibility: hidden; }
-    mjx-container { overflow-x: auto; overflow-y: visible; color: inherit; max-width: 100%; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
 
     /* Topbar */
     .sitebar {
@@ -902,7 +903,7 @@
 
       <!-- SECTION 02 -->
       <section class="module" id="sec-ols-lab">
-        <h2><span class="sec-tag">02</span>인터랙티브 3D OLS 사영 &amp; 다중공선성 탐색기</h2>
+        <h2><span class="sec-tag">02</span><span>3D OLS 사영 &amp; 다중공선성 탐색기</span></h2>
         <p>
           두 설명변수 \(x_1, x_2\) 사이의 상관계수 \(\rho(x_1, x_2)\)가 \(1\)에 가까워지면 사잇각 \(\theta\)가 좁아져 열공간 \(\mathcal{C}(X)\)의 기저가 붕괴한다.
           사영벡터 \(\hat{y} = P_X y\) 자체의 길이와 위치는 크게 변하지 않더라도, 평행사변형 분해 \(\hat{y} = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)를 맞추기 위해
