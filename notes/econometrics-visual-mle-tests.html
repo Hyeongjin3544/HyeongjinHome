@@ -494,6 +494,53 @@
       line-height: 1.55;
     }
 
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0c0f14;
+    }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
     /* Interactive Canvas Labs */
     .interactive-lab {
       margin: 18px 0 24px;
@@ -909,6 +956,7 @@
                   <button type="button" class="btn-pill is-primary" data-tr-mode="quad">정규 이차 (W=LR=LM)</button>
                   <button type="button" class="btn-pill" data-tr-mode="skew">비대칭 지수족 (괴리)</button>
                   <button type="button" class="btn-pill" data-tr-mode="reparam">재모수화 φ=e^(1.2θ)</button>
+                  <button type="button" class="btn-pill" id="trPlayBtn">▶ 자동 시연</button>
                 </div>
               </div>
 
@@ -991,6 +1039,7 @@
                 <div class="btn-row">
                   <button type="button" class="btn-pill is-primary" data-m2-const="linear">선형 제약 θ₁+θ₂=r</button>
                   <button type="button" class="btn-pill" data-m2-const="circle">비선형 제약 θ₁²+θ₂²=r²</button>
+                  <button type="button" class="btn-pill" id="m2PlayBtn">▶ 회전·사영 재생</button>
                   <button type="button" class="btn-pill" id="mle3dResetCam">시점 초기화</button>
                 </div>
               </div>
@@ -1529,6 +1578,39 @@
         ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂)', padL + 8, padT + 14);
       }
 
+      const trPlayBtn = document.getElementById('trPlayBtn');
+      let trAnimId = null;
+      let trPhase = 0;
+
+      function stopTrinityAnim() {
+        if (trAnimId !== null) {
+          cancelAnimationFrame(trAnimId);
+          trAnimId = null;
+        }
+        trPlayBtn.textContent = '▶ 자동 시연';
+        trPlayBtn.classList.remove('is-primary');
+      }
+
+      trPlayBtn.addEventListener('click', () => {
+        if (trAnimId !== null) {
+          stopTrinityAnim();
+          return;
+        }
+        trPlayBtn.textContent = '⏸ 일시정지';
+        trPlayBtn.classList.add('is-primary');
+        let lastT = performance.now();
+        function tick(now) {
+          const dt = Math.min(0.05, (now - lastT) / 1000);
+          lastT = now;
+          trPhase += dt * 1.15;
+          const d = 0.12 + 0.64 * Math.sin(trPhase);
+          deltaIn.value = Math.max(-0.54, Math.min(0.78, d)).toFixed(2);
+          render();
+          trAnimId = requestAnimationFrame(tick);
+        }
+        trAnimId = requestAnimationFrame(tick);
+      });
+
       modeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
           mode = btn.getAttribute('data-tr-mode');
@@ -1536,7 +1618,10 @@
           render();
         });
       });
-      [deltaIn, infoIn, nIn].forEach(el => el.addEventListener('input', render));
+      [deltaIn, infoIn, nIn].forEach(el => el.addEventListener('input', () => {
+        if (el === deltaIn) stopTrinityAnim();
+        render();
+      }));
       onThemeCallbacks.push(render);
       window.addEventListener('resize', render);
       render();
@@ -1951,6 +2036,39 @@
         render2D(st, rNum, pal);
       }
 
+      const m2PlayBtn = document.getElementById('m2PlayBtn');
+      let m2AnimId = null;
+      let m2Phase = 0;
+
+      function stopM2Anim() {
+        if (m2AnimId !== null) {
+          cancelAnimationFrame(m2AnimId);
+          m2AnimId = null;
+        }
+        m2PlayBtn.textContent = '▶ 회전·사영 재생';
+        m2PlayBtn.classList.remove('is-primary');
+      }
+
+      m2PlayBtn.addEventListener('click', () => {
+        if (m2AnimId !== null) {
+          stopM2Anim();
+          return;
+        }
+        m2PlayBtn.textContent = '⏸ 일시정지';
+        m2PlayBtn.classList.add('is-primary');
+        let lastT = performance.now();
+        function tick(now) {
+          const dt = Math.min(0.05, (now - lastT) / 1000);
+          lastT = now;
+          m2Phase += dt * 0.9;
+          cam.yaw += dt * 0.42;
+          rhoIn.value = (0.70 * Math.sin(m2Phase)).toFixed(2);
+          render();
+          m2AnimId = requestAnimationFrame(tick);
+        }
+        m2AnimId = requestAnimationFrame(tick);
+      });
+
       constBtns.forEach(b => {
         b.addEventListener('click', () => {
           constType = b.getAttribute('data-m2-const');
@@ -1958,8 +2076,11 @@
           render();
         });
       });
-      resetCamBtn.addEventListener('click', () => { cam.yaw = camDefault.yaw; cam.pitch = camDefault.pitch; render(); });
-      [rhoIn, rIn].forEach(el => el.addEventListener('input', render));
+      resetCamBtn.addEventListener('click', () => { stopM2Anim(); cam.yaw = camDefault.yaw; cam.pitch = camDefault.pitch; render(); });
+      [rhoIn, rIn].forEach(el => el.addEventListener('input', () => {
+        if (el === rhoIn) stopM2Anim();
+        render();
+      }));
       onThemeCallbacks.push(render);
       window.addEventListener('resize', render);
       render();
