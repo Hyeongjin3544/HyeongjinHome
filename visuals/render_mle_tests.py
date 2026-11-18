@@ -71,9 +71,10 @@ def pt3(t1: float, t2: float, z_val: float) -> np.ndarray:
     return np.array([t1 * XY_SCALE, t2 * XY_SCALE, Z_FLOOR + z_val * Z_SCALE], dtype=float)
 
 
-def pill_tex(tex_str: str, pos: np.ndarray, color: str, font_size: int = 24) -> MathTex:
+def pill_tex(tex_str: str, pos: np.ndarray, color: str, font_size: int = 24, use_bg: bool = True) -> MathTex:
     lbl = MathTex(tex_str, font_size=font_size, color=color).move_to(pos)
-    lbl.add_background_rectangle(color=BG_HEX, opacity=0.78, buff=0.05)
+    if use_bg:
+        lbl.add_background_rectangle(color=BG_HEX, opacity=0.78, buff=0.05)
     return lbl
 
 
@@ -386,12 +387,12 @@ class MLETrinityScene(Scene):
 class MLEProjection3DScene(ThreeDScene):
     def construct(self):
         self.camera.background_color = BG_HEX
-        self.set_camera_orientation(phi=62 * DEGREES, theta=-52 * DEGREES, zoom=1.18)
+        self.set_camera_orientation(phi=62 * DEGREES, theta=-24 * DEGREES, zoom=1.18)
 
         title_row, sub_tex = make_hud(
             "Constrained MLE (3D):",
-            r"\tilde{\theta} = \arg\max_{R(\theta)=r} \ell_n(\theta)",
-            r"\text{Unrestricted MLE } \hat{\theta} \text{ sits at the peak; } H_0: \theta_1+\theta_2=r \text{ slices the surface}",
+            r"\tilde{\theta}_n = \arg\max_{R(\theta)=r} \ell_n(\theta)",
+            r"\text{True } \theta_0 \text{ satisfies } R(\theta_0)=r\text{; finite-sample error shifts } \hat{\theta}_n \text{ off the wall and } \tilde{\theta}_n \text{ along it}",
         )
         self.add_fixed_in_frame_mobjects(title_row, sub_tex)
 
@@ -412,137 +413,262 @@ class MLEProjection3DScene(ThreeDScene):
             grid.add(Line(pt3(-r_max, g, 0.0), pt3(r_max, g, 0.0), color=col, stroke_width=1.0))
             grid.add(Line(pt3(g, -r_max, 0.0), pt3(g, r_max, 0.0), color=col, stroke_width=1.0))
 
-        t_hat = np.array([0.62, 0.52])
+        # Constraint R(theta) = t1 + t2 = r_const and true parameter theta_0 on the open front-left of the wall
+        r_const = 0.20
+        t_true = np.array([0.95, -0.75])  # 0.95 - 0.75 = 0.20 = r_const (open foreground!)
+        delta_sample = np.array([-0.33, 1.27])  # initial sample peak t_hat = (0.62, 0.52)
+
         # Fisher info with correlation rho = 0.55
         i11, i22, i12 = 1.95, 1.05, 0.55 * math.sqrt(1.95 * 1.05)
         det_i = i11 * i22 - i12 * i12
         inv_i = np.array([[i22, -i12], [-i12, i11]]) / det_i
         info = np.array([[i11, i12], [i12, i22]])
+        G = np.array([1.0, 1.0])
+        g_inv_g = float(G @ inv_i @ G)
 
-        def ll_height(t1: float, t2: float) -> float:
+        scale_n = ValueTracker(1.0)  # shrinks as n grows: 1.0 -> 0.28
+
+        def state_for(s: float):
+            t_hat = t_true + s * delta_sample
+            gap = float(G @ t_hat) - r_const
+            t_tilde = t_hat - (inv_i @ G) * (gap / g_inv_g)
+            t_euc = t_hat - 0.5 * gap * G
+            curv_mult = 0.72 / max(0.42, s)
+            return t_hat, t_tilde, t_euc, curv_mult
+
+        def ll_height(t1: float, t2: float, t_hat: np.ndarray, curv_mult: float) -> float:
             d = np.array([t1 - t_hat[0], t2 - t_hat[1]])
-            return max(0.06, 1.55 - 0.36 * float(d @ info @ d))
+            return 1.55 * math.exp(-curv_mult * float(d @ info @ d))
+
+        xs_c = np.linspace(max(-r_max, r_const - r_max), min(r_max, r_const + r_max), 30)
+        floor_c_pts = [pt3(float(x), float(r_const - x), 0.0) for x in xs_c]
+        floor_c_line = Line(floor_c_pts[0], floor_c_pts[-1], color=AMBER_HEX, stroke_width=2.8)
+
+        # Constrained population true parameter theta_0 fixed on the constraint line (open foreground)
+        p_true_fl = pt3(float(t_true[0]), float(t_true[1]), 0.04)
+        dot_true_fl = Dot3D(p_true_fl, radius=0.088, color=TEAL_HEX, resolution=(8, 8))
+        p_true_lbl = pt3(1.30, -1.24, 0.16)
+        pin_true = Line(p_true_fl, p_true_lbl + np.array([-0.10, 0.12, -0.04]), color=TEAL_HEX, stroke_width=2.2)
+        lbl_true = pill_tex(r"\theta_0\text{ (True)}", p_true_lbl, TEAL_HEX, font_size=21, use_bg=False)
+        self.add_fixed_orientation_mobjects(lbl_true)
+
+        # Create labels once and register fixed orientation once (never inside per-frame updaters)
+        t_hat0, t_til0, t_euc0, curv0 = state_for(1.0)
+        z_hat0 = ll_height(t_hat0[0], t_hat0[1], t_hat0, curv0)
+        z_til0 = ll_height(t_til0[0], t_til0[1], t_hat0, curv0)
+
+        p_hat_top0 = pt3(float(t_hat0[0]), float(t_hat0[1]), z_hat0)
+        p_hat_fl0 = pt3(float(t_hat0[0]), float(t_hat0[1]), 0.0)
+        p_til_top0 = pt3(float(t_til0[0]), float(t_til0[1]), z_til0)
+        p_til_fl0 = pt3(float(t_til0[0]), float(t_til0[1]), 0.0)
+        p_til_at_hat0 = pt3(float(t_til0[0]), float(t_til0[1]), z_hat0)
 
         hill = make_surface_mesh(
-            ll_height,
+            lambda x, y: ll_height(x, y, t_hat0, curv0),
             r_max=r_max,
-            n_grid=13,
+            n_grid=12,
             fill_color=INDIGO_HEX,
-            fill_opacity=0.22,
+            fill_opacity=0.14,
             stroke_color=INDIGO_LIGHT_HEX,
-            stroke_width=1.05,
+            stroke_width=0.95,
         )
+        # Fade flat outer tail quads so the dark floor grid and floor markers remain crisp
+        grid_coords = np.linspace(-r_max, r_max, 13)
+        def style_hill_quads(t_hat, curv_mult):
+            idx_q = 0
+            for i in range(12):
+                x0, x1 = float(grid_coords[i]), float(grid_coords[i + 1])
+                for j in range(12):
+                    y0, y1 = float(grid_coords[j]), float(grid_coords[j + 1])
+                    za = ll_height(x0, y0, t_hat, curv_mult)
+                    zb = ll_height(x1, y0, t_hat, curv_mult)
+                    zc = ll_height(x1, y1, t_hat, curv_mult)
+                    zd = ll_height(x0, y1, t_hat, curv_mult)
+                    z_max = max(za, zb, zc, zd)
+                    fade = max(0.0, min(1.0, (z_max - 0.05) / 0.25))
+                    q = hill[idx_q]
+                    q.set_points_as_corners([
+                        pt3(x0, y0, za), pt3(x1, y0, zb), pt3(x1, y1, zc), pt3(x0, y1, zd), pt3(x0, y0, za)
+                    ])
+                    q.set_fill(opacity=0.14 * fade)
+                    q.set_stroke(opacity=0.82 * fade)
+                    idx_q += 1
+        style_hill_quads(t_hat0, curv0)
 
-        # Unrestricted summit & floor point
-        p_hat_top = pt3(t_hat[0], t_hat[1], ll_height(t_hat[0], t_hat[1]))
-        p_hat_fl = pt3(t_hat[0], t_hat[1], 0.0)
-        dot_hat_top = Dot3D(p_hat_top, radius=0.075, color=TEAL_HEX, resolution=(8, 8))
-        dot_hat_fl = Dot3D(p_hat_fl, radius=0.065, color=TEAL_HEX, resolution=(8, 8))
-        drop_hat = make_dashed_3d(p_hat_top, p_hat_fl, color=TEAL_HEX, num_dashes=7)
-        lbl_hat = pill_tex(r"\hat{\theta}", p_hat_top + np.array([0.18, 0.16, 0.34]), TEAL_HEX, font_size=24)
-        self.add_fixed_orientation_mobjects(lbl_hat)
+        dot_hat_top = Dot3D(p_hat_top0, radius=0.075, color=INDIGO_LIGHT_HEX, resolution=(8, 8))
+        dot_hat_fl = Dot3D(p_hat_fl0, radius=0.065, color=INDIGO_LIGHT_HEX, resolution=(8, 8))
+        drop_hat = make_dashed_3d(p_hat_top0, p_hat_fl0, color=INDIGO_LIGHT_HEX, num_dashes=7)
+        lbl_hat = pill_tex(r"\hat{\theta}_n", p_hat_top0 + np.array([0.20, 0.16, 0.34]), INDIGO_LIGHT_HEX, font_size=23, use_bg=False)
 
-        self.play(FadeIn(floor), FadeIn(grid), run_time=0.55)
-        self.play(Create(hill), run_time=1.3, rate_func=smooth)
-        self.play(FadeIn(dot_hat_top), FadeIn(dot_hat_fl), Create(drop_hat), FadeIn(lbl_hat), run_time=0.7)
-
-        # Solve constrained MLE for t1 + t2 = r_const
-        r_const = 0.20
-        G = np.array([1.0, 1.0])
-        gap = float(G @ t_hat) - r_const
-        g_inv_g = float(G @ inv_i @ G)
-        t_tilde = t_hat - (inv_i @ G) * (gap / g_inv_g)
-        t_euc = t_hat - 0.5 * gap * G
-
-        # Constraint wall & ridge
-        xs_c = np.linspace(max(-r_max, r_const - r_max), min(r_max, r_const + r_max), 34)
-        ridge_pts = [pt3(float(x), float(r_const - x), ll_height(float(x), float(r_const - x))) for x in xs_c]
-        floor_c_pts = [pt3(float(x), float(r_const - x), 0.0) for x in xs_c]
-
+        ridge_pts0 = [pt3(float(x), float(r_const - x), ll_height(float(x), float(r_const - x), t_hat0, curv0)) for x in xs_c]
         ridge_curve = VMobject(color=AMBER_HEX, stroke_width=4.0)
-        ridge_curve.set_points_as_corners(ridge_pts)
-        floor_c_line = Line(floor_c_pts[0], floor_c_pts[-1], color=AMBER_HEX, stroke_width=2.6)
-
+        ridge_curve.set_points_as_corners(ridge_pts0)
         wall_quads = VGroup()
         for idx in range(len(xs_c) - 1):
             wall_quads.add(
                 Polygon(
                     floor_c_pts[idx],
                     floor_c_pts[idx + 1],
-                    ridge_pts[idx + 1],
-                    ridge_pts[idx],
+                    ridge_pts0[idx + 1],
+                    ridge_pts0[idx],
                     fill_color=AMBER_HEX,
                     fill_opacity=0.16,
                     stroke_opacity=0.0,
                 )
             )
 
-        p_til_top = pt3(t_tilde[0], t_tilde[1], ll_height(t_tilde[0], t_tilde[1]))
-        p_til_fl = pt3(t_tilde[0], t_tilde[1], 0.0)
-        p_til_at_hat = pt3(t_tilde[0], t_tilde[1], ll_height(t_hat[0], t_hat[1]))
+        dot_til_top = Dot3D(p_til_top0, radius=0.075, color=AMBER_HEX, resolution=(8, 8))
+        dot_til_fl = Dot3D(p_til_fl0, radius=0.068, color=AMBER_HEX, resolution=(8, 8))
+        drop_til = make_dashed_3d(p_til_top0, p_til_fl0, color=AMBER_HEX, num_dashes=6)
+        lr_bridge = make_dashed_3d(p_hat_top0, p_til_at_hat0, color=INDIGO_LIGHT_HEX, num_dashes=7)
+        lr_drop = Line(p_til_at_hat0, p_til_top0, color=INDIGO_LIGHT_HEX, stroke_width=3.6)
 
-        dot_til_top = Dot3D(p_til_top, radius=0.075, color=AMBER_HEX, resolution=(8, 8))
-        dot_til_fl = Dot3D(p_til_fl, radius=0.068, color=AMBER_HEX, resolution=(8, 8))
-        drop_til = make_dashed_3d(p_til_top, p_til_fl, color=AMBER_HEX, num_dashes=6)
-        lr_bridge = make_dashed_3d(p_hat_top, p_til_at_hat, color=INDIGO_LIGHT_HEX, num_dashes=7)
-        lr_drop = Line(p_til_at_hat, p_til_top, color=INDIGO_LIGHT_HEX, stroke_width=3.6)
+        lbl_til = pill_tex(r"\tilde{\theta}_n", p_til_top0 + np.array([0.18, -0.34, 0.14]), AMBER_HEX, font_size=23, use_bg=False)
+        lbl_lr3d = pill_tex(r"\tfrac{1}{2}\mathrm{LR}", (p_til_at_hat0 + p_til_top0) * 0.5 + np.array([-0.46, 0.12, 0.12]), INDIGO_LIGHT_HEX, font_size=21, use_bg=False)
 
-        lbl_til = pill_tex(r"\tilde{\theta}", p_til_fl + np.array([-0.26, -0.24, 0.08]), AMBER_HEX, font_size=24)
-        lbl_lr3d = pill_tex(r"\tfrac{1}{2}\mathrm{LR}", (p_til_at_hat + p_til_top) * 0.5 + np.array([-0.44, 0.12, 0.08]), INDIGO_LIGHT_HEX, font_size=21)
-        self.add_fixed_orientation_mobjects(lbl_til, lbl_lr3d)
+        def build_floor_ellipse(t_hat, t_tilde):
+            d_til = t_tilde - t_hat
+            q_level = max(0.015, float(d_til @ info @ d_til))
+            pts = []
+            for k in range(57):
+                ang = (k / 56.0) * 2.0 * PI
+                u = np.array([math.cos(ang), math.sin(ang)])
+                rad = math.sqrt(q_level / float(u @ info @ u))
+                p = t_hat + rad * u
+                pts.append(pt3(float(p[0]), float(p[1]), 0.02))
+            return pts
 
+        floor_ellipse = VMobject(color=INDIGO_LIGHT_HEX, stroke_width=2.5)
+        floor_ellipse.set_points_as_corners(build_floor_ellipse(t_hat0, t_til0))
+
+        p_euc_fl0 = pt3(float(t_euc0[0]), float(t_euc0[1]), 0.02)
+        p_hat_fl2 = pt3(float(t_hat0[0]), float(t_hat0[1]), 0.02)
+        p_til_fl2 = pt3(float(t_til0[0]), float(t_til0[1]), 0.02)
+        proj_euc = make_dashed_3d(p_hat_fl2, p_euc_fl0, color=MUTED_HEX, num_dashes=5, stroke_width=2.0)
+        proj_info = Line(p_hat_fl2, p_til_fl2, color=CYAN_HEX, stroke_width=3.0)
+        dot_euc = Dot3D(p_euc_fl0, radius=0.052, color=MUTED_HEX, resolution=(8, 8))
+
+        score_dir0 = np.array([1.0, 1.0]) / math.sqrt(2.0) * 0.52
+        p_score_end0 = pt3(float(t_til0[0] + score_dir0[0]), float(t_til0[1] + score_dir0[1]), 0.02)
+        score_vec = Line(p_til_fl2, p_score_end0, color=CYAN_HEX, stroke_width=3.6)
+        p_score_lbl = pt3(1.52, -0.04, 0.14)
+        pin_score = make_dashed_3d(p_score_end0, p_score_lbl + np.array([-0.14, 0.0, 0.0]), color=CYAN_HEX, num_dashes=4, stroke_width=1.8)
+        lbl_score = pill_tex(r"\nabla\ell_n(\tilde{\theta}_n) \perp R", p_score_lbl, CYAN_HEX, font_size=19, use_bg=False)
+
+        self.add_fixed_orientation_mobjects(lbl_hat, lbl_til, lbl_lr3d, lbl_score)
+
+        # Phase 1: Floor + constraint line + population theta_0
+        self.play(FadeIn(floor), FadeIn(grid), Create(floor_c_line), FadeIn(dot_true_fl), Create(pin_true), FadeIn(lbl_true), run_time=0.85)
+
+        # Phase 2: Sample hill peaking at hat{theta}_n
+        self.play(Create(hill), run_time=1.15, rate_func=smooth)
+        self.play(FadeIn(dot_hat_top), FadeIn(dot_hat_fl), Create(drop_hat), FadeIn(lbl_hat), run_time=0.65)
+
+        # Phase 3: Constraint slice & constrained sample peak tilde{theta}_n + 1/2 LR
         sub_tex = swap_sub_3d(
             self,
             title_row,
             sub_tex,
-            r"\text{Constraint slice } R(\theta)=r \text{ cuts the hill; } \tilde{\theta} \text{ maximizes the ridge and } \mathrm{LR}=2[\ell(\hat{\theta})-\ell(\tilde{\theta})]",
-            font_size=19,
+            r"\text{Constraint } R(\theta)=r \text{ cuts sample hill; } \tilde{\theta}_n \neq \theta_0 \text{ maximizes the ridge and } \mathrm{LR}=2[\ell_n(\hat{\theta}_n)-\ell_n(\tilde{\theta}_n)]",
+            font_size=18,
             color=AMBER_HEX,
         )
-        self.play(FadeIn(wall_quads), Create(floor_c_line), Create(ridge_curve), run_time=1.1, rate_func=smooth)
-        self.play(FadeIn(dot_til_top), FadeIn(dot_til_fl), Create(drop_til), FadeIn(lbl_til), run_time=0.6)
-        self.play(Create(lr_bridge), Create(lr_drop), FadeIn(lbl_lr3d), run_time=0.75)
+        self.play(FadeIn(wall_quads), Create(ridge_curve), run_time=0.95, rate_func=smooth)
+        self.play(
+            FadeIn(dot_til_top),
+            FadeIn(dot_til_fl),
+            Create(drop_til),
+            FadeIn(lbl_til),
+            Create(lr_bridge),
+            Create(lr_drop),
+            FadeIn(lbl_lr3d),
+            run_time=0.85,
+        )
 
-        # Draw tangent ellipse passing through tilde + I-projection vs Euclidean projection on floor
-        d_til = t_tilde - t_hat
-        q_level = float(d_til @ info @ d_til)
-        ell_pts = []
-        for k in range(65):
-            ang = (k / 64.0) * 2.0 * PI
-            u = np.array([math.cos(ang), math.sin(ang)])
-            rad = math.sqrt(q_level / float(u @ info @ u))
-            p = t_hat + rad * u
-            ell_pts.append(pt3(float(p[0]), float(p[1]), 0.02))
-        floor_ellipse = VMobject(color=INDIGO_LIGHT_HEX, stroke_width=2.6)
-        floor_ellipse.set_points_as_corners(ell_pts)
-
-        p_euc_fl = pt3(t_euc[0], t_euc[1], 0.02)
-        proj_euc = make_dashed_3d(p_hat_fl, p_euc_fl, color=MUTED_HEX, num_dashes=6, stroke_width=2.0)
-        proj_info = Line(p_hat_fl, p_til_fl, color=TEAL_HEX, stroke_width=3.0)
-        dot_euc = Dot3D(p_euc_fl, radius=0.055, color=MUTED_HEX, resolution=(8, 8))
-
-        # Score vector at tilde (Euclidean perpendicular to R(theta)=r!)
-        score_dir = np.array([1.0, 1.0]) / math.sqrt(2.0) * 0.55
-        p_score_end = pt3(t_tilde[0] + score_dir[0], t_tilde[1] + score_dir[1], 0.02)
-        score_vec = Line(p_til_fl, p_score_end, color=CYAN_HEX, stroke_width=3.6)
-        lbl_score = pill_tex(r"\nabla\ell(\tilde{\theta}) \perp R", p_score_end + np.array([0.24, 0.22, 0.06]), CYAN_HEX, font_size=20)
-        self.add_fixed_orientation_mobjects(lbl_score)
-
+        # Phase 4: Floor I-metric projection vs Euclidean + score vector
         sub_tex = swap_sub_3d(
             self,
             title_row,
             sub_tex,
-            r"\text{On the floor: } \tilde{\theta} \text{ is the } \mathcal{I}\text{-metric projection of } \hat{\theta} \text{ (not Euclidean), while } \nabla\ell(\tilde{\theta}) \perp \text{constraint}",
+            r"\text{On the floor: } \tilde{\theta}_n \text{ is the } \mathcal{I}\text{-projection of } \hat{\theta}_n\text{, while } \nabla\ell_n(\tilde{\theta}_n) \perp \text{constraint}",
             font_size=19,
             color=CYAN_HEX,
         )
-        self.play(Create(floor_ellipse), Create(proj_euc), FadeIn(dot_euc), Create(proj_info), run_time=1.0)
-        self.play(Create(score_vec), FadeIn(lbl_score), run_time=0.65)
-
-        self.begin_ambient_camera_rotation(rate=0.22)
-        self.wait(3.2)
-        self.stop_ambient_camera_rotation()
+        self.play(Create(floor_ellipse), Create(proj_euc), FadeIn(dot_euc), Create(proj_info), Create(score_vec), Create(pin_score), FadeIn(lbl_score), run_time=1.0)
         self.wait(0.6)
+
+        # Phase 5: Under H_0 true, n grows -> sample hill sharpens and both hat{theta}_n and tilde{theta}_n converge to true theta_0!
+        sub_tex = swap_sub_3d(
+            self,
+            title_row,
+            sub_tex,
+            r"\text{Under } H_0 \text{ true: as } n \uparrow,\; \text{sample hill sharpens and both } \hat{\theta}_n,\, \tilde{\theta}_n \xrightarrow{p} \theta_0 \text{ on } R(\theta)=r",
+            font_size=18,
+            color=TEAL_HEX,
+        )
+
+        def sync_scene_to_scale(s: float) -> None:
+            t_hat, t_tilde, t_euc, curv_mult = state_for(s)
+            z_hat = ll_height(t_hat[0], t_hat[1], t_hat, curv_mult)
+            z_til = ll_height(t_tilde[0], t_tilde[1], t_hat, curv_mult)
+
+            # Update hill vertices & tail fade in place
+            style_hill_quads(t_hat, curv_mult)
+
+            # Update wall & ridge in place
+            r_pts = [pt3(float(x), float(r_const - x), ll_height(float(x), float(r_const - x), t_hat, curv_mult)) for x in xs_c]
+            ridge_curve.set_points_as_corners(r_pts)
+            for idx in range(len(xs_c) - 1):
+                wall_quads[idx].set_points_as_corners([
+                    floor_c_pts[idx], floor_c_pts[idx + 1], r_pts[idx + 1], r_pts[idx], floor_c_pts[idx]
+                ])
+
+            # Positions
+            p_ht = pt3(float(t_hat[0]), float(t_hat[1]), z_hat)
+            p_hf = pt3(float(t_hat[0]), float(t_hat[1]), 0.0)
+            p_tt = pt3(float(t_tilde[0]), float(t_tilde[1]), z_til)
+            p_tf = pt3(float(t_tilde[0]), float(t_tilde[1]), 0.0)
+            p_tah = pt3(float(t_tilde[0]), float(t_tilde[1]), z_hat)
+            p_hf2 = pt3(float(t_hat[0]), float(t_hat[1]), 0.02)
+            p_tf2 = pt3(float(t_tilde[0]), float(t_tilde[1]), 0.02)
+            p_ef2 = pt3(float(t_euc[0]), float(t_euc[1]), 0.02)
+
+            dot_hat_top.move_to(p_ht)
+            dot_hat_fl.move_to(p_hf)
+            drop_hat.become(make_dashed_3d(p_ht, p_hf, color=INDIGO_LIGHT_HEX, num_dashes=7))
+            lbl_hat.move_to(p_ht + np.array([0.20, 0.16, 0.34]))
+
+            dot_til_top.move_to(p_tt)
+            dot_til_fl.move_to(p_tf)
+            drop_til.become(make_dashed_3d(p_tt, p_tf, color=AMBER_HEX, num_dashes=6))
+            lr_bridge.become(make_dashed_3d(p_ht, p_tah, color=INDIGO_LIGHT_HEX, num_dashes=7))
+            lr_drop.put_start_and_end_on(p_tah, p_tt)
+
+            lbl_til.move_to(p_tt + np.array([0.18, -0.34, 0.14]))
+            lbl_lr3d.move_to((p_tah + p_tt) * 0.5 + np.array([-0.46, 0.12, 0.12]))
+
+            floor_ellipse.set_points_as_corners(build_floor_ellipse(t_hat, t_tilde))
+            proj_euc.become(make_dashed_3d(p_hf2, p_ef2, color=MUTED_HEX, num_dashes=5, stroke_width=2.0))
+            proj_info.put_start_and_end_on(p_hf2, p_tf2)
+            dot_euc.move_to(p_ef2)
+
+            s_len = 0.52 * (0.45 + 0.55 * s)
+            s_dir = np.array([1.0, 1.0]) / math.sqrt(2.0) * s_len
+            p_se = pt3(float(t_tilde[0] + s_dir[0]), float(t_tilde[1] + s_dir[1]), 0.02)
+            score_vec.put_start_and_end_on(p_tf2, p_se)
+            pin_score.become(make_dashed_3d(p_se, p_score_lbl + np.array([-0.14, 0.0, 0.0]), color=CYAN_HEX, num_dashes=4, stroke_width=1.8))
+
+        hill.add_updater(lambda _m: sync_scene_to_scale(scale_n.get_value()))
+        self.begin_ambient_camera_rotation(rate=0.14)
+        self.play(
+            scale_n.animate.set_value(0.28),
+            run_time=2.2,
+            rate_func=smooth,
+        )
+        hill.clear_updaters()
+        self.wait(1.3)
+        self.stop_ambient_camera_rotation()
+        self.wait(0.5)
 
 
 def render_all(quality: str, which: str = "all") -> None:
