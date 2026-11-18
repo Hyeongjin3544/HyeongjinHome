@@ -1,0 +1,2288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학 동적 시각 보충자료 04 — MLE의 곡률과 Wald · LR · LM 3대 검정의 기하학, 정보행렬 사영 및 모형 오지정 비교" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>Visual Supplement 04 — MLE의 곡률과 Wald · LR · LM 검정의 기하학</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner {
+      max-width: var(--container-w);
+      margin: 0 auto;
+    }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 74ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.5px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    /* Callouts & Formula Cards */
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-tri {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      min-width: 0;
+    }
+    .formula-box__title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .formula-box__desc {
+      margin: 6px 0 0;
+      font-size: 12.8px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4e7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0c0f14;
+    }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
+    /* Interactive Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .lab-sub {
+      font-family: var(--font-mono);
+      font-size: 11.2px;
+      color: var(--muted);
+    }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(255px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 390px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas {
+      display: block;
+      width: 100%;
+      height: 390px;
+      touch-action: none;
+    }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 9px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      max-width: calc(100% - 24px);
+    }
+    .lab-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .controls-card, .metrics-card, .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row { margin-bottom: 10px; }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.6px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .btn-pill.is-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-pill.is-primary:hover { opacity: 0.92; color: #ffffff; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k {
+      font-family: var(--font-mono);
+      font-size: 10.6px;
+      color: var(--muted);
+    }
+    .metric-tile__v {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 1px;
+    }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+    .metric-tile__v.amber { color: var(--amber); }
+    .metric-tile__v.cyan { color: var(--cyan); }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+    .mini-card canvas {
+      display: block;
+      width: 100%;
+      height: 158px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+    .verdict-note {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+      font-size: 12px;
+      line-height: 1.52;
+      color: var(--ink-soft);
+    }
+
+    /* Footer Pager & Discussion */
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .discussion-section {
+      margin-top: 42px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+    .discussion-section h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .discussion-lead {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+      .formula-tri { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics.html">← 계량경제학 목차</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">Visual Supplement 04 · MLE &amp; Trinity of Tests</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero">
+    <div class="hero-inner">
+      <div class="chapter-kicker">Econometrics · Visual Supplement 04 (Ch 05 연계)</div>
+      <h1>MLE의 곡률과 Wald · LR · LM 검정의 기하학</h1>
+      <p class="subtitle">수평 거리(Wald), 수직 높이 차(LR), 접선 기울기(Score/LM)와 정보행렬 사영 · 오지정 비교</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        모수제약 검정 \(H_0: R(\theta_0)=r\)은 하나의 가설을 평가하지만, 세 고전 검정은 로그우도 곡면의 서로 다른 기하학적 방향을 잰다.
+        국소적인 이차 곡률(\(\mathcal{I}_n\))이 동일할 때는 세 통계량이 일치하지만, 유한표본 비대칭성·비선형 재모수화·정보행렬 항등식 붕괴(\(\mathcal{I}\neq\Omega\)) 아래에서는 뚜렷하게 갈라진다.
+      </p>
+      <div class="roadmap">
+        <a href="#sec-mle-trinity">
+          <span class="label">01 · Trinity Geometry Lab</span>
+          <span class="text">Wald · LR · LM 세 방향 거리와 재모수화</span>
+        </a>
+        <a href="#sec-mle-2d-projection">
+          <span class="label">02 · 3D Surface + 2D Projection</span>
+          <span class="text">3D 우도 언덕, \(\mathcal{I}\)-사영과 라그랑주 직교</span>
+        </a>
+        <a href="#sec-mle-sandwich">
+          <span class="label">03 · Identity &amp; Misspecification</span>
+          <span class="text">정보행렬 항등식과 샌드위치 검정력</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <div class="toc-title">On This Page</div>
+      <nav>
+        <a href="#sec-mle-trinity">01. 세 방향 거리: Wald · LR · LM</a>
+        <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(\mathcal{I}\)-사영 기하학</a>
+        <a href="#sec-mle-sandwich">03. 정보행렬 항등식과 오지정 \(\chi^2\) 분포</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ch05.html#ml-topic-14">↗ Ch 05 본문 (5.20 Wald·LR·LM)</a>
+        <a class="ext-link" href="econometrics-visual-gmm.html">← Visual 03 (GMM &amp; W-타원)</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-mle-trinity">01. 세 방향 거리: Wald · LR · LM</a>
+          <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(\mathcal{I}\)-사영</a>
+          <a href="#sec-mle-sandwich">03. 정보행렬 항등식과 오지정</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ch05.html#ml-topic-14">↗ Ch 05 본문 (5.20)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-mle-trinity">
+        <h2><span class="sec-tag">01</span><span>하나의 우도 곡선, 세 방향의 거리: Wald · LR · LM</span></h2>
+        <p>
+          비제약 최대우도추정량 \(\hat{\theta}\)는 로그우도 곡선 \(\ell_n(\theta)\)의 정점(\(\ell_n'(\hat{\theta})=0\))에 놓이고, 귀무가설 \(H_0: \theta = \theta_0\)는 모수축 위의 한 점 \(\theta_0\)를 지정한다.
+          <strong>Likelihood Ratio (LR)</strong>는 실제 곡선 위에서의 <strong>수직 높이 차</strong>를 직접 재는 반면,
+          <strong>Wald</strong>는 정점 \(\hat{\theta}\)의 곡률 \(\hat{\mathcal{I}}_n\)로 만든 포물선 근사 아래 <strong>수평 거리</strong>를,
+          <strong>LM (Score)</strong>은 귀무점 \(\theta_0\)에서의 <strong>접선 기울기</strong> \(S_n(\theta_0) = \ell_n'(\theta_0)\)의 크기를 잰다.
+        </p>
+
+        <div class="formula-tri">
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--amber);"></span>Wald · 수평 거리</div>
+            \[
+              W_n = \hat{\mathcal{I}}_n (\hat{\theta} - \theta_0)^2
+            \]
+            <p class="formula-box__desc">정점 \(\hat{\theta}\)만을 사용해 구한 포물선 근사. 비선형 재모수화에 민감하다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--indigo);"></span>LR · 수직 높이 차</div>
+            \[
+              \mathrm{LR}_n = 2\bigl[\ell_n(\hat{\theta}) - \ell_n(\theta_0)\bigr]
+            \]
+            <p class="formula-box__desc">실제 우도 낙차를 직접 측정한다. 1:1 재모수화에 완전히 불변이다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--cyan);"></span>LM (Score) · 접선 기울기</div>
+            \[
+              \mathrm{LM}_n = \frac{\bigl(\ell_n'(\theta_0)\bigr)^2}{\mathcal{I}_n(\theta_0)}
+            \]
+            <p class="formula-box__desc">귀무점 \(\theta_0\)의 기울기만으로 정점까지의 높이를 역추산한다.</p>
+          </div>
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 01 · The 1D Likelihood Trinity Explorer</span>
+            <span class="lab-sub">주황: 수평 Wald · 보라: 수직 LR · 하늘: 접선 기울기 LM</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="trinityCanvas" aria-label="Wald LR LM 기하학 비교 캔버스"></canvas>
+              <div class="canvas-hint" id="trinityHint">점선 곡선 = Wald가 가정한 θ̂ 기준 대칭 포물선 · 실선 = 실제 로그우도 ℓₙ(θ)</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>귀무가설 거리 \(\delta = \theta_0 - \hat{\theta}\)</span>
+                    <span class="control-val" id="trDeltaVal">0.35</span>
+                  </div>
+                  <input id="trDelta" type="range" min="-0.55" max="0.80" step="0.02" value="0.35" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>단위 정보량 (곡률) \(\mathcal{I}_1\)</span>
+                    <span class="control-val" id="trInfoVal">1.00</span>
+                  </div>
+                  <input id="trInfo" type="range" min="0.40" max="2.20" step="0.10" value="1.00" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>표본크기 \(n\) (곡률 확대)</span>
+                    <span class="control-val" id="trNVal">25</span>
+                  </div>
+                  <input id="trN" type="range" min="5" max="60" step="1" value="25" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" data-tr-mode="quad">정규 이차 (W=LR=LM)</button>
+                  <button type="button" class="btn-pill" data-tr-mode="skew">비대칭 지수족 (괴리)</button>
+                  <button type="button" class="btn-pill" data-tr-mode="reparam">재모수화 φ=e^(1.2θ)</button>
+                  <button type="button" class="btn-pill" id="trPlayBtn">▶ 자동 시연</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k" id="mTrWaldLabel">Wald (Wₙ)</div>
+                    <div class="metric-tile__v amber" id="mTrWald">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Likelihood Ratio (LRₙ)</div>
+                    <div class="metric-tile__v accent" id="mTrLR">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Score / LM (LMₙ)</div>
+                    <div class="metric-tile__v cyan" id="mTrLM">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">부등식 · p-value (LR)</div>
+                    <div class="metric-tile__v" id="mTrOrder">—</div>
+                  </div>
+                </div>
+                <div class="verdict-note" id="trVerdict">
+                  정규 이차 우도에서는 어느 지점에서도 곡률이 일정하므로 \(W = \mathrm{LR} = \mathrm{LM}\)이 정확히 성립한다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-mle-2d-projection">
+        <h2><span class="sec-tag">02</span><span>3D 우도 곡면, \(\mathcal{I}\)-사영과 라그랑주 직교성</span></h2>
+        <p>
+          모수가 2차원(\(\theta = (\theta_1, \theta_2)'\))일 때 제약가설 \(H_0: R(\theta) = r\)은 3D 로그우도 언덕을 가로지르는 수직 벽(단면)을 정의한다.
+          제약 추정량 \(\tilde{\theta}\)는 그 단면 능선의 정점이다. 명제 5.4가 보여주듯, \(\tilde{\theta}\)는 유클리드 수직 사영점이 아니라
+          <strong>Fisher 정보행렬 \(\mathcal{I}\) 내적 기준의 사영점</strong>이며, 반대로 그 지점의 Score 벡터 \(\nabla\ell_n(\tilde{\theta}) = \tilde{\lambda}\nabla R(\tilde{\theta})\)는 제약 접선과 <strong>유클리드 직교</strong>를 이룬다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">Proposition 5.4 · Fisher-Metric Projection &amp; Lagrange Orthogonality</div>
+          \[
+            \tilde{\theta} - \hat{\theta}
+            \;\approx\;
+            -\mathcal{I}^{-1} G' \bigl(G \mathcal{I}^{-1} G'\bigr)^{-1} \bigl(R(\hat{\theta}) - r\bigr),
+            \qquad
+            \nabla_\theta \ell_n(\tilde{\theta}) = \tilde{\lambda}\, \nabla_\theta R(\tilde{\theta})'
+            \;\perp\; \ker \nabla R(\tilde{\theta})
+          \]
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 02 · Rotatable 3D Log-Likelihood Surface &amp; 2D \(\mathcal{I}\)-Projection</span>
+            <span class="lab-sub">좌: 드래그 회전 3D 우도 언덕 &amp; 제약 단면 · 우하: 2D 등고선 위의 \(\mathcal{I}\)-사영 vs 유클리드 사영</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="mle3dCanvas" style="cursor:grab;" aria-label="3D 로그우도 곡면과 제약 단면 캔버스"></canvas>
+              <div class="canvas-hint" id="mle3dHint">마우스로 드래그해 회전 · 청록 정점: 비제약 MLE θ̂ · 주황 정점: 제약 MLE θ̃ · 세로 점선: ½LR</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>정보행렬 상관 \(\rho\) (\(\mathcal{I}_{12}\) 비등방성)</span>
+                    <span class="control-val" id="m2RhoVal">0.55</span>
+                  </div>
+                  <input id="m2Rho" type="range" min="-0.75" max="0.75" step="0.05" value="0.55" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span id="m2RLabel">선형 제약 수준 \(r = \theta_1 + \theta_2\)</span>
+                    <span class="control-val" id="m2RVal">0.25</span>
+                  </div>
+                  <input id="m2R" type="range" min="-0.50" max="1.25" step="0.05" value="0.25" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" data-m2-const="linear">선형 제약 θ₁+θ₂=r</button>
+                  <button type="button" class="btn-pill" data-m2-const="circle">비선형 제약 θ₁²+θ₂²=r²</button>
+                  <button type="button" class="btn-pill" id="m2PlayBtn">▶ 회전·사영 재생</button>
+                  <button type="button" class="btn-pill" id="mle3dResetCam">시점 초기화</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">제약 MLE θ̃</div>
+                    <div class="metric-tile__v amber" id="m2Tilde">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">라그랑주 승수 |λ̃|</div>
+                    <div class="metric-tile__v cyan" id="m2Lambda">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">2[ℓ(θ̂) - ℓ(θ̃)] (LR)</div>
+                    <div class="metric-tile__v accent" id="m2LR">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Wald (선형화 근사)</div>
+                    <div class="metric-tile__v" id="m2Wald">—</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>2D 등고선 단면: \(\mathcal{I}\)-사영(\(\tilde{\theta}\)) vs 유클리드 사영</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--muted);">초록 화살표: Score ∇ℓ(θ̃)</span>
+                </div>
+                <canvas id="mle2dCanvas" aria-label="2D 등고선 및 정보행렬 사영 캔버스"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-mle-sandwich">
+        <h2><span class="sec-tag">03</span><span>정보행렬 항등식(\(\mathcal{I}=\Omega\))과 모형 오지정</span></h2>
+        <p>
+          올바르게 특정된(Well-specified) 모형에서는 <strong>정보행렬 항등식</strong> \(\Omega = \mathbb{E}[s_i s_i'] = -\mathbb{E}[\nabla^2 \ell_i] = \mathcal{I}\)이 성립하여
+          통상적인 \(W, \mathrm{LR}, \mathrm{LM}\) 모두 \(\chi^2_1\) 분포로 수렴한다(명목 5% 검정 시 기각률 \(\approx 5\%\)).
+          반면 과분산·이분산·군집 오지정으로 \(\Omega = \kappa \mathcal{I}\;(\kappa \neq 1)\)가 되면 비강건(Naive) 통계량은 \(\kappa\cdot\chi^2_1\)으로 왜곡되며,
+          <strong>샌드위치 공분산 \(\hat{H}^{-1}\hat{\Omega}\hat{H}^{-1}\)</strong>을 결합한 강건 Wald 검정만 정확한 \(\chi^2_1\) 크기를 회복한다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title">항등식 성립 (\(\Omega = \mathcal{I}\))</div>
+            \[
+              \sqrt{n}(\hat{\theta}-\theta_0) \xrightarrow{d} \mathcal{N}(0,\mathcal{I}^{-1})
+              \implies W_{\text{naive}}, \mathrm{LR}, \mathrm{LM} \xrightarrow{d} \chi^2_1
+            \]
+            <p class="formula-box__desc">세 검정 모두 표본크기 증가에 따라 명목 유의수준 5%를 유지한다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title">오지정 (\(\Omega = \kappa\mathcal{I},\; \kappa\neq 1\))</div>
+            \[
+              W_{\text{naive}}, \mathrm{LR} \xrightarrow{d} \kappa\,\chi^2_1, \qquad
+              W_{\text{sandwich}} = \frac{n(\hat{\theta}-\theta_0)^2}{\hat{H}^{-1}\hat{\Omega}\hat{H}^{-1}} \xrightarrow{d} \chi^2_1
+            \]
+            <p class="formula-box__desc">\(\kappa &gt; 1\)이면 일반 LR·Wald가 허위 기각을 남발한다. 강건 Wald만 5%를 복원한다.</p>
+          </div>
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Interactive Lab 03 · Information Identity vs. Misspecification \(\chi^2_1\) Simulator</span>
+            <span class="lab-sub">300회 몬테카를로 반복 · 실선 곡선: 이론 \(\chi^2_1\) 밀도 · 세로 점선: 5% 임계값 3.841</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="mcChiCanvas" aria-label="오지정 하 검정통계량 표본분포 비교 캔버스"></canvas>
+              <div class="canvas-hint" id="mcChiHint">실선: 이론 χ²₁ · 보라 막대: 비강건 LR/Wald · 청록 테두리: 강건 Sandwich Wald</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>분산 비율 \(\kappa = \Omega / \mathcal{I}\) (1.00 = 정규 지정)</span>
+                    <span class="control-val" id="mcKappaVal">1.00</span>
+                  </div>
+                  <input id="mcKappa" type="range" min="0.40" max="2.60" step="0.10" value="1.00" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>표본크기 \(n\)</span>
+                    <span class="control-val" id="mcNVal">80</span>
+                  </div>
+                  <input id="mcN" type="range" min="20" max="250" step="10" value="80" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" id="btnSpecWell">정규 지정 (κ = 1.0)</button>
+                  <button type="button" class="btn-pill" id="btnSpecOver">과분산 오지정 (κ = 2.0)</button>
+                  <button type="button" class="btn-pill" id="btnMcResample">표본 다시 뽑기</button>
+                </div>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">비강건 Wald 기각률 (목표 5%)</div>
+                    <div class="metric-tile__v" id="mMcRejWald">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">비강건 LR 기각률 (목표 5%)</div>
+                    <div class="metric-tile__v" id="mMcRejLR">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">강건 Sandwich Wald 기각률</div>
+                    <div class="metric-tile__v ok" id="mMcRejRob">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">LR 통계량 평균 (이론값 1.00)</div>
+                    <div class="metric-tile__v" id="mMcMeanLR">—</div>
+                  </div>
+                </div>
+                <div class="verdict-note" id="mcVerdict">
+                  정보행렬 항등식(κ=1.00) 아래에서는 비강건 통계량과 샌드위치 통계량 모두 5% 수준을 안정적으로 유지한다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="econometrics-visual-gmm.html">← Visual 03 · GMM의 아이디어와 가중거리</a>
+        <a href="econometrics-ch05.html#ml-topic-14">Ch 05 본문 · 5.20 Wald, LR, LM 검정으로 이동 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">MLE 곡률, Wald·LR·LM 검정의 기하학적 해석, 정보행렬 항등식 및 샌드위치 분산에 관한 질문을 자유롭게 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button aria-label="맨 위로 이동" class="back-to-top" type="button">↑ TOP</button>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(mode) {
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        if (themeBtn) themeBtn.textContent = 'Light';
+      } else {
+        html.removeAttribute('data-theme');
+        if (themeBtn) themeBtn.textContent = 'Dark';
+      }
+      try { localStorage.setItem('coursework-monograph-theme', mode); } catch (_) {}
+      onThemeCallbacks.forEach(fn => fn());
+    }
+    syncTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = html.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    function getPalette() {
+      const dark = html.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.28)' : 'rgba(15,23,42,0.30)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        cyan: dark ? '#38bdf8' : '#0284c7',
+        teal: dark ? '#2dd4bf' : '#0d9488',
+        indigo: dark ? '#818cf8' : '#4f46e5',
+        amber: dark ? '#fbbf24' : '#d97706',
+        rose: dark ? '#fb7185' : '#e11d48'
+      };
+    }
+
+    function setupCanvas(canvas, minH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(240, Math.round(rect.width));
+      const h = Math.max(minH || 140, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    function erfc(x) {
+      const z = Math.abs(x);
+      const t = 1 / (1 + 0.5 * z);
+      const ans = t * Math.exp(-z * z - 1.26551223 +
+        t * (1.00002368 + t * (0.37409196 + t * (0.09678418 +
+        t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+        t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+      return x >= 0 ? ans : 2 - ans;
+    }
+    function pValChi1(stat) {
+      if (stat <= 0) return 1.0;
+      return Math.max(0, Math.min(1, erfc(Math.sqrt(stat / 2))));
+    }
+
+    /* ==================== LAB 01: 1D TRINITY ==================== */
+    (function initTrinityLab() {
+      const canvas = document.getElementById('trinityCanvas');
+      const deltaIn = document.getElementById('trDelta');
+      const infoIn = document.getElementById('trInfo');
+      const nIn = document.getElementById('trN');
+      const deltaVal = document.getElementById('trDeltaVal');
+      const infoVal = document.getElementById('trInfoVal');
+      const nVal = document.getElementById('trNVal');
+      const modeBtns = document.querySelectorAll('[data-tr-mode]');
+      const mWald = document.getElementById('mTrWald');
+      const mWaldLabel = document.getElementById('mTrWaldLabel');
+      const mLR = document.getElementById('mTrLR');
+      const mLM = document.getElementById('mTrLM');
+      const mOrder = document.getElementById('mTrOrder');
+      const verdictEl = document.getElementById('trVerdict');
+      const hintEl = document.getElementById('trinityHint');
+
+      let mode = 'quad';
+
+      function logLik(t, nEff) {
+        if (mode === 'skew') {
+          const mu = Math.max(0.18, 1 + t);
+          return nEff * (-Math.log(mu) - 1 / mu + 1);
+        }
+        return -0.5 * nEff * t * t;
+      }
+      function scoreFn(t, nEff) {
+        if (mode === 'skew') {
+          const mu = Math.max(0.18, 1 + t);
+          return nEff * (1 - mu) / (mu * mu);
+        }
+        return -nEff * t;
+      }
+      function infoAt(t, nEff) {
+        if (mode === 'skew') {
+          const mu = Math.max(0.18, 1 + t);
+          return nEff / (mu * mu);
+        }
+        return nEff;
+      }
+
+      function computeStats(delta, nEff) {
+        const l0 = logLik(delta, nEff);
+        const s0 = scoreFn(delta, nEff);
+        const i0 = infoAt(delta, nEff);
+        const iHat = infoAt(0, nEff);
+
+        let wald;
+        if (mode === 'reparam') {
+          const a = 1.2;
+          const dPhi = (1 - Math.exp(a * delta)) / a;
+          wald = iHat * dPhi * dPhi;
+        } else {
+          wald = iHat * delta * delta;
+        }
+        const lr = Math.max(0, -2 * l0);
+        const lm = (s0 * s0) / i0;
+        return { l0, s0, i0, iHat, wald, lr, lm };
+      }
+
+      function render() {
+        const pal = getPalette();
+        const delta = parseFloat(deltaIn.value);
+        const i1 = parseFloat(infoIn.value);
+        const n = parseInt(nIn.value, 10);
+        const nEff = n * i1;
+
+        deltaVal.textContent = (delta >= 0 ? '+' : '') + delta.toFixed(2);
+        infoVal.textContent = i1.toFixed(2);
+        nVal.textContent = String(n);
+
+        const st = computeStats(delta, nEff);
+        mWald.textContent = st.wald.toFixed(2);
+        mLR.textContent = st.lr.toFixed(2);
+        mLM.textContent = st.lm.toFixed(2);
+        mWaldLabel.textContent = mode === 'reparam' ? 'Wald in φ (W_φ)' : 'Wald (Wₙ)';
+
+        const pLR = pValChi1(st.lr);
+        let ordText;
+        if (Math.abs(delta) < 0.015) {
+          ordText = 'W = LR = LM = 0';
+        } else if (mode === 'quad') {
+          ordText = `W = LR = LM (p=${pLR.toFixed(3)})`;
+        } else if (mode === 'skew') {
+          ordText = delta < 0 ? `LM > LR > W (p=${pLR.toFixed(3)})` : `W > LR > LM (p=${pLR.toFixed(3)})`;
+        } else {
+          ordText = delta < 0 ? `W_φ < LR = LM (p=${pLR.toFixed(3)})` : `W_φ > LR = LM (p=${pLR.toFixed(3)})`;
+        }
+        mOrder.textContent = ordText;
+        mOrder.className = 'metric-tile__v ' + (pLR < 0.05 ? 'warn' : 'ok');
+
+        if (mode === 'quad') {
+          verdictEl.textContent = '정규 이차 우도에서는 곡률 Iₙ이 전 구간에서 일정하므로 수평(Wald)·수직(LR)·기울기(LM)가 정확히 일치한다.';
+          hintEl.textContent = '주황: Wald(수평거리) · 보라: LR(수직낙차) · 하늘: LM(θ₀ 접선 기울기)';
+        } else if (mode === 'skew') {
+          verdictEl.textContent = delta < 0
+            ? '지수족 우도의 가파른 왼쪽 영역(δ < 0): θ₀의 곡률과 기울기가 커져 LM > LR > W 순으로 갈라진다.'
+            : (delta > 0
+              ? '완만한 오른쪽 꼬리(δ > 0): 실제 우도 낙차는 완만하지만 정점 곡률 기반 Wald는 과대 계산되어 W > LR > LM이 된다.'
+              : '귀무가설이 θ̂와 일치(δ=0)하면 세 통계량 모두 0이다.');
+          hintEl.textContent = '점선: θ̂ 곡률 기반 Wald 포물선 · 실선: 실제 비대칭 로그우도 ℓₙ(θ)';
+        } else {
+          verdictEl.textContent = 'φ = exp(1.2θ)로 비선형 변환해도 수직 높이 차(LR)와 점수 검정(LM)은 불변이지만, 선형 근사에 의존하는 Wald(W_φ)만 크게 왜곡된다.';
+          hintEl.textContent = '주황 점선: φ-공간 선형화가 유도한 왜곡 Wald 포물선 · LR과 LM은 원래 값과 동일';
+        }
+
+        const { ctx, w, h } = setupCanvas(canvas, 390);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 56, padR = 26, padT = 34, padB = 46;
+        const xMin = -0.68, xMax = 0.92;
+        const yMaxVal = 1.4;
+        const cornerVal = Math.min(logLik(xMin, nEff), logLik(xMax, nEff), st.l0);
+        const yMinVal = Math.min(-7.5, Math.max(-28, cornerVal * 1.18 - 1.5));
+
+        const mapX = t => padL + ((t - xMin) / (xMax - xMin)) * (w - padL - padR);
+        const mapY = y => padT + ((yMaxVal - y) / (yMaxVal - yMinVal)) * (h - padT - padB);
+
+        // Subtle grid
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let gx = -0.6; gx <= 0.85; gx += 0.2) {
+          const px = mapX(gx);
+          ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, h - padB); ctx.stroke();
+        }
+        const yStep = Math.abs(yMinVal) > 16 ? 5 : 2;
+        for (let gy = 0; gy >= yMinVal; gy -= yStep) {
+          const py = mapY(gy);
+          ctx.beginPath(); ctx.moveTo(padL, py); ctx.lineTo(w - padR, py); ctx.stroke();
+        }
+
+        // Peak baseline y = 0
+        const yPeak = mapY(0);
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.3;
+        ctx.beginPath(); ctx.moveTo(padL, yPeak); ctx.lineTo(w - padR, yPeak); ctx.stroke();
+        // Vertical axis at theta = 0 (thetaHat)
+        const xHat = mapX(0);
+        ctx.beginPath(); ctx.moveTo(xHat, padT); ctx.lineTo(xHat, h - padB); ctx.stroke();
+
+        // Clip curves strictly inside plot area
+        ctx.save();
+        ctx.beginPath();
+        ctx.rect(padL, padT, w - padL - padR, h - padT - padB);
+        ctx.clip();
+
+        // Wald implied parabola (from -0.5 * W_eff)
+        ctx.save();
+        ctx.strokeStyle = pal.amber;
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath();
+        for (let k = 0; k <= 120; k++) {
+          const t = xMin + (k / 120) * (xMax - xMin);
+          let yw;
+          if (mode === 'reparam') {
+            const dPhi = (1 - Math.exp(1.2 * t)) / 1.2;
+            yw = -0.5 * st.iHat * dPhi * dPhi;
+          } else {
+            yw = -0.5 * st.iHat * t * t;
+          }
+          const px = mapX(t), py = mapY(yw);
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        // True log-likelihood curve
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 3.0;
+        ctx.beginPath();
+        for (let k = 0; k <= 140; k++) {
+          const t = xMin + (k / 140) * (xMax - xMin);
+          const y = logLik(t, nEff);
+          const px = mapX(t), py = mapY(y);
+          if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        const x0 = mapX(delta);
+        const y0 = mapY(st.l0);
+
+        if (Math.abs(delta) >= 0.015) {
+          // 1. Horizontal Wald bracket near top peak line (y = 0)
+          const waldDropY = mapY(-0.5 * st.wald);
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 2.4;
+          ctx.beginPath();
+          ctx.moveTo(xHat, yPeak - 14);
+          ctx.lineTo(x0, yPeak - 14);
+          ctx.moveTo(xHat, yPeak - 20); ctx.lineTo(xHat, yPeak - 8);
+          ctx.moveTo(x0, yPeak - 20); ctx.lineTo(x0, yPeak - 8);
+          ctx.stroke();
+
+          // Vertical guide at theta0 to Wald parabola
+          if (mode !== 'quad') {
+            ctx.save();
+            ctx.strokeStyle = pal.amber;
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([2, 3]);
+            ctx.beginPath();
+            ctx.moveTo(x0, yPeak - 8);
+            ctx.lineTo(x0, Math.min(h - padB, waldDropY));
+            ctx.stroke();
+            ctx.restore();
+            ctx.fillStyle = pal.amber;
+            ctx.beginPath(); ctx.arc(x0, Math.min(h - padB, waldDropY), 4.2, 0, Math.PI * 2); ctx.fill();
+          }
+
+          // 2. Vertical LR drop bar at theta0
+          ctx.strokeStyle = pal.indigo;
+          ctx.lineWidth = 3.0;
+          ctx.beginPath();
+          ctx.moveTo(x0, yPeak);
+          ctx.lineTo(x0, y0);
+          ctx.stroke();
+          // Arrowheads on LR segment
+          ctx.fillStyle = pal.indigo;
+          const dirLR = y0 > yPeak ? 1 : -1;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x0 - 4.5, y0 - 7 * dirLR);
+          ctx.lineTo(x0 + 4.5, y0 - 7 * dirLR);
+          ctx.closePath();
+          ctx.fill();
+
+          // 3. Tangent slope at theta0 (Score / LM)
+          const span = 0.24;
+          const tA = delta - span, tB = delta + span;
+          const yA = st.l0 + st.s0 * (tA - delta);
+          const yB = st.l0 + st.s0 * (tB - delta);
+          ctx.strokeStyle = pal.cyan;
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ctx.moveTo(mapX(tA), mapY(Math.max(yMinVal, Math.min(yMaxVal, yA))));
+          ctx.lineTo(mapX(tB), mapY(Math.max(yMinVal, Math.min(yMaxVal, yB))));
+          ctx.stroke();
+
+          // Null dot on curve
+          ctx.fillStyle = pal.cyan;
+          ctx.beginPath(); ctx.arc(x0, y0, 5.2, 0, Math.PI * 2); ctx.fill();
+
+          // Labels on canvas
+          ctx.font = '650 11.5px "JetBrains Mono", monospace';
+          ctx.fillStyle = pal.amber;
+          const midX = (xHat + x0) * 0.5;
+          ctx.fillText(`Wald: ${st.wald.toFixed(1)}`, midX - 30, yPeak - 22);
+
+          ctx.fillStyle = pal.indigo;
+          const lrLblX = delta >= 0 ? Math.min(w - padR - 86, x0 + 8) : Math.max(padL + 6, x0 - 92);
+          ctx.fillText(`½LR = ${(0.5 * st.lr).toFixed(2)}`, lrLblX, (yPeak + y0) * 0.5 + 4);
+
+          ctx.fillStyle = pal.cyan;
+          const scLblX = delta >= 0 ? Math.min(w - padR - 110, x0 + 8) : Math.max(padL + 6, x0 - 118);
+          ctx.fillText(`기울기 S(θ₀)=${st.s0.toFixed(1)}`, scLblX, Math.min(h - padB - 8, y0 + 16));
+        }
+
+        // Peak dot thetaHat
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(xHat, yPeak, 5.0, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '650 11.5px "JetBrains Mono", monospace';
+        ctx.fillText('θ̂ (MLE 정점)', xHat + 8, yPeak + 15);
+        if (Math.abs(delta) >= 0.015) {
+          ctx.fillStyle = pal.muted;
+          ctx.fillText('θ₀', x0 - 8, h - padB + 18);
+        }
+        ctx.fillText('0', xHat - 4, h - padB + 18);
+        ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂)', padL + 8, padT + 14);
+      }
+
+      const trPlayBtn = document.getElementById('trPlayBtn');
+      let trAnimId = null;
+      let trPhase = 0;
+
+      function stopTrinityAnim() {
+        if (trAnimId !== null) {
+          cancelAnimationFrame(trAnimId);
+          trAnimId = null;
+        }
+        trPlayBtn.textContent = '▶ 자동 시연';
+        trPlayBtn.classList.remove('is-primary');
+      }
+
+      trPlayBtn.addEventListener('click', () => {
+        if (trAnimId !== null) {
+          stopTrinityAnim();
+          return;
+        }
+        trPlayBtn.textContent = '⏸ 일시정지';
+        trPlayBtn.classList.add('is-primary');
+        let lastT = performance.now();
+        function tick(now) {
+          const dt = Math.min(0.05, (now - lastT) / 1000);
+          lastT = now;
+          trPhase += dt * 1.15;
+          const d = 0.12 + 0.64 * Math.sin(trPhase);
+          deltaIn.value = Math.max(-0.54, Math.min(0.78, d)).toFixed(2);
+          render();
+          trAnimId = requestAnimationFrame(tick);
+        }
+        trAnimId = requestAnimationFrame(tick);
+      });
+
+      modeBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          mode = btn.getAttribute('data-tr-mode');
+          modeBtns.forEach(b => b.classList.toggle('is-primary', b === btn));
+          render();
+        });
+      });
+      [deltaIn, infoIn, nIn].forEach(el => el.addEventListener('input', () => {
+        if (el === deltaIn) stopTrinityAnim();
+        render();
+      }));
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+
+    /* ==================== LAB 02: 3D SURFACE + 2D I-PROJECTION ==================== */
+    (function init2D3DLab() {
+      const c3d = document.getElementById('mle3dCanvas');
+      const c2d = document.getElementById('mle2dCanvas');
+      const rhoIn = document.getElementById('m2Rho');
+      const rIn = document.getElementById('m2R');
+      const rhoVal = document.getElementById('m2RhoVal');
+      const rVal = document.getElementById('m2RVal');
+      const rLabel = document.getElementById('m2RLabel');
+      const constBtns = document.querySelectorAll('[data-m2-const]');
+      const resetCamBtn = document.getElementById('mle3dResetCam');
+      const mTilde = document.getElementById('m2Tilde');
+      const mLambda = document.getElementById('m2Lambda');
+      const mLR = document.getElementById('m2LR');
+      const mWald = document.getElementById('m2Wald');
+
+      let constType = 'linear';
+      const camDefault = { yaw: -0.72, pitch: 0.46 };
+      const cam = { yaw: camDefault.yaw, pitch: camDefault.pitch };
+
+      const thetaHat = [0.68, 0.54]; // unrestricted peak inside [-1.3, 1.3]^2
+      const i11 = 2.0, i22 = 1.05;
+
+      function getInfoMat(rho) {
+        const i12 = rho * Math.sqrt(i11 * i22);
+        const det = i11 * i22 - i12 * i12;
+        return {
+          i11, i22, i12, det,
+          inv11: i22 / det,
+          inv22: i11 / det,
+          inv12: -i12 / det
+        };
+      }
+
+      function ll(t1, t2, info) {
+        const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
+        return 1.35 - 0.5 * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2) * 0.42;
+      }
+      // Note: pure statistical Fisher log-likelihood drop scaled by 1/0.42 vs true n=6:
+      function statDrop(t1, t2, info) {
+        const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
+        return 4.5 * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2); // 2 * [l(hat) - l(t)]
+      }
+
+      function solveConstrained(rho, rValNum) {
+        const info = getInfoMat(rho);
+        const h1 = thetaHat[0], h2 = thetaHat[1];
+        if (constType === 'linear') {
+          // R(t) = t1 + t2 = rValNum, G = [1, 1]
+          const gap = (h1 + h2) - rValNum;
+          const gIinvG = info.inv11 + 2 * info.inv12 + info.inv22;
+          const step1 = info.inv11 + info.inv12;
+          const step2 = info.inv12 + info.inv22;
+          const tilde = [h1 - (step1 / gIinvG) * gap, h2 - (step2 / gIinvG) * gap];
+          const euc = [h1 - 0.5 * gap, h2 - 0.5 * gap];
+          // Score at tilde: s = -4.5 * I * (tilde - hat) = lambda * [1, 1]
+          const s1 = -4.5 * (info.i11 * (tilde[0] - h1) + info.i12 * (tilde[1] - h2));
+          const s2 = -4.5 * (info.i12 * (tilde[0] - h1) + info.i22 * (tilde[1] - h2));
+          const lr = statDrop(tilde[0], tilde[1], info);
+          const wald = 4.5 * (gap * gap) / gIinvG;
+          return { tilde, euc, score: [s1, s2], lambda: s1, lr, wald, info };
+        } else {
+          // Nonlinear constraint: t1^2 + t2^2 = R_rad^2, map slider rValNum in [-0.5, 1.25] -> rad in [0.22, 1.15]
+          const rad = Math.max(0.22, Math.min(1.15, 0.55 + 0.35 * rValNum));
+          let bestAng = 0, bestDrop = Infinity;
+          for (let k = 0; k < 720; k++) {
+            const ang = (k / 720) * Math.PI * 2;
+            const d = statDrop(rad * Math.cos(ang), rad * Math.sin(ang), info);
+            if (d < bestDrop) { bestDrop = d; bestAng = ang; }
+          }
+          // Refine locally around bestAng
+          for (let step = 0.004; step >= 0.0001; step *= 0.25) {
+            for (let s = -4; s <= 4; s++) {
+              const cand = bestAng + s * step;
+              const d = statDrop(rad * Math.cos(cand), rad * Math.sin(cand), info);
+              if (d < bestDrop) { bestDrop = d; bestAng = cand; }
+            }
+          }
+          const tilde = [rad * Math.cos(bestAng), rad * Math.sin(bestAng)];
+          const normHat = Math.hypot(h1, h2);
+          const euc = [h1 * (rad / normHat), h2 * (rad / normHat)];
+          const s1 = -4.5 * (info.i11 * (tilde[0] - h1) + info.i12 * (tilde[1] - h2));
+          const s2 = -4.5 * (info.i12 * (tilde[0] - h1) + info.i22 * (tilde[1] - h2));
+          // Linearized Wald for R(t) = t1^2 + t2^2 - rad^2 around thetaHat:
+          const rHatGap = (h1 * h1 + h2 * h2) - rad * rad;
+          const g1 = 2 * h1, g2 = 2 * h2;
+          const gIinvG = g1 * g1 * info.inv11 + 2 * g1 * g2 * info.inv12 + g2 * g2 * info.inv22;
+          const wald = 4.5 * (rHatGap * rHatGap) / Math.max(1e-6, gIinvG);
+          const lam = Math.hypot(s1, s2) / (2 * rad);
+          return { tilde, euc, score: [s1, s2], lambda: lam, lr: bestDrop, wald, rad, info };
+        }
+      }
+
+      const rBound = 1.35;
+      const nGrid = 14;
+      const coords = [];
+      for (let i = 0; i <= nGrid; i++) coords.push(-rBound + (i / nGrid) * (2 * rBound));
+
+      function project3D(p, w, h) {
+        const x = p[0], y = p[1], z = p[2] - 0.62;
+        const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
+        const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
+        const xr = x * cy - y * sy;
+        const yr = x * sy + y * cy;
+        const depth = yr * sp + z * cp;
+        const syScreen = z * cp - yr * sp;
+        const persp = 7.4 / Math.max(2.2, 7.4 - depth);
+        const scale = Math.min(w, h) * 0.27 * persp;
+        return { x: w * 0.50 + xr * scale, y: h * 0.56 - syScreen * scale, depth };
+      }
+
+      let drag = null;
+      c3d.addEventListener('pointerdown', e => {
+        drag = { x: e.clientX, y: e.clientY };
+        c3d.style.cursor = 'grabbing';
+        c3d.setPointerCapture(e.pointerId);
+      });
+      c3d.addEventListener('pointermove', e => {
+        if (!drag) return;
+        const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        drag = { x: e.clientX, y: e.clientY };
+        cam.yaw -= dx * 0.0085;
+        cam.pitch = Math.max(0.08, Math.min(1.42, cam.pitch + dy * 0.0075));
+        render();
+      });
+      c3d.addEventListener('pointerup', e => {
+        drag = null;
+        c3d.style.cursor = 'grab';
+        try { c3d.releasePointerCapture(e.pointerId); } catch (_) {}
+      });
+
+      function render3D(st, rNum, pal) {
+        const { ctx, w, h } = setupCanvas(c3d, 390);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const fl = [
+          project3D([-rBound, -rBound, 0], w, h),
+          project3D([rBound, -rBound, 0], w, h),
+          project3D([rBound, rBound, 0], w, h),
+          project3D([-rBound, rBound, 0], w, h)
+        ];
+        ctx.fillStyle = pal.dark ? 'rgba(17,24,39,0.70)' : 'rgba(226,232,240,0.58)';
+        ctx.beginPath();
+        ctx.moveTo(fl[0].x, fl[0].y);
+        fl.slice(1).forEach(pt => ctx.lineTo(pt.x, pt.y));
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.2;
+        ctx.stroke();
+
+        // Floor grid
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -1.0; g <= 1.05; g += 0.5) {
+          const a = project3D([-rBound, g, 0], w, h), b = project3D([rBound, g, 0], w, h);
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+          const c = project3D([g, -rBound, 0], w, h), d = project3D([g, rBound, 0], w, h);
+          ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
+        }
+
+        // Surface quads painter-sorted
+        const quads = [];
+        for (let i = 0; i < nGrid; i++) {
+          for (let j = 0; j < nGrid; j++) {
+            const x0 = coords[i], x1 = coords[i + 1], y0 = coords[j], y1 = coords[j + 1];
+            const za = Math.max(0.02, ll(x0, y0, st.info));
+            const zb = Math.max(0.02, ll(x1, y0, st.info));
+            const zc = Math.max(0.02, ll(x1, y1, st.info));
+            const zd = Math.max(0.02, ll(x0, y1, st.info));
+            const pa = project3D([x0, y0, za], w, h);
+            const pb = project3D([x1, y0, zb], w, h);
+            const pc = project3D([x1, y1, zc], w, h);
+            const pd = project3D([x0, y1, zd], w, h);
+            quads.push({
+              pts: [pa, pb, pc, pd],
+              depth: (pa.depth + pb.depth + pc.depth + pd.depth) * 0.25,
+              zAvg: (za + zb + zc + zd) * 0.25
+            });
+          }
+        }
+        quads.sort((a, b) => a.depth - b.depth);
+        for (const q of quads) {
+          const t = Math.max(0, Math.min(1, q.zAvg / 1.35));
+          ctx.fillStyle = pal.dark
+            ? `rgba(${Math.round(45 + 75 * t)}, ${Math.round(62 + 82 * t)}, ${Math.round(145 + 100 * t)}, 0.44)`
+            : `rgba(${Math.round(165 - 65 * t)}, ${Math.round(175 - 70 * t)}, ${Math.round(245 - 20 * t)}, 0.42)`;
+          ctx.strokeStyle = pal.dark ? 'rgba(129,140,248,0.22)' : 'rgba(79,70,229,0.22)';
+          ctx.lineWidth = 0.7;
+          ctx.beginPath();
+          ctx.moveTo(q.pts[0].x, q.pts[0].y);
+          ctx.lineTo(q.pts[1].x, q.pts[1].y);
+          ctx.lineTo(q.pts[2].x, q.pts[2].y);
+          ctx.lineTo(q.pts[3].x, q.pts[3].y);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
+
+        // Draw constraint ridge curve on surface + wall ribbon
+        const ridgePts = [];
+        if (constType === 'linear') {
+          const tMin = Math.max(-rBound, rNum - rBound);
+          const tMax = Math.min(rBound, rNum + rBound);
+          for (let k = 0; k <= 40; k++) {
+            const t1 = tMin + (k / 40) * (tMax - tMin);
+            const t2 = rNum - t1;
+            const z = Math.max(0.02, ll(t1, t2, st.info));
+            ridgePts.push({ pFloor: project3D([t1, t2, 0], w, h), pTop: project3D([t1, t2, z], w, h) });
+          }
+        } else {
+          for (let k = 0; k <= 60; k++) {
+            const ang = (k / 60) * Math.PI * 2;
+            const t1 = st.rad * Math.cos(ang), t2 = st.rad * Math.sin(ang);
+            const z = Math.max(0.02, ll(t1, t2, st.info));
+            ridgePts.push({ pFloor: project3D([t1, t2, 0], w, h), pTop: project3D([t1, t2, z], w, h) });
+          }
+        }
+        if (ridgePts.length > 1) {
+          // Translucent constraint wall
+          ctx.fillStyle = pal.dark ? 'rgba(251, 191, 36, 0.14)' : 'rgba(217, 119, 6, 0.13)';
+          ctx.beginPath();
+          ctx.moveTo(ridgePts[0].pFloor.x, ridgePts[0].pFloor.y);
+          ridgePts.forEach(r => ctx.lineTo(r.pTop.x, r.pTop.y));
+          for (let k = ridgePts.length - 1; k >= 0; k--) ctx.lineTo(ridgePts[k].pFloor.x, ridgePts[k].pFloor.y);
+          ctx.closePath();
+          ctx.fill();
+
+          // Ridge curve
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 2.6;
+          ctx.beginPath();
+          ridgePts.forEach((r, idx) => idx === 0 ? ctx.moveTo(r.pTop.x, r.pTop.y) : ctx.lineTo(r.pTop.x, r.pTop.y));
+          ctx.stroke();
+
+          // Floor trace of constraint
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ridgePts.forEach((r, idx) => idx === 0 ? ctx.moveTo(r.pFloor.x, r.pFloor.y) : ctx.lineTo(r.pFloor.x, r.pFloor.y));
+          ctx.stroke();
+        }
+
+        // Summit thetaHat and constrained peak tilde
+        const zHat = ll(thetaHat[0], thetaHat[1], st.info);
+        const zTilde = Math.max(0.02, ll(st.tilde[0], st.tilde[1], st.info));
+        const pHatTop = project3D([thetaHat[0], thetaHat[1], zHat], w, h);
+        const pHatFloor = project3D([thetaHat[0], thetaHat[1], 0], w, h);
+        const pTilTop = project3D([st.tilde[0], st.tilde[1], zTilde], w, h);
+        const pTilFloor = project3D([st.tilde[0], st.tilde[1], 0], w, h);
+        const pTilAtHatLevel = project3D([st.tilde[0], st.tilde[1], zHat], w, h);
+
+        // Drop sticks
+        ctx.save();
+        ctx.setLineDash([3, 3]);
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(pHatFloor.x, pHatFloor.y); ctx.lineTo(pHatTop.x, pHatTop.y); ctx.stroke();
+        ctx.strokeStyle = pal.amber;
+        ctx.beginPath(); ctx.moveTo(pTilFloor.x, pTilFloor.y); ctx.lineTo(pTilTop.x, pTilTop.y); ctx.stroke();
+        // Horizontal reference from thetaHat peak height over tilde to visualize vertical LR drop!
+        ctx.strokeStyle = pal.indigo;
+        ctx.beginPath(); ctx.moveTo(pHatTop.x, pHatTop.y); ctx.lineTo(pTilAtHatLevel.x, pTilAtHatLevel.y); ctx.stroke();
+        ctx.restore();
+
+        // LR vertical drop arrow above tilde
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath(); ctx.moveTo(pTilAtHatLevel.x, pTilAtHatLevel.y); ctx.lineTo(pTilTop.x, pTilTop.y); ctx.stroke();
+
+        // Markers
+        function dot3(pt, col, lbl, dx, dy) {
+          ctx.fillStyle = col;
+          ctx.beginPath(); ctx.arc(pt.x, pt.y, 5.2, 0, Math.PI * 2); ctx.fill();
+          ctx.font = '650 11.5px "JetBrains Mono", monospace';
+          ctx.fillText(lbl, pt.x + dx, pt.y + dy);
+        }
+        dot3(pHatTop, pal.teal, 'θ̂ (정점)', 8, -4);
+        dot3(pTilTop, pal.amber, 'θ̃ (제약정점)', 8, 4);
+      }
+
+      function render2D(st, rNum, pal) {
+        const { ctx, w, h } = setupCanvas(c2d, 158);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const pad = 16;
+        const span = 1.32;
+        const sc = Math.min((w - 2 * pad) / (2 * span), (h - 2 * pad) / (2 * span));
+        const cx = w * 0.50, cy = h * 0.52;
+        const mapX = x => cx + x * sc;
+        const mapY = y => cy - y * sc;
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(mapX(-span), mapY(0)); ctx.lineTo(mapX(span), mapY(0));
+        ctx.moveTo(mapX(0), mapY(-span)); ctx.lineTo(mapX(0), mapY(span));
+        ctx.stroke();
+
+        // Draw elliptical log-likelihood contours centered at thetaHat passing through k * contourLevel
+        const targetDrop = Math.max(0.25, st.lr);
+        const levels = [targetDrop * 0.35, targetDrop, targetDrop * 2.0];
+        levels.forEach((lvl, idx) => {
+          ctx.save();
+          ctx.strokeStyle = idx === 1 ? pal.indigo : pal.indigo;
+          ctx.globalAlpha = idx === 1 ? 0.90 : 0.28;
+          ctx.lineWidth = idx === 1 ? 2.1 : 1.1;
+          // Parametrize ellipse (d1, d2) such that 4.5 * d' I d = lvl
+          // Diagonalize or trace via angle u -> radius along unit vector u
+          ctx.beginPath();
+          for (let a = 0; a <= 72; a++) {
+            const ang = (a / 72) * Math.PI * 2;
+            const u1 = Math.cos(ang), u2 = Math.sin(ang);
+            const qForm = 4.5 * (st.info.i11 * u1 * u1 + 2 * st.info.i12 * u1 * u2 + st.info.i22 * u2 * u2);
+            const rad = Math.sqrt(lvl / qForm);
+            const px = mapX(thetaHat[0] + rad * u1), py = mapY(thetaHat[1] + rad * u2);
+            if (a === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        // Constraint locus
+        ctx.strokeStyle = pal.amber;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        if (constType === 'linear') {
+          ctx.moveTo(mapX(-span), mapY(rNum + span));
+          ctx.lineTo(mapX(span), mapY(rNum - span));
+        } else {
+          ctx.arc(mapX(0), mapY(0), st.rad * sc, 0, Math.PI * 2);
+        }
+        ctx.stroke();
+
+        // Naive Euclidean projection line (dashed gray)
+        ctx.save();
+        ctx.strokeStyle = pal.muted;
+        ctx.lineWidth = 1.4;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(mapX(thetaHat[0]), mapY(thetaHat[1]));
+        ctx.lineTo(mapX(st.euc[0]), mapY(st.euc[1]));
+        ctx.stroke();
+        ctx.restore();
+
+        // I-projection line (teal)
+        ctx.strokeStyle = pal.teal;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        ctx.moveTo(mapX(thetaHat[0]), mapY(thetaHat[1]));
+        ctx.lineTo(mapX(st.tilde[0]), mapY(st.tilde[1]));
+        ctx.stroke();
+
+        // Score vector at tilde (normalized display length pointing normal to constraint)
+        const sNorm = Math.hypot(st.score[0], st.score[1]);
+        if (sNorm > 0.05) {
+          const dispLen = 0.42;
+          const sx = (st.score[0] / sNorm) * dispLen;
+          const sy = (st.score[1] / sNorm) * dispLen;
+          const p0x = mapX(st.tilde[0]), p0y = mapY(st.tilde[1]);
+          const p1x = mapX(st.tilde[0] + sx), p1y = mapY(st.tilde[1] + sy);
+          ctx.strokeStyle = pal.cyan;
+          ctx.lineWidth = 2.2;
+          ctx.beginPath(); ctx.moveTo(p0x, p0y); ctx.lineTo(p1x, p1y); ctx.stroke();
+          const ang = Math.atan2(p1y - p0y, p1x - p0x);
+          ctx.fillStyle = pal.cyan;
+          ctx.beginPath();
+          ctx.moveTo(p1x, p1y);
+          ctx.lineTo(p1x - 7 * Math.cos(ang - 0.42), p1y - 7 * Math.sin(ang - 0.42));
+          ctx.lineTo(p1x - 7 * Math.cos(ang + 0.42), p1y - 7 * Math.sin(ang + 0.42));
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Points
+        ctx.fillStyle = pal.muted;
+        ctx.beginPath(); ctx.arc(mapX(st.euc[0]), mapY(st.euc[1]), 3.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(mapX(thetaHat[0]), mapY(thetaHat[1]), 4.4, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.amber;
+        ctx.beginPath(); ctx.arc(mapX(st.tilde[0]), mapY(st.tilde[1]), 4.8, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = '600 10.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.teal; ctx.fillText('θ̂', mapX(thetaHat[0]) + 6, mapY(thetaHat[1]) - 4);
+        ctx.fillStyle = pal.amber; ctx.fillText('θ̃', mapX(st.tilde[0]) + 6, mapY(st.tilde[1]) + 11);
+      }
+
+      function render() {
+        const pal = getPalette();
+        const rho = parseFloat(rhoIn.value);
+        const rNum = parseFloat(rIn.value);
+        const st = solveConstrained(rho, rNum);
+
+        rhoVal.textContent = rho.toFixed(2);
+        rVal.textContent = constType === 'linear' ? rNum.toFixed(2) : `r=${st.rad.toFixed(2)}`;
+        rLabel.textContent = constType === 'linear' ? '선형 제약 수준 r = θ₁ + θ₂' : '원형 제약 반지름 r = √(θ₁² + θ₂²)';
+
+        mTilde.textContent = `(${st.tilde[0].toFixed(2)}, ${st.tilde[1].toFixed(2)})`;
+        mLambda.textContent = Math.abs(st.lambda).toFixed(2);
+        mLR.textContent = st.lr.toFixed(2);
+        mWald.textContent = st.wald.toFixed(2);
+        mWald.className = 'metric-tile__v ' + (Math.abs(st.wald - st.lr) > 0.25 ? 'warn' : 'ok');
+
+        render3D(st, rNum, pal);
+        render2D(st, rNum, pal);
+      }
+
+      const m2PlayBtn = document.getElementById('m2PlayBtn');
+      let m2AnimId = null;
+      let m2Phase = 0;
+
+      function stopM2Anim() {
+        if (m2AnimId !== null) {
+          cancelAnimationFrame(m2AnimId);
+          m2AnimId = null;
+        }
+        m2PlayBtn.textContent = '▶ 회전·사영 재생';
+        m2PlayBtn.classList.remove('is-primary');
+      }
+
+      m2PlayBtn.addEventListener('click', () => {
+        if (m2AnimId !== null) {
+          stopM2Anim();
+          return;
+        }
+        m2PlayBtn.textContent = '⏸ 일시정지';
+        m2PlayBtn.classList.add('is-primary');
+        let lastT = performance.now();
+        function tick(now) {
+          const dt = Math.min(0.05, (now - lastT) / 1000);
+          lastT = now;
+          m2Phase += dt * 0.9;
+          cam.yaw += dt * 0.42;
+          rhoIn.value = (0.70 * Math.sin(m2Phase)).toFixed(2);
+          render();
+          m2AnimId = requestAnimationFrame(tick);
+        }
+        m2AnimId = requestAnimationFrame(tick);
+      });
+
+      constBtns.forEach(b => {
+        b.addEventListener('click', () => {
+          constType = b.getAttribute('data-m2-const');
+          constBtns.forEach(x => x.classList.toggle('is-primary', x === b));
+          render();
+        });
+      });
+      resetCamBtn.addEventListener('click', () => { stopM2Anim(); cam.yaw = camDefault.yaw; cam.pitch = camDefault.pitch; render(); });
+      [rhoIn, rIn].forEach(el => el.addEventListener('input', () => {
+        if (el === rhoIn) stopM2Anim();
+        render();
+      }));
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+
+    /* ==================== LAB 03: MISSPECIFICATION CHI-SQUARE SIMULATOR ==================== */
+    (function initSandwichSim() {
+      const canvas = document.getElementById('mcChiCanvas');
+      const kappaIn = document.getElementById('mcKappa');
+      const nIn = document.getElementById('mcN');
+      const kappaVal = document.getElementById('mcKappaVal');
+      const nVal = document.getElementById('mcNVal');
+      const btnWell = document.getElementById('btnSpecWell');
+      const btnOver = document.getElementById('btnSpecOver');
+      const btnResamp = document.getElementById('btnMcResample');
+      const mRejW = document.getElementById('mMcRejWald');
+      const mRejLR = document.getElementById('mMcRejLR');
+      const mRejRob = document.getElementById('mMcRejRob');
+      const mMeanLR = document.getElementById('mMcMeanLR');
+      const verdictEl = document.getElementById('mcVerdict');
+
+      let seed = 202611;
+
+      function randnFactory(s) {
+        let state = s | 0;
+        return function randn() {
+          function u01() {
+            state = (state + 0x6D2B79F5) | 0;
+            let t = Math.imul(state ^ (state >>> 15), 1 | state);
+            t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+            return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+          }
+          return Math.sqrt(-2 * Math.log(Math.max(1e-9, u01()))) * Math.cos(2 * Math.PI * u01());
+        };
+      }
+
+      function render() {
+        const pal = getPalette();
+        const kappa = parseFloat(kappaIn.value);
+        const n = parseInt(nIn.value, 10);
+        kappaVal.textContent = kappa.toFixed(2);
+        nVal.textContent = String(n);
+
+        btnWell.classList.toggle('is-primary', Math.abs(kappa - 1.0) < 0.05);
+        btnOver.classList.toggle('is-primary', Math.abs(kappa - 2.0) < 0.05);
+
+        // Monte Carlo: True DGP for misspecified Normal model with unit variance, score variance = kappa
+        // Sample average yBar has variance kappa / n; naive Hessian assumes unit variance => I_naive = n
+        const R = 320;
+        const rnd = randnFactory(seed);
+        const lrStats = new Array(R);
+        const robStats = new Array(R);
+        let rejW = 0, rejLR = 0, rejRob = 0, sumLR = 0;
+        const crit = 3.841;
+
+        for (let r = 0; r < R; r++) {
+          // Simulate thetaHat - theta0 ~ N(0, kappa / n) and sample variance estimate S2 ~ kappa * chi2(n-1)/(n-1)
+          const z = rnd();
+          const dHat = z * Math.sqrt(kappa / n);
+          // Approximate sample score variance ratio (chi2(n-1)/(n-1) using Wilson-Hilferty)
+          const z2 = rnd();
+          const df = Math.max(4, n - 1);
+          const wh = Math.pow(Math.max(0.2, 1 - 2 / (9 * df) + z2 * Math.sqrt(2 / (9 * df))), 3);
+          const omegaHat = kappa * wh;
+
+          // Finite-sample mild skewness / non-quadratic curvature effect via studentized t-like denominator
+          const wald = n * dHat * dHat;
+          const lr = n * Math.log(1 + dHat * dHat); // genuine nonlinear LR transformation (e.g. Gaussian scale or log-lik difference)
+          const rob = (n * dHat * dHat) / Math.max(0.15, omegaHat);
+
+          lrStats[r] = lr;
+          robStats[r] = rob;
+          sumLR += lr;
+          if (wald > crit) rejW++;
+          if (lr > crit) rejLR++;
+          if (rob > crit) rejRob++;
+        }
+
+        const pctW = (rejW / R) * 100;
+        const pctLR = (rejLR / R) * 100;
+        const pctRob = (rejRob / R) * 100;
+        const meanLR = sumLR / R;
+
+        mRejW.textContent = pctW.toFixed(1) + '%';
+        mRejLR.textContent = pctLR.toFixed(1) + '%';
+        mRejRob.textContent = pctRob.toFixed(1) + '%';
+        mMeanLR.textContent = meanLR.toFixed(2);
+
+        mRejW.className = 'metric-tile__v ' + (Math.abs(pctW - 5) > 4.5 ? 'warn' : 'ok');
+        mRejLR.className = 'metric-tile__v ' + (Math.abs(pctLR - 5) > 4.5 ? 'warn' : 'ok');
+        mMeanLR.className = 'metric-tile__v ' + (Math.abs(meanLR - 1) > 0.35 ? 'warn' : '');
+
+        if (Math.abs(kappa - 1.0) <= 0.12) {
+          verdictEl.textContent = '정보행렬 항등식(Ω = I) 성립: 비강건 Wald·LR과 강건 샌드위치 Wald 모두 이론 χ²₁ 분포(기각률 ≈ 5%)를 잘 따른다.';
+        } else if (kappa > 1.12) {
+          verdictEl.textContent = `과분산 오지정(κ=${kappa.toFixed(1)}): 비강건 LR/Wald가 κ·χ²₁로 퍼져 허위 기각률이 ${pctLR.toFixed(1)}%까지 급증한다. 샌드위치 Wald만 ≈5%를 유지한다.`;
+        } else {
+          verdictEl.textContent = `과소분산 오지정(κ=${kappa.toFixed(1)}): 비강건 LR/Wald가 지나치게 보수적(${pctLR.toFixed(1)}% 기각)으로 붕괴한다.`;
+        }
+
+        // Draw Histogram + Chi2(1) density
+        const { ctx, w, h } = setupCanvas(canvas, 390);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 50, padR = 24, padT = 32, padB = 44;
+        const xMax = 11.0;
+        const bins = 22;
+        const bw = xMax / bins;
+        const countsLR = new Array(bins).fill(0);
+        const countsRob = new Array(bins).fill(0);
+        for (let r = 0; r < R; r++) {
+          const b1 = Math.min(bins - 1, Math.floor(lrStats[r] / bw));
+          const b2 = Math.min(bins - 1, Math.floor(robStats[r] / bw));
+          countsLR[b1]++;
+          countsRob[b2]++;
+        }
+        const densLR = countsLR.map(c => c / (R * bw));
+        const densRob = countsRob.map(c => c / (R * bw));
+        const maxDens = Math.max(0.88, ...densLR, ...densRob) * 1.08;
+
+        const mapX = x => padL + (x / xMax) * (w - padL - padR);
+        const mapY = d => padT + (1 - d / maxDens) * (h - padT - padB);
+
+        // Grid & axes
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx <= xMax; gx += 2) {
+          const px = mapX(gx);
+          ctx.beginPath(); ctx.moveTo(px, padT); ctx.lineTo(px, h - padB); ctx.stroke();
+        }
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(padL, mapY(0)); ctx.lineTo(w - padR, mapY(0));
+        ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
+        ctx.stroke();
+
+        // Draw Naive LR bars (filled indigo) & Robust Wald outline (teal step/bars)
+        const baseY = mapY(0);
+        for (let i = 0; i < bins; i++) {
+          const x0 = mapX(i * bw), x1 = mapX((i + 1) * bw);
+          const bW = Math.max(2, x1 - x0 - 2);
+          const y1 = mapY(densLR[i]);
+          ctx.fillStyle = (i * bw >= crit)
+            ? (pal.dark ? 'rgba(251,113,133,0.42)' : 'rgba(225,29,72,0.34)')
+            : (pal.dark ? 'rgba(129,140,248,0.32)' : 'rgba(79,70,229,0.28)');
+          ctx.fillRect(x0 + 1, y1, bW, baseY - y1);
+
+          const yRob = mapY(densRob[i]);
+          ctx.strokeStyle = pal.teal;
+          ctx.lineWidth = 1.8;
+          ctx.strokeRect(x0 + 2, yRob, Math.max(1, bW - 2), baseY - yRob);
+        }
+
+        // Theoretical chi2(1) PDF: 1 / sqrt(2*pi*x) * exp(-x/2)
+        ctx.strokeStyle = pal.ink;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        for (let k = 1; k <= 160; k++) {
+          const x = 0.08 + (k / 160) * (xMax - 0.08);
+          const pdf = (1 / Math.sqrt(2 * Math.PI * x)) * Math.exp(-0.5 * x);
+          const px = mapX(x), py = mapY(Math.min(maxDens, pdf));
+          if (k === 1) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.stroke();
+
+        // Critical value vertical dashed line x = 3.841
+        const pxCrit = mapX(crit);
+        ctx.save();
+        ctx.strokeStyle = pal.rose;
+        ctx.lineWidth = 1.8;
+        ctx.setLineDash([5, 4]);
+        ctx.beginPath(); ctx.moveTo(pxCrit, padT); ctx.lineTo(pxCrit, baseY); ctx.stroke();
+        ctx.restore();
+
+        ctx.font = '650 11.5px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.rose;
+        ctx.fillText('5% 임계값 = 3.841', pxCrit + 6, padT + 16);
+        ctx.fillStyle = pal.ink;
+        ctx.fillText('이론 χ²₁ 밀도', w - padR - 110, padT + 16);
+        ctx.fillStyle = pal.teal;
+        ctx.fillText('□ 강건 Sandwich Wald', w - padR - 150, padT + 34);
+        ctx.fillStyle = pal.indigo;
+        ctx.fillText('■ 비강건 LR / Wald', w - padR - 150, padT + 50);
+
+        ctx.fillStyle = pal.muted;
+        for (let gx = 0; gx <= 10; gx += 2) {
+          ctx.fillText(String(gx), mapX(gx) - 4, h - padB + 18);
+        }
+      }
+
+      kappaIn.addEventListener('input', render);
+      nIn.addEventListener('input', render);
+      btnWell.addEventListener('click', () => { kappaIn.value = '1.00'; render(); });
+      btnOver.addEventListener('click', () => { kappaIn.value = '2.00'; render(); });
+      btnResamp.addEventListener('click', () => { seed = (seed + 7919) | 0; render(); });
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+  })();
+  </script>
+</body>
+</html>
