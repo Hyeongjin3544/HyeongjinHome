@@ -893,8 +893,9 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            Python(Manim)으로 1080p 60fps 렌더링한 3차원 표본공간 직교 사영 시연이다. 기저벡터 \(x_1, x_2\)가 생성하는 평면 \(\mathcal{C}(X)\) 위로 \(y\)가 수직 낙하하여
-            \(\hat{y}=P_X y = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)와 직교 잔차 \(\hat{u}=M_X y\)로 분해되는 과정을 보여 준다.
+            OLS는 표본공간 \(\mathbb{R}^n\)에서 종속변수 벡터 \(y\)로부터 설명변수의 열공간 \(\mathcal{C}(X)=\mathrm{span}(x_1, x_2)\)까지의 거리를 최소화하는 문제이다.
+            이에 따라 \(y\)는 \(\mathcal{C}(X)\) 위의 가장 가까운 벡터인 적합치 \(\hat{y}=P_X y = \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2\)와
+            열공간 전체에 직교하는 잔차 \(\hat{u}=M_X y \perp \mathcal{C}(X)\)로 유일하게 분해된다.
           </div>
         </div>
       </section>
@@ -937,13 +938,13 @@
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>사영 낙하 진행률 \(p\)</span>
+                    <span>직교 사영 진행률 \(p\)</span>
                     <span class="control-val" id="olsDropVal">1.00</span>
                   </div>
                   <input id="olsDrop" type="range" min="0" max="1" step="0.005" value="1" />
                 </div>
                 <div class="btn-row">
-                  <button type="button" class="btn-pill is-primary" id="olsPlayBtn">사영 낙하 재생</button>
+                  <button type="button" class="btn-pill is-primary" id="olsPlayBtn">직교 사영 재생</button>
                   <button type="button" class="btn-pill" id="olsResetView">시점 초기화</button>
                   <button type="button" class="btn-pill" id="olsCollinearBtn">고공선성 (\(\rho=0.92\))</button>
                 </div>
@@ -1499,7 +1500,7 @@
       bindDragOrbit(canvas, cam, render);
 
       [rhoInput, sigInput, dropInput].forEach(inp => inp.addEventListener('input', () => {
-        if (animId) { cancelAnimationFrame(animId); animId = null; playBtn.textContent = '사영 낙하 재생'; }
+        if (animId) { cancelAnimationFrame(animId); animId = null; playBtn.textContent = '직교 사영 재생'; }
         render();
       }));
 
@@ -1507,7 +1508,7 @@
         if (animId) {
           cancelAnimationFrame(animId);
           animId = null;
-          playBtn.textContent = '사영 낙하 재생';
+          playBtn.textContent = '직교 사영 재생';
           return;
         }
         dropInput.value = '0';
@@ -1522,7 +1523,7 @@
             animId = requestAnimationFrame(step);
           } else {
             animId = null;
-            playBtn.textContent = '사영 낙하 재생';
+            playBtn.textContent = '직교 사영 재생';
           }
         }
         animId = requestAnimationFrame(step);
