@@ -1023,7 +1023,7 @@
             \nabla_\theta \ell_n(\tilde{\theta}_n) = \tilde{\lambda}_n\, \nabla_\theta R(\tilde{\theta}_n)'
             \;\perp\; \ker \nabla R(\tilde{\theta}_n),
             \qquad
-            \hat{\theta}_n, \tilde{\theta}_n \xrightarrow{p} \theta_0
+            \hat{\theta}_n, \tilde{\theta}_n \xrightarrow{p} \theta_0 \;\;(\text{under } H_0)
           \]
         </div>
 
@@ -1044,13 +1044,13 @@
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 02 · Rotatable 3D Sample Hill \(\ell_n(\theta)\), True \(\theta_0\) &amp; \(\mathcal{I}\)-Projection</span>
-            <span class="lab-sub">좌: 드래그 회전 3D 표본 우도 언덕 &amp; 제약 단면 · 우하: 2D 등고선 위의 \(\theta_0\), \(\hat{\theta}_n\), \(\tilde{\theta}_n\)</span>
+            <span class="lab-title">3D Sample Hill \(\ell_n(\theta)\), True \(\theta_0\) &amp; \(\mathcal{I}\)-Projection Explorer</span>
+            <span class="lab-sub">좌: 드래그 회전 3D 표본 우도 언덕 &amp; 제약 단면 · 우하: 2D 등고선 위의 \(\theta_0\), \(\hat{\theta}_n\), \(\tilde{\theta}_n\) 및 직교 score</span>
           </div>
           <div class="lab-body">
             <div class="canvas-stage">
-              <canvas id="mle3dCanvas" style="cursor:grab;" aria-label="3D 로그우도 곡면과 제약 단면 캔버스"></canvas>
-              <div class="canvas-hint" id="mle3dHint">드래그 회전 · 청록 θ₀: 제약 참값 · 보라 θ̂ₙ: 표본 비제약 정점 · 주황 θ̃ₙ: 표본 제약 정점 · 점선: ½LR</div>
+              <canvas id="mle3dCanvas" style="cursor:grab;touch-action:none;" aria-label="3D 로그우도 곡면과 제약 단면 캔버스"></canvas>
+              <div class="canvas-hint" id="mle3dHint">드래그 회전 · 청록 θ₀: 참모수 · 보라 θ̂ₙ: 비제약 정점 · 주황 θ̃ₙ: 제약 정점 · 점선: ½LR</div>
             </div>
 
             <div class="lab-panel">
@@ -1064,14 +1064,14 @@
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span id="m2RLabel">선형 제약 수준 \(r = \theta_1 + \theta_2\)</span>
+                    <span id="m2RLabel">선형 제약 수준 \(r = \theta_1 + \theta_2\) (참값 = 0.20)</span>
                     <span class="control-val" id="m2RVal">0.20</span>
                   </div>
-                  <input id="m2R" type="range" min="-0.50" max="1.20" step="0.05" value="0.20" />
+                  <input id="m2R" type="range" min="-0.60" max="1.20" step="0.04" value="0.20" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>표본크기 \(n\) (증가 시 \(\hat{\theta}_n, \tilde{\theta}_n \to \theta_0\) &amp; 곡률 \(\uparrow\))</span>
+                    <span>표본크기 \(n\) (증가 시 \(\hat{\theta}_n \to \theta_0\), \(\tilde{\theta}_n \to \theta^*\))</span>
                     <span class="control-val" id="m2NVal">35</span>
                   </div>
                   <input id="m2N" type="range" min="15" max="240" step="5" value="35" />
@@ -1079,6 +1079,7 @@
                 <div class="btn-row">
                   <button type="button" class="btn-pill is-primary" data-m2-const="linear">선형 제약 θ₁+θ₂=r</button>
                   <button type="button" class="btn-pill" data-m2-const="circle">비선형 제약 θ₁²+θ₂²=r²</button>
+                  <button type="button" class="btn-pill" id="m2NullBtn">H₀ 참 (R(θ₀)=r)</button>
                   <button type="button" class="btn-pill" id="m2PlayNBtn">▶ n↑ 수렴 보기</button>
                   <button type="button" class="btn-pill" id="m2PlayBtn">▶ 회전·상관 재생</button>
                   <button type="button" class="btn-pill" id="mle3dResetCam">시점 초기화</button>
@@ -1088,7 +1089,7 @@
               <div class="metrics-card">
                 <div class="metric-grid">
                   <div class="metric-tile">
-                    <div class="metric-tile__k">모집단 참값 θ₀ (제약상)</div>
+                    <div class="metric-tile__k">참모수 θ₀ · 귀무가설 상태</div>
                     <div class="metric-tile__v ok" id="m2True">—</div>
                   </div>
                   <div class="metric-tile">
@@ -1100,7 +1101,7 @@
                     <div class="metric-tile__v accent" id="m2LR">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">Wald (선형화 근사)</div>
+                    <div class="metric-tile__k">Wald (제약 선형화 근사)</div>
                     <div class="metric-tile__v" id="m2Wald">—</div>
                   </div>
                 </div>
@@ -1108,8 +1109,8 @@
 
               <div class="mini-card">
                 <div class="mini-head">
-                  <span>2D 등고선: \(\theta_0\) (참값) vs \(\mathcal{I}\)-사영(\(\tilde{\theta}_n\)) vs 유클리드 사영</span>
-                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--muted);">하늘색 화살표: Score ∇ℓₙ(θ̃ₙ)</span>
+                  <span>2D 등고선: \(\mathcal{I}\)-사영(\(\tilde{\theta}_n\)) vs 점선 유클리드 사영</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--muted);">하늘 화살표: Score ∇ℓₙ(θ̃ₙ) ⊥ 접선 (90°)</span>
                 </div>
                 <canvas id="mle2dCanvas" aria-label="2D 등고선 및 정보행렬 사영 캔버스"></canvas>
               </div>
@@ -1704,6 +1705,7 @@
       const nVal = document.getElementById('m2NVal');
       const rLabel = document.getElementById('m2RLabel');
       const constBtns = document.querySelectorAll('[data-m2-const]');
+      const nullBtn = document.getElementById('m2NullBtn');
       const resetCamBtn = document.getElementById('mle3dResetCam');
       const mTrue = document.getElementById('m2True');
       const mTilde = document.getElementById('m2Tilde');
@@ -1711,12 +1713,19 @@
       const mWald = document.getElementById('m2Wald');
 
       let constType = 'linear';
-      const camDefault = { yaw: -0.72, pitch: 0.46 };
+      const camDefault = { yaw: -0.68, pitch: 0.46 };
       const cam = { yaw: camDefault.yaw, pitch: camDefault.pitch };
 
+      // Fixed true population DGP parameter theta_0:
+      // Linear constraint R_lin(theta_0) = 0.60 + (-0.40) = 0.20
+      // Circle constraint R_circ(theta_0) = sqrt(0.60^2 + (-0.40)^2) = 0.7211
+      const thetaTrue = [0.60, -0.40];
+      const trueLinR = 0.20;
+      const trueCircR = Math.hypot(thetaTrue[0], thetaTrue[1]); // ~0.7211
+
       const nRef = 35;
-      const delta0 = [0.80, 0.08]; // finite-sample fluctuation direction at n = nRef
-      const i11 = 2.0, i22 = 1.05;
+      const delta0 = [-0.22, 0.92]; // finite-sample estimation error at n = nRef
+      const i11 = 1.95, i22 = 1.05;
 
       function getInfoMat(rho) {
         const i12 = rho * Math.sqrt(i11 * i22);
@@ -1729,12 +1738,14 @@
         };
       }
 
+      // Smooth log-likelihood hill centered at thetaHat whose level sets are exact Fisher ellipses d' I d = const
       function ll(t1, t2, info, thetaHat, n) {
         const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
-        const curv = 0.42 * Math.min(4.2, n / nRef);
-        return 1.35 - 0.5 * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2) * curv;
+        const curvVis = 0.65 * Math.pow(n / nRef, 0.48);
+        return 1.42 * Math.exp(-0.5 * curvVis * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2));
       }
 
+      // Exact quadratic LR statistic scaling as n * (d' I d)
       function statDrop(t1, t2, info, thetaHat, n) {
         const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
         const nRatio = n / nRef;
@@ -1745,11 +1756,10 @@
         const info = getInfoMat(rho);
         const scale = Math.sqrt(nRef / n);
         const nRatio = n / nRef;
+        const thetaHat = [thetaTrue[0] + scale * delta0[0], thetaTrue[1] + scale * delta0[1]];
+        const h1 = thetaHat[0], h2 = thetaHat[1];
 
         if (constType === 'linear') {
-          const thetaTrue = [rValNum * 0.5 - 0.36, rValNum * 0.5 + 0.36];
-          const thetaHat = [thetaTrue[0] + scale * delta0[0], thetaTrue[1] + scale * delta0[1]];
-          const h1 = thetaHat[0], h2 = thetaHat[1];
           const gap = (h1 + h2) - rValNum;
           const gIinvG = info.inv11 + 2 * info.inv12 + info.inv22;
           const step1 = info.inv11 + info.inv12;
@@ -1760,13 +1770,10 @@
           const s2 = -4.5 * nRatio * (info.i12 * (tilde[0] - h1) + info.i22 * (tilde[1] - h2));
           const lr = statDrop(tilde[0], tilde[1], info, thetaHat, n);
           const wald = 4.5 * nRatio * (gap * gap) / gIinvG;
-          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr, wald, info };
+          const nullGap = Math.abs(trueLinR - rValNum);
+          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr, wald, nullHolds: nullGap < 0.03, info };
         } else {
-          const rad = Math.max(0.25, Math.min(1.12, 0.55 + 0.35 * rValNum));
-          const ang0 = 2.08;
-          const thetaTrue = [rad * Math.cos(ang0), rad * Math.sin(ang0)];
-          const thetaHat = [thetaTrue[0] + scale * delta0[0], thetaTrue[1] + scale * delta0[1]];
-          const h1 = thetaHat[0], h2 = thetaHat[1];
+          const rad = Math.max(0.24, Math.min(1.18, rValNum));
           let bestAng = 0, bestDrop = Infinity;
           for (let k = 0; k < 720; k++) {
             const ang = (k / 720) * Math.PI * 2;
@@ -1789,12 +1796,13 @@
           const g1 = 2 * h1, g2 = 2 * h2;
           const gIinvG = g1 * g1 * info.inv11 + 2 * g1 * g2 * info.inv12 + g2 * g2 * info.inv22;
           const wald = 4.5 * nRatio * (rHatGap * rHatGap) / Math.max(1e-6, gIinvG);
-          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr: bestDrop, wald, rad, info };
+          const nullGap = Math.abs(trueCircR - rad);
+          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr: bestDrop, wald, rad, nullHolds: nullGap < 0.03, info };
         }
       }
 
-      const rBound = 1.35;
-      const nGrid = 14;
+      const rBound = 1.40;
+      const nGrid = 18;
       const coords = [];
       for (let i = 0; i <= nGrid; i++) coords.push(-rBound + (i / nGrid) * (2 * rBound));
 
@@ -2057,15 +2065,31 @@
         ctx.lineTo(mapX(st.tilde[0]), mapY(st.tilde[1]));
         ctx.stroke();
 
-        // Score vector at tilde
+        // Score vector at tilde + explicit 90-deg right angle box with constraint tangent
         const sNorm = Math.hypot(st.score[0], st.score[1]);
         if (sNorm > 0.05) {
           const dispLen = 0.36;
-          const sx = (st.score[0] / sNorm) * dispLen;
-          const sy = (st.score[1] / sNorm) * dispLen;
+          const ux = st.score[0] / sNorm;
+          const uy = st.score[1] / sNorm;
+          const tx = -uy, ty = ux; // tangent unit vector (orthogonal to score gradient at tilde)
           const p0x = mapX(st.tilde[0]), p0y = mapY(st.tilde[1]);
-          const p1x = mapX(st.tilde[0] + sx), p1y = mapY(st.tilde[1] + sy);
+          const p1x = mapX(st.tilde[0] + ux * dispLen), p1y = mapY(st.tilde[1] + uy * dispLen);
+          // 90-degree corner mark in screen pixels
+          const bx = 9;
+          const sux = (p1x - p0x) / Math.max(1, Math.hypot(p1x - p0x, p1y - p0y));
+          const suy = (p1y - p0y) / Math.max(1, Math.hypot(p1x - p0x, p1y - p0y));
+          const stx = mapX(st.tilde[0] + tx * 0.2) - p0x;
+          const sty = mapY(st.tilde[1] + ty * 0.2) - p0y;
+          const tNormPx = Math.max(1, Math.hypot(stx, sty));
+          const tux = stx / tNormPx, tuy = sty / tNormPx;
           ctx.strokeStyle = pal.cyan;
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(p0x + tux * bx, p0y + tuy * bx);
+          ctx.lineTo(p0x + tux * bx + sux * bx, p0y + tuy * bx + suy * bx);
+          ctx.lineTo(p0x + sux * bx, p0y + suy * bx);
+          ctx.stroke();
+
           ctx.lineWidth = 2.2;
           ctx.beginPath(); ctx.moveTo(p0x, p0y); ctx.lineTo(p1x, p1y); ctx.stroke();
           const ang = Math.atan2(p1y - p0y, p1x - p0x);
@@ -2104,9 +2128,12 @@
         rhoVal.textContent = rho.toFixed(2);
         rVal.textContent = constType === 'linear' ? rNum.toFixed(2) : `r=${st.rad.toFixed(2)}`;
         nVal.textContent = String(n);
-        rLabel.textContent = constType === 'linear' ? '선형 제약 수준 r = θ₁ + θ₂' : '원형 제약 반지름 r = √(θ₁² + θ₂²)';
+        rLabel.textContent = constType === 'linear'
+          ? `선형 제약 r = θ₁ + θ₂ (H₀ 참: ${trueLinR.toFixed(2)})`
+          : `원형 제약 반지름 r = √(θ₁² + θ₂²) (H₀ 참: ${trueCircR.toFixed(2)})`;
 
-        mTrue.textContent = `(${st.thetaTrue[0].toFixed(2)}, ${st.thetaTrue[1].toFixed(2)})`;
+        mTrue.textContent = st.nullHolds ? '(0.60, -0.40) · H₀ 참' : '(0.60, -0.40) · H₀ 위반';
+        mTrue.className = 'metric-tile__v ' + (st.nullHolds ? 'ok' : 'warn');
         mTilde.textContent = `(${st.tilde[0].toFixed(2)}, ${st.tilde[1].toFixed(2)})`;
         mLR.textContent = st.lr.toFixed(2);
         mWald.textContent = st.wald.toFixed(2);
@@ -2191,11 +2218,27 @@
 
       constBtns.forEach(b => {
         b.addEventListener('click', () => {
-          constType = b.getAttribute('data-m2-const');
+          const nextType = b.getAttribute('data-m2-const');
+          if (nextType !== constType) {
+            constType = nextType;
+            if (constType === 'linear') {
+              rIn.min = '-0.60'; rIn.max = '1.20'; rIn.step = '0.04';
+              rIn.value = trueLinR.toFixed(2);
+            } else {
+              rIn.min = '0.24'; rIn.max = '1.16'; rIn.step = '0.02';
+              rIn.value = trueCircR.toFixed(2);
+            }
+          }
           constBtns.forEach(x => x.classList.toggle('is-primary', x === b));
           render();
         });
       });
+      if (nullBtn) {
+        nullBtn.addEventListener('click', () => {
+          rIn.value = constType === 'linear' ? trueLinR.toFixed(2) : trueCircR.toFixed(2);
+          render();
+        });
+      }
       resetCamBtn.addEventListener('click', () => { stopM2Anim(); stopM2NAnim(); cam.yaw = camDefault.yaw; cam.pitch = camDefault.pitch; render(); });
       [rhoIn, rIn, nIn].forEach(el => el.addEventListener('input', () => {
         if (el === rhoIn) stopM2Anim();
