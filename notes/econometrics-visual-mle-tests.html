@@ -836,11 +836,11 @@
     <div class="hero-inner">
       <div class="chapter-kicker">Econometrics · Visual Supplement 04 (Ch 05 연계)</div>
       <h1>MLE의 곡률과 Wald · LR · LM 검정의 기하학</h1>
-      <p class="subtitle">수평 거리(Wald), 수직 높이 차(LR), 접선 기울기(Score/LM)와 정보행렬 사영 · 오지정 비교</p>
+      <p class="subtitle">수평 거리(Wald), 수직 높이 차(LR), 접선 기울기(Score/LM)와 \(J\)-사영 · 정보행렬 항등식 붕괴(\(J \neq \Omega\))</p>
       <div class="hero-rule"></div>
       <p class="lead">
-        모수제약 검정 \(H_0: R(\theta_0)=r\)은 하나의 가설을 평가하지만, 세 고전 검정은 로그우도 곡면의 서로 다른 기하학적 방향을 잰다.
-        국소적인 이차 곡률(\(\mathcal{I}_n\))이 동일할 때는 세 통계량이 일치하지만, 유한표본 비대칭성·비선형 재모수화·정보행렬 항등식 붕괴(\(\mathcal{I}\neq\Omega\)) 아래에서는 뚜렷하게 갈라진다.
+        모수제약 검정 \(H_0: g(\theta_0)=0\)은 하나의 가설을 평가하지만, 세 고전 검정은 로그우도 곡면의 서로 다른 기하학적 방향을 잰다.
+        국소 정보곡률(\(J_n = nJ\))이 동일할 때는 세 통계량이 일치하지만, 유한표본 비대칭성·비선형 재모수화·정보행렬 항등식 붕괴(\(J\neq\Omega\)) 아래에서는 뚜렷하게 갈라진다.
       </p>
       <div class="roadmap">
         <a href="#sec-mle-trinity">
@@ -849,7 +849,7 @@
         </a>
         <a href="#sec-mle-2d-projection">
           <span class="label">02 · 3D Surface + 2D Projection</span>
-          <span class="text">3D 우도 언덕, \(\mathcal{I}\)-사영과 라그랑주 직교</span>
+          <span class="text">3D 우도 언덕, \(J\)-사영과 라그랑주 직교</span>
         </a>
         <a href="#sec-mle-sandwich">
           <span class="label">03 · Identity &amp; Misspecification</span>
@@ -864,7 +864,7 @@
       <div class="toc-title">On This Page</div>
       <nav>
         <a href="#sec-mle-trinity">01. 세 방향 거리: Wald · LR · LM</a>
-        <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(\mathcal{I}\)-사영 기하학</a>
+        <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(J\)-사영 기하학</a>
         <a href="#sec-mle-sandwich">03. 정보행렬 항등식과 오지정 \(\chi^2\) 분포</a>
         <a href="#discussion">학술 토론 (댓글)</a>
         <a class="ext-link" href="econometrics-ch05.html#ml-topic-14">↗ Ch 05 본문 (5.20 Wald·LR·LM)</a>
@@ -877,7 +877,7 @@
         <summary>목차 (Contents)</summary>
         <nav>
           <a href="#sec-mle-trinity">01. 세 방향 거리: Wald · LR · LM</a>
-          <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(\mathcal{I}\)-사영</a>
+          <a href="#sec-mle-2d-projection">02. 3D 우도 곡면과 \(J\)-사영</a>
           <a href="#sec-mle-sandwich">03. 정보행렬 항등식과 오지정</a>
           <a href="#discussion">학술 토론 (댓글)</a>
           <a href="econometrics-ch05.html#ml-topic-14">↗ Ch 05 본문 (5.20)</a>
@@ -898,7 +898,7 @@
           <div class="formula-box">
             <div class="formula-box__title"><span class="swatch" style="background:var(--amber);"></span>Wald · 수평 거리</div>
             \[
-              W_n = \hat{\mathcal{I}}_n (\hat{\theta}_n - \theta_0)^2
+              W_n = \hat{J}_n (\hat{\theta}_n - \theta_0)^2
             \]
             <p class="formula-box__desc">표본 정점 \(\hat{\theta}_n\)의 곡률만 쓰는 포물선 근사. 비선형 재모수화에 민감하다.</p>
           </div>
@@ -912,9 +912,9 @@
           <div class="formula-box">
             <div class="formula-box__title"><span class="swatch" style="background:var(--cyan);"></span>LM (Score) · 접선 기울기</div>
             \[
-              \mathrm{LM}_n = \frac{\bigl(\ell_n'(\theta_0)\bigr)^2}{\mathcal{I}_n(\theta_0)}
+              \mathrm{LM}_n = \frac{\bigl(S_n(\theta_0)\bigr)^2}{J_n(\theta_0)}, \qquad S_n(\theta_0) = \ell_n'(\theta_0)
             \]
-            <p class="formula-box__desc">\(\theta_0\)의 기울기만으로 정점까지의 높이를 역추산한다.</p>
+            <p class="formula-box__desc">\(\theta_0\)에서의 점수벡터(기울기)만으로 정점까지의 높이를 역추산한다.</p>
           </div>
         </div>
 
@@ -928,14 +928,15 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            청록 점선(모집단 기대 우도)은 참모수 \(\theta_0\)에서 최대를 이룬다. 유한표본 오차로 표본 곡선 정점이 \(\hat{\theta}_n\)으로 이동할 때 생기는 세 거리(Wald·LR·LM)는
-            \(n\)이 커지며 \(\hat{\theta}_n \to \theta_0\)으로 수렴해도 정규 이차에서는 일치하고, 비대칭 우도에서는 부등식 방향이 갈라진다.
+            청록 점선(모집단 기대 우도)은 참모수 \(\theta_0\)에서 최대를 이룬다. 표본크기 \(n\)이 커지면 곡률 \(J_n=nJ_1\)이 가팔라지며
+            \(\hat{\theta}_n \xrightarrow{p} \theta_0\)으로 \(O_p(n^{-1/2})\) 속도로 수렴하지만, 수직 낙차 \(\frac{1}{2}\mathrm{LR}_n = O_p(1)\)은 유한하게 유지된다.
+            후반부 지수족 비대칭 우도에서는 표본 변동 방향에 따라 \(W_n < \mathrm{LR}_n < \mathrm{LM}_n\)에서 \(W_n > \mathrm{LR}_n > \mathrm{LM}_n\)로 크기가 역전된다.
           </div>
         </div>
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 01 · Population (\(\theta_0\)) vs. Sample (\(\hat{\theta}_n\)) Trinity Explorer</span>
+            <span class="lab-title">Lab 01 · Population (\(\theta_0\)) vs. Sample (\(\hat{\theta}_n\)) Trinity Explorer</span>
             <span class="lab-sub">청록 점선: 모집단 최대(\(\theta_{\text{true}}\)) · 보라 실선: 표본 \(\ell_n(\theta)\) · 주황/보라/하늘: Wald·LR·LM</span>
           </div>
           <div class="lab-body">
@@ -955,7 +956,7 @@
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>표본오차 \(z = \sqrt{n\mathcal{I}_1}(\hat{\theta}_n - \theta_{\text{true}})\)</span>
+                    <span>표본오차 \(z = \sqrt{n J_1}(\hat{\theta}_n - \theta_{\text{true}})\)</span>
                     <span class="control-val" id="trNoiseVal">+1.80</span>
                   </div>
                   <input id="trNoise" type="range" min="-2.60" max="2.60" step="0.10" value="1.80" />
@@ -991,7 +992,7 @@
                     <div class="metric-tile__v cyan" id="mTrLM">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">표본정점 θ̂ₙ · p-value</div>
+                    <div class="metric-tile__k">표본정점 θ̂ₙ · 순서 · p-value</div>
                     <div class="metric-tile__v" id="mTrOrder">—</div>
                   </div>
                 </div>
@@ -1006,30 +1007,33 @@
 
       <!-- SECTION 02 -->
       <section class="module" id="sec-mle-2d-projection">
-        <h2><span class="sec-tag">02</span><span>3D 우도 곡면, \(\mathcal{I}\)-사영과 라그랑주 직교성</span></h2>
+        <h2><span class="sec-tag">02</span><span>3D 우도 곡면, \(J\)-사영과 라그랑주 직교성</span></h2>
         <p>
-          모수가 2차원(\(\theta = (\theta_1, \theta_2)'\))일 때 귀무가설 \(H_0: R(\theta) = r\)이 참이라면 <strong>모집단 참값 \(\theta_0\)</strong> (청록 점)는 제약선 \(R(\theta)=r\) 위에 놓인다.
-          반면 유한표본 로그우도 \(\ell_n(\theta)\)의 3D 언덕은 표본 오차 때문에 비제약 정점 <strong>\(\hat{\theta}_n\)</strong>(보라 점)이 제약 벽 밖으로 밀려나고, 제약 단면 능선의 정점인 제약 MLE <strong>\(\tilde{\theta}_n\)</strong>(주황 점)도 벽 위에서 \(\theta_0\)와 다른 위치에 놓인다.
-          표본크기 \(n \uparrow\) 에 따라 두 추정량 \(\hat{\theta}_n, \tilde{\theta}_n\)은 함께 \(\theta_0\)로 수렴하며, 임의의 유한표본 언덕 위에서는 명제 5.4에 따라 \(\tilde{\theta}_n\)이 \(\hat{\theta}_n\)의 <strong>Fisher 정보행렬 \(\mathcal{I}\)-사영점</strong>이고 점수벡터 \(\nabla\ell_n(\tilde{\theta}_n)\)은 제약 접선과 <strong>유클리드 직교</strong>를 이룬다.
+          모수가 2차원(\(\theta = (\theta_1, \theta_2)'\))일 때 귀무가설 \(H_0: g(\theta) = 0\)이 참이면 <strong>고정 참모수 \(\theta_0\)</strong>(청록 점)는 제약 집합 \(\Theta_0 = \{g(\theta)=0\}\) 위에 놓이고, 거짓이면(\(g(\theta_0)\neq 0\)) 제약 추정량 \(\tilde{\theta}_n\)은 제약 위의 <strong>의사참모수(pseudo-true)</strong> \(\theta_R^* \neq \theta_0\)로 수렴한다.
+          임의의 유한표본 타원 포물면 \(\ell_n(\theta)\) 위에서 제약 능선 정점 <strong>\(\tilde{\theta}_n\)</strong>(주황 점)을 지나는 등고타원은 제약선과 접하며 수직 낙차 \(\frac{1}{2}\mathrm{LR}_n\)을 만들고, 명제 5.4에 따라 바닥에서 \(\tilde{\theta}_n\)은 \(\hat{\theta}_n\)의 <strong>정보행렬 \(J\)-사영점</strong>인 동시에 점수벡터 \(S_n(\tilde{\theta}_n)\)은 제약 접공간 \(\ker G(\tilde{\theta}_n)\)과 <strong>유클리드 직교</strong>를 이룬다.
         </p>
 
         <div class="math-strip">
-          <div class="math-strip__label">Proposition 5.4 · Fisher-Metric Projection &amp; Lagrange Orthogonality</div>
+          <div class="math-strip__label">Proposition 5.4 · Information-Metric \(J\)-Projection &amp; Lagrange Orthogonality</div>
           \[
             \tilde{\theta}_n - \hat{\theta}_n
             \;\approx\;
-            -\mathcal{I}^{-1} G' \bigl(G \mathcal{I}^{-1} G'\bigr)^{-1} \bigl(R(\hat{\theta}_n) - r\bigr),
+            -J^{-1} G'\bigl(G J^{-1} G'\bigr)^{-1} g(\hat{\theta}_n),
             \qquad
-            \nabla_\theta \ell_n(\tilde{\theta}_n) = \tilde{\lambda}_n\, \nabla_\theta R(\tilde{\theta}_n)'
-            \;\perp\; \ker \nabla R(\tilde{\theta}_n),
+            S_n(\tilde{\theta}_n) = -G(\tilde{\theta}_n)'\tilde{\lambda}_n
+            \;\perp\; \ker G(\tilde{\theta}_n),
             \qquad
-            \hat{\theta}_n, \tilde{\theta}_n \xrightarrow{p} \theta_0 \;\;(\text{under } H_0)
+            \tilde{\theta}_n \xrightarrow{p}
+            \begin{cases}
+              \theta_0 & \bigl(g(\theta_0)=0\bigr) \\
+              \theta_R^* \neq \theta_0 & \bigl(g(\theta_0)\neq 0\bigr)
+            \end{cases}
           \]
         </div>
 
         <div class="video-card">
           <div class="video-card__head">
-            <span>Clip 02 · Constrained Population \(\theta_0\), Sample Hill \(\hat{\theta}_n\) &amp; \(\mathcal{I}\)-Metric Projection \(\tilde{\theta}_n\)</span>
+            <span>Clip 02 · Constrained MLE \(\tilde{\theta}_n\), Level-Set Tangency &amp; \(J\)-Metric Projection</span>
             <span class="video-card__badge">1920×1080 · 60fps</span>
           </div>
           <video controls loop muted playsinline preload="metadata">
@@ -1037,51 +1041,52 @@
             브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
           </video>
           <div class="video-card__cap">
-            \(H_0: R(\theta)=r\)이 참일 때 참모수 \(\theta_0\)(청록)는 제약선 위에 고정되어 있지만, 유한표본 로그우도 포물면 \(\ell_n(\theta)\)의 비제약 정점 \(\hat{\theta}_n\)(보라)은 제약 벽 밖으로 비껴나고 제약 능선 정점 \(\tilde{\theta}_n\)(주황)은 \(\theta_0\)와 다른 벽 위 지점에 놓인다.
-            높이 \(\ell_n(\tilde{\theta}_n)\)의 등위타원(하늘색)을 바닥에 내리면 제약선과 \(\tilde{\theta}_n\)에서 접하므로 \(\tilde{\theta}_n\)이 단순 유클리드 사영(\(\hat{\theta}_{\text{Euc}}\))과 다른 \(\mathcal{I}\)-사영점이며 점수벡터 \(\nabla\ell_n(\tilde{\theta}_n)\)은 제약 접선과 90° 직교함을 알 수 있다. 후반부에서는 \(n\uparrow\) 에 따라 곡률 \(n\mathcal{I}\)가 가팔라지며 \(\hat{\theta}_n, \tilde{\theta}_n \xrightarrow{p} \theta_0\)으로 모이되, \(\mathrm{LR}_n = O_p(1)\)이므로 두 정점의 높이 차 \(\tfrac{1}{2}\mathrm{LR}\)은 유한한 크기로 유지됨을 보여준다.
+            \(H_0: g(\theta)=\theta_1+\theta_2=0\) 위에 참모수 \(\theta_0\)(청록)가 놓일 때, 표본 타원 포물면 정점 \(\hat{\theta}_n\)(보라)과 제약 능선 정점 \(\tilde{\theta}_n\)(주황)은 유한표본 오차로 \(\theta_0\)에서 비껴난다.
+            \(\tilde{\theta}_n\)을 지나는 하늘색 등고타원이 제약선과 접하며 수직 낙차 \(\frac{1}{2}\mathrm{LR}_n\)을 만들고, 바닥의 \(J\)-사영 \(\tilde{\theta}_n\)은 유클리드 사영 \(\hat{\theta}_{\mathrm{Euc}}\)(회색 점선)과 갈라지며 \(S_n(\tilde{\theta}_n)\perp\ker G\)가 성립한다. 후반부에서는 \(n\uparrow\)에 따라 두 추정량이 \(\theta_0\)로 수렴하면서도 \(\frac{1}{2}\mathrm{LR}_n=O_p(1)\)이 유한하게 유지된다.
           </div>
         </div>
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">3D Sample Hill \(\ell_n(\theta)\), True \(\theta_0\) &amp; \(\mathcal{I}\)-Projection Explorer</span>
-            <span class="lab-sub">좌: 드래그 회전 3D 표본 우도 언덕 &amp; 제약 단면 · 우하: 2D 등고선 위의 \(\theta_0\), \(\hat{\theta}_n\), \(\tilde{\theta}_n\) 및 직교 score</span>
+            <span class="lab-title">Lab 02 · Rotatable 3D Sample Dome \(\ell_n(\theta)\), \(J\)-Projection &amp; Pseudo-True \(\theta_R^*\)</span>
+            <span class="lab-sub">좌: 드래그 회전 3D 타원 포물면 &amp; 제약 단면 · 우하: 2D 등고선 위의 \(\theta_0\), \(\theta_R^*\), \(\hat{\theta}_n\), \(\tilde{\theta}_n\)</span>
           </div>
           <div class="lab-body">
             <div class="canvas-stage">
-              <canvas id="mle3dCanvas" style="cursor:grab;touch-action:none;" aria-label="3D 로그우도 곡면과 제약 단면 캔버스"></canvas>
-              <div class="canvas-hint" id="mle3dHint">드래그 회전 · 청록 θ₀: 참모수 · 보라 θ̂ₙ: 비제약 정점 · 주황 θ̃ₙ: 제약 정점 · 점선: ½LR</div>
+              <canvas id="mle3dCanvas" style="cursor:grab;" aria-label="3D 로그우도 곡면과 제약 단면 캔버스"></canvas>
+              <div class="canvas-hint" id="mle3dHint">드래그 회전 · 청록 θ₀: 고정 참값 (0.60,-0.45) · 회색 ★ θ_R*: 의사참값 · 보라 θ̂ₙ · 주황 θ̃ₙ</div>
             </div>
 
             <div class="lab-panel">
               <div class="controls-card">
                 <div class="control-row">
                   <div class="control-head">
-                    <span>정보행렬 상관 \(\rho\) (\(\mathcal{I}_{12}\) 비등방성)</span>
+                    <span>정보행렬 상관 \(\rho\) (\(J_{12}\) 비등방성)</span>
                     <span class="control-val" id="m2RhoVal">0.55</span>
                   </div>
                   <input id="m2Rho" type="range" min="-0.75" max="0.75" step="0.05" value="0.55" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span id="m2RLabel">선형 제약 수준 \(r = \theta_1 + \theta_2\) (참값 = 0.20)</span>
-                    <span class="control-val" id="m2RVal">0.20</span>
+                    <span id="m2RLabel">선형 제약 수준 \(r = \theta_1 + \theta_2\) (참값 \(0.15\))</span>
+                    <span class="control-val" id="m2RVal">0.15</span>
                   </div>
-                  <input id="m2R" type="range" min="-0.60" max="1.20" step="0.04" value="0.20" />
+                  <input id="m2R" type="range" min="-0.65" max="1.05" step="0.05" value="0.15" />
                 </div>
                 <div class="control-row">
                   <div class="control-head">
-                    <span>표본크기 \(n\) (증가 시 \(\hat{\theta}_n \to \theta_0\), \(\tilde{\theta}_n \to \theta^*\))</span>
+                    <span>표본크기 \(n\) (증가 시 \(\hat{\theta}_n \to \theta_0,\; \tilde{\theta}_n \to \theta_R^*\) &amp; 곡률 \(\uparrow\))</span>
                     <span class="control-val" id="m2NVal">35</span>
                   </div>
-                  <input id="m2N" type="range" min="15" max="240" step="5" value="35" />
+                  <input id="m2N" type="range" min="20" max="240" step="5" value="35" />
                 </div>
                 <div class="btn-row">
-                  <button type="button" class="btn-pill is-primary" data-m2-const="linear">선형 제약 θ₁+θ₂=r</button>
-                  <button type="button" class="btn-pill" data-m2-const="circle">비선형 제약 θ₁²+θ₂²=r²</button>
-                  <button type="button" class="btn-pill" id="m2NullBtn">H₀ 참 (R(θ₀)=r)</button>
-                  <button type="button" class="btn-pill" id="m2PlayNBtn">▶ n↑ 수렴 보기</button>
-                  <button type="button" class="btn-pill" id="m2PlayBtn">▶ 회전·상관 재생</button>
+                  <button type="button" class="btn-pill is-primary" data-m2-const="linear">선형 θ₁+θ₂=r</button>
+                  <button type="button" class="btn-pill" data-m2-const="coord">좌표 θ₂=r (파급)</button>
+                  <button type="button" class="btn-pill" data-m2-const="circle">원형 θ₁²+θ₂²=r²</button>
+                  <button type="button" class="btn-pill" id="m2NullBtn">H₀ 참 (g(θ₀)=0)</button>
+                  <button type="button" class="btn-pill" id="m2PlayNBtn">▶ n↑ 수렴</button>
+                  <button type="button" class="btn-pill" id="m2PlayBtn">▶ 회전·상관</button>
                   <button type="button" class="btn-pill" id="mle3dResetCam">시점 초기화</button>
                 </div>
               </div>
@@ -1089,7 +1094,7 @@
               <div class="metrics-card">
                 <div class="metric-grid">
                   <div class="metric-tile">
-                    <div class="metric-tile__k">참모수 θ₀ · 귀무가설 상태</div>
+                    <div class="metric-tile__k">제약 극한 θ_R* (H₀시 θ₀)</div>
                     <div class="metric-tile__v ok" id="m2True">—</div>
                   </div>
                   <div class="metric-tile">
@@ -1097,20 +1102,23 @@
                     <div class="metric-tile__v amber" id="m2Tilde">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">2[ℓₙ(θ̂ₙ) - ℓₙ(θ̃ₙ)] (LR)</div>
+                    <div class="metric-tile__k">2[ℓₙ(θ̂ₙ) - ℓₙ(θ̃ₙ)] (LRₙ)</div>
                     <div class="metric-tile__v accent" id="m2LR">—</div>
                   </div>
                   <div class="metric-tile">
-                    <div class="metric-tile__k">Wald (제약 선형화 근사)</div>
+                    <div class="metric-tile__k">Wald (선형화 근사 Wₙ)</div>
                     <div class="metric-tile__v" id="m2Wald">—</div>
                   </div>
+                </div>
+                <div class="verdict-note" id="m2Verdict">
+                  고정 참모수 θ₀=(0.60, -0.45)에서 H₀가 성립하므로 θ_R* = θ₀이다. n이 커지면 θ̂ₙ과 θ̃ₙ이 함께 θ₀로 수렴한다.
                 </div>
               </div>
 
               <div class="mini-card">
                 <div class="mini-head">
-                  <span>2D 등고선: \(\mathcal{I}\)-사영(\(\tilde{\theta}_n\)) vs 점선 유클리드 사영</span>
-                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--muted);">하늘 화살표: Score ∇ℓₙ(θ̃ₙ) ⊥ 접선 (90°)</span>
+                  <span>2D 등고선: \(\theta_0\) · \(\theta_R^*\) vs \(J\)-사영(\(\tilde{\theta}_n\)) vs 유클리드 사영</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;color:var(--muted);">하늘색 화살표: Score Sₙ(θ̃ₙ) ⊥ ker G</span>
                 </div>
                 <canvas id="mle2dCanvas" aria-label="2D 등고선 및 정보행렬 사영 캔버스"></canvas>
               </div>
@@ -1121,25 +1129,25 @@
 
       <!-- SECTION 03 -->
       <section class="module" id="sec-mle-sandwich">
-        <h2><span class="sec-tag">03</span><span>정보행렬 항등식(\(\mathcal{I}=\Omega\))과 모형 오지정</span></h2>
+        <h2><span class="sec-tag">03</span><span>정보행렬 항등식(\(J=\Omega\))과 모형 오지정</span></h2>
         <p>
-          올바르게 특정된(Well-specified) 모형에서는 <strong>정보행렬 항등식</strong> \(\Omega = \mathbb{E}[s_i s_i'] = -\mathbb{E}[\nabla^2 \ell_i] = \mathcal{I}\)이 성립하여
+          올바르게 지정된(Well-specified) 모형에서는 <strong>정보행렬 항등식</strong> \(\Omega = \mathbb{E}[s_i s_i'] = -\mathbb{E}[\nabla^2 \ell_i] = J\)가 성립하여
           통상적인 \(W, \mathrm{LR}, \mathrm{LM}\) 모두 \(\chi^2_1\) 분포로 수렴한다(명목 5% 검정 시 기각률 \(\approx 5\%\)).
-          반면 과분산·이분산·군집 오지정으로 \(\Omega = \kappa \mathcal{I}\;(\kappa \neq 1)\)가 되면 비강건(Naive) 통계량은 \(\kappa\cdot\chi^2_1\)으로 왜곡되며,
+          반면 과분산·이분산·군집 오지정으로 \(\Omega = \kappa J\;(\kappa \neq 1)\)가 되면 비강건(Naive) 통계량은 \(\kappa\cdot\chi^2_1\)으로 왜곡되며,
           <strong>샌드위치 공분산 \(\hat{H}^{-1}\hat{\Omega}\hat{H}^{-1}\)</strong>을 결합한 강건 Wald 검정만 정확한 \(\chi^2_1\) 크기를 회복한다.
         </p>
 
         <div class="formula-pair">
           <div class="formula-box">
-            <div class="formula-box__title">항등식 성립 (\(\Omega = \mathcal{I}\))</div>
+            <div class="formula-box__title">항등식 성립 (\(\Omega = J\))</div>
             \[
-              \sqrt{n}(\hat{\theta}-\theta_0) \xrightarrow{d} \mathcal{N}(0,\mathcal{I}^{-1})
+              \sqrt{n}(\hat{\theta}-\theta_0) \xrightarrow{d} \mathcal{N}(0, J^{-1})
               \implies W_{\text{naive}}, \mathrm{LR}, \mathrm{LM} \xrightarrow{d} \chi^2_1
             \]
             <p class="formula-box__desc">세 검정 모두 표본크기 증가에 따라 명목 유의수준 5%를 유지한다.</p>
           </div>
           <div class="formula-box">
-            <div class="formula-box__title">오지정 (\(\Omega = \kappa\mathcal{I},\; \kappa\neq 1\))</div>
+            <div class="formula-box__title">오지정 (\(\Omega = \kappa J,\; \kappa\neq 1\))</div>
             \[
               W_{\text{naive}}, \mathrm{LR} \xrightarrow{d} \kappa\,\chi^2_1, \qquad
               W_{\text{sandwich}} = \frac{n(\hat{\theta}-\theta_0)^2}{\hat{H}^{-1}\hat{\Omega}\hat{H}^{-1}} \xrightarrow{d} \chi^2_1
@@ -1150,20 +1158,20 @@
 
         <div class="interactive-lab">
           <div class="lab-header">
-            <span class="lab-title">Interactive Lab 03 · Information Identity vs. Misspecification \(\chi^2_1\) Simulator</span>
-            <span class="lab-sub">300회 몬테카를로 표본 추출 (\(Y_i \sim \text{Gamma}(1/\kappa, \kappa)\), 지수 QMLE) · 실선 곡선: 이론 \(\chi^2_1\) 밀도 · 세로 점선: 5% 임계값 3.841</span>
+            <span class="lab-title">Lab 03 · Information Identity vs. Misspecification \(\chi^2_1\) Simulator</span>
+            <span class="lab-sub">600회 몬테카를로 표본 추출 (\(Y_i \sim \text{Gamma}(1/\kappa, \kappa)\), 지수 QMLE) · 실선: \(\chi^2_1\) · 파선: 왜곡 \(\kappa\chi^2_1\) · 세로선: 3.841</span>
           </div>
           <div class="lab-body">
             <div class="canvas-stage">
               <canvas id="mcChiCanvas" aria-label="오지정 하 검정통계량 표본분포 비교 캔버스"></canvas>
-              <div class="canvas-hint" id="mcChiHint">실선: 이론 χ²₁ · 보라 막대: 비강건 LR/Wald · 청록 테두리: 강건 Sandwich Wald</div>
+              <div class="canvas-hint" id="mcChiHint">실선: 이론 χ²₁ · 파선: 오지정 κχ²₁ · 보라 막대: 비강건 LR · 청록 테두리: 강건 Sandwich Wald</div>
             </div>
 
             <div class="lab-panel">
               <div class="controls-card">
                 <div class="control-row">
                   <div class="control-head">
-                    <span>분산 비율 \(\kappa = \Omega / \mathcal{I}\) (1.00 = 정규 지정)</span>
+                    <span>분산 비율 \(\kappa = \Omega / J\) (1.00 = 정지정)</span>
                     <span class="control-val" id="mcKappaVal">1.00</span>
                   </div>
                   <input id="mcKappa" type="range" min="0.40" max="2.60" step="0.10" value="1.00" />
@@ -1176,7 +1184,7 @@
                   <input id="mcN" type="range" min="20" max="250" step="10" value="80" />
                 </div>
                 <div class="btn-row">
-                  <button type="button" class="btn-pill is-primary" id="btnSpecWell">정규 지정 (κ = 1.0)</button>
+                  <button type="button" class="btn-pill is-primary" id="btnSpecWell">정지정 (κ = 1.0)</button>
                   <button type="button" class="btn-pill" id="btnSpecOver">과분산 오지정 (κ = 2.0)</button>
                   <button type="button" class="btn-pill" id="btnMcResample">표본 다시 뽑기</button>
                 </div>
@@ -1425,7 +1433,8 @@
         const tTrue = parseFloat(trueIn.value);
         const zNoise = parseFloat(noiseIn.value);
         const n = parseInt(nIn.value, 10);
-        const tHat = Math.max(-0.62, Math.min(0.85, tTrue + zNoise / Math.sqrt(n)));
+        const se1 = 1 / Math.sqrt(n);
+        const tHat = Math.max(-0.62, Math.min(0.85, tTrue + zNoise * se1));
 
         trueVal.textContent = (tTrue >= 0 ? '+' : '') + tTrue.toFixed(2);
         noiseVal.textContent = (zNoise >= 0 ? '+' : '') + zNoise.toFixed(2);
@@ -1439,7 +1448,12 @@
         mWaldLabel.textContent = mode === 'reparam' ? 'Wald in φ (W_φ)' : 'Wald (Wₙ)';
 
         const pLR = pValChi1(st.lr);
-        mOrder.textContent = `θ̂=${tHat >= 0 ? '+' : ''}${tHat.toFixed(2)} (p=${pLR.toFixed(3)})`;
+        const ord = (Math.abs(st.wald - st.lr) < 0.03 && Math.abs(st.lr - st.lm) < 0.03)
+          ? 'W=LR=LM'
+          : (mode === 'reparam'
+            ? (st.wald < st.lr ? 'W<LR=LM' : 'W>LR=LM')
+            : (st.wald < st.lr ? 'W<LR<LM' : 'W>LR>LM'));
+        mOrder.textContent = `θ̂=${tHat >= 0 ? '+' : ''}${tHat.toFixed(2)} · ${ord} (p=${pLR.toFixed(3)})`;
         mOrder.className = 'metric-tile__v ' + (pLR < 0.05 ? 'warn' : 'ok');
 
         if (mode === 'quad') {
@@ -1449,7 +1463,7 @@
           hintEl.textContent = '청록 점선: 모집단 E[ℓ(θ)] (참모수 최대) · 보라 실선: 표본 ℓₙ(θ) (정점 θ̂ₙ)';
         } else if (mode === 'skew') {
           verdictEl.textContent = tHat > 0.02
-            ? `양(+)의 표본 변동(θ̂ₙ=${tHat.toFixed(2)} > θ₀): 완만한 오른쪽 정점 곡률 ℐ̂ₙ 때문에 Wald 포물선이 실제 곡선보다 완만해 W < LR < LM 이 된다.`
+            ? `양(+)의 표본 변동(θ̂ₙ=${tHat.toFixed(2)} > θ₀): 완만한 오른쪽 정점 곡률 Ĵₙ 때문에 Wald 포물선이 실제 곡선보다 완만해 W < LR < LM 이 된다.`
             : (tHat < -0.02
               ? `음(-)의 표본 변동(θ̂ₙ=${tHat.toFixed(2)} < θ₀): 가파른 왼쪽 정점 곡률 때문에 Wald가 과대 계산되어 W > LR > LM 이 된다.`
               : '표본 정점 θ̂ₙ이 θ₀와 일치하면 세 통계량 모두 0이다.');
@@ -1463,11 +1477,11 @@
         ctx.fillStyle = pal.bg;
         ctx.fillRect(0, 0, w, h);
 
-        const padL = 56, padR = 26, padT = 34, padB = 46;
+        const padL = 56, padR = 26, padT = 44, padB = 46;
         const xMin = -0.82, xMax = 1.02;
-        const yMaxVal = 1.6;
         const cornerVal = Math.min(sampleLik(xMin, tHat, n), sampleLik(xMax, tHat, n), st.l0);
         const yMinVal = Math.min(-7.5, Math.max(-24, cornerVal * 1.12 - 1.5));
+        const yMaxVal = Math.max(1.8, Math.abs(yMinVal) * 0.16);
 
         const mapX = t => padL + ((t - xMin) / (xMax - xMin)) * (w - padL - padR);
         const mapY = y => padT + ((yMaxVal - y) / (yMaxVal - yMinVal)) * (h - padT - padB);
@@ -1555,15 +1569,17 @@
         const yAtNull = mapY(st.l0);
 
         if (Math.abs(tHat) >= 0.015) {
-          // 1. Horizontal Wald bracket between theta_0 (0) and thetaHat
-          const waldDropY = mapY(-0.5 * st.wald);
+          // 1. Horizontal Wald bracket between theta_0 (0) and thetaHat (clamped safely inside padT)
+          const waldDropY = Math.min(h - padB - 6, mapY(-0.5 * st.wald));
+          const lmDropY = Math.min(h - padB - 6, mapY(-0.5 * st.lm));
+          const bracketY = Math.max(padT + 18, yPeak - 16);
           ctx.strokeStyle = pal.amber;
           ctx.lineWidth = 2.4;
           ctx.beginPath();
-          ctx.moveTo(x0, yPeak - 16);
-          ctx.lineTo(xHat, yPeak - 16);
-          ctx.moveTo(x0, yPeak - 22); ctx.lineTo(x0, yPeak - 10);
-          ctx.moveTo(xHat, yPeak - 22); ctx.lineTo(xHat, yPeak - 10);
+          ctx.moveTo(x0, bracketY);
+          ctx.lineTo(xHat, bracketY);
+          ctx.moveTo(x0, bracketY - 6); ctx.lineTo(x0, bracketY + 6);
+          ctx.moveTo(xHat, bracketY - 6); ctx.lineTo(xHat, bracketY + 6);
           ctx.stroke();
 
           if (mode !== 'quad') {
@@ -1572,12 +1588,20 @@
             ctx.lineWidth = 1.5;
             ctx.setLineDash([2, 3]);
             ctx.beginPath();
-            ctx.moveTo(x0, yPeak - 8);
-            ctx.lineTo(x0, Math.min(h - padB, waldDropY));
+            ctx.moveTo(x0, yPeak - 6);
+            ctx.lineTo(x0, waldDropY);
             ctx.stroke();
             ctx.restore();
             ctx.fillStyle = pal.amber;
-            ctx.beginPath(); ctx.arc(x0, Math.min(h - padB, waldDropY), 4.2, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(x0, waldDropY, 4.2, 0, Math.PI * 2); ctx.fill();
+
+            // ½LM tick marker on vertical axis
+            ctx.strokeStyle = pal.cyan;
+            ctx.lineWidth = 2.2;
+            ctx.beginPath();
+            ctx.moveTo(x0 - 7, lmDropY);
+            ctx.lineTo(x0 + 7, lmDropY);
+            ctx.stroke();
           }
 
           // 2. Vertical LR drop bar along x0 (theta_0 = 0)
@@ -1612,31 +1636,41 @@
 
           ctx.font = '650 11.5px "JetBrains Mono", monospace';
           ctx.fillStyle = pal.amber;
-          ctx.fillText(`Wald: ${st.wald.toFixed(1)}`, (x0 + xHat) * 0.5 - 30, yPeak - 25);
+          ctx.fillText(`Wald: ${st.wald.toFixed(1)}`, (x0 + xHat) * 0.5 - 30, bracketY - 9);
 
           ctx.fillStyle = pal.indigo;
           const lrLblX = tHat >= 0 ? x0 - 96 : x0 + 8;
-          ctx.fillText(`½LR = ${(0.5 * st.lr).toFixed(2)}`, lrLblX, (yPeak + yAtNull) * 0.5 + 4);
+          const lrLblY = Math.max(yPeak + 34, (yPeak + yAtNull) * 0.5 + 4);
+          ctx.fillText(`½LR = ${(0.5 * st.lr).toFixed(2)}`, lrLblX, lrLblY);
 
-          ctx.fillStyle = pal.cyan;
-          const scLblX = tHat >= 0 ? x0 + 10 : x0 - 118;
-          ctx.fillText(`기울기 S(θ₀)=${st.s0.toFixed(1)}`, scLblX, Math.min(h - padB - 8, yAtNull + 16));
+          if (mode !== 'quad') {
+            ctx.fillStyle = pal.amber;
+            ctx.fillText(`½W=${(0.5 * st.wald).toFixed(2)}`, tHat >= 0 ? x0 + 10 : x0 - 76, Math.min(h - padB - 10, waldDropY + 4));
+            ctx.fillStyle = pal.cyan;
+            ctx.fillText(`½LM=${(0.5 * st.lm).toFixed(2)}`, x0 + 10, Math.min(h - padB - 10, lmDropY - 4));
+          } else {
+            ctx.fillStyle = pal.cyan;
+            const scLblX = tHat >= 0 ? x0 + 10 : x0 - 118;
+            ctx.fillText(`기울기 S(θ₀)=${st.s0.toFixed(1)}`, scLblX, Math.min(h - padB - 8, yAtNull + 16));
+          }
         }
 
-        // Peak markers: Population (theta_true) & Sample (thetaHat)
+        // Peak markers: Population (theta_true) & Sample (thetaHat) - keep labels cleanly separated
         ctx.fillStyle = pal.teal;
         ctx.beginPath(); ctx.arc(xTrue, yPeak, 4.6, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = pal.indigo;
         ctx.beginPath(); ctx.arc(xHat, yPeak, 5.2, 0, Math.PI * 2); ctx.fill();
 
+        const hatOnRight = xHat >= xTrue;
+        const trueLabel = Math.abs(tTrue) < 0.01 ? 'θ₀ (모집단 최대)' : 'θ_true';
         ctx.font = '650 11.5px "JetBrains Mono", monospace';
         ctx.fillStyle = pal.indigo;
-        ctx.fillText('θ̂ₙ', xHat + (tHat >= 0 ? 7 : -22), yPeak + 15);
+        ctx.fillText('θ̂ₙ', hatOnRight ? Math.min(w - padR - 26, xHat + 7) : Math.max(padL + 4, xHat - 24), yPeak + 16);
         ctx.fillStyle = pal.teal;
-        ctx.fillText(Math.abs(tTrue) < 0.01 ? 'θ₀ (모집단 최대)' : 'θ_true', xTrue + (tTrue >= 0 ? -96 : 8), yPeak + 15);
+        ctx.fillText(trueLabel, hatOnRight ? Math.max(padL + 4, xTrue - 98) : Math.min(w - padR - 98, xTrue + 8), yPeak + 16);
         ctx.fillStyle = pal.muted;
         ctx.fillText('θ₀=0', x0 - 15, h - padB + 18);
-        ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂ₙ)', padL + 8, padT + 14);
+        ctx.fillText('ℓₙ(θ) - ℓₙ(θ̂ₙ)', padL + 8, padT - 14);
       }
 
       const trPlayBtn = document.getElementById('trPlayBtn');
@@ -1711,112 +1745,145 @@
       const mTilde = document.getElementById('m2Tilde');
       const mLR = document.getElementById('m2LR');
       const mWald = document.getElementById('m2Wald');
+      const verdictEl = document.getElementById('m2Verdict');
 
       let constType = 'linear';
-      const camDefault = { yaw: -0.68, pitch: 0.46 };
+      const camDefault = { yaw: -0.68, pitch: 0.48 };
       const cam = { yaw: camDefault.yaw, pitch: camDefault.pitch };
 
-      // Fixed true population DGP parameter theta_0:
-      // Linear constraint R_lin(theta_0) = 0.60 + (-0.40) = 0.20
-      // Circle constraint R_circ(theta_0) = sqrt(0.60^2 + (-0.40)^2) = 0.7211
-      const thetaTrue = [0.60, -0.40];
-      const trueLinR = 0.20;
-      const trueCircR = Math.hypot(thetaTrue[0], thetaTrue[1]); // ~0.7211
-
       const nRef = 35;
-      const delta0 = [-0.22, 0.92]; // finite-sample estimation error at n = nRef
-      const i11 = 1.95, i22 = 1.05;
+      // Fixed population parameter theta_0 (exact 3-4-5 norm = 0.75) and base finite-sample error at nRef
+      const thetaTrue = [0.60, -0.45];
+      const delta0 = [-0.22, 0.78];
+      const i11 = 2.0, i22 = 1.05;
+      const cStat = 5.0;
+      const zPeak = 1.40;
+
+      const constConfig = {
+        linear: { min: -0.65, max: 1.05, step: 0.05, rTrue: 0.15, label: '선형 제약 수준 r = θ₁ + θ₂ (참값 0.15)' },
+        coord:  { min: -0.85, max: 0.65, step: 0.05, rTrue: -0.45, label: '좌표 제약 수준 r = θ₂ (참값 -0.45)' },
+        circle: { min: 0.25, max: 1.15, step: 0.05, rTrue: 0.75, label: '원형 제약 반지름 r = √(θ₁² + θ₂²) (참값 0.75)' }
+      };
 
       function getInfoMat(rho) {
         const i12 = rho * Math.sqrt(i11 * i22);
         const det = i11 * i22 - i12 * i12;
+        const l11 = Math.sqrt(i11);
+        const l21 = i12 / l11;
+        const l22 = Math.sqrt(Math.max(1e-6, i22 - l21 * l21));
         return {
           i11, i22, i12, det,
           inv11: i22 / det,
           inv22: i11 / det,
-          inv12: -i12 / det
+          inv12: -i12 / det,
+          // inv(L^T) maps unit circle to {d : d' J d = 1}
+          invLT: [[1 / l11, -l21 / (l11 * l22)], [0, 1 / l22]]
         };
       }
 
-      // Smooth log-likelihood hill centered at thetaHat whose level sets are exact Fisher ellipses d' I d = const
-      function ll(t1, t2, info, thetaHat, n) {
-        const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
-        const curvVis = 0.65 * Math.pow(n / nRef, 0.48);
-        return 1.42 * Math.exp(-0.5 * curvVis * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2));
+      function llHeight(t1, t2, info, center, curvVis) {
+        const d1 = t1 - center[0], d2 = t2 - center[1];
+        const q = info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2;
+        return Math.max(0.0, zPeak - 0.5 * curvVis * q);
       }
 
-      // Exact quadratic LR statistic scaling as n * (d' I d)
-      function statDrop(t1, t2, info, thetaHat, n) {
-        const d1 = t1 - thetaHat[0], d2 = t2 - thetaHat[1];
-        const nRatio = n / nRef;
-        return 4.5 * nRatio * (info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2);
+      function qDist(t1, t2, info, center) {
+        const d1 = t1 - center[0], d2 = t2 - center[1];
+        return info.i11 * d1 * d1 + 2 * info.i12 * d1 * d2 + info.i22 * d2 * d2;
       }
 
-      function solveConstrained(rho, rValNum, n) {
-        const info = getInfoMat(rho);
-        const scale = Math.sqrt(nRef / n);
-        const nRatio = n / nRef;
-        const thetaHat = [thetaTrue[0] + scale * delta0[0], thetaTrue[1] + scale * delta0[1]];
-        const h1 = thetaHat[0], h2 = thetaHat[1];
-
+      function projectPoint(pt, info, rNum) {
+        const p1 = pt[0], p2 = pt[1];
         if (constType === 'linear') {
-          const gap = (h1 + h2) - rValNum;
+          const gap = (p1 + p2) - rNum;
           const gIinvG = info.inv11 + 2 * info.inv12 + info.inv22;
           const step1 = info.inv11 + info.inv12;
           const step2 = info.inv12 + info.inv22;
-          const tilde = [h1 - (step1 / gIinvG) * gap, h2 - (step2 / gIinvG) * gap];
-          const euc = [h1 - 0.5 * gap, h2 - 0.5 * gap];
-          const s1 = -4.5 * nRatio * (info.i11 * (tilde[0] - h1) + info.i12 * (tilde[1] - h2));
-          const s2 = -4.5 * nRatio * (info.i12 * (tilde[0] - h1) + info.i22 * (tilde[1] - h2));
-          const lr = statDrop(tilde[0], tilde[1], info, thetaHat, n);
-          const wald = 4.5 * nRatio * (gap * gap) / gIinvG;
-          const nullGap = Math.abs(trueLinR - rValNum);
-          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr, wald, nullHolds: nullGap < 0.03, info };
-        } else {
-          const rad = Math.max(0.24, Math.min(1.18, rValNum));
-          let bestAng = 0, bestDrop = Infinity;
-          for (let k = 0; k < 720; k++) {
-            const ang = (k / 720) * Math.PI * 2;
-            const d = statDrop(rad * Math.cos(ang), rad * Math.sin(ang), info, thetaHat, n);
-            if (d < bestDrop) { bestDrop = d; bestAng = ang; }
-          }
-          for (let step = 0.004; step >= 0.0001; step *= 0.25) {
-            for (let s = -4; s <= 4; s++) {
-              const cand = bestAng + s * step;
-              const d = statDrop(rad * Math.cos(cand), rad * Math.sin(cand), info, thetaHat, n);
-              if (d < bestDrop) { bestDrop = d; bestAng = cand; }
-            }
-          }
-          const tilde = [rad * Math.cos(bestAng), rad * Math.sin(bestAng)];
-          const normHat = Math.max(1e-6, Math.hypot(h1, h2));
-          const euc = [h1 * (rad / normHat), h2 * (rad / normHat)];
-          const s1 = -4.5 * nRatio * (info.i11 * (tilde[0] - h1) + info.i12 * (tilde[1] - h2));
-          const s2 = -4.5 * nRatio * (info.i12 * (tilde[0] - h1) + info.i22 * (tilde[1] - h2));
-          const rHatGap = (h1 * h1 + h2 * h2) - rad * rad;
-          const g1 = 2 * h1, g2 = 2 * h2;
-          const gIinvG = g1 * g1 * info.inv11 + 2 * g1 * g2 * info.inv12 + g2 * g2 * info.inv22;
-          const wald = 4.5 * nRatio * (rHatGap * rHatGap) / Math.max(1e-6, gIinvG);
-          const nullGap = Math.abs(trueCircR - rad);
-          return { thetaTrue, thetaHat, tilde, euc, score: [s1, s2], lr: bestDrop, wald, rad, nullHolds: nullGap < 0.03, info };
+          const tilde = [p1 - (step1 / gIinvG) * gap, p2 - (step2 / gIinvG) * gap];
+          const euc = [p1 - 0.5 * gap, p2 - 0.5 * gap];
+          const grad = [1, 1];
+          return { tilde, euc, gap, gIinvG, grad, q: qDist(tilde[0], tilde[1], info, pt), rad: rNum };
         }
+        if (constType === 'coord') {
+          const gap = p2 - rNum;
+          const gIinvG = info.inv22;
+          const tilde = [p1 + (info.i12 / info.i11) * gap, rNum];
+          const euc = [p1, rNum];
+          const grad = [0, 1];
+          return { tilde, euc, gap, gIinvG, grad, q: qDist(tilde[0], tilde[1], info, pt), rad: rNum };
+        }
+        const rad = Math.max(0.25, rNum);
+        let bestAng = 0, bestQ = Infinity;
+        for (let k = 0; k < 720; k++) {
+          const ang = (k / 720) * Math.PI * 2;
+          const q = qDist(rad * Math.cos(ang), rad * Math.sin(ang), info, pt);
+          if (q < bestQ) { bestQ = q; bestAng = ang; }
+        }
+        for (let step = 0.004; step >= 0.0001; step *= 0.25) {
+          for (let s = -4; s <= 4; s++) {
+            const cand = bestAng + s * step;
+            const q = qDist(rad * Math.cos(cand), rad * Math.sin(cand), info, pt);
+            if (q < bestQ) { bestQ = q; bestAng = cand; }
+          }
+        }
+        const tilde = [rad * Math.cos(bestAng), rad * Math.sin(bestAng)];
+        const normP = Math.max(1e-6, Math.hypot(p1, p2));
+        const euc = [p1 * (rad / normP), p2 * (rad / normP)];
+        const gap = (p1 * p1 + p2 * p2) - rad * rad;
+        const g1 = 2 * p1, g2 = 2 * p2;
+        const gIinvG = Math.max(1e-6, g1 * g1 * info.inv11 + 2 * g1 * g2 * info.inv12 + g2 * g2 * info.inv22);
+        const grad = [2 * tilde[0], 2 * tilde[1]];
+        return { tilde, euc, gap, gIinvG, grad, q: bestQ, rad };
       }
 
-      const rBound = 1.40;
-      const nGrid = 18;
-      const coords = [];
-      for (let i = 0; i <= nGrid; i++) coords.push(-rBound + (i / nGrid) * (2 * rBound));
+      function solveConstrained(rho, rNum, n) {
+        const info = getInfoMat(rho);
+        const scale = Math.sqrt(nRef / n);
+        const nRatio = n / nRef;
+        const curvVis = 4.1 * nRatio;
+
+        const thetaHat = [thetaTrue[0] + scale * delta0[0], thetaTrue[1] + scale * delta0[1]];
+        const pseudoRes = projectPoint(thetaTrue, info, rNum);
+        const sampRes = projectPoint(thetaHat, info, rNum);
+        const trueGap = Math.hypot(pseudoRes.tilde[0] - thetaTrue[0], pseudoRes.tilde[1] - thetaTrue[1]);
+
+        const tilde = sampRes.tilde;
+        const s1 = -cStat * nRatio * (info.i11 * (tilde[0] - thetaHat[0]) + info.i12 * (tilde[1] - thetaHat[1]));
+        const s2 = -cStat * nRatio * (info.i12 * (tilde[0] - thetaHat[0]) + info.i22 * (tilde[1] - thetaHat[1]));
+        const lr = cStat * nRatio * sampRes.q;
+        const wald = cStat * nRatio * (sampRes.gap * sampRes.gap) / Math.max(1e-6, sampRes.gIinvG);
+
+        return {
+          thetaTrue,
+          thetaPseudo: pseudoRes.tilde,
+          h0True: trueGap < 0.025,
+          thetaHat,
+          tilde,
+          euc: sampRes.euc,
+          grad: sampRes.grad,
+          score: [s1, s2],
+          lr,
+          wald,
+          qTilde: sampRes.q,
+          curvVis,
+          rad: sampRes.rad,
+          info
+        };
+      }
+
+      const rBound = 1.48;
 
       function project3D(p, w, h) {
-        const x = p[0], y = p[1], z = p[2] - 0.62;
+        const x = p[0], y = p[1], z = p[2] - 0.58;
         const cy = Math.cos(cam.yaw), sy = Math.sin(cam.yaw);
         const cp = Math.cos(cam.pitch), sp = Math.sin(cam.pitch);
         const xr = x * cy - y * sy;
         const yr = x * sy + y * cy;
         const depth = yr * sp + z * cp;
         const syScreen = z * cp - yr * sp;
-        const persp = 7.4 / Math.max(2.2, 7.4 - depth);
-        const scale = Math.min(w, h) * 0.27 * persp;
-        return { x: w * 0.50 + xr * scale, y: h * 0.56 - syScreen * scale, depth };
+        const persp = 7.6 / Math.max(2.2, 7.6 - depth);
+        const scale = Math.min(w, h) * 0.255 * persp;
+        return { x: w * 0.50 + xr * scale, y: h * 0.57 - syScreen * scale, depth };
       }
 
       let drag = null;
@@ -1851,7 +1918,7 @@
           project3D([rBound, rBound, 0], w, h),
           project3D([-rBound, rBound, 0], w, h)
         ];
-        ctx.fillStyle = pal.dark ? 'rgba(17,24,39,0.70)' : 'rgba(226,232,240,0.58)';
+        ctx.fillStyle = pal.dark ? 'rgba(17,24,39,0.52)' : 'rgba(226,232,240,0.48)';
         ctx.beginPath();
         ctx.moveTo(fl[0].x, fl[0].y);
         fl.slice(1).forEach(pt => ctx.lineTo(pt.x, pt.y));
@@ -1871,34 +1938,47 @@
           ctx.beginPath(); ctx.moveTo(c.x, c.y); ctx.lineTo(d.x, d.y); ctx.stroke();
         }
 
-        // Surface quads painter-sorted
+        // Exact Polar Cholesky Paraboloid Dome Mesh (clean floor edge at z = 0)
+        const nRad = 9, nAng = 26;
+        const rJMax = Math.sqrt((2 * zPeak) / st.curvVis);
+        const rings = [];
+        for (let ir = 0; ir <= nRad; ir++) {
+          const uR = ir / nRad;
+          const zR = zPeak * (1 - uR * uR);
+          const ring = [];
+          for (let ia = 0; ia <= nAng; ia++) {
+            const ang = (ia / nAng) * Math.PI * 2;
+            const ca = Math.cos(ang), sa = Math.sin(ang);
+            const d1 = rJMax * uR * (st.info.invLT[0][0] * ca + st.info.invLT[0][1] * sa);
+            const d2 = rJMax * uR * (st.info.invLT[1][1] * sa);
+            const px = Math.max(-1.85, Math.min(1.85, st.thetaHat[0] + d1));
+            const py = Math.max(-1.85, Math.min(1.85, st.thetaHat[1] + d2));
+            ring.push(project3D([px, py, zR], w, h));
+          }
+          rings.push(ring);
+        }
+
         const quads = [];
-        for (let i = 0; i < nGrid; i++) {
-          for (let j = 0; j < nGrid; j++) {
-            const x0 = coords[i], x1 = coords[i + 1], y0 = coords[j], y1 = coords[j + 1];
-            const za = Math.max(0.02, ll(x0, y0, st.info, st.thetaHat, n));
-            const zb = Math.max(0.02, ll(x1, y0, st.info, st.thetaHat, n));
-            const zc = Math.max(0.02, ll(x1, y1, st.info, st.thetaHat, n));
-            const zd = Math.max(0.02, ll(x0, y1, st.info, st.thetaHat, n));
-            const pa = project3D([x0, y0, za], w, h);
-            const pb = project3D([x1, y0, zb], w, h);
-            const pc = project3D([x1, y1, zc], w, h);
-            const pd = project3D([x0, y1, zd], w, h);
+        for (let ir = 0; ir < nRad; ir++) {
+          const zAvg = zPeak * (1 - Math.pow((ir + 0.5) / nRad, 2));
+          for (let ia = 0; ia < nAng; ia++) {
+            const pa = rings[ir][ia], pb = rings[ir + 1][ia];
+            const pc = rings[ir + 1][ia + 1], pd = rings[ir][ia + 1];
             quads.push({
               pts: [pa, pb, pc, pd],
               depth: (pa.depth + pb.depth + pc.depth + pd.depth) * 0.25,
-              zAvg: (za + zb + zc + zd) * 0.25
+              t: Math.max(0, Math.min(1, zAvg / zPeak))
             });
           }
         }
         quads.sort((a, b) => a.depth - b.depth);
         for (const q of quads) {
-          const t = Math.max(0, Math.min(1, q.zAvg / 1.35));
+          const t = q.t;
           ctx.fillStyle = pal.dark
-            ? `rgba(${Math.round(45 + 75 * t)}, ${Math.round(62 + 82 * t)}, ${Math.round(145 + 100 * t)}, 0.44)`
-            : `rgba(${Math.round(165 - 65 * t)}, ${Math.round(175 - 70 * t)}, ${Math.round(245 - 20 * t)}, 0.42)`;
-          ctx.strokeStyle = pal.dark ? 'rgba(129,140,248,0.22)' : 'rgba(79,70,229,0.22)';
-          ctx.lineWidth = 0.7;
+            ? `rgba(${Math.round(48 + 75 * t)}, ${Math.round(64 + 84 * t)}, ${Math.round(145 + 100 * t)}, ${0.22 + 0.26 * t})`
+            : `rgba(${Math.round(165 - 65 * t)}, ${Math.round(175 - 70 * t)}, ${Math.round(245 - 20 * t)}, ${0.22 + 0.24 * t})`;
+          ctx.strokeStyle = pal.dark ? `rgba(129,140,248,${0.14 + 0.20 * t})` : `rgba(79,70,229,${0.14 + 0.18 * t})`;
+          ctx.lineWidth = 0.75;
           ctx.beginPath();
           ctx.moveTo(q.pts[0].x, q.pts[0].y);
           ctx.lineTo(q.pts[1].x, q.pts[1].y);
@@ -1909,22 +1989,29 @@
           ctx.stroke();
         }
 
-        // Draw constraint ridge curve on surface + wall ribbon
+        // Constraint locus & ribbon on surface
         const ridgePts = [];
         if (constType === 'linear') {
           const tMin = Math.max(-rBound, rNum - rBound);
           const tMax = Math.min(rBound, rNum + rBound);
-          for (let k = 0; k <= 40; k++) {
-            const t1 = tMin + (k / 40) * (tMax - tMin);
+          for (let k = 0; k <= 44; k++) {
+            const t1 = tMin + (k / 44) * (tMax - tMin);
             const t2 = rNum - t1;
-            const z = Math.max(0.02, ll(t1, t2, st.info, st.thetaHat, n));
+            const z = llHeight(t1, t2, st.info, st.thetaHat, st.curvVis);
+            ridgePts.push({ pFloor: project3D([t1, t2, 0], w, h), pTop: project3D([t1, t2, z], w, h) });
+          }
+        } else if (constType === 'coord') {
+          const t2 = Math.max(-rBound, Math.min(rBound, rNum));
+          for (let k = 0; k <= 44; k++) {
+            const t1 = -rBound + (k / 44) * (2 * rBound);
+            const z = llHeight(t1, t2, st.info, st.thetaHat, st.curvVis);
             ridgePts.push({ pFloor: project3D([t1, t2, 0], w, h), pTop: project3D([t1, t2, z], w, h) });
           }
         } else {
           for (let k = 0; k <= 60; k++) {
             const ang = (k / 60) * Math.PI * 2;
             const t1 = st.rad * Math.cos(ang), t2 = st.rad * Math.sin(ang);
-            const z = Math.max(0.02, ll(t1, t2, st.info, st.thetaHat, n));
+            const z = llHeight(t1, t2, st.info, st.thetaHat, st.curvVis);
             ridgePts.push({ pFloor: project3D([t1, t2, 0], w, h), pTop: project3D([t1, t2, z], w, h) });
           }
         }
@@ -1944,16 +2031,37 @@
           ctx.stroke();
 
           ctx.strokeStyle = pal.amber;
-          ctx.lineWidth = 1.4;
+          ctx.lineWidth = 1.5;
           ctx.beginPath();
           ridgePts.forEach((r, idx) => idx === 0 ? ctx.moveTo(r.pFloor.x, r.pFloor.y) : ctx.lineTo(r.pFloor.x, r.pFloor.y));
           ctx.stroke();
         }
 
-        // Population true parameter theta_0 on floor constraint + sample thetaHat, tilde
-        const zHat = ll(st.thetaHat[0], st.thetaHat[1], st.info, st.thetaHat, n);
-        const zTilde = Math.max(0.02, ll(st.tilde[0], st.tilde[1], st.info, st.thetaHat, n));
+        // Level-set J-ellipse on floor and (if zTilde > 0.03) elevated on dome kissing tilde
+        const zHat = zPeak;
+        const zTildeRaw = zPeak - 0.5 * st.curvVis * st.qTilde;
+        const zTilde = Math.max(0.0, zTildeRaw);
+        const rLvl = Math.max(0.03, Math.sqrt(st.qTilde));
+
+        function drawEllipse3D(zH, color, width) {
+          ctx.strokeStyle = color;
+          ctx.lineWidth = width;
+          ctx.beginPath();
+          for (let ia = 0; ia <= 48; ia++) {
+            const ang = (ia / 48) * Math.PI * 2;
+            const ca = Math.cos(ang), sa = Math.sin(ang);
+            const px = st.thetaHat[0] + rLvl * (st.info.invLT[0][0] * ca + st.info.invLT[0][1] * sa);
+            const py = st.thetaHat[1] + rLvl * (st.info.invLT[1][1] * sa);
+            const pr = project3D([px, py, zH], w, h);
+            if (ia === 0) ctx.moveTo(pr.x, pr.y); else ctx.lineTo(pr.x, pr.y);
+          }
+          ctx.stroke();
+        }
+        drawEllipse3D(0.01, pal.indigo, 1.5);
+        if (zTildeRaw > 0.04) drawEllipse3D(zTilde, pal.cyan, 2.1);
+
         const pTrueFloor = project3D([st.thetaTrue[0], st.thetaTrue[1], 0], w, h);
+        const pPseudoFloor = project3D([st.thetaPseudo[0], st.thetaPseudo[1], 0], w, h);
         const pHatTop = project3D([st.thetaHat[0], st.thetaHat[1], zHat], w, h);
         const pHatFloor = project3D([st.thetaHat[0], st.thetaHat[1], 0], w, h);
         const pTilTop = project3D([st.tilde[0], st.tilde[1], zTilde], w, h);
@@ -1969,27 +2077,34 @@
         ctx.beginPath(); ctx.moveTo(pTilFloor.x, pTilFloor.y); ctx.lineTo(pTilTop.x, pTilTop.y); ctx.stroke();
         ctx.strokeStyle = pal.indigo;
         ctx.beginPath(); ctx.moveTo(pHatTop.x, pHatTop.y); ctx.lineTo(pTilAtHatLevel.x, pTilAtHatLevel.y); ctx.stroke();
+        if (!st.h0True) {
+          ctx.strokeStyle = pal.teal;
+          ctx.beginPath(); ctx.moveTo(pTrueFloor.x, pTrueFloor.y); ctx.lineTo(pPseudoFloor.x, pPseudoFloor.y); ctx.stroke();
+        }
         ctx.restore();
 
         // LR vertical drop above tilde
         ctx.strokeStyle = pal.indigo;
-        ctx.lineWidth = 2.6;
+        ctx.lineWidth = 2.8;
         ctx.beginPath(); ctx.moveTo(pTilAtHatLevel.x, pTilAtHatLevel.y); ctx.lineTo(pTilTop.x, pTilTop.y); ctx.stroke();
 
-        // Floor projection lines (I-projection in cyan)
+        // Floor J-projection segment
         ctx.strokeStyle = pal.cyan;
-        ctx.lineWidth = 2.0;
+        ctx.lineWidth = 2.2;
         ctx.beginPath(); ctx.moveTo(pHatFloor.x, pHatFloor.y); ctx.lineTo(pTilFloor.x, pTilFloor.y); ctx.stroke();
 
         function dot3(pt, col, lbl, dx, dy) {
           ctx.fillStyle = col;
-          ctx.beginPath(); ctx.arc(pt.x, pt.y, 5.0, 0, Math.PI * 2); ctx.fill();
-          ctx.font = '650 11.5px "JetBrains Mono", monospace';
+          ctx.beginPath(); ctx.arc(pt.x, pt.y, 4.8, 0, Math.PI * 2); ctx.fill();
+          ctx.font = '650 11px "JetBrains Mono", monospace';
           ctx.fillText(lbl, pt.x + dx, pt.y + dy);
         }
-        dot3(pTrueFloor, pal.teal, 'θ₀ (참값)', -62, 14);
-        dot3(pHatTop, pal.indigo, 'θ̂ₙ (표본 정점)', 8, -5);
-        dot3(pTilTop, pal.amber, 'θ̃ₙ (제약 정점)', 8, 6);
+        dot3(pTrueFloor, pal.teal, 'θ₀ (참값)', -64, 14);
+        if (!st.h0True) {
+          dot3(pPseudoFloor, pal.muted, 'θ_R* (의사)', 8, 12);
+        }
+        dot3(pHatTop, pal.indigo, 'θ̂ₙ (비제약)', 8, -5);
+        dot3(pTilTop, pal.amber, 'θ̃ₙ (제약)', 8, 6);
       }
 
       function render2D(st, rNum, n, pal) {
@@ -1998,7 +2113,7 @@
         ctx.fillRect(0, 0, w, h);
 
         const pad = 16;
-        const span = 1.32;
+        const span = 1.38;
         const sc = Math.min((w - 2 * pad) / (2 * span), (h - 2 * pad) / (2 * span));
         const cx = w * 0.50, cy = h * 0.52;
         const mapX = x => cx + x * sc;
@@ -2011,21 +2126,21 @@
         ctx.moveTo(mapX(0), mapY(-span)); ctx.lineTo(mapX(0), mapY(span));
         ctx.stroke();
 
-        // Draw elliptical log-likelihood contours centered at thetaHat: 4.5*(n/nRef) * d' I d = lvl
+        // Draw elliptical log-likelihood contours centered at thetaHat matching statistic drop LR
         const hasDrop = st.lr > 0.015;
         const targetDrop = hasDrop ? st.lr : 0.45;
-        const levels = [targetDrop * 0.35, targetDrop, Math.max(targetDrop * 2.0, 0.55)];
+        const levels = [targetDrop * 0.35, targetDrop, Math.max(targetDrop * 1.9, 0.55)];
         const nRatio = n / nRef;
         levels.forEach((lvl, idx) => {
           ctx.save();
           ctx.strokeStyle = pal.indigo;
-          ctx.globalAlpha = (hasDrop && idx === 1) ? 0.90 : 0.28;
+          ctx.globalAlpha = (hasDrop && idx === 1) ? 0.92 : 0.28;
           ctx.lineWidth = (hasDrop && idx === 1) ? 2.1 : 1.1;
           ctx.beginPath();
           for (let a = 0; a <= 72; a++) {
             const ang = (a / 72) * Math.PI * 2;
             const u1 = Math.cos(ang), u2 = Math.sin(ang);
-            const qForm = 4.5 * nRatio * (st.info.i11 * u1 * u1 + 2 * st.info.i12 * u1 * u2 + st.info.i22 * u2 * u2);
+            const qForm = cStat * nRatio * (st.info.i11 * u1 * u1 + 2 * st.info.i12 * u1 * u2 + st.info.i22 * u2 * u2);
             const rad = Math.sqrt(lvl / qForm);
             const px = mapX(st.thetaHat[0] + rad * u1), py = mapY(st.thetaHat[1] + rad * u2);
             if (a === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
@@ -2041,12 +2156,28 @@
         if (constType === 'linear') {
           ctx.moveTo(mapX(-span), mapY(rNum + span));
           ctx.lineTo(mapX(span), mapY(rNum - span));
+        } else if (constType === 'coord') {
+          ctx.moveTo(mapX(-span), mapY(rNum));
+          ctx.lineTo(mapX(span), mapY(rNum));
         } else {
           ctx.arc(mapX(0), mapY(0), st.rad * sc, 0, Math.PI * 2);
         }
         ctx.stroke();
 
-        // Naive Euclidean projection line (dashed gray)
+        // Pseudo-true projection line if H_0 is false
+        if (!st.h0True) {
+          ctx.save();
+          ctx.strokeStyle = pal.teal;
+          ctx.lineWidth = 1.2;
+          ctx.setLineDash([2, 2]);
+          ctx.beginPath();
+          ctx.moveTo(mapX(st.thetaTrue[0]), mapY(st.thetaTrue[1]));
+          ctx.lineTo(mapX(st.thetaPseudo[0]), mapY(st.thetaPseudo[1]));
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Euclidean projection line (dashed gray)
         ctx.save();
         ctx.strokeStyle = pal.muted;
         ctx.lineWidth = 1.4;
@@ -2057,7 +2188,7 @@
         ctx.stroke();
         ctx.restore();
 
-        // I-projection line (cyan)
+        // J-projection line (cyan)
         ctx.strokeStyle = pal.cyan;
         ctx.lineWidth = 2.0;
         ctx.beginPath();
@@ -2065,33 +2196,29 @@
         ctx.lineTo(mapX(st.tilde[0]), mapY(st.tilde[1]));
         ctx.stroke();
 
-        // Score vector at tilde + explicit 90-deg right angle box with constraint tangent
+        // Score vector at tilde + Euclidean 90-degree orthogonality box
         const sNorm = Math.hypot(st.score[0], st.score[1]);
         if (sNorm > 0.05) {
           const dispLen = 0.36;
-          const ux = st.score[0] / sNorm;
-          const uy = st.score[1] / sNorm;
-          const tx = -uy, ty = ux; // tangent unit vector (orthogonal to score gradient at tilde)
+          const sx = (st.score[0] / sNorm), sy = (st.score[1] / sNorm);
           const p0x = mapX(st.tilde[0]), p0y = mapY(st.tilde[1]);
-          const p1x = mapX(st.tilde[0] + ux * dispLen), p1y = mapY(st.tilde[1] + uy * dispLen);
-          // 90-degree corner mark in screen pixels
-          const bx = 9;
-          const sux = (p1x - p0x) / Math.max(1, Math.hypot(p1x - p0x, p1y - p0y));
-          const suy = (p1y - p0y) / Math.max(1, Math.hypot(p1x - p0x, p1y - p0y));
-          const stx = mapX(st.tilde[0] + tx * 0.2) - p0x;
-          const sty = mapY(st.tilde[1] + ty * 0.2) - p0y;
-          const tNormPx = Math.max(1, Math.hypot(stx, sty));
-          const tux = stx / tNormPx, tuy = sty / tNormPx;
+          const p1x = mapX(st.tilde[0] + sx * dispLen), p1y = mapY(st.tilde[1] + sy * dispLen);
           ctx.strokeStyle = pal.cyan;
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(p0x + tux * bx, p0y + tuy * bx);
-          ctx.lineTo(p0x + tux * bx + sux * bx, p0y + tuy * bx + suy * bx);
-          ctx.lineTo(p0x + sux * bx, p0y + suy * bx);
-          ctx.stroke();
-
           ctx.lineWidth = 2.2;
           ctx.beginPath(); ctx.moveTo(p0x, p0y); ctx.lineTo(p1x, p1y); ctx.stroke();
+
+          // Right-angle square along tangent (-sy, sx) in canvas pixel units
+          const sq = 8.5;
+          const vx = (p1x - p0x) / Math.hypot(p1x - p0x, p1y - p0y);
+          const vy = (p1y - p0y) / Math.hypot(p1x - p0x, p1y - p0y);
+          const tx = -vy, ty = vx;
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          ctx.moveTo(p0x + vx * sq, p0y + vy * sq);
+          ctx.lineTo(p0x + vx * sq + tx * sq, p0y + vy * sq + ty * sq);
+          ctx.lineTo(p0x + tx * sq, p0y + ty * sq);
+          ctx.stroke();
+
           const ang = Math.atan2(p1y - p0y, p1x - p0x);
           ctx.fillStyle = pal.cyan;
           ctx.beginPath();
@@ -2102,20 +2229,28 @@
           ctx.fill();
         }
 
-        // Points: Euc, True theta_0 (teal), Sample thetaHat (indigo), Sample constrained tilde (amber)
+        // Points
         ctx.fillStyle = pal.muted;
-        ctx.beginPath(); ctx.arc(mapX(st.euc[0]), mapY(st.euc[1]), 3.4, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mapX(st.euc[0]), mapY(st.euc[1]), 3.2, 0, Math.PI * 2); ctx.fill();
+        if (!st.h0True) {
+          ctx.strokeStyle = pal.muted;
+          ctx.lineWidth = 1.6;
+          ctx.beginPath(); ctx.arc(mapX(st.thetaPseudo[0]), mapY(st.thetaPseudo[1]), 4.4, 0, Math.PI * 2); ctx.stroke();
+        }
         ctx.fillStyle = pal.teal;
-        ctx.beginPath(); ctx.arc(mapX(st.thetaTrue[0]), mapY(st.thetaTrue[1]), 4.6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mapX(st.thetaTrue[0]), mapY(st.thetaTrue[1]), 4.5, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = pal.indigo;
-        ctx.beginPath(); ctx.arc(mapX(st.thetaHat[0]), mapY(st.thetaHat[1]), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mapX(st.thetaHat[0]), mapY(st.thetaHat[1]), 4.4, 0, Math.PI * 2); ctx.fill();
         ctx.fillStyle = pal.amber;
-        ctx.beginPath(); ctx.arc(mapX(st.tilde[0]), mapY(st.tilde[1]), 4.7, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(mapX(st.tilde[0]), mapY(st.tilde[1]), 4.6, 0, Math.PI * 2); ctx.fill();
 
-        ctx.font = '600 10.5px "JetBrains Mono", monospace';
-        ctx.fillStyle = pal.teal; ctx.fillText('θ₀', mapX(st.thetaTrue[0]) - 18, mapY(st.thetaTrue[1]) - 5);
+        ctx.font = '600 10px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.teal; ctx.fillText('θ₀', mapX(st.thetaTrue[0]) - 16, mapY(st.thetaTrue[1]) - 5);
+        if (!st.h0True) {
+          ctx.fillStyle = pal.muted; ctx.fillText('θ_R*', mapX(st.thetaPseudo[0]) + 6, mapY(st.thetaPseudo[1]) + 10);
+        }
         ctx.fillStyle = pal.indigo; ctx.fillText('θ̂ₙ', mapX(st.thetaHat[0]) + 6, mapY(st.thetaHat[1]) - 4);
-        ctx.fillStyle = pal.amber; ctx.fillText('θ̃ₙ', mapX(st.tilde[0]) + 6, mapY(st.tilde[1]) + 11);
+        ctx.fillStyle = pal.amber; ctx.fillText('θ̃ₙ', mapX(st.tilde[0]) + 6, mapY(st.tilde[1]) + 10);
       }
 
       function render() {
@@ -2126,18 +2261,26 @@
         const st = solveConstrained(rho, rNum, n);
 
         rhoVal.textContent = rho.toFixed(2);
-        rVal.textContent = constType === 'linear' ? rNum.toFixed(2) : `r=${st.rad.toFixed(2)}`;
+        rVal.textContent = constType === 'circle' ? `r=${st.rad.toFixed(2)}` : rNum.toFixed(2);
         nVal.textContent = String(n);
-        rLabel.textContent = constType === 'linear'
-          ? `선형 제약 r = θ₁ + θ₂ (H₀ 참: ${trueLinR.toFixed(2)})`
-          : `원형 제약 반지름 r = √(θ₁² + θ₂²) (H₀ 참: ${trueCircR.toFixed(2)})`;
+        rLabel.textContent = constConfig[constType].label;
 
-        mTrue.textContent = st.nullHolds ? '(0.60, -0.40) · H₀ 참' : '(0.60, -0.40) · H₀ 위반';
-        mTrue.className = 'metric-tile__v ' + (st.nullHolds ? 'ok' : 'warn');
+        const limitPt = st.h0True ? st.thetaTrue : st.thetaPseudo;
+        mTrue.textContent = `(${limitPt[0].toFixed(2)}, ${limitPt[1].toFixed(2)})`;
         mTilde.textContent = `(${st.tilde[0].toFixed(2)}, ${st.tilde[1].toFixed(2)})`;
         mLR.textContent = st.lr.toFixed(2);
         mWald.textContent = st.wald.toFixed(2);
         mWald.className = 'metric-tile__v ' + (Math.abs(st.wald - st.lr) > 0.25 ? 'warn' : 'ok');
+
+        if (st.h0True) {
+          if (constType === 'coord' && Math.abs(rho) > 0.08) {
+            verdictEl.textContent = `H₀ 참(θ₂=-0.45): θ₁은 비제약이지만 ρ=${rho.toFixed(2)}≠0 파급효과로 θ̃₁(${st.tilde[0].toFixed(2)}) ≠ θ̂₁(${st.thetaHat[0].toFixed(2)})가 된다. n↑이면 둘 다 θ₀=(0.60,-0.45)로 수렴한다.`;
+          } else {
+            verdictEl.textContent = 'H₀ 참(g(θ₀)=0): θ_R* = θ₀=(0.60, -0.45)이므로 n↑에 따라 θ̂ₙ과 θ̃ₙ이 함께 θ₀로 수렴하며 LRₙ = O_p(1)이 유한하게 유지된다.';
+          }
+        } else {
+          verdictEl.textContent = `대립가설(g(θ₀)≠0): θ̂ₙ→θ₀이지만 제약 MLE θ̃ₙ은 의사참값 θ_R*=(${st.thetaPseudo[0].toFixed(2)}, ${st.thetaPseudo[1].toFixed(2)}) ≠ θ₀로 수렴해 n↑에 따라 LRₙ = O_p(n) → ∞로 발산한다.`;
+        }
 
         render3D(st, rNum, n, pal);
         render2D(st, rNum, n, pal);
@@ -2154,7 +2297,7 @@
           cancelAnimationFrame(m2AnimId);
           m2AnimId = null;
         }
-        m2PlayBtn.textContent = '▶ 회전·상관 재생';
+        m2PlayBtn.textContent = '▶ 회전·상관';
         m2PlayBtn.classList.remove('is-primary');
       }
 
@@ -2163,7 +2306,7 @@
           cancelAnimationFrame(m2NAnimId);
           m2NAnimId = null;
         }
-        m2PlayNBtn.textContent = '▶ n↑ 수렴 보기';
+        m2PlayNBtn.textContent = '▶ n↑ 수렴';
         m2PlayNBtn.classList.remove('is-primary');
       }
 
@@ -2196,13 +2339,13 @@
         stopM2Anim();
         m2PlayNBtn.textContent = '⏸ 수렴 정지';
         m2PlayNBtn.classList.add('is-primary');
-        nIn.value = '15';
-        let nFloat = 15;
+        nIn.value = '20';
+        let nFloat = 20;
         let lastT = performance.now();
         function tickN(now) {
           const dt = Math.min(0.05, (now - lastT) / 1000);
           lastT = now;
-          nFloat += dt * 48;
+          nFloat += dt * 46;
           if (nFloat >= 240) {
             nIn.value = '240';
             render();
@@ -2218,24 +2361,19 @@
 
       constBtns.forEach(b => {
         b.addEventListener('click', () => {
-          const nextType = b.getAttribute('data-m2-const');
-          if (nextType !== constType) {
-            constType = nextType;
-            if (constType === 'linear') {
-              rIn.min = '-0.60'; rIn.max = '1.20'; rIn.step = '0.04';
-              rIn.value = trueLinR.toFixed(2);
-            } else {
-              rIn.min = '0.24'; rIn.max = '1.16'; rIn.step = '0.02';
-              rIn.value = trueCircR.toFixed(2);
-            }
-          }
+          constType = b.getAttribute('data-m2-const');
           constBtns.forEach(x => x.classList.toggle('is-primary', x === b));
+          const cfg = constConfig[constType];
+          rIn.min = String(cfg.min);
+          rIn.max = String(cfg.max);
+          rIn.step = String(cfg.step);
+          rIn.value = String(cfg.rTrue);
           render();
         });
       });
       if (nullBtn) {
         nullBtn.addEventListener('click', () => {
-          rIn.value = constType === 'linear' ? trueLinR.toFixed(2) : trueCircR.toFixed(2);
+          rIn.value = String(constConfig[constType].rTrue);
           render();
         });
       }
@@ -2313,7 +2451,7 @@
         // E[Y_i] = 1 (true parameter mu_0 = 1), Var(Y_i) = kappa.
         // Fit Exponential(mu) quasi-MLE => H_0: mu = 1, hat{mu} = bar{Y}, naive H(hat{mu}) = 1/bar{Y}^2,
         // score variance hat{Omega}(hat{mu}) = S^2 / bar{Y}^4 => sandwich variance = S^2.
-        const R = 300;
+        const R = 600;
         const { sampleGamma } = rngFactory(seed);
         const shape = 1.0 / kappa;
         const lrStats = new Array(R);
@@ -2359,14 +2497,14 @@
         mMeanLR.className = 'metric-tile__v ' + (Math.abs(meanLR - 1) > 0.35 ? 'warn' : '');
 
         if (Math.abs(kappa - 1.0) <= 0.12) {
-          verdictEl.textContent = '정보행렬 항등식(Ω = I) 성립: 비강건 Wald·LR과 강건 샌드위치 Wald 모두 이론 χ²₁ 분포(기각률 ≈ 5%)를 잘 따른다.';
+          verdictEl.textContent = '정보행렬 항등식(Ω = J) 성립: 비강건 Wald·LR과 강건 샌드위치 Wald 모두 이론 χ²₁ 분포(기각률 ≈ 5%)를 잘 따른다.';
         } else if (kappa > 1.12) {
           verdictEl.textContent = `과분산 오지정(κ=${kappa.toFixed(1)}): 비강건 LR/Wald가 κ·χ²₁로 퍼져 허위 기각률이 ${pctLR.toFixed(1)}%까지 급증한다. 샌드위치 Wald만 ≈5%를 유지한다.`;
         } else {
           verdictEl.textContent = `과소분산 오지정(κ=${kappa.toFixed(1)}): 비강건 LR/Wald가 지나치게 보수적(${pctLR.toFixed(1)}% 기각)으로 붕괴한다.`;
         }
 
-        // Draw Histogram + Chi2(1) density
+        // Draw Histogram + Chi2(1) density + distorted kappa*Chi2(1) PDF
         const { ctx, w, h } = setupCanvas(canvas, 390);
         ctx.fillStyle = pal.bg;
         ctx.fillRect(0, 0, w, h);
@@ -2404,7 +2542,7 @@
         ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB);
         ctx.stroke();
 
-        // Draw Naive LR bars (filled indigo) & Robust Wald outline (teal step/bars)
+        // Draw Naive LR bars (filled indigo/rose) & Robust Wald outline (teal step/bars)
         const baseY = mapY(0);
         for (let i = 0; i < bins; i++) {
           const x0 = mapX(i * bw), x1 = mapX((i + 1) * bw);
@@ -2433,6 +2571,25 @@
         }
         ctx.stroke();
 
+        // Distorted kappa * chi2(1) PDF when kappa != 1
+        const showScaledPdf = Math.abs(kappa - 1.0) >= 0.06;
+        if (showScaledPdf) {
+          ctx.save();
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 2.1;
+          ctx.setLineDash([6, 4]);
+          ctx.beginPath();
+          for (let k = 1; k <= 160; k++) {
+            const x = 0.08 + (k / 160) * (xMax - 0.08);
+            const yArg = x / kappa;
+            const pdf = (1 / kappa) * (1 / Math.sqrt(2 * Math.PI * yArg)) * Math.exp(-0.5 * yArg);
+            const px = mapX(x), py = mapY(Math.min(maxDens, pdf));
+            if (k === 1) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.stroke();
+          ctx.restore();
+        }
+
         // Critical value vertical dashed line x = 3.841
         const pxCrit = mapX(crit);
         ctx.save();
@@ -2442,15 +2599,29 @@
         ctx.beginPath(); ctx.moveTo(pxCrit, padT); ctx.lineTo(pxCrit, baseY); ctx.stroke();
         ctx.restore();
 
-        ctx.font = '650 11.5px "JetBrains Mono", monospace';
+        ctx.font = '650 11px "JetBrains Mono", monospace';
         ctx.fillStyle = pal.rose;
         ctx.fillText('5% 임계값 = 3.841', pxCrit + 6, padT + 16);
+
+        ctx.save();
+        ctx.textAlign = 'right';
+        const rx = w - padR - 6;
         ctx.fillStyle = pal.ink;
-        ctx.fillText('이론 χ²₁ 밀도', w - padR - 110, padT + 16);
-        ctx.fillStyle = pal.teal;
-        ctx.fillText('□ 강건 Sandwich Wald', w - padR - 150, padT + 34);
-        ctx.fillStyle = pal.indigo;
-        ctx.fillText('■ 비강건 LR / Wald', w - padR - 150, padT + 50);
+        ctx.fillText('── 이론 χ²₁ 밀도', rx, padT + 16);
+        if (showScaledPdf) {
+          ctx.fillStyle = pal.amber;
+          ctx.fillText(`┄┄ 오지정 ${kappa.toFixed(1)}·χ²₁`, rx, padT + 34);
+          ctx.fillStyle = pal.teal;
+          ctx.fillText('□ 강건 Sandwich Wald', rx, padT + 52);
+          ctx.fillStyle = pal.indigo;
+          ctx.fillText('■ 비강건 LR', rx, padT + 70);
+        } else {
+          ctx.fillStyle = pal.teal;
+          ctx.fillText('□ 강건 Sandwich Wald', rx, padT + 34);
+          ctx.fillStyle = pal.indigo;
+          ctx.fillText('■ 비강건 LR', rx, padT + 52);
+        }
+        ctx.restore();
 
         ctx.fillStyle = pal.muted;
         for (let gx = 0; gx <= 10; gx += 2) {
