@@ -1,0 +1,2853 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="계량경제학과 머신러닝 동적 시각 보충자료 01 — 경사하강법의 기본 원리(접선 기울기 -∇f, 보폭 η, 수직성), 조건수 κ=L/μ와 타원 계곡, Ridge 완화, Momentum·Newton–Raphson 및 Mini-batch SGD와 비볼록 안장점 탈출" />
+  <link rel="icon" type="image/jpeg" href="../assets/profile.jpg" />
+  <title>ML Visual 01 — 경사하강법의 기하학: 보폭, 조건수, Momentum·Newton &amp; SGD</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+  (function () {
+    try {
+      if (localStorage.getItem('coursework-monograph-theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch (_) {}
+  })();
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)']],
+      displayMath: [['\\[', '\\]']],
+      processEscapes: true,
+      processEnvironments: true,
+      tags: 'ams',
+      packages: {'[+]': ['ams', 'mathtools', 'noerrors', 'noundefined']},
+      macros: { lt: '{<}', gt: '{>}' }
+    },
+    chtml: {
+      scale: 0.96,
+      matchFontHeight: false,
+      mtextInheritFont: true
+    },
+    options: {
+      enableMenu: false,
+      skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        MathJax.startup.promise.then(() => {
+          document.documentElement.classList.add('math-ready');
+        });
+      }
+    }
+  };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg-canvas: #ffffff;
+      --bg-paper: #ffffff;
+      --bg-subtle: #fafafa;
+      --bg-elevated: #f4f4f5;
+
+      --ink: #09090b;
+      --ink-soft: #27272a;
+      --muted: #71717a;
+      --muted-soft: #a1a1aa;
+      --line: rgba(9, 9, 11, 0.09);
+      --line-strong: rgba(9, 9, 11, 0.16);
+
+      --primary: #4f46e5;
+      --primary-deep: #3730a3;
+      --primary-soft: rgba(79, 70, 229, 0.06);
+      --primary-border: rgba(79, 70, 229, 0.24);
+
+      --cyan: #0284c7;
+      --indigo: #4f46e5;
+      --teal: #0d9488;
+      --amber: #d97706;
+      --rose: #e11d48;
+
+      --topbar-bg: rgba(255, 255, 255, 0.84);
+      --hero-glow: rgba(79, 70, 229, 0.075);
+      --shadow-xs: 0 1px 2px rgba(9, 9, 11, 0.04);
+      --shadow-float: 0 8px 24px rgba(9, 9, 11, 0.08);
+      --canvas-bg: #f8fafc;
+      --canvas-grid: rgba(15, 23, 42, 0.08);
+
+      --font-sans: "Pretendard Variable", "Pretendard", "Inter", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, -apple-system, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --font-math: "Times New Roman", Georgia, serif;
+
+      --topbar-h: 50px;
+      --sidebar-w: 268px;
+      --container-w: 1200px;
+      --radius: 12px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-canvas: #09090b;
+      --bg-paper: #09090b;
+      --bg-subtle: #111114;
+      --bg-elevated: #18181b;
+
+      --ink: #fafafa;
+      --ink-soft: #d4d4d8;
+      --muted: #a1a1aa;
+      --muted-soft: #71717a;
+      --line: rgba(255, 255, 255, 0.09);
+      --line-strong: rgba(255, 255, 255, 0.16);
+
+      --primary: #818cf8;
+      --primary-deep: #a5b4fc;
+      --primary-soft: rgba(129, 140, 248, 0.11);
+      --primary-border: rgba(129, 140, 248, 0.30);
+
+      --cyan: #38bdf8;
+      --indigo: #818cf8;
+      --teal: #2dd4bf;
+      --amber: #fbbf24;
+      --rose: #fb7185;
+
+      --topbar-bg: rgba(9, 9, 11, 0.82);
+      --hero-glow: rgba(99, 102, 241, 0.14);
+      --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.35);
+      --shadow-float: 0 12px 28px rgba(0, 0, 0, 0.45);
+      --canvas-bg: #0c0f14;
+      --canvas-grid: rgba(255, 255, 255, 0.07);
+    }
+
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    body {
+      margin: 0;
+      color: var(--ink-soft);
+      background-color: var(--bg-canvas);
+      font-family: var(--font-sans);
+      font-size: 15.6px;
+      line-height: 1.75;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+    html:not(.math-ready) mjx-container { visibility: hidden; }
+    mjx-container { overflow: visible; color: inherit; max-width: 100%; }
+    mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; }
+
+    /* Topbar */
+    .sitebar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      height: var(--topbar-h);
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: saturate(180%) blur(16px);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+    }
+    .sitebar__inner {
+      max-width: var(--container-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .sitebar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: var(--ink);
+      color: var(--bg-paper);
+      font-family: var(--font-math);
+      font-style: italic;
+      font-weight: 700;
+      font-size: 13.5px;
+      flex-shrink: 0;
+    }
+    .sitebar__navlink {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.4px;
+      font-weight: 550;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: color .15s ease, background .15s ease;
+    }
+    .sitebar__navlink:hover { color: var(--ink); background: var(--bg-elevated); }
+    .sitebar__sep { color: var(--muted-soft); font-size: 12px; flex-shrink: 0; }
+    .sitebar__chapter {
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sitebar__section {
+      color: var(--primary);
+      font-size: 12.2px;
+      font-weight: 550;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding-left: 8px;
+      border-left: 1px solid var(--line-strong);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .sitebar__section.is-visible { opacity: 1; }
+    .theme-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color .15s, color .15s;
+    }
+    .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+    .reading-progress {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      pointer-events: none;
+    }
+    .reading-progress__bar {
+      width: 0;
+      height: 100%;
+      background: var(--primary);
+      transition: width .06s linear;
+    }
+
+    /* Hero */
+    .chapter-hero {
+      position: relative;
+      padding: 46px 28px 34px;
+      border-bottom: 1px solid var(--line);
+      background: radial-gradient(720px 260px at 18% 0%, var(--hero-glow), transparent 70%);
+    }
+    .hero-inner {
+      max-width: var(--container-w);
+      margin: 0 auto;
+    }
+    .chapter-kicker {
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+    .chapter-hero h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(1.75rem, 3.2vw, 2.4rem);
+      font-weight: 750;
+      letter-spacing: -0.025em;
+      line-height: 1.24;
+    }
+    .chapter-hero .subtitle {
+      margin: 8px 0 0;
+      font-size: 15.5px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .hero-rule {
+      width: 48px;
+      height: 2px;
+      background: var(--primary);
+      margin: 18px 0 16px;
+      border-radius: 2px;
+    }
+    .chapter-hero .lead {
+      max-width: 76ch;
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 15px;
+    }
+    .roadmap {
+      margin-top: 22px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .roadmap a {
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      transition: border-color .15s, background .15s;
+    }
+    .roadmap a:hover {
+      border-color: var(--primary-border);
+      background: var(--primary-soft);
+    }
+    .roadmap .label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .roadmap .text {
+      display: block;
+      margin-top: 2px;
+      font-size: 12.6px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    /* Layout & TOC */
+    .layout {
+      max-width: var(--container-w);
+      margin: 0 auto;
+      padding: 34px 28px 84px;
+      display: grid;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr);
+      gap: 38px;
+      align-items: start;
+    }
+    .toc {
+      position: sticky;
+      top: calc(var(--topbar-h) + 24px);
+      max-height: calc(100vh - var(--topbar-h) - 48px);
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    .toc-title {
+      margin: 0 0 10px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .toc nav { display: flex; flex-direction: column; gap: 3px; }
+    .toc a {
+      display: block;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 5px 10px;
+      border-radius: 7px;
+      border-left: 2px solid transparent;
+      transition: color .14s, background .14s, border-color .14s;
+    }
+    .toc a:hover { color: var(--ink); background: var(--bg-subtle); }
+    .toc a.active {
+      color: var(--primary);
+      background: var(--primary-soft);
+      border-left-color: var(--primary);
+      font-weight: 600;
+    }
+    .toc a.ext-link {
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      border-radius: 0;
+      font-size: 12.4px;
+    }
+
+    .mobile-toc {
+      display: none;
+      margin-bottom: 22px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg-subtle);
+      padding: 10px 14px;
+    }
+    .mobile-toc summary {
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 650;
+      color: var(--ink);
+    }
+    .mobile-toc nav {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .mobile-toc a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 12.5px;
+      padding: 4px 6px;
+      border-radius: 6px;
+    }
+    .mobile-toc a:hover { background: var(--bg-elevated); color: var(--ink); }
+
+    .note-content { min-width: 0; max-width: 860px; }
+    section.module { margin-bottom: 54px; scroll-margin-top: calc(var(--topbar-h) + 24px); }
+    section.module h2 {
+      margin: 0 0 12px;
+      color: var(--ink);
+      font-size: 1.42rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+    .sec-tag {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 650;
+      color: var(--primary);
+    }
+
+    /* Callouts & Formula Cards */
+    .math-strip {
+      margin: 16px 0 20px;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+    }
+    .math-strip__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 650;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--primary);
+      margin-bottom: 6px;
+    }
+    .formula-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-tri {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+    .formula-box {
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      min-width: 0;
+    }
+    .formula-box__title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    .formula-box__desc {
+      margin: 6px 0 0;
+      font-size: 12.8px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* Video Player Card */
+    .video-card {
+      margin: 18px 0 22px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0c0f14;
+      box-shadow: var(--shadow-float);
+    }
+    .video-card__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: #10141c;
+      color: #e4e4f7;
+      font-size: 12.5px;
+    }
+    .video-card__badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #818cf8;
+      background: rgba(129, 140, 248, 0.14);
+      border: 1px solid rgba(129, 140, 248, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .video-card video {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #0c0f14;
+    }
+    .video-card__cap {
+      padding: 10px 16px;
+      font-size: 12.8px;
+      color: #a1a1aa;
+      background: #10141c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      line-height: 1.55;
+    }
+    .video-card__head mjx-container { color: #f4f4f5; }
+    .video-card__cap mjx-container { color: #e4e4e7; }
+
+    /* Interactive Canvas Labs */
+    .interactive-lab {
+      margin: 18px 0 24px;
+      border: 1px solid var(--line-strong);
+      border-radius: 14px;
+      background: var(--bg-subtle);
+      box-shadow: var(--shadow-xs);
+      overflow: hidden;
+    }
+    .lab-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--line);
+      background: var(--bg-elevated);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .lab-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .lab-sub {
+      font-family: var(--font-mono);
+      font-size: 11.2px;
+      color: var(--muted);
+    }
+    .lab-body {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.95fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+    .canvas-stage {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--canvas-bg);
+      overflow: hidden;
+      min-height: 396px;
+      display: flex;
+      flex-direction: column;
+    }
+    .canvas-stage canvas {
+      display: block;
+      width: 100%;
+      height: 396px;
+      touch-action: none;
+      cursor: grab;
+    }
+    .canvas-stage canvas:active { cursor: grabbing; }
+    .canvas-hint {
+      position: absolute;
+      left: 12px;
+      bottom: 10px;
+      font-family: var(--font-mono);
+      font-size: 10.8px;
+      color: var(--muted);
+      background: var(--topbar-bg);
+      border: 1px solid var(--line);
+      padding: 3px 9px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(8px);
+      max-width: calc(100% - 24px);
+    }
+    .lab-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .controls-card, .metrics-card, .mini-card {
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--bg-paper);
+      padding: 12px 14px;
+    }
+    .control-row { margin-bottom: 10px; }
+    .control-row:last-child { margin-bottom: 0; }
+    .control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .control-val {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--primary);
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .btn-pill {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-sans);
+      font-size: 11.6px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all .14s ease;
+    }
+    .btn-pill:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .btn-pill.is-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #ffffff;
+    }
+    .btn-pill.is-primary:hover { opacity: 0.92; color: #ffffff; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .metric-tile {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--line);
+    }
+    .metric-tile__k {
+      font-family: var(--font-mono);
+      font-size: 10.6px;
+      color: var(--muted);
+    }
+    .metric-tile__v {
+      font-family: var(--font-mono);
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 1px;
+    }
+    .metric-tile__v.warn { color: var(--rose); }
+    .metric-tile__v.ok { color: var(--teal); }
+    .metric-tile__v.accent { color: var(--primary); }
+    .metric-tile__v.amber { color: var(--amber); }
+    .metric-tile__v.cyan { color: var(--cyan); }
+
+    .mini-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.8px;
+      font-weight: 650;
+      color: var(--ink);
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+    .mini-card canvas {
+      display: block;
+      width: 100%;
+      height: 146px;
+      border-radius: 6px;
+      background: var(--canvas-bg);
+    }
+    .verdict-note {
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg-subtle);
+      font-size: 12px;
+      line-height: 1.52;
+      color: var(--ink-soft);
+    }
+
+    /* Footer Pager & Discussion */
+    .chapter-pager {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chapter-pager a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--bg-subtle);
+      color: var(--ink-soft);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 550;
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .chapter-pager a:hover {
+      border-color: var(--primary-border);
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+    .discussion-section {
+      margin-top: 42px;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+    .discussion-section h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .discussion-lead {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 0 18px;
+    }
+
+    .back-to-top {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 35;
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      background: var(--bg-elevated);
+      color: var(--ink-soft);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 650;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity .18s, transform .18s;
+      box-shadow: var(--shadow-float);
+    }
+    .back-to-top.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; padding: 20px 18px 72px; }
+      .toc { display: none; }
+      .sitebar__section { display: none; }
+      .mobile-toc { display: block; }
+      .lab-body { grid-template-columns: 1fr; }
+      .formula-tri { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 720px) {
+      .sitebar__inner { padding: 0 14px; }
+      .sitebar__chapter, .sitebar__sep { display: none; }
+      .chapter-hero { padding: 32px 16px 24px; }
+      .roadmap, .formula-pair { grid-template-columns: 1fr; }
+      .mobile-toc nav { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="sitebar">
+    <div class="sitebar__inner">
+      <div class="sitebar__brand">
+        <span aria-hidden="true" class="brand-mark">β</span>
+        <a class="sitebar__navlink" href="../econometrics-ml.html">← 계량경제학과 머신러닝</a>
+        <a class="sitebar__navlink" href="../index.html">Home</a>
+        <span aria-hidden="true" class="sitebar__sep">/</span>
+        <span class="sitebar__chapter">ML Visual 01 · Gradient Descent Geometry</span>
+        <span aria-live="polite" class="sitebar__section"></span>
+      </div>
+      <button aria-label="테마 전환" class="theme-btn" data-theme-toggle type="button">Dark</button>
+    </div>
+    <div aria-hidden="true" class="reading-progress"><div class="reading-progress__bar"></div></div>
+  </div>
+
+  <header class="chapter-hero">
+    <div class="hero-inner">
+      <div class="chapter-kicker">Econometrics &amp; ML · ML Visual 01 (Ch 05·06 &amp; 계량 Ch 05 연계)</div>
+      <h1>경사하강법의 기하학: 보폭, 조건수, 가속과 확률적 탐색</h1>
+      <p class="subtitle">접선 기울기 \(-\nabla f\)와 \(L\)-평활성 이차 상계, 타원 계곡 조건수 \(\kappa=L/\mu\), Ridge 완화 · Momentum · Newton–Raphson 및 Mini-batch SGD</p>
+      <div class="hero-rule"></div>
+      <p class="lead">
+        고차원 추정과 머신러닝에서 목적함수를 최소화하는 가장 기본적인 반복 규칙은 현재 위치에서 가장 가파르게 내려가는 방향 \(-\nabla f(\theta_k)\)으로 한 걸음 이동하는 것이다.
+        왜 그 방향이 등고선에 수직인지, 보폭 \(\eta\)가 \(1/L\)과 \(2/L\)을 지날 때 왜 진동·발산하는지, 상관된 설명변수가 만드는 좁은 협곡(\(\kappa = L/\mu \gg 1\))을 Ridge · Momentum · Newton이 어떻게 극복하는지,
+        그리고 확률적 미니배치 잡음(SGD)이 볼록 수렴 바닥과 비볼록 안장점 탈출에 어떤 역할을 하는지 단계별로 확인한다.
+      </p>
+      <div class="roadmap">
+        <a href="#sec-gd-basics">
+          <span class="label">01 · Step Size &amp; Orthogonality</span>
+          <span class="text">\(-\nabla f\), \(L\)-상계, \(\eta \lessgtr 2/L\) 안정성</span>
+        </a>
+        <a href="#sec-gd-conditioning">
+          <span class="label">02 · Conditioning &amp; Acceleration</span>
+          <span class="text">조건수 \(\kappa=L/\mu\), Ridge 완화 · Momentum · Newton</span>
+        </a>
+        <a href="#sec-gd-sgd-nonconvex">
+          <span class="label">03 · Mini-batch SGD &amp; Non-Convex</span>
+          <span class="text">배치 분산, 감소 학습률과 비볼록 안장점 탈출</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="toc" aria-label="목차">
+      <div class="toc-title">On This Page</div>
+      <nav>
+        <a href="#sec-gd-basics">01. 기본 원리: \(-\nabla f\), 보폭과 직교성</a>
+        <a href="#sec-gd-conditioning">02. 타원 계곡(\(\kappa=L/\mu\)), Ridge와 가속</a>
+        <a href="#sec-gd-sgd-nonconvex">03. Mini-batch SGD와 비볼록 안장점</a>
+        <a href="#discussion">학술 토론 (댓글)</a>
+        <a class="ext-link" href="econometrics-ml-ch05.html#s5-5">↗ ML Ch 05 본문 (5.5 조건수·GD)</a>
+        <a class="ext-link" href="econometrics-ml-ch06.html#s6-2">↗ ML Ch 06 본문 (6.2 좌표하강)</a>
+        <a class="ext-link" href="econometrics-ch05.html#ml-topic-20">↗ 계량 Ch 05 본문 (5.19 Newton)</a>
+      </nav>
+    </aside>
+
+    <main class="note-content">
+      <details class="mobile-toc">
+        <summary>목차 (Contents)</summary>
+        <nav>
+          <a href="#sec-gd-basics">01. 기본 원리: \(-\nabla f\)와 보폭</a>
+          <a href="#sec-gd-conditioning">02. 조건수 \(\kappa\), Ridge와 가속</a>
+          <a href="#sec-gd-sgd-nonconvex">03. Mini-batch SGD와 안장점</a>
+          <a href="#discussion">학술 토론 (댓글)</a>
+          <a href="econometrics-ml-ch05.html#s5-5">↗ ML Ch 05 (5.5)</a>
+          <a href="econometrics-ch05.html#ml-topic-20">↗ 계량 Ch 05 (5.19)</a>
+        </nav>
+      </details>
+
+      <!-- SECTION 01 -->
+      <section class="module" id="sec-gd-basics">
+        <h2><span class="sec-tag">01</span><span>기본 원리: 접선 기울기 \(-\nabla f\), \(L\)-이차 상계, 보폭 \(\eta\)의 4가지 양상</span></h2>
+        <p>
+          미분가능한 목적함수 \(f(\theta)\)의 최솟값은 기울기가 \(0\)이 되는 정류점(\(\nabla f(\theta^*)=0\))에 있다.
+          닫힌형 해가 없거나 역행렬 계산이 너무 비쌀 때, <strong>경사하강법(Gradient Descent)</strong>은 현재 점 \(\theta_k\)에서의 1차 테일러 근사 + 최대 곡률 \(L\)에 의한 이차 상계 \(q_L(\theta)\)를 매 단계 최소화하는 방식으로 작동한다:
+          \(\theta_{k+1} = \theta_k - \eta \nabla f(\theta_k)\).
+        </p>
+
+        <div class="formula-tri">
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--cyan);"></span>음의 그래디언트 · 최급강하</div>
+            \[
+              \min_{\|u\|_2=1} \nabla f(\theta_k)^\top u = -\|\nabla f(\theta_k)\|_2
+            \]
+            <p class="formula-box__desc">등고선 접선(\(\nabla f^\top v = 0\))에 <strong>수직(\(90^\circ\))</strong>이며 국소적으로 함숫값을 가장 빠르게 낮춘다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--teal);"></span>\(L\)-Smoothness 상계 &amp; \(\eta=1/L\)</div>
+            \[
+              f(\theta) \le f(\theta_k) + \nabla f(\theta_k)^\top(\theta-\theta_k) + \frac{L}{2}\|\theta-\theta_k\|_2^2
+            \]
+            <p class="formula-box__desc">위 이차 대리함수 \(q_L(\theta)\)의 최솟점이 정확히 \(\theta_k - \tfrac{1}{L}\nabla f(\theta_k)\)다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--amber);"></span>안정성 임곗값 \(0 &lt; \eta &lt; 2/L\)</div>
+            \[
+              \theta_k = (1 - \eta L)^k \theta_0 \quad\text{(on } f(\theta)=\tfrac{L}{2}\theta^2\text{)}
+            \]
+            <p class="formula-box__desc">\(\eta \ll 1/L\)은 느린 단조 수렴, \(1/L &lt; \eta &lt; 2/L\)은 반대쪽 사면을 오가는 감쇠 진동, \(\eta &gt; 2/L\)은 폭발적 발산을 낳는다.</p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 01 · Tangent Slope \(-\nabla f\), Quadratic Upper Bound \(q_L(\theta)\), Step-Size Regimes &amp; \(90^\circ\) Contour Orthogonality</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/gd-step-size-geometry.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            전반부(1D): \(\theta_k\)의 주황색 접선 기울기 \(f'(\theta_k) &gt; 0\) 반대 방향(\(-\tfrac{1}{L}f'(\theta_k)\))이 청록색 이차 상계 \(q_L(\theta)\)의 최솟점으로 내려가며 감소를 보장한다.
+            중반부(2×2 비교): 보폭 \(\eta\)가 \(0.22/L\) → \(1/L\) → \(1.78/L\) → \(2.16/L\)로 커짐에 따라 느린 수렴·최적 점프·감쇠 진동·발산으로 전환된다.
+            후반부(2D): 등고선 위 점 \(\theta_0\)에서 \(-\nabla f\)는 접선과 수직이지만, 타원이 회전·신장된 경우 곧바로 \(\theta^*\)를 향하지 않고 구부러진 궤적을 그린다.
+          </div>
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Lab 01 · 1D/2D Step-Size &amp; Surrogate Bound Explorer</span>
+            <span class="lab-sub">점 \(\theta^{(0)}\)을 캔버스에서 직접 드래그하고 보폭 비율 \(\eta L\) 및 \(L\)-이차 상계 \(q_L(\theta)\)를 조작해 보세요</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="gdBasicsCanvas" aria-label="경사하강법 보폭 및 등고선 직교성 실험실"></canvas>
+              <div class="canvas-hint" id="gdBasicsHint">노드 θ⁽⁰⁾을 좌우로 드래그 · 주황선: 접선 · 청록 점선 포물선: L-평활성 이차 상계 q_L(θ)</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="btn-row" style="margin-top:0; margin-bottom:8px;">
+                  <button type="button" class="btn-pill is-primary" id="btnMode1D">1D 곡선 + 상계</button>
+                  <button type="button" class="btn-pill" id="btnMode2D">2D 등고선 수직하강</button>
+                </div>
+                <div class="btn-row" id="fnRow1D" style="margin-top:0; margin-bottom:10px;">
+                  <button type="button" class="btn-pill is-primary" id="btnFnQuad">이차함수 ½Lθ²</button>
+                  <button type="button" class="btn-pill" id="btnFnHuber">Pseudo-Huber 볼록</button>
+                  <button type="button" class="btn-pill is-primary" id="btnToggleSurr">상계 q_L 표시</button>
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>보폭 배수 \(\eta \cdot L_{\max}\)</span>
+                    <span class="control-val" id="etaBasicVal">0.45 / L</span>
+                  </div>
+                  <input id="etaBasicIn" type="range" min="0.08" max="2.32" step="0.02" value="0.45" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill" id="btnPresetSlow">느림 (0.20/L)</button>
+                  <button type="button" class="btn-pill" id="btnPresetOpt">최적 (1/L)</button>
+                  <button type="button" class="btn-pill" id="btnPresetOsc">진동 (1.78/L)</button>
+                  <button type="button" class="btn-pill" id="btnPresetDiv">발산 (2.16/L)</button>
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" id="btnStep1">+1 스텝</button>
+                  <button type="button" class="btn-pill" id="btnPlay1">▶ 자동 재생</button>
+                  <button type="button" class="btn-pill" id="btnReset1">초기화 (k=1)</button>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>반복별 오차 \(\log_{10}(f(\theta_k) - f^*)\)</span>
+                  <span class="control-val" id="basicRateNote">선형 수렴</span>
+                </div>
+                <canvas id="gdBasicsGapCanvas" aria-label="목적함수 갭 로그 추이"></canvas>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">현재 스텝 k</div>
+                    <div class="metric-tile__v accent" id="mBStep">8</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">목적함수 갭 f(θ_k)-f*</div>
+                    <div class="metric-tile__v" id="mBGap">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">기울기 크기 ‖∇f‖</div>
+                    <div class="metric-tile__v cyan" id="mBGrad">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">보폭 상태 판정</div>
+                    <div class="metric-tile__v" id="mBStatus">—</div>
+                  </div>
+                </div>
+                <div class="verdict-note" id="basicVerdict">
+                  보폭이 1/L보다 작으면 한 방향으로 꾸준히 내려가고, 1/L~2/L 구간에서는 최저점을 넘나들며 감쇠 진동한다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 02 -->
+      <section class="module" id="sec-gd-conditioning">
+        <h2><span class="sec-tag">02</span><span>타원 계곡과 조건수 \(\kappa = L/\mu\): Ridge 완화 vs Momentum &amp; Newton</span></h2>
+        <p>
+          회귀모형 \(\min_\theta \tfrac{1}{2n}\|Y-X\theta\|_2^2\)에서 설명변수가 강하게 상관되면 헤시안 \(H = \tfrac{1}{n}X^\top X\)의 최대·최소 고유값 비율인
+          <strong>조건수 \(\kappa = L/\mu\)</strong>가 급증하여 등고선이 좁고 긴 타원 협곡으로 찌그러진다(<a href="econometrics-ml-ch05.html#s5-5" style="color:var(--primary);text-decoration:none;font-weight:600;">ML Ch 05 §5.5</a> 참조).
+          이때 \(-\nabla f\)는 긴 협곡 바닥이 아닌 가파른 양쪽 벽을 향하므로 경사하강법은 양벽을 오가는 심한 지그재그에 갇힌다.
+        </p>
+
+        <div class="math-strip">
+          <div class="math-strip__label">Conditioning, Momentum &amp; Preconditioning Formulas</div>
+          \[
+            \text{GD 선형수렴률: } \|\theta_k - \theta^*\|_2 \le \Bigl(\frac{\kappa - 1}{\kappa + 1}\Bigr)^k \|\theta_0 - \theta^*\|_2,
+            \qquad
+            \text{Ridge 조건수: } \kappa(\lambda) = \frac{d_{\max} + \lambda}{d_{\min} + \lambda} \downarrow
+          \]
+          \[
+            \text{Heavy-Ball Momentum: } v_{k+1} = \beta v_k + \nabla f(\theta_k),\; \theta_{k+1} = \theta_k - \eta v_{k+1}
+            \qquad\big|\qquad
+            \text{Newton: } \theta_{k+1} = \theta_k - H(\theta_k)^{-1}\nabla f(\theta_k)
+          \]
+        </div>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--amber);"></span>Ridge 벌점 \(\lambda\)와 주의 5.14</div>
+            <p class="formula-box__desc">
+              \(+\tfrac{\lambda}{2}\|\theta\|_2^2\)는 헤시안에 \(\lambda I\)를 더해 조건수 \(\kappa(\lambda)\)를 낮추고 수치 수렴을 빠르게 만든다.
+              그러나 <strong>최적점 자체를 원점 쪽으로 끌어당겨(\(\hat{\theta}_\lambda^{\mathrm{Ridge}} \neq \hat{\theta}^{\mathrm{OLS}}\)) 추정 편향을 도입</strong>하므로 수치적 수렴 속도와 통계적 일치성은 구별해야 한다.
+            </p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--teal);"></span>Momentum 관성 vs Newton 곡률 백색화</div>
+            <p class="formula-box__desc">
+              <strong>Momentum</strong>은 벽을 왕복하는 수직 성분 기울기를 부호 상쇄시키고 계곡 방향 관성을 축적한다.
+              <a href="econometrics-ch05.html#ml-topic-20" style="color:var(--primary);text-decoration:none;font-weight:600;">계량 Ch 05 §5.19 Newton–Raphson</a>은 역헤시안 \(H^{-1}\)을 곱해 타원 좌표를 원형으로 되돌려 이차형식을 단 1스텝에 도달한다.
+            </p>
+          </div>
+        </div>
+
+        <div class="video-card">
+          <div class="video-card__head">
+            <span>Clip 02 · Isotropic vs. Elliptical Ravine (\(\kappa = 12\)), Ridge Conditioning &amp; Three-Way Race (GD · Momentum · Newton)</span>
+            <span class="video-card__badge">1920×1080 · 60fps</span>
+          </div>
+          <video controls loop muted playsinline preload="metadata">
+            <source src="../assets/media/gd-condition-momentum.mp4" type="video/mp4" />
+            브라우저가 HTML5 MP4 비디오 재생을 지원하지 않습니다.
+          </video>
+          <div class="video-card__cap">
+            1부: 원형 등고선(\(\kappa=1\))은 최솟점으로 직진하지만, \(\kappa=12\) 협곡에서는 안전한 보폭(\(\eta &lt; 2/L\))을 써도 좁은 폭을 지그재그로 왕복한다.
+            2부: Ridge 벌점 \(\lambda\)를 키우면 등고선이 둥글어지며 \(\kappa(\lambda): 12 \to 3.0\)으로 줄지만 최솟점이 \(\hat{\theta}^{\mathrm{OLS}}\)에서 원점 방향으로 이동한다.
+            3부: 오른쪽 로그 오차 그래프가 보여주듯 Vanilla GD의 느린 선형 하강 대비 Momentum(\(\beta=0.62\))은 진동을 상쇄하며 빠르게 떨어지고 Newton(\(-H^{-1}\nabla f\))은 단 1스텝에 수렴한다.
+          </div>
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Lab 02 · Rotatable 3D Ravine &amp; Algorithm Race (GD · Ridge · Momentum · Newton)</span>
+            <span class="lab-sub">2D 뷰: \(\theta^{(0)}\) 드래그 · 3D 뷰: 곡면 회전 드래그 · 주황 별: 유효 최적점 \(\hat{\theta}_\lambda\) · 보라 고리: OLS \(\hat{\theta}^{\mathrm{OLS}}\)</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="gdCondCanvas" aria-label="조건수 2D 등고선 및 3D 손실 곡면 실험실"></canvas>
+              <div class="canvas-hint" id="gdCondHint">θ⁽⁰⁾을 드래그해 지그재그 vs Momentum vs Newton 경로를 실시간 비교하세요</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="btn-row" style="margin-top:0; margin-bottom:8px;">
+                  <button type="button" class="btn-pill is-primary" id="btnCond2D">2D 등고선 뷰</button>
+                  <button type="button" class="btn-pill" id="btnCond3D">3D 회전 곡면 뷰</button>
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>OLS 조건수 \(\kappa_0 = L_0 / \mu_0\)</span>
+                    <span class="control-val" id="kappaInVal">15</span>
+                  </div>
+                  <input id="kappaIn" type="range" min="1" max="24" step="1" value="15" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>Ridge 정규화 벌점 \(\lambda\)</span>
+                    <span class="control-val" id="ridgeInVal">0.00</span>
+                  </div>
+                  <input id="ridgeIn" type="range" min="0.00" max="0.90" step="0.05" value="0.00" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>GD 보폭 계수 \(\eta (L_0+\lambda)\)</span>
+                    <span class="control-val" id="condEtaVal">1.65</span>
+                  </div>
+                  <input id="condEtaIn" type="range" min="0.30" max="1.92" step="0.02" value="1.65" />
+                </div>
+                <div class="control-row">
+                  <div class="control-head">
+                    <span>Momentum 관성 계수 \(\beta\)</span>
+                    <span class="control-val" id="betaVal">0.68</span>
+                  </div>
+                  <input id="betaIn" type="range" min="0.00" max="0.90" step="0.02" value="0.68" />
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill is-primary" id="btnShowGD">GD (빨강)</button>
+                  <button type="button" class="btn-pill is-primary" id="btnShowMom">Momentum (주황)</button>
+                  <button type="button" class="btn-pill is-primary" id="btnShowNewt">Newton (청록)</button>
+                </div>
+                <div class="btn-row">
+                  <button type="button" class="btn-pill" id="btnCondIso">등방성 (κ=1)</button>
+                  <button type="button" class="btn-pill" id="btnCondCanyon">협곡 (κ=16)</button>
+                  <button type="button" class="btn-pill" id="btnCondRidge">Ridge 완화 (λ=0.50)</button>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span>반복별 손실 감소 \(\log_{10}(f_\lambda(\theta_k)-f_\lambda^*)\)</span>
+                  <span class="control-val" id="condKapEff">유효 κ(λ) = 15.0</span>
+                </div>
+                <canvas id="gdCondLogCanvas" aria-label="알고리즘별 로그 손실 수렴 곡선"></canvas>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">유효 조건수 κ(λ)</div>
+                    <div class="metric-tile__v cyan" id="mCEffKap">15.0</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">18회 후 GD 오차</div>
+                    <div class="metric-tile__v warn" id="mCGdGap">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">18회 후 Momentum</div>
+                    <div class="metric-tile__v amber" id="mCMomGap">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k">Ridge 편향 ‖θ_λ−θ_OLS‖</div>
+                    <div class="metric-tile__v accent" id="mCBias">0.000</div>
+                  </div>
+                </div>
+                <div class="verdict-note" id="condVerdict">
+                  높은 조건수(κ=15)에서 GD는 가파른 벽 사이를 왕복하지만 Momentum은 수직 진동을 상쇄하며 전진한다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 03 -->
+      <section class="module" id="sec-gd-sgd-nonconvex">
+        <h2><span class="sec-tag">03</span><span>확률적 경사하강법(Mini-batch SGD)과 비볼록 안장점 탈출</span></h2>
+        <p>
+          표본 크기 \(n\)이 매우 클 때 매 스텝 전체 평균 기울기 \(\nabla Q_n(\theta) = \tfrac{1}{n}\sum_{i=1}^n \nabla \ell_i(\theta)\)를 계산하는 대신,
+          무작위 미니배치 \(B_k \subset \{1,\dots,n\}\)만 뽑아 불편추정 기울기 \(g_k = \tfrac{1}{|B_k|}\sum_{i\in B_k}\nabla \ell_i(\theta_k)\)로 업데이트하면 스텝당 계산비용이 \(O(n)\)에서 \(O(B)\)로 줄어든다.
+          동시에 배치 잡음 \(\xi_k = g_k - \nabla Q_n(\theta_k)\) (\(\operatorname{Var}(\xi_k) \propto \sigma^2 / B\))는 고정 보폭 아래에서는 최솟점 주변 <strong>잡음 공(noise ball)</strong>에 머무르지만, 비볼록 지형에서는 <strong>안장점(saddle point) 탈출</strong>의 원동력이 된다.
+        </p>
+
+        <div class="formula-pair">
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--cyan);"></span>미니배치 분산 vs 학습률 스케줄</div>
+            \[
+              \mathbb{E}[g_k \mid \theta_k] = \nabla Q_n(\theta_k),\qquad
+              \mathbb{E}\|g_k - \nabla Q_n(\theta_k)\|_2^2 \propto \frac{\sigma^2}{B}
+            \]
+            <p class="formula-box__desc">고정 학습률 \(\eta\)는 \(\eta\sigma^2/B\) 수준 오차 바닥에 머무르고, Robbins–Monro 감소 스케줄(\(\eta_k \propto k^{-1/2}\), \(\sum \eta_k=\infty,\;\sum \eta_k^2&lt;\infty\))이 점근 수렴을 복원한다.</p>
+          </div>
+          <div class="formula-box">
+            <div class="formula-box__title"><span class="swatch" style="background:var(--rose);"></span>비볼록 지형: 안장점과 국소 최솟값</div>
+            \[
+              \nabla f(\theta_s)=0,\quad \lambda_{\min}\bigl(\nabla^2 f(\theta_s)\bigr) &lt; 0
+            \]
+            <p class="formula-box__desc">고차원 신경망·비선형 모형에는 극소점보다 안장점이 훨씬 많다. 순수 결정론적 GD는 안정 다양체(stable manifold) 위 출발 시 멈추지만, 확률적 잡음 \(\xi_k\)와 관성이 탈출을 돕는다.</p>
+          </div>
+        </div>
+
+        <div class="interactive-lab">
+          <div class="lab-header">
+            <span class="lab-title">Lab 03 · Mini-batch SGD Noise Ball vs. Non-Convex Saddle Escape</span>
+            <span class="lab-sub">모드 1: \(n=120\) 회귀 데이터 미니배치 분산 · 모드 2: 이중 우물 + 안장점 위에서 \(\theta^{(0)}\) 클릭·드래그</span>
+          </div>
+          <div class="lab-body">
+            <div class="canvas-stage">
+              <canvas id="gdSgdCanvas" aria-label="확률적 경사하강법 및 비볼록 안장점 탈출 실험실"></canvas>
+              <div class="canvas-hint" id="gdSgdHint">보라 실선: 전체 배치 GD · 하늘 실선: 미니배치 SGD · 원: 고정 보폭 잡음 반경</div>
+            </div>
+
+            <div class="lab-panel">
+              <div class="controls-card">
+                <div class="btn-row" style="margin-top:0; margin-bottom:10px;">
+                  <button type="button" class="btn-pill is-primary" id="btnSgdConvex">볼록 OLS 미니배치 (n=120)</button>
+                  <button type="button" class="btn-pill" id="btnSgdNonConv">비볼록 안장점 탈출</button>
+                </div>
+
+                <div id="sgdCtrlGroup">
+                  <div class="control-row">
+                    <div class="control-head">
+                      <span>미니배치 크기 \(B\)</span>
+                      <span class="control-val" id="batchVal">B = 8</span>
+                    </div>
+                    <input id="batchIn" type="range" min="0" max="6" step="1" value="2" />
+                  </div>
+                  <div class="control-row">
+                    <div class="control-head">
+                      <span>초기 보폭 \(\eta_0\)</span>
+                      <span class="control-val" id="sgdEtaVal">0.24</span>
+                    </div>
+                    <input id="sgdEtaIn" type="range" min="0.06" max="0.48" step="0.02" value="0.24" />
+                  </div>
+                  <div class="btn-row">
+                    <button type="button" class="btn-pill is-primary" id="btnSchedConst">고정 학습률 (η₀)</button>
+                    <button type="button" class="btn-pill" id="btnSchedDecay">감쇠 (η₀ / √(1+0.12k))</button>
+                    <button type="button" class="btn-pill" id="btnNewSeed">새 표본/노이즈 추출</button>
+                  </div>
+                </div>
+
+                <div id="nonConvCtrlGroup" style="display:none;">
+                  <div class="control-row">
+                    <div class="control-head">
+                      <span>확률적 잡음 진폭 \(\sigma_{\text{sgd}}\)</span>
+                      <span class="control-val" id="ncNoiseVal">0.28</span>
+                    </div>
+                    <input id="ncNoiseIn" type="range" min="0.00" max="0.60" step="0.02" value="0.28" />
+                  </div>
+                  <div class="control-row">
+                    <div class="control-head">
+                      <span>보폭 \(\eta\)</span>
+                      <span class="control-val" id="ncEtaVal">0.12</span>
+                    </div>
+                    <input id="ncEtaIn" type="range" min="0.04" max="0.22" step="0.01" value="0.12" />
+                  </div>
+                  <div class="btn-row">
+                    <button type="button" class="btn-pill" id="btnPlaceSaddle">안장 능선 θ₀ 배치</button>
+                    <button type="button" class="btn-pill" id="btnPlaceLocal">국소 우물 근처 θ₀</button>
+                    <button type="button" class="btn-pill" id="btnNewNcSeed">새 노이즈</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mini-card">
+                <div class="mini-head">
+                  <span id="sgdMiniTitle">반복별 손실 곡선 \(Q_n(\theta_k) - Q_n^*\)</span>
+                  <span class="control-val" id="sgdMiniTag">GD vs SGD</span>
+                </div>
+                <canvas id="gdSgdLossCanvas" aria-label="GD 대비 SGD 손실 곡선"></canvas>
+              </div>
+
+              <div class="metrics-card">
+                <div class="metric-grid">
+                  <div class="metric-tile">
+                    <div class="metric-tile__k" id="m3K1">Full GD 최종 갭</div>
+                    <div class="metric-tile__v accent" id="m3V1">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k" id="m3K2">SGD 마지막 10회 평균</div>
+                    <div class="metric-tile__v cyan" id="m3V2">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k" id="m3K3">경사 잡음 분산비 σ²/B</div>
+                    <div class="metric-tile__v amber" id="m3V3">—</div>
+                  </div>
+                  <div class="metric-tile">
+                    <div class="metric-tile__k" id="m3K4">수렴 상태</div>
+                    <div class="metric-tile__v" id="m3V4">—</div>
+                  </div>
+                </div>
+                <div class="verdict-note" id="sgdVerdict">
+                  작은 배치 크기(B=8)와 고정 보폭에서는 매 스텝 분산 때문에 최솟점 주변을 진동하며 감쇠 학습률을 켜면 중심으로 수렴한다.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <nav aria-label="보충자료 내비게이션" class="chapter-pager">
+        <a href="../econometrics-ml.html">← 계량경제학과 머신러닝 전체 목차</a>
+        <a href="econometrics-ml-ch05.html#s5-5">Ch 05 본문 · §5.5 조건수와 경사하강법으로 이동 →</a>
+      </nav>
+
+      <section id="discussion" class="discussion-section">
+        <h2>학술 토론 및 질문</h2>
+        <p class="discussion-lead">경사하강법의 보폭 안정성, \(L\)-평활성과 조건수 \(\kappa\), Ridge·Momentum·Newton 비교 및 미니배치 SGD에 관한 질문을 자유롭게 남겨주세요.</p>
+        <script src="https://giscus.app/client.js"
+                data-repo="Hyeongjin3544/HyeongjinHome"
+                data-repo-id="R_kgDOVpbZ2Q"
+                data-category="General"
+                data-category-id="DIC_kwDOVpbZ2c4DK0yv"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="ko"
+                crossorigin="anonymous"
+                async>
+        </script>
+      </section>
+    </main>
+  </div>
+
+  <button aria-label="맨 위로 이동" class="back-to-top" type="button">↑ TOP</button>
+
+  <script>
+  (function () {
+    const html = document.documentElement;
+    const themeBtn = document.querySelector('[data-theme-toggle]');
+    const onThemeCallbacks = [];
+
+    function syncTheme(mode) {
+      if (mode === 'dark') {
+        html.setAttribute('data-theme', 'dark');
+        if (themeBtn) themeBtn.textContent = 'Light';
+      } else {
+        html.removeAttribute('data-theme');
+        if (themeBtn) themeBtn.textContent = 'Dark';
+      }
+      try { localStorage.setItem('coursework-monograph-theme', mode); } catch (_) {}
+      onThemeCallbacks.forEach(fn => fn());
+    }
+    syncTheme(html.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
+    if (themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const cur = html.getAttribute('data-theme');
+        syncTheme(cur === 'dark' ? 'light' : 'dark');
+      });
+    }
+
+    const topBtn = document.querySelector('.back-to-top');
+    const progressBar = document.querySelector('.reading-progress__bar');
+    const sectionLabelEl = document.querySelector('.sitebar__section');
+    const tocLinks = [...document.querySelectorAll('.toc a[href^="#"]')];
+    const sections = tocLinks.map(a => [a, document.querySelector(a.getAttribute('href'))]).filter(([, el]) => el);
+
+    function updateScrollUI() {
+      const sy = window.scrollY || window.pageYOffset || 0;
+      if (topBtn) topBtn.classList.toggle('show', sy > 520);
+      if (progressBar) {
+        const docH = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        progressBar.style.width = Math.min(100, Math.max(0, (sy / docH) * 100)).toFixed(2) + '%';
+      }
+      let activePair = sections[0];
+      for (const pair of sections) {
+        if (pair[1].getBoundingClientRect().top <= 160) activePair = pair;
+      }
+      tocLinks.forEach(a => a.classList.remove('active'));
+      if (activePair) {
+        activePair[0].classList.add('active');
+        if (sectionLabelEl) {
+          sectionLabelEl.textContent = activePair[0].textContent.trim();
+          sectionLabelEl.classList.toggle('is-visible', sy > 200);
+        }
+      }
+    }
+    if (topBtn) topBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', updateScrollUI, { passive: true });
+    window.addEventListener('resize', updateScrollUI, { passive: true });
+    updateScrollUI();
+
+    document.querySelectorAll('.mobile-toc a').forEach(a => {
+      a.addEventListener('click', () => {
+        const det = a.closest('.mobile-toc');
+        if (det) det.open = false;
+      });
+    });
+
+    function getPalette() {
+      const dark = html.getAttribute('data-theme') === 'dark';
+      return {
+        dark,
+        bg: dark ? '#0c0f14' : '#f8fafc',
+        grid: dark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.08)',
+        axis: dark ? 'rgba(255,255,255,0.28)' : 'rgba(15,23,42,0.30)',
+        ink: dark ? '#f4f4f5' : '#09090b',
+        muted: dark ? '#a1a1aa' : '#52525b',
+        cyan: dark ? '#38bdf8' : '#0284c7',
+        teal: dark ? '#2dd4bf' : '#0d9488',
+        indigo: dark ? '#818cf8' : '#4f46e5',
+        amber: dark ? '#fbbf24' : '#d97706',
+        rose: dark ? '#fb7185' : '#e11d48'
+      };
+    }
+
+    function setupCanvas(canvas, minH) {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.max(240, Math.round(rect.width));
+      const h = Math.max(minH || 140, Math.round(rect.height));
+      if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+      }
+      const ctx = canvas.getContext('2d');
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return { ctx, w, h };
+    }
+
+    function drawArrow(ctx, x0, y0, x1, y1, color, lw, headLen) {
+      const dx = x1 - x0, dy = y1 - y0;
+      const len = Math.hypot(dx, dy);
+      if (len < 3) return;
+      const ux = dx / len, uy = dy / len;
+      const hl = headLen || 9;
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = lw || 2.2;
+      ctx.beginPath();
+      ctx.moveTo(x0, y0);
+      ctx.lineTo(x1 - ux * hl * 0.65, y1 - uy * hl * 0.65);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 - ux * hl - uy * hl * 0.45, y1 - uy * hl + ux * hl * 0.45);
+      ctx.lineTo(x1 - ux * hl + uy * hl * 0.45, y1 - uy * hl - ux * hl * 0.45);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function fmtSci(v) {
+      if (!isFinite(v) || Math.abs(v) > 1e6) return '발산 (∞)';
+      if (Math.abs(v) < 1e-4 && v !== 0) return v.toExponential(1);
+      return v.toFixed(4);
+    }
+
+    /* ==================== LAB 01: 1D CURVE + L-BOUND & 2D CONTOUR ==================== */
+    (function initBasicsLab() {
+      const canvas = document.getElementById('gdBasicsCanvas');
+      const gapCanvas = document.getElementById('gdBasicsGapCanvas');
+      const hintEl = document.getElementById('gdBasicsHint');
+      const etaIn = document.getElementById('etaBasicIn');
+      const etaVal = document.getElementById('etaBasicVal');
+      const fnRow1D = document.getElementById('fnRow1D');
+
+      const btn1D = document.getElementById('btnMode1D');
+      const btn2D = document.getElementById('btnMode2D');
+      const btnQuad = document.getElementById('btnFnQuad');
+      const btnHuber = document.getElementById('btnFnHuber');
+      const btnSurr = document.getElementById('btnToggleSurr');
+      const btnSlow = document.getElementById('btnPresetSlow');
+      const btnOpt = document.getElementById('btnPresetOpt');
+      const btnOsc = document.getElementById('btnPresetOsc');
+      const btnDiv = document.getElementById('btnPresetDiv');
+      const btnStep1 = document.getElementById('btnStep1');
+      const btnPlay1 = document.getElementById('btnPlay1');
+      const btnReset1 = document.getElementById('btnReset1');
+
+      const mStep = document.getElementById('mBStep');
+      const mGap = document.getElementById('mBGap');
+      const mGrad = document.getElementById('mBGrad');
+      const mStatus = document.getElementById('mBStatus');
+      const rateNote = document.getElementById('basicRateNote');
+      const verdictEl = document.getElementById('basicVerdict');
+
+      let dimMode = '1d';
+      let fnType = 'quad';
+      let showSurr = true;
+      let start1D = 2.15;
+      let start2D = [1.85, 1.35];
+      let shownK = 8;
+      let timerId = null;
+      let dragging = false;
+
+      // 2D ellipse: eigenvalues [0.55, 1.65] rotated 28 deg
+      const ang2 = (28 * Math.PI) / 180;
+      const cA = Math.cos(ang2), sA = Math.sin(ang2);
+      const e1 = 0.55, e2 = 1.65;
+      const H2 = [
+        [e1 * cA * cA + e2 * sA * sA, (e1 - e2) * cA * sA],
+        [(e1 - e2) * cA * sA, e1 * sA * sA + e2 * cA * cA]
+      ];
+      const L2 = e2;
+
+      function f1Eval(t) {
+        if (fnType === 'huber') {
+          return 2.2 * (Math.sqrt(1 + 0.5 * t * t) - 1) + 0.12 * t * t;
+        }
+        return 0.5 * t * t;
+      }
+      function df1Eval(t) {
+        if (fnType === 'huber') {
+          return (1.1 * t) / Math.sqrt(1 + 0.5 * t * t) + 0.24 * t;
+        }
+        return t;
+      }
+      function L1Max() {
+        return fnType === 'huber' ? 1.34 : 1.0;
+      }
+
+      function run1D(mult, steps) {
+        const L = L1Max();
+        const eta = mult / L;
+        const pts = [start1D];
+        let x = start1D;
+        for (let k = 0; k < steps; k++) {
+          if (Math.abs(x) > 500) { pts.push(x); continue; }
+          x = x - eta * df1Eval(x);
+          pts.push(x);
+        }
+        return pts;
+      }
+
+      function f2Eval(v) {
+        return 0.5 * (H2[0][0] * v[0] * v[0] + 2 * H2[0][1] * v[0] * v[1] + H2[1][1] * v[1] * v[1]);
+      }
+      function g2Eval(v) {
+        return [H2[0][0] * v[0] + H2[0][1] * v[1], H2[0][1] * v[0] + H2[1][1] * v[1]];
+      }
+      function run2D(mult, steps) {
+        const eta = mult / L2;
+        const pts = [[start2D[0], start2D[1]]];
+        let cur = [start2D[0], start2D[1]];
+        for (let k = 0; k < steps; k++) {
+          if (Math.hypot(cur[0], cur[1]) > 500) { pts.push([cur[0], cur[1]]); continue; }
+          const g = g2Eval(cur);
+          cur = [cur[0] - eta * g[0], cur[1] - eta * g[1]];
+          pts.push(cur);
+        }
+        return pts;
+      }
+
+      function stopPlay() {
+        if (timerId !== null) {
+          clearInterval(timerId);
+          timerId = null;
+          btnPlay1.textContent = '▶ 자동 재생';
+          btnPlay1.classList.remove('is-primary');
+        }
+      }
+
+      function updateStatusUI(mult, lastPt, gapVal, gradNorm) {
+        mStep.textContent = String(shownK);
+        mGap.textContent = fmtSci(gapVal);
+        mGrad.textContent = isFinite(gradNorm) && gradNorm < 1e5 ? gradNorm.toFixed(4) : '∞';
+
+        if (mult > 2.0) {
+          mStatus.textContent = '발산 (η > 2/L)';
+          mStatus.className = 'metric-tile__v warn';
+          rateNote.textContent = '|1 - ηL| > 1 폭발';
+          verdictEl.textContent = `보폭 비율 ηL = ${mult.toFixed(2)} > 2.00 이므로 매 스텝 계곡 반대편으로 더 높이 튕겨 나가며 발산한다.`;
+        } else if (mult > 1.04) {
+          mStatus.textContent = '감쇠 진동';
+          mStatus.className = 'metric-tile__v amber';
+          rateNote.textContent = '반대 사면 왕복';
+          verdictEl.textContent = `1 < ηL = ${mult.toFixed(2)} < 2 구간에서는 최솟점을 지나쳐 반대편 경사로 넘어가지만 폭이 점차 줄며 수렴한다.`;
+        } else if (Math.abs(mult - 1.0) <= 0.05) {
+          mStatus.textContent = '최적 상계 보폭';
+          mStatus.className = 'metric-tile__v ok';
+          rateNote.textContent = '1/L 이론 기준';
+          verdictEl.textContent = `η = 1/L 에서는 L-이차 상계 포물선 q_L(θ)의 최저점으로 정확히 이동하며, 순수 이차함수(1D)는 1스텝에 수렴한다.`;
+        } else {
+          mStatus.textContent = '안정 단조 수렴';
+          mStatus.className = 'metric-tile__v ok';
+          rateNote.textContent = '오버슈트 없음';
+          verdictEl.textContent = `ηL = ${mult.toFixed(2)} ≤ 1 이므로 오버슈트 없이 매 스텝 목적함수가 단조 감소하지만, 값이 너무 작으면 전진이 느려진다.`;
+        }
+      }
+
+      function renderGapMini(gaps, mult, pal) {
+        const { ctx, w, h } = setupCanvas(gapCanvas, 146);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 36, padR = 14, padT = 16, padB = 24;
+        const maxK = Math.max(12, shownK);
+        const yMin = -6.0, yMax = 2.0;
+        const mx = k => padL + (k / maxK) * (w - padL - padR);
+        const my = y => padT + ((yMax - Math.max(yMin, Math.min(yMax, y))) / (yMax - yMin)) * (h - padT - padB);
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        [-4, -2, 0].forEach(gv => {
+          const py = my(gv);
+          ctx.beginPath(); ctx.moveTo(padL, py); ctx.lineTo(w - padR, py); ctx.stroke();
+          ctx.fillStyle = pal.muted;
+          ctx.font = '10px "JetBrains Mono", monospace';
+          ctx.fillText(String(gv), 12, py + 3);
+        });
+
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath();
+        ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB); ctx.lineTo(w - padR, h - padB);
+        ctx.stroke();
+
+        const col = mult > 2.0 ? pal.rose : (mult > 1.04 ? pal.amber : pal.teal);
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        gaps.forEach((g, idx) => {
+          const lg = Math.log10(Math.max(1e-6, g));
+          const px = mx(idx), py = my(lg);
+          if (idx === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        });
+        ctx.stroke();
+
+        gaps.forEach((g, idx) => {
+          const lg = Math.log10(Math.max(1e-6, g));
+          ctx.fillStyle = col;
+          ctx.beginPath();
+          ctx.arc(mx(idx), my(lg), idx === gaps.length - 1 ? 4 : 2.3, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.fillStyle = pal.muted;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillText('k=0', padL, h - 7);
+        ctx.fillText('k=' + shownK, w - padR - 26, h - 7);
+      }
+
+      let map1DRef = null, map2DRef = null;
+
+      function render1D(mult, pal) {
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 48, padR = 24, padT = 32, padB = 44;
+        const xMin = -3.1, xMax = 3.1, yMin = -0.35, yMax = 4.9;
+        const mx = x => padL + ((x - xMin) / (xMax - xMin)) * (w - padL - padR);
+        const my = y => padT + ((yMax - y) / (yMax - yMin)) * (h - padT - padB);
+        const ix = px => xMin + ((px - padL) / (w - padL - padR)) * (xMax - xMin);
+        map1DRef = { mx, my, ix };
+
+        // Grid
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let gx = -3; gx <= 3; gx++) {
+          ctx.beginPath(); ctx.moveTo(mx(gx), padT); ctx.lineTo(mx(gx), h - padB); ctx.stroke();
+        }
+        for (let gy = 0; gy <= 4; gy++) {
+          ctx.beginPath(); ctx.moveTo(padL, my(gy)); ctx.lineTo(w - padR, my(gy)); ctx.stroke();
+        }
+
+        // Axes
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.moveTo(padL, my(0)); ctx.lineTo(w - padR, my(0));
+        ctx.moveTo(mx(0), padT); ctx.lineTo(mx(0), h - padB);
+        ctx.stroke();
+
+        // Plot f(theta)
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 2.8;
+        ctx.beginPath();
+        for (let i = 0; i <= 200; i++) {
+          const x = xMin + (i / 200) * (xMax - xMin);
+          const py = my(f1Eval(x));
+          if (i === 0) ctx.moveTo(mx(x), py); else ctx.lineTo(mx(x), py);
+        }
+        ctx.stroke();
+
+        const pts = run1D(mult, shownK);
+        const gaps = pts.map(p => f1Eval(p));
+        const L = L1Max();
+        const focusK = Math.max(0, pts.length - 2);
+        const xf = pts[focusK];
+
+        // Surrogate upper bound + tangent line around focusK
+        if (isFinite(xf) && Math.abs(xf) < 8) {
+          const yf = f1Eval(xf);
+          const gf = df1Eval(xf);
+          if (showSurr) {
+            ctx.save();
+            ctx.strokeStyle = pal.teal;
+            ctx.lineWidth = 2.0;
+            ctx.setLineDash([5, 4]);
+            ctx.beginPath();
+            let started = false;
+            for (let i = 0; i <= 140; i++) {
+              const x = xMin + (i / 140) * (xMax - xMin);
+              const qy = yf + gf * (x - xf) + 0.5 * L * (x - xf) * (x - xf);
+              if (qy <= yMax + 0.4 && qy >= yMin) {
+                const px = mx(x), py = my(qy);
+                if (!started) { ctx.moveTo(px, py); started = true; } else ctx.lineTo(px, py);
+              } else {
+                started = false;
+              }
+            }
+            ctx.stroke();
+            ctx.restore();
+          }
+
+          // Tangent line around (xf, yf)
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.9;
+          ctx.beginPath();
+          const tSpan = 0.85;
+          ctx.moveTo(mx(xf - tSpan), my(yf - gf * tSpan));
+          ctx.lineTo(mx(xf + tSpan), my(yf + gf * tSpan));
+          ctx.stroke();
+        }
+
+        // Cobweb trajectory segments
+        const trajCol = mult > 2.0 ? pal.rose : (mult > 1.04 ? pal.amber : pal.cyan);
+        ctx.strokeStyle = trajCol;
+        ctx.lineWidth = 2.1;
+        for (let k = 0; k < pts.length - 1; k++) {
+          const x0 = pts[k], x1 = pts[k + 1];
+          const y0 = f1Eval(x0), y1 = f1Eval(x1);
+          if (Math.abs(x0) > 15 && Math.abs(x1) > 15) continue;
+          const cx1 = Math.max(-4.5, Math.min(4.5, x1));
+          const cy1 = f1Eval(cx1);
+          ctx.beginPath();
+          ctx.moveTo(mx(x0), my(Math.min(yMax + 0.3, y0)));
+          ctx.lineTo(mx(cx1), my(Math.min(yMax + 0.3, cy1)));
+          ctx.stroke();
+        }
+
+        // Dots
+        pts.forEach((p, idx) => {
+          if (Math.abs(p) > 3.25) return;
+          const y = f1Eval(p);
+          if (y > yMax + 0.25) return;
+          ctx.fillStyle = idx === 0 ? pal.ink : (idx === pts.length - 1 ? pal.teal : trajCol);
+          ctx.beginPath();
+          ctx.arc(mx(p), my(y), idx === 0 ? 6.5 : 4.2, 0, Math.PI * 2);
+          ctx.fill();
+          if (idx === 0) {
+            ctx.strokeStyle = pal.cyan;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+          }
+        });
+
+        // Optimum marker
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(mx(0), my(0), 5, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '650 11px "JetBrains Mono", monospace';
+        ctx.fillText('θ* = 0', mx(0) - 18, my(0) + 18);
+
+        if (Math.abs(start1D) <= 3.1) {
+          ctx.fillStyle = pal.ink;
+          ctx.fillText(`θ⁽⁰⁾=${start1D.toFixed(2)}`, mx(start1D) - 24, my(0) + 18);
+        }
+
+        const lastX = pts[pts.length - 1];
+        updateStatusUI(mult, lastX, f1Eval(lastX), Math.abs(df1Eval(lastX)));
+        renderGapMini(gaps, mult, pal);
+      }
+
+      function render2D(mult, pal) {
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const spanX = 2.65, spanY = 2.15;
+        const pad = 26;
+        const sc = Math.min((w - 2 * pad) / (2 * spanX), (h - 2 * pad) / (2 * spanY));
+        const cx = w * 0.5, cy = h * 0.5;
+        const mx = x => cx + x * sc;
+        const my = y => cy - y * sc;
+        const ix = px => (px - cx) / sc;
+        const iy = py => (cy - py) / sc;
+        map2DRef = { mx, my, ix, iy };
+
+        // Grid + axes
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -2; g <= 2; g++) {
+          ctx.beginPath(); ctx.moveTo(mx(g), my(-spanY)); ctx.lineTo(mx(g), my(spanY)); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(mx(-spanX), my(g)); ctx.lineTo(mx(spanX), my(g)); ctx.stroke();
+        }
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath();
+        ctx.moveTo(mx(-spanX), my(0)); ctx.lineTo(mx(spanX), my(0));
+        ctx.moveTo(mx(0), my(-spanY)); ctx.lineTo(mx(0), my(spanY));
+        ctx.stroke();
+
+        // Contours around 0
+        [0.14, 0.45, 0.98, 1.72, 2.75].forEach(lv => {
+          ctx.save();
+          ctx.strokeStyle = pal.indigo;
+          ctx.globalAlpha = 0.45;
+          ctx.lineWidth = 1.4;
+          ctx.beginPath();
+          const r1 = Math.sqrt((2 * lv) / e1), r2 = Math.sqrt((2 * lv) / e2);
+          for (let a = 0; a <= 80; a++) {
+            const ang = (a / 80) * Math.PI * 2;
+            const u1 = r1 * Math.cos(ang), u2 = r2 * Math.sin(ang);
+            const wx = cA * u1 - sA * u2;
+            const wy = sA * u1 + cA * u2;
+            if (a === 0) ctx.moveTo(mx(wx), my(wy)); else ctx.lineTo(mx(wx), my(wy));
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        const pts = run2D(mult, shownK);
+        const gaps = pts.map(p => f2Eval(p));
+
+        // Draw tangent & orthogonal -grad f at theta_0
+        const g0 = g2Eval(start2D);
+        const gNorm = Math.hypot(g0[0], g0[1]);
+        if (gNorm > 1e-4) {
+          const ux = g0[0] / gNorm, uy = g0[1] / gNorm;
+          const tx = -uy, ty = ux;
+          ctx.save();
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.8;
+          ctx.setLineDash([5, 4]);
+          ctx.beginPath();
+          ctx.moveTo(mx(start2D[0] - 0.85 * tx), my(start2D[1] - 0.85 * ty));
+          ctx.lineTo(mx(start2D[0] + 0.85 * tx), my(start2D[1] + 0.85 * ty));
+          ctx.stroke();
+          ctx.restore();
+
+          // +grad (rose) and -grad (cyan) + right-angle square
+          drawArrow(ctx, mx(start2D[0]), my(start2D[1]), mx(start2D[0] + 0.55 * ux), my(start2D[1] + 0.55 * uy), pal.rose, 2.1, 8);
+          drawArrow(ctx, mx(start2D[0]), my(start2D[1]), mx(start2D[0] - 0.65 * ux), my(start2D[1] - 0.65 * uy), pal.cyan, 2.6, 9);
+
+          const sq = 0.14;
+          ctx.strokeStyle = pal.amber;
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.moveTo(mx(start2D[0] + sq * tx), my(start2D[1] + sq * ty));
+          ctx.lineTo(mx(start2D[0] + sq * tx - sq * ux), my(start2D[1] + sq * ty - sq * uy));
+          ctx.lineTo(mx(start2D[0] - sq * ux), my(start2D[1] - sq * uy));
+          ctx.stroke();
+
+          ctx.font = '650 11px "JetBrains Mono", monospace';
+          ctx.fillStyle = pal.rose;
+          ctx.fillText('+∇f', mx(start2D[0] + 0.62 * ux), my(start2D[1] + 0.62 * uy));
+          ctx.fillStyle = pal.cyan;
+          ctx.fillText('-∇f (90°)', mx(start2D[0] - 0.72 * ux) + 6, my(start2D[1] - 0.72 * uy));
+        }
+
+        // Trajectory
+        const trajCol = mult > 2.0 ? pal.rose : (mult > 1.04 ? pal.amber : pal.teal);
+        ctx.strokeStyle = trajCol;
+        ctx.lineWidth = 2.4;
+        ctx.beginPath();
+        pts.forEach((p, idx) => {
+          if (Math.hypot(p[0], p[1]) > 15) return;
+          if (idx === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1]));
+        });
+        ctx.stroke();
+        pts.forEach((p, idx) => {
+          if (Math.hypot(p[0], p[1]) > 15) return;
+          ctx.fillStyle = idx === 0 ? pal.ink : trajCol;
+          ctx.beginPath();
+          ctx.arc(mx(p[0]), my(p[1]), idx === 0 ? 6.2 : 3.8, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(mx(0), my(0), 5.2, 0, Math.PI * 2); ctx.fill();
+        ctx.font = '650 11px "JetBrains Mono", monospace';
+        ctx.fillText('θ*', mx(0) - 18, my(0) + 16);
+
+        const lastPt = pts[pts.length - 1];
+        const lg = g2Eval(lastPt);
+        updateStatusUI(mult, lastPt, f2Eval(lastPt), Math.hypot(lg[0], lg[1]));
+        renderGapMini(gaps, mult, pal);
+      }
+
+      function render() {
+        const mult = parseFloat(etaIn.value);
+        etaVal.textContent = mult.toFixed(2) + ' / L';
+        const pal = getPalette();
+        if (dimMode === '1d') render1D(mult, pal); else render2D(mult, pal);
+      }
+
+      canvas.addEventListener('pointerdown', e => {
+        dragging = true;
+        canvas.setPointerCapture(e.pointerId);
+        moveStartFromEvent(e);
+      });
+      canvas.addEventListener('pointermove', e => { if (dragging) moveStartFromEvent(e); });
+      canvas.addEventListener('pointerup', () => { dragging = false; });
+
+      function moveStartFromEvent(e) {
+        const rect = canvas.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+        if (dimMode === '1d' && map1DRef) {
+          start1D = Math.max(-2.75, Math.min(2.75, map1DRef.ix(px)));
+        } else if (dimMode === '2d' && map2DRef) {
+          start2D = [
+            Math.max(-2.35, Math.min(2.35, map2DRef.ix(px))),
+            Math.max(-1.90, Math.min(1.90, map2DRef.iy(py)))
+          ];
+        }
+        render();
+      }
+
+      btn1D.addEventListener('click', () => {
+        dimMode = '1d';
+        btn1D.classList.add('is-primary'); btn2D.classList.remove('is-primary');
+        fnRow1D.style.display = 'flex';
+        hintEl.textContent = '노드 θ⁽⁰⁾을 좌우로 드래그 · 주황선: 접선 · 청록 점선 포물선: L-평활성 이차 상계 q_L(θ)';
+        render();
+      });
+      btn2D.addEventListener('click', () => {
+        dimMode = '2d';
+        btn2D.classList.add('is-primary'); btn1D.classList.remove('is-primary');
+        fnRow1D.style.display = 'none';
+        hintEl.textContent = 'θ⁽⁰⁾을 드래그 · 주황 점선: 등고선 접선 · -∇f는 접선에 90° 수직하지만 타원이 길면 꺾어 들어간다';
+        render();
+      });
+      btnQuad.addEventListener('click', () => {
+        fnType = 'quad';
+        btnQuad.classList.add('is-primary'); btnHuber.classList.remove('is-primary');
+        render();
+      });
+      btnHuber.addEventListener('click', () => {
+        fnType = 'huber';
+        btnHuber.classList.add('is-primary'); btnQuad.classList.remove('is-primary');
+        render();
+      });
+      btnSurr.addEventListener('click', () => {
+        showSurr = !showSurr;
+        btnSurr.classList.toggle('is-primary', showSurr);
+        render();
+      });
+
+      function applyEta(v) {
+        etaIn.value = v.toFixed(2);
+        shownK = Math.max(shownK, 8);
+        render();
+      }
+      btnSlow.addEventListener('click', () => applyEta(0.20));
+      btnOpt.addEventListener('click', () => applyEta(1.00));
+      btnOsc.addEventListener('click', () => applyEta(1.78));
+      btnDiv.addEventListener('click', () => applyEta(2.16));
+
+      btnStep1.addEventListener('click', () => { stopPlay(); shownK = Math.min(24, shownK + 1); render(); });
+      btnReset1.addEventListener('click', () => { stopPlay(); shownK = 1; render(); });
+      btnPlay1.addEventListener('click', () => {
+        if (timerId !== null) { stopPlay(); return; }
+        if (shownK >= 22) shownK = 0;
+        btnPlay1.textContent = '⏸ 정지';
+        btnPlay1.classList.add('is-primary');
+        timerId = setInterval(() => {
+          shownK += 1;
+          render();
+          if (shownK >= 22) stopPlay();
+        }, 280);
+      });
+      etaIn.addEventListener('input', render);
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+
+    /* ==================== LAB 02: CONDITIONING 2D/3D + RIDGE + MOMENTUM + NEWTON ==================== */
+    (function initConditioningLab() {
+      const canvas = document.getElementById('gdCondCanvas');
+      const logCanvas = document.getElementById('gdCondLogCanvas');
+      const hintEl = document.getElementById('gdCondHint');
+
+      const btn2D = document.getElementById('btnCond2D');
+      const btn3D = document.getElementById('btnCond3D');
+      const kappaIn = document.getElementById('kappaIn');
+      const ridgeIn = document.getElementById('ridgeIn');
+      const condEtaIn = document.getElementById('condEtaIn');
+      const betaIn = document.getElementById('betaIn');
+
+      const kappaVal = document.getElementById('kappaInVal');
+      const ridgeVal = document.getElementById('ridgeInVal');
+      const condEtaVal = document.getElementById('condEtaVal');
+      const betaVal = document.getElementById('betaVal');
+
+      const btnShowGD = document.getElementById('btnShowGD');
+      const btnShowMom = document.getElementById('btnShowMom');
+      const btnShowNewt = document.getElementById('btnShowNewt');
+      const btnIso = document.getElementById('btnCondIso');
+      const btnCanyon = document.getElementById('btnCondCanyon');
+      const btnRidge = document.getElementById('btnCondRidge');
+
+      const condKapEff = document.getElementById('condKapEff');
+      const mEffKap = document.getElementById('mCEffKap');
+      const mGdGap = document.getElementById('mCGdGap');
+      const mMomGap = document.getElementById('mCMomGap');
+      const mBias = document.getElementById('mCBias');
+      const verdictEl = document.getElementById('condVerdict');
+
+      let view = '2d';
+      let showGD = true, showMom = true, showNewt = true;
+      let startPt = [-1.15, 1.15];
+      let yaw = -0.68, pitch = 0.56;
+      let dragging = false, lastMouse = null;
+      let map2DRef = null;
+
+      const thetaOLS = [1.05, -0.32];
+      const angRav = (-24 * Math.PI) / 180;
+      const cR = Math.cos(angRav), sR = Math.sin(angRav);
+
+      function buildSystem(kappa0, lam) {
+        const L0 = 1.60;
+        const mu0 = L0 / kappa0;
+        const h00 = mu0 * cR * cR + L0 * sR * sR;
+        const h01 = (mu0 - L0) * cR * sR;
+        const h11 = mu0 * sR * sR + L0 * cR * cR;
+
+        const a00 = h00 + lam, a01 = h01, a11 = h11 + lam;
+        const det = a00 * a11 - a01 * a01;
+        const inv = [
+          [a11 / det, -a01 / det],
+          [-a01 / det, a00 / det]
+        ];
+        // Center: H_lam^{-1} (H_0 thetaOLS)
+        const b0 = h00 * thetaOLS[0] + h01 * thetaOLS[1];
+        const b1 = h01 * thetaOLS[0] + h11 * thetaOLS[1];
+        const center = [
+          inv[0][0] * b0 + inv[0][1] * b1,
+          inv[1][0] * b0 + inv[1][1] * b1
+        ];
+        const H = [[a00, a01], [a01, a11]];
+        const muEff = mu0 + lam, LEff = L0 + lam;
+
+        function fVal(p) {
+          const dx0 = p[0] - thetaOLS[0], dx1 = p[1] - thetaOLS[1];
+          const olsTerm = 0.5 * (h00 * dx0 * dx0 + 2 * h01 * dx0 * dx1 + h11 * dx1 * dx1);
+          const regTerm = 0.5 * lam * (p[0] * p[0] + p[1] * p[1]);
+          return olsTerm + regTerm;
+        }
+        function grad(p) {
+          const dx0 = p[0] - center[0], dx1 = p[1] - center[1];
+          return [a00 * dx0 + a01 * dx1, a01 * dx0 + a11 * dx1];
+        }
+        return { H, inv, center, muEff, LEff, kapEff: LEff / muEff, fVal, grad };
+      }
+
+      function computeTrajectories(sys, etaMult, beta) {
+        const nSteps = 18;
+        const etaGD = etaMult / sys.LEff;
+        const etaMom = Math.min(1.35, 0.72) / sys.LEff;
+
+        const gd = [[startPt[0], startPt[1]]];
+        let xg = [startPt[0], startPt[1]];
+        for (let k = 0; k < nSteps; k++) {
+          const g = sys.grad(xg);
+          xg = [xg[0] - etaGD * g[0], xg[1] - etaGD * g[1]];
+          gd.push(xg);
+        }
+
+        const mom = [[startPt[0], startPt[1]]];
+        let xm = [startPt[0], startPt[1]];
+        let v = [0, 0];
+        for (let k = 0; k < nSteps; k++) {
+          const g = sys.grad(xm);
+          v = [beta * v[0] + g[0], beta * v[1] + g[1]];
+          xm = [xm[0] - etaMom * v[0], xm[1] - etaMom * v[1]];
+          mom.push(xm);
+        }
+
+        const newt = [[startPt[0], startPt[1]], [sys.center[0], sys.center[1]]];
+        while (newt.length <= nSteps) newt.push([sys.center[0], sys.center[1]]);
+        return { gd, mom, newt, nSteps };
+      }
+
+      function renderMiniLog(sys, traj, pal) {
+        const { ctx, w, h } = setupCanvas(logCanvas, 146);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const fStar = sys.fVal(sys.center);
+        const padL = 36, padR = 14, padT = 14, padB = 24;
+        const yMin = -5.5, yMax = 0.8;
+        const mx = k => padL + (k / traj.nSteps) * (w - padL - padR);
+        const my = y => padT + ((yMax - Math.max(yMin, Math.min(yMax, y))) / (yMax - yMin)) * (h - padT - padB);
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        [-4, -2, 0].forEach(yv => {
+          ctx.beginPath(); ctx.moveTo(padL, my(yv)); ctx.lineTo(w - padR, my(yv)); ctx.stroke();
+          ctx.fillStyle = pal.muted;
+          ctx.font = '10px "JetBrains Mono", monospace';
+          ctx.fillText(String(yv), 12, my(yv) + 3);
+        });
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB); ctx.lineTo(w - padR, h - padB); ctx.stroke();
+
+        function drawCurve(pts, col) {
+          ctx.strokeStyle = col;
+          ctx.lineWidth = 2.1;
+          ctx.beginPath();
+          pts.forEach((p, k) => {
+            const gap = Math.max(1e-6, sys.fVal(p) - fStar);
+            const px = mx(k), py = my(Math.log10(gap));
+            if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          });
+          ctx.stroke();
+        }
+        if (showGD) drawCurve(traj.gd, pal.rose);
+        if (showMom) drawCurve(traj.mom, pal.amber);
+        if (showNewt) drawCurve(traj.newt, pal.teal);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillText('k=0', padL, h - 7);
+        ctx.fillText('k=' + traj.nSteps, w - padR - 26, h - 7);
+      }
+
+      function render2D(sys, traj, pal) {
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const spanX = 2.55, spanY = 2.05;
+        const pad = 22;
+        const sc = Math.min((w - 2 * pad) / (2 * spanX), (h - 2 * pad) / (2 * spanY));
+        const cx = w * 0.50, cy = h * 0.50;
+        const mx = x => cx + x * sc;
+        const my = y => cy - y * sc;
+        const ix = px => (px - cx) / sc;
+        const iy = py => (cy - py) / sc;
+        map2DRef = { mx, my, ix, iy };
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -2; g <= 2; g++) {
+          ctx.beginPath(); ctx.moveTo(mx(g), my(-spanY)); ctx.lineTo(mx(g), my(spanY)); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(mx(-spanX), my(g)); ctx.lineTo(mx(spanX), my(g)); ctx.stroke();
+        }
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath();
+        ctx.moveTo(mx(-spanX), my(0)); ctx.lineTo(mx(spanX), my(0));
+        ctx.moveTo(mx(0), my(-spanY)); ctx.lineTo(mx(0), my(spanY));
+        ctx.stroke();
+
+        // Contours centered at sys.center
+        [0.05, 0.16, 0.36, 0.72, 1.30].forEach(lv => {
+          ctx.save();
+          ctx.strokeStyle = pal.indigo;
+          ctx.globalAlpha = 0.42;
+          ctx.lineWidth = 1.3;
+          ctx.beginPath();
+          const r1 = Math.sqrt((2 * lv) / sys.muEff), r2 = Math.sqrt((2 * lv) / sys.LEff);
+          for (let a = 0; a <= 84; a++) {
+            const ang = (a / 84) * Math.PI * 2;
+            const u1 = r1 * Math.cos(ang), u2 = r2 * Math.sin(ang);
+            const wx = sys.center[0] + cR * u1 - sR * u2;
+            const wy = sys.center[1] + sR * u1 + cR * u2;
+            if (a === 0) ctx.moveTo(mx(wx), my(wy)); else ctx.lineTo(mx(wx), my(wy));
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        // OLS target ring vs Ridge effective target star
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        ctx.arc(mx(thetaOLS[0]), my(thetaOLS[1]), 6.5, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = pal.indigo;
+        ctx.font = '650 11px "JetBrains Mono", monospace';
+        ctx.fillText('θ_OLS', mx(thetaOLS[0]) + 9, my(thetaOLS[1]) + 14);
+
+        ctx.fillStyle = pal.amber;
+        ctx.beginPath();
+        ctx.arc(mx(sys.center[0]), my(sys.center[1]), 5.2, 0, Math.PI * 2);
+        ctx.fill();
+        if (Math.hypot(sys.center[0] - thetaOLS[0], sys.center[1] - thetaOLS[1]) > 0.05) {
+          ctx.fillText('θ_Ridge*', mx(sys.center[0]) - 22, my(sys.center[1]) - 10);
+        }
+
+        function drawPath(pts, col, lw) {
+          ctx.strokeStyle = col;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          pts.forEach((p, idx) => {
+            if (idx === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1]));
+          });
+          ctx.stroke();
+          pts.forEach((p, idx) => {
+            ctx.fillStyle = col;
+            ctx.beginPath();
+            ctx.arc(mx(p[0]), my(p[1]), idx === pts.length - 1 ? 4.2 : 2.6, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        }
+        if (showGD) drawPath(traj.gd, pal.rose, 2.1);
+        if (showMom) drawPath(traj.mom, pal.amber, 2.5);
+        if (showNewt) {
+          drawArrow(ctx, mx(startPt[0]), my(startPt[1]), mx(sys.center[0]), my(sys.center[1]), pal.teal, 2.3, 9);
+        }
+
+        // Start handle
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(mx(startPt[0]), my(startPt[1]), 6.2, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = pal.cyan; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = pal.ink;
+        ctx.fillText('θ⁽⁰⁾', mx(startPt[0]) - 12, my(startPt[1]) - 10);
+      }
+
+      function render3D(sys, traj, pal) {
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const cyw = Math.cos(yaw), syw = Math.sin(yaw);
+        const cpt = Math.cos(pitch), spt = Math.sin(pitch);
+        const cx = w * 0.50, cy = h * 0.58;
+        const sc = Math.min(w, h) * 0.14;
+        const fStar = sys.fVal(sys.center);
+
+        function proj(x, y, z) {
+          const rx = cyw * x - syw * y;
+          const ry = syw * x + cyw * y;
+          const py = cpt * ry - spt * z;
+          return { x: cx + rx * sc, y: cy - py * sc };
+        }
+
+        // Surface grid
+        const N = 16, lim = 2.1;
+        const zCap = 2.6;
+        ctx.strokeStyle = pal.dark ? 'rgba(129,140,248,0.22)' : 'rgba(79,70,229,0.18)';
+        ctx.lineWidth = 1;
+        for (let i = 0; i <= N; i++) {
+          const u = -lim + (2 * lim * i) / N;
+          ctx.beginPath();
+          for (let j = 0; j <= N; j++) {
+            const v = -lim + (2 * lim * j) / N;
+            const zv = Math.min(zCap, (sys.fVal([u, v]) - fStar) * 0.72);
+            const pt = proj(u, v, zv);
+            if (j === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.stroke();
+
+          ctx.beginPath();
+          for (let j = 0; j <= N; j++) {
+            const v = -lim + (2 * lim * j) / N;
+            const zv = Math.min(zCap, (sys.fVal([v, u]) - fStar) * 0.72);
+            const pt = proj(v, u, zv);
+            if (j === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.stroke();
+        }
+
+        // Paths elevated on 3D surface
+        function draw3DPath(pts, col, lw) {
+          ctx.strokeStyle = col;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          pts.forEach((p, idx) => {
+            const zv = Math.min(zCap + 0.15, (sys.fVal(p) - fStar) * 0.72 + 0.04);
+            const pt = proj(p[0], p[1], zv);
+            if (idx === 0) ctx.moveTo(pt.x, pt.y); else ctx.lineTo(pt.x, pt.y);
+          });
+          ctx.stroke();
+        }
+        if (showGD) draw3DPath(traj.gd, pal.rose, 2.3);
+        if (showMom) draw3DPath(traj.mom, pal.amber, 2.6);
+        if (showNewt) draw3DPath([startPt, sys.center], pal.teal, 2.4);
+
+        const pOpt = proj(sys.center[0], sys.center[1], 0.04);
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(pOpt.x, pOpt.y, 5, 0, Math.PI * 2); ctx.fill();
+        const pSt = proj(startPt[0], startPt[1], Math.min(zCap + 0.15, (sys.fVal(startPt) - fStar) * 0.72 + 0.04));
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(pSt.x, pSt.y, 5.5, 0, Math.PI * 2); ctx.fill();
+      }
+
+      function render() {
+        const kappa0 = parseInt(kappaIn.value, 10);
+        const lam = parseFloat(ridgeIn.value);
+        const etaMult = parseFloat(condEtaIn.value);
+        const beta = parseFloat(betaIn.value);
+
+        kappaVal.textContent = String(kappa0);
+        ridgeVal.textContent = lam.toFixed(2);
+        condEtaVal.textContent = etaMult.toFixed(2);
+        betaVal.textContent = beta.toFixed(2);
+
+        const sys = buildSystem(kappa0, lam);
+        const traj = computeTrajectories(sys, etaMult, beta);
+        const fStar = sys.fVal(sys.center);
+        const gdGap = sys.fVal(traj.gd[traj.gd.length - 1]) - fStar;
+        const momGap = sys.fVal(traj.mom[traj.mom.length - 1]) - fStar;
+        const bias = Math.hypot(sys.center[0] - thetaOLS[0], sys.center[1] - thetaOLS[1]);
+
+        condKapEff.textContent = `유효 κ(λ) = ${sys.kapEff.toFixed(1)}`;
+        mEffKap.textContent = sys.kapEff.toFixed(1);
+        mGdGap.textContent = fmtSci(gdGap);
+        mMomGap.textContent = fmtSci(momGap);
+        mBias.textContent = bias.toFixed(3);
+
+        if (lam > 0.02) {
+          verdictEl.textContent = `Ridge 벌점 λ=${lam.toFixed(2)} 가 조건수를 ${kappa0} → ${sys.kapEff.toFixed(1)} 로 낮춰 수렴을 가속하지만, 최적점이 θ_OLS로부터 거리 ${bias.toFixed(3)} 만큼 수축(편향)되었다.`;
+        } else if (sys.kapEff <= 2.5) {
+          verdictEl.textContent = `조건수 κ=${sys.kapEff.toFixed(1)} 인 등방성 계곡에서는 GD · Momentum · Newton 모두 지그재그 없이 곧바로 수렴한다.`;
+        } else {
+          verdictEl.textContent = `높은 조건수(κ=${sys.kapEff.toFixed(1)}) 협곡에서 Vanilla GD는 가파른 벽을 왕복(잔여 오차 ${fmtSci(gdGap)})하지만, Momentum(β=${beta.toFixed(2)})과 Newton이 이를 극적으로 단축한다.`;
+        }
+
+        const pal = getPalette();
+        if (view === '2d') render2D(sys, traj, pal); else render3D(sys, traj, pal);
+        renderMiniLog(sys, traj, pal);
+      }
+
+      canvas.addEventListener('pointerdown', e => {
+        dragging = true;
+        canvas.setPointerCapture(e.pointerId);
+        lastMouse = { x: e.clientX, y: e.clientY };
+        if (view === '2d' && map2DRef) moveStart2D(e);
+      });
+      canvas.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        if (view === '2d' && map2DRef) {
+          moveStart2D(e);
+        } else if (view === '3d' && lastMouse) {
+          yaw += (e.clientX - lastMouse.x) * 0.01;
+          pitch = Math.max(0.15, Math.min(1.35, pitch + (e.clientY - lastMouse.y) * 0.008));
+          lastMouse = { x: e.clientX, y: e.clientY };
+          render();
+        }
+      });
+      canvas.addEventListener('pointerup', () => { dragging = false; lastMouse = null; });
+
+      function moveStart2D(e) {
+        const rect = canvas.getBoundingClientRect();
+        const px = e.clientX - rect.left;
+        const py = e.clientY - rect.top;
+        startPt = [
+          Math.max(-2.30, Math.min(2.30, map2DRef.ix(px))),
+          Math.max(-1.85, Math.min(1.85, map2DRef.iy(py)))
+        ];
+        render();
+      }
+
+      btn2D.addEventListener('click', () => {
+        view = '2d';
+        btn2D.classList.add('is-primary'); btn3D.classList.remove('is-primary');
+        hintEl.textContent = 'θ⁽⁰⁾을 드래그해 지그재그 vs Momentum vs Newton 경로를 실시간 비교하세요';
+        render();
+      });
+      btn3D.addEventListener('click', () => {
+        view = '3d';
+        btn3D.classList.add('is-primary'); btn2D.classList.remove('is-primary');
+        hintEl.textContent = '캔버스를 드래그해 3D 타원 협곡 곡면을 회전하며 각 알고리즘 궤적을 입체로 살펴보세요';
+        render();
+      });
+
+      btnShowGD.addEventListener('click', () => { showGD = !showGD; btnShowGD.classList.toggle('is-primary', showGD); render(); });
+      btnShowMom.addEventListener('click', () => { showMom = !showMom; btnShowMom.classList.toggle('is-primary', showMom); render(); });
+      btnShowNewt.addEventListener('click', () => { showNewt = !showNewt; btnShowNewt.classList.toggle('is-primary', showNewt); render(); });
+
+      btnIso.addEventListener('click', () => { kappaIn.value = '1'; ridgeIn.value = '0.00'; render(); });
+      btnCanyon.addEventListener('click', () => { kappaIn.value = '16'; ridgeIn.value = '0.00'; condEtaIn.value = '1.68'; render(); });
+      btnRidge.addEventListener('click', () => { kappaIn.value = '16'; ridgeIn.value = '0.50'; render(); });
+
+      [kappaIn, ridgeIn, condEtaIn, betaIn].forEach(el => el.addEventListener('input', render));
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+
+    /* ==================== LAB 03: MINI-BATCH SGD VS NON-CONVEX SADDLE ==================== */
+    (function initSgdLab() {
+      const canvas = document.getElementById('gdSgdCanvas');
+      const lossCanvas = document.getElementById('gdSgdLossCanvas');
+      const hintEl = document.getElementById('gdSgdHint');
+
+      const btnConvex = document.getElementById('btnSgdConvex');
+      const btnNonConv = document.getElementById('btnSgdNonConv');
+      const sgdCtrl = document.getElementById('sgdCtrlGroup');
+      const ncCtrl = document.getElementById('nonConvCtrlGroup');
+
+      const batchIn = document.getElementById('batchIn');
+      const batchVal = document.getElementById('batchVal');
+      const sgdEtaIn = document.getElementById('sgdEtaIn');
+      const sgdEtaVal = document.getElementById('sgdEtaVal');
+      const btnConst = document.getElementById('btnSchedConst');
+      const btnDecay = document.getElementById('btnSchedDecay');
+      const btnNewSeed = document.getElementById('btnNewSeed');
+
+      const ncNoiseIn = document.getElementById('ncNoiseIn');
+      const ncNoiseVal = document.getElementById('ncNoiseVal');
+      const ncEtaIn = document.getElementById('ncEtaIn');
+      const ncEtaVal = document.getElementById('ncEtaVal');
+      const btnPlaceSaddle = document.getElementById('btnPlaceSaddle');
+      const btnPlaceLocal = document.getElementById('btnPlaceLocal');
+      const btnNewNcSeed = document.getElementById('btnNewNcSeed');
+
+      const sgdMiniTitle = document.getElementById('sgdMiniTitle');
+      const sgdMiniTag = document.getElementById('sgdMiniTag');
+      const m3K1 = document.getElementById('m3K1'), m3V1 = document.getElementById('m3V1');
+      const m3K2 = document.getElementById('m3K2'), m3V2 = document.getElementById('m3V2');
+      const m3K3 = document.getElementById('m3K3'), m3V3 = document.getElementById('m3V3');
+      const m3K4 = document.getElementById('m3K4'), m3V4 = document.getElementById('m3V4');
+      const verdictEl = document.getElementById('sgdVerdict');
+
+      const batchChoices = [2, 4, 8, 16, 32, 64, 120];
+      let labMode = 'sgd';
+      let sched = 'const';
+      let seed = 4201;
+      let ncSeed = 7713;
+      let ncStart = [0.095, 1.32];
+      let dragging = false;
+      let mapNcRef = null;
+
+      function mulberry32(a) {
+        return function () {
+          let t = a += 0x6D2B79F5;
+          t = Math.imul(t ^ (t >>> 15), t | 1);
+          t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+      function gaussian(rng) {
+        const u1 = Math.max(1e-7, rng()), u2 = rng();
+        return Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+      }
+
+      // Generate synthetic correlated OLS dataset (n=120)
+      function genDataset(sd) {
+        const rng = mulberry32(sd);
+        const n = 120;
+        const rows = [];
+        const thTrue = [0.85, -0.55];
+        for (let i = 0; i < n; i++) {
+          const z1 = gaussian(rng), z2 = gaussian(rng);
+          const x1 = z1;
+          const x2 = 0.72 * z1 + Math.sqrt(1 - 0.72 * 0.72) * z2;
+          const eps = 0.90 * gaussian(rng);
+          const y = thTrue[0] * x1 + thTrue[1] * x2 + eps;
+          rows.push({ x1, x2, y });
+        }
+        // Normal equations (1/n X^T X) theta = 1/n X^T y
+        let s11 = 0, s12 = 0, s22 = 0, r1 = 0, r2 = 0;
+        for (const r of rows) {
+          s11 += r.x1 * r.x1; s12 += r.x1 * r.x2; s22 += r.x2 * r.x2;
+          r1 += r.x1 * r.y; r2 += r.x2 * r.y;
+        }
+        s11 /= n; s12 /= n; s22 /= n; r1 /= n; r2 /= n;
+        const det = s11 * s22 - s12 * s12;
+        const thHat = [(s22 * r1 - s12 * r2) / det, (-s12 * r1 + s11 * r2) / det];
+
+        function lossQ(th) {
+          let tot = 0;
+          for (const r of rows) {
+            const err = r.y - (th[0] * r.x1 + th[1] * r.x2);
+            tot += 0.5 * err * err;
+          }
+          return tot / n;
+        }
+        function fullGrad(th) {
+          return [
+            s11 * th[0] + s12 * th[1] - r1,
+            s12 * th[0] + s22 * th[1] - r2
+          ];
+        }
+        function batchGrad(th, B, brng) {
+          if (B >= n) return fullGrad(th);
+          let g0 = 0, g1 = 0;
+          for (let j = 0; j < B; j++) {
+            const row = rows[Math.floor(brng() * n)];
+            const predErr = row.x1 * th[0] + row.x2 * th[1] - row.y;
+            g0 += predErr * row.x1;
+            g1 += predErr * row.x2;
+          }
+          return [g0 / B, g1 / B];
+        }
+        return { rows, n, S: [[s11, s12], [s12, s22]], thHat, lossQ, fullGrad, batchGrad };
+      }
+
+      // Non-convex double well + saddle: 0.28(t1^2 - 1.35)^2 + 0.85 t2^2 + 0.14 t1
+      function ncEval(p) {
+        const u = p[0] * p[0] - 1.35;
+        return 0.28 * u * u + 0.85 * p[1] * p[1] + 0.14 * p[0];
+      }
+      function ncGrad(p) {
+        return [
+          1.12 * p[0] * (p[0] * p[0] - 1.35) + 0.14,
+          1.70 * p[1]
+        ];
+      }
+
+      function renderLossMini(seriesA, seriesB, colA, colB, pal, logMode) {
+        const { ctx, w, h } = setupCanvas(lossCanvas, 146);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const padL = 38, padR = 14, padT = 14, padB = 24;
+        const nPts = Math.max(seriesA.length, seriesB.length) - 1;
+        const allVals = seriesA.concat(seriesB);
+        let yMin = logMode ? -4.2 : Math.min(-0.25, Math.min(...allVals) - 0.1);
+        let yMax = logMode ? 0.5 : Math.max(1.2, Math.max(...allVals) + 0.1);
+        const mx = k => padL + (k / Math.max(1, nPts)) * (w - padL - padR);
+        const my = y => padT + ((yMax - Math.max(yMin, Math.min(yMax, y))) / (yMax - yMin)) * (h - padT - padB);
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        const ticks = logMode ? [-3, -2, -1, 0] : [0, 0.5, 1.0];
+        ticks.forEach(tv => {
+          const py = my(tv);
+          ctx.beginPath(); ctx.moveTo(padL, py); ctx.lineTo(w - padR, py); ctx.stroke();
+          ctx.fillStyle = pal.muted;
+          ctx.font = '10px "JetBrains Mono", monospace';
+          ctx.fillText(tv.toFixed(logMode ? 0 : 1), 8, py + 3);
+        });
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, h - padB); ctx.lineTo(w - padR, h - padB); ctx.stroke();
+
+        function draw(arr, col, lw) {
+          ctx.strokeStyle = col;
+          ctx.lineWidth = lw;
+          ctx.beginPath();
+          arr.forEach((v, k) => {
+            const val = logMode ? Math.log10(Math.max(1e-5, v)) : v;
+            const px = mx(k), py = my(val);
+            if (k === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          });
+          ctx.stroke();
+        }
+        draw(seriesA, colA, 2.2);
+        draw(seriesB, colB, 1.9);
+
+        ctx.fillStyle = pal.muted;
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillText('k=0', padL, h - 7);
+        ctx.fillText('k=' + nPts, w - padR - 30, h - 7);
+      }
+
+      function renderSgdConvex(pal) {
+        const ds = genDataset(seed);
+        const B = batchChoices[parseInt(batchIn.value, 10)];
+        const eta0 = parseFloat(sgdEtaIn.value);
+        batchVal.textContent = B >= ds.n ? `B = ${B} (전체 배치)` : `B = ${B}`;
+        sgdEtaVal.textContent = eta0.toFixed(2);
+
+        const K = 80;
+        const start = [-1.45, 1.35];
+        const gdPts = [start.slice()], sgdPts = [start.slice()];
+        let xg = start.slice(), xs = start.slice();
+        const brng = mulberry32(seed + 999);
+        for (let k = 0; k < K; k++) {
+          const etaK = sched === 'decay' ? eta0 / Math.sqrt(1 + 0.14 * k) : eta0;
+          const gg = ds.fullGrad(xg);
+          xg = [xg[0] - etaK * gg[0], xg[1] - etaK * gg[1]];
+          gdPts.push(xg);
+
+          const gs = ds.batchGrad(xs, B, brng);
+          xs = [xs[0] - etaK * gs[0], xs[1] - etaK * gs[1]];
+          sgdPts.push(xs);
+        }
+
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const spanX = 2.55, spanY = 2.05;
+        const pad = 22;
+        const sc = Math.min((w - 2 * pad) / (2 * spanX), (h - 2 * pad) / (2 * spanY));
+        const cx = w * 0.50, cy = h * 0.50;
+        const mx = x => cx + x * sc;
+        const my = y => cy - y * sc;
+
+        ctx.strokeStyle = pal.grid;
+        ctx.lineWidth = 1;
+        for (let g = -2; g <= 2; g++) {
+          ctx.beginPath(); ctx.moveTo(mx(g), my(-spanY)); ctx.lineTo(mx(g), my(spanY)); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(mx(-spanX), my(g)); ctx.lineTo(mx(spanX), my(g)); ctx.stroke();
+        }
+        ctx.strokeStyle = pal.axis;
+        ctx.beginPath();
+        ctx.moveTo(mx(-spanX), my(0)); ctx.lineTo(mx(spanX), my(0));
+        ctx.moveTo(mx(0), my(-spanY)); ctx.lineTo(mx(0), my(spanY));
+        ctx.stroke();
+
+        // Empirical OLS contours centered at ds.thHat
+        [0.10, 0.35, 0.80, 1.50, 2.50].forEach(lv => {
+          ctx.save();
+          ctx.strokeStyle = pal.indigo;
+          ctx.globalAlpha = 0.38;
+          ctx.lineWidth = 1.2;
+          ctx.beginPath();
+          for (let a = 0; a <= 84; a++) {
+            const ang = (a / 84) * Math.PI * 2;
+            const u1 = Math.cos(ang), u2 = Math.sin(ang);
+            const qf = 0.5 * (ds.S[0][0] * u1 * u1 + 2 * ds.S[0][1] * u1 * u2 + ds.S[1][1] * u2 * u2);
+            const rad = Math.sqrt(lv / Math.max(0.05, qf));
+            const wx = ds.thHat[0] + rad * u1, wy = ds.thHat[1] + rad * u2;
+            if (a === 0) ctx.moveTo(mx(wx), my(wy)); else ctx.lineTo(mx(wx), my(wy));
+          }
+          ctx.stroke();
+          ctx.restore();
+        });
+
+        // Noise ball indicator under constant LR
+        if (sched === 'const' && B < ds.n) {
+          const radBall = Math.min(1.1, Math.sqrt((eta0 * 0.90 * 0.90) / B) * 1.45);
+          ctx.save();
+          ctx.strokeStyle = pal.amber;
+          ctx.setLineDash([4, 4]);
+          ctx.lineWidth = 1.5;
+          ctx.beginPath();
+          ctx.arc(mx(ds.thHat[0]), my(ds.thHat[1]), radBall * sc, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.restore();
+        }
+
+        // Paths
+        ctx.strokeStyle = pal.indigo;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        gdPts.forEach((p, k) => { if (k === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1])); });
+        ctx.stroke();
+
+        ctx.strokeStyle = pal.cyan;
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        sgdPts.forEach((p, k) => { if (k === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1])); });
+        ctx.stroke();
+
+        // Start, Target, End points
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(mx(start[0]), my(start[1]), 5.2, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.teal;
+        ctx.beginPath(); ctx.arc(mx(ds.thHat[0]), my(ds.thHat[1]), 5.8, 0, Math.PI * 2); ctx.fill();
+        const sEnd = sgdPts[sgdPts.length - 1];
+        ctx.fillStyle = pal.cyan;
+        ctx.beginPath(); ctx.arc(mx(sEnd[0]), my(sEnd[1]), 4.8, 0, Math.PI * 2); ctx.fill();
+
+        ctx.font = '650 11px "JetBrains Mono", monospace';
+        ctx.fillStyle = pal.teal;
+        ctx.fillText('θ̂_OLS', mx(ds.thHat[0]) + 8, my(ds.thHat[1]) + 14);
+        ctx.fillStyle = pal.ink;
+        ctx.fillText('θ⁽⁰⁾', mx(start[0]) + 7, my(start[1]) - 6);
+
+        const qStar = ds.lossQ(ds.thHat);
+        const gdLoss = gdPts.map(p => Math.max(1e-6, ds.lossQ(p) - qStar));
+        const sgdLoss = sgdPts.map(p => Math.max(1e-6, ds.lossQ(p) - qStar));
+        renderLossMini(gdLoss, sgdLoss, pal.indigo, pal.cyan, pal, true);
+
+        const gdFinal = gdLoss[gdLoss.length - 1];
+        const sgdTail = sgdLoss.slice(-10).reduce((a, b) => a + b, 0) / 10;
+        const varRatio = B >= ds.n ? 0.0 : (0.81 / B);
+
+        sgdMiniTitle.textContent = '반복별 초과 손실 log₁₀(Qₙ(θ_k) − Qₙ*)';
+        sgdMiniTag.textContent = '보라: Full GD · 하늘: SGD';
+        m3K1.textContent = 'Full GD 최종 갭'; m3V1.textContent = fmtSci(gdFinal); m3V1.className = 'metric-tile__v accent';
+        m3K2.textContent = 'SGD 마지막 10회 평균'; m3V2.textContent = fmtSci(sgdTail); m3V2.className = 'metric-tile__v cyan';
+        m3K3.textContent = '배치 경사잡음 σ²/B'; m3V3.textContent = B >= ds.n ? '0.000' : varRatio.toFixed(3);
+        if (B >= ds.n) {
+          m3K4.textContent = '수렴 상태'; m3V4.textContent = '결정론적 GD 일치'; m3V4.className = 'metric-tile__v ok';
+          verdictEl.textContent = '배치 크기가 전체 표본(B=120)에 도달해 잡음이 사라졌고 두 궤적이 완전히 일치한다.';
+        } else if (sched === 'const') {
+          m3K4.textContent = '수렴 상태'; m3V4.textContent = '잡음 공 정지'; m3V4.className = 'metric-tile__v amber';
+          verdictEl.textContent = `고정 보폭(η₀=${eta0.toFixed(2)}) + 배치 B=${B} 에서는 θ̂_OLS 주변의 점선 잡음 공 반경 안에서 계속 맴돈다. 감쇠 학습률로 전환하면 중심으로 수렴한다.`;
+        } else {
+          m3K4.textContent = '수렴 상태'; m3V4.textContent = '점근 수렴 진행'; m3V4.className = 'metric-tile__v ok';
+          verdictEl.textContent = `감쇠 학습률(η₀/√(1+0.14k))이 후반부 잡음 진폭을 줄여 마지막 10회 평균 갭을 ${fmtSci(sgdTail)} 까지 낮췄다.`;
+        }
+      }
+
+      function renderNonConvex(pal) {
+        const sigmaNC = parseFloat(ncNoiseIn.value);
+        const etaNC = parseFloat(ncEtaIn.value);
+        ncNoiseVal.textContent = sigmaNC.toFixed(2);
+        ncEtaVal.textContent = etaNC.toFixed(2);
+
+        const K = 45;
+        const gdPts = [ncStart.slice()], sgdPts = [ncStart.slice()];
+        let xg = ncStart.slice(), xs = ncStart.slice();
+        const rng = mulberry32(ncSeed);
+        for (let k = 0; k < K; k++) {
+          const gg = ncGrad(xg);
+          xg = [Math.max(-2.4, Math.min(2.4, xg[0] - etaNC * gg[0])), Math.max(-1.8, Math.min(1.8, xg[1] - etaNC * gg[1]))];
+          gdPts.push(xg);
+
+          const gs = ncGrad(xs);
+          const n0 = sigmaNC * gaussian(rng), n1 = sigmaNC * gaussian(rng);
+          xs = [Math.max(-2.4, Math.min(2.4, xs[0] - etaNC * (gs[0] + n0))), Math.max(-1.8, Math.min(1.8, xs[1] - etaNC * (gs[1] + n1)))];
+          sgdPts.push(xs);
+        }
+
+        const { ctx, w, h } = setupCanvas(canvas, 396);
+        ctx.fillStyle = pal.bg;
+        ctx.fillRect(0, 0, w, h);
+
+        const spanX = 2.35, spanY = 1.75;
+        const pad = 22;
+        const sc = Math.min((w - 2 * pad) / (2 * spanX), (h - 2 * pad) / (2 * spanY));
+        const cx = w * 0.50, cy = h * 0.50;
+        const mx = x => cx + x * sc;
+        const my = y => cy - y * sc;
+        const ix = px => (px - cx) / sc;
+        const iy = py => (cy - py) / sc;
+        mapNcRef = { ix, iy };
+
+        // Heatmap background cells for double-well energy
+        const gw = 64, gh = 48;
+        const cellW = (w - 2 * pad) / gw, cellH = (h - 2 * pad) / gh;
+        for (let i = 0; i < gw; i++) {
+          for (let j = 0; j < gh; j++) {
+            const px = pad + (i + 0.5) * cellW;
+            const py = pad + (j + 0.5) * cellH;
+            const val = ncEval([ix(px), iy(py)]);
+            const normV = Math.max(0, Math.min(1, (val + 0.20) / 1.9));
+            if (pal.dark) {
+              ctx.fillStyle = `rgba(99, 102, 241, ${(0.04 + 0.30 * (1 - normV)).toFixed(3)})`;
+            } else {
+              ctx.fillStyle = `rgba(79, 70, 229, ${(0.02 + 0.16 * (1 - normV)).toFixed(3)})`;
+            }
+            ctx.fillRect(pad + i * cellW, pad + j * cellH, cellW + 0.5, cellH + 0.5);
+          }
+        }
+
+        ctx.strokeStyle = pal.axis;
+        ctx.lineWidth = 1.1;
+        ctx.beginPath();
+        ctx.moveTo(mx(-spanX), my(0)); ctx.lineTo(mx(spanX), my(0));
+        ctx.moveTo(mx(0), my(-spanY)); ctx.lineTo(mx(0), my(spanY));
+        ctx.stroke();
+
+        // Critical points: global min (-1.207, 0), saddle (0.093, 0), local min (1.114, 0)
+        const marks = [
+          { x: -1.207, y: 0, col: pal.teal, lbl: '전역 최소' },
+          { x: 0.093, y: 0, col: pal.rose, lbl: '안장점 ×' },
+          { x: 1.114, y: 0, col: pal.amber, lbl: '국소 최소' }
+        ];
+        ctx.font = '650 11px "JetBrains Mono", monospace';
+        marks.forEach(m => {
+          ctx.fillStyle = m.col;
+          ctx.beginPath(); ctx.arc(mx(m.x), my(m.y), 5.5, 0, Math.PI * 2); ctx.fill();
+          ctx.fillText(m.lbl, mx(m.x) - 24, my(m.y) + 18);
+        });
+
+        // GD trajectory (rose) vs Noisy SGD (cyan)
+        ctx.strokeStyle = pal.rose;
+        ctx.lineWidth = 2.6;
+        ctx.beginPath();
+        gdPts.forEach((p, k) => { if (k === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1])); });
+        ctx.stroke();
+
+        ctx.strokeStyle = pal.cyan;
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        sgdPts.forEach((p, k) => { if (k === 0) ctx.moveTo(mx(p[0]), my(p[1])); else ctx.lineTo(mx(p[0]), my(p[1])); });
+        ctx.stroke();
+
+        ctx.fillStyle = pal.ink;
+        ctx.beginPath(); ctx.arc(mx(ncStart[0]), my(ncStart[1]), 6.2, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = pal.amber; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillText('θ⁽⁰⁾', mx(ncStart[0]) + 8, my(ncStart[1]) - 6);
+
+        const gEnd = gdPts[gdPts.length - 1], sEnd = sgdPts[sgdPts.length - 1];
+        ctx.fillStyle = pal.rose; ctx.beginPath(); ctx.arc(mx(gEnd[0]), my(gEnd[1]), 4.5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = pal.cyan; ctx.beginPath(); ctx.arc(mx(sEnd[0]), my(sEnd[1]), 4.5, 0, Math.PI * 2); ctx.fill();
+
+        const fGD = gdPts.map(p => ncEval(p));
+        const fSGD = sgdPts.map(p => ncEval(p));
+        renderLossMini(fGD, fSGD, pal.rose, pal.cyan, pal, false);
+
+        sgdMiniTitle.textContent = '목적함수 에너지 f(θ_k) 변화';
+        sgdMiniTag.textContent = '빨강: 순수 GD · 하늘: 잡음 SGD';
+        m3K1.textContent = '순수 GD 최종 f(θ)'; m3V1.textContent = ncEval(gEnd).toFixed(3); m3V1.className = 'metric-tile__v warn';
+        m3K2.textContent = '잡음 SGD 최종 f(θ)'; m3V2.textContent = ncEval(sEnd).toFixed(3); m3V2.className = 'metric-tile__v cyan';
+        m3K3.textContent = 'GD 정착 θ₁ 좌표'; m3V3.textContent = gEnd[0].toFixed(3);
+
+        const gdStuckSaddle = Math.abs(gEnd[0] - 0.093) < 0.14;
+        const sgdEscaped = Math.abs(sEnd[0] - 0.093) > 0.35;
+        if (gdStuckSaddle && sgdEscaped) {
+          m3K4.textContent = '안장점 탈출 판정'; m3V4.textContent = 'SGD 탈출 성공'; m3V4.className = 'metric-tile__v ok';
+          verdictEl.textContent = `안장 능선 위 출발 시 결정론적 GD는 안장점(f=${ncEval(gEnd).toFixed(2)})에 고착되지만, SGD 잡음이 대칭성을 깨고 우물로 굴러 떨어진다.`;
+        } else if (gEnd[0] > 0.5 && sEnd[0] < -0.4) {
+          m3K4.textContent = '안장점/국소 우물'; m3V4.textContent = 'SGD 전역 우물 도달'; m3V4.className = 'metric-tile__v ok';
+          verdictEl.textContent = '순수 GD는 가까운 오른쪽 국소 최솟값(f≈+0.159)에 멈췄으나, SGD 잡음이 능선을 넘어 더 깊은 왼쪽 전역 우물(f≈-0.165)로 이동했다.';
+        } else {
+          m3K4.textContent = '도달 우물'; m3V4.textContent = sEnd[0] < 0 ? '전역 최소 도달' : '오른쪽 국소 최소';
+          m3V4.className = sEnd[0] < 0 ? 'metric-tile__v ok' : 'metric-tile__v amber';
+          verdictEl.textContent = 'θ⁽⁰⁾을 드래그하거나 "안장 능선 θ₀ 배치" 버튼을 눌러 결정론적 GD가 멈추는 지점과 SGD 탈출 거동을 비교해 보세요.';
+        }
+      }
+
+      function render() {
+        const pal = getPalette();
+        if (labMode === 'sgd') renderSgdConvex(pal); else renderNonConvex(pal);
+      }
+
+      canvas.addEventListener('pointerdown', e => {
+        if (labMode !== 'nonconvex') return;
+        dragging = true;
+        canvas.setPointerCapture(e.pointerId);
+        moveNcFromEvent(e);
+      });
+      canvas.addEventListener('pointermove', e => {
+        if (dragging && labMode === 'nonconvex') moveNcFromEvent(e);
+      });
+      canvas.addEventListener('pointerup', () => { dragging = false; });
+
+      function moveNcFromEvent(e) {
+        if (!mapNcRef) return;
+        const rect = canvas.getBoundingClientRect();
+        ncStart = [
+          Math.max(-2.1, Math.min(2.1, mapNcRef.ix(e.clientX - rect.left))),
+          Math.max(-1.6, Math.min(1.6, mapNcRef.iy(e.clientY - rect.top)))
+        ];
+        render();
+      }
+
+      btnConvex.addEventListener('click', () => {
+        labMode = 'sgd';
+        btnConvex.classList.add('is-primary'); btnNonConv.classList.remove('is-primary');
+        sgdCtrl.style.display = 'block'; ncCtrl.style.display = 'none';
+        hintEl.textContent = '보라 실선: 전체 배치 GD · 하늘 실선: 미니배치 SGD · 점선 원: 고정 보폭 잡음 공';
+        render();
+      });
+      btnNonConv.addEventListener('click', () => {
+        labMode = 'nonconvex';
+        btnNonConv.classList.add('is-primary'); btnConvex.classList.remove('is-primary');
+        sgdCtrl.style.display = 'none'; ncCtrl.style.display = 'block';
+        hintEl.textContent = '캔버스를 클릭·드래그해 θ⁽⁰⁾ 위치를 옮기세요 (중앙 능선 x≈0.093 은 안장점 안정 다양체)';
+        render();
+      });
+
+      btnConst.addEventListener('click', () => {
+        sched = 'const';
+        btnConst.classList.add('is-primary'); btnDecay.classList.remove('is-primary');
+        render();
+      });
+      btnDecay.addEventListener('click', () => {
+        sched = 'decay';
+        btnDecay.classList.add('is-primary'); btnConst.classList.remove('is-primary');
+        render();
+      });
+      btnNewSeed.addEventListener('click', () => { seed = (seed + 7919) | 0; render(); });
+      btnPlaceSaddle.addEventListener('click', () => { ncStart = [0.093, 1.32]; render(); });
+      btnPlaceLocal.addEventListener('click', () => { ncStart = [0.65, 1.05]; render(); });
+      btnNewNcSeed.addEventListener('click', () => { ncSeed = (ncSeed + 3571) | 0; render(); });
+
+      [batchIn, sgdEtaIn, ncNoiseIn, ncEtaIn].forEach(el => el.addEventListener('input', render));
+      onThemeCallbacks.push(render);
+      window.addEventListener('resize', render);
+      render();
+    })();
+  })();
+  </script>
+</body>
+</html>
